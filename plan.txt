@@ -1,0 +1,28 @@
+React native frontend for access on android
+- locally store updates with AsyncStorage
+- include button "Upload Updates" and "Download Updates"
+- disable "Download" if updates exist
+- include form for signup
+
+React frontend for access on web?
+- password protected (authentification)
+- view all info on searchable table
+
+Backend server hosted on Firebase/GCP?
+API:
+GET   /:group/all   => Return information for everyone
+GET   /:group/:id   => Return information for that person
+POST  /:group      => Add information for new person
+PATCH /:group/:id   => Update information for person
+PATCH /:group/all   => Update for all updates
+
+Database schema:
+Last updated timestamp
+First name
+last name
+age
+weight
+height
+blood pressure: int
+current meds: list of strings
+symptoms: list of strings
