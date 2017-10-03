@@ -12,6 +12,7 @@ pipelines:
           - node
         script: # Modify the commands below to build your repository.
           - npm install
-          - cd web/public/client && npm install && npm run build
-          - cd ../../.. && firebase deploy
           # - npm test
+          # - cd web/public/client && npm install && npm run build
+          # - cd ../../.. && firebase deploy
+
