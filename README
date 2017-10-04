@@ -44,6 +44,7 @@ Pipeline:
 `firebase deploy` from IHC/web
 
 TODO:
+Authentication
 React native on mobile
 Web server and frontend
 Setup firebase database (Admin SDK Setup?)
