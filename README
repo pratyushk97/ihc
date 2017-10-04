@@ -6,7 +6,7 @@ React native frontend for access on android
 - include form for signup
 
 Web:
-Node, Express, React?
+Node, Express, React
 
 React frontend for access on web (Firebase)
 - password protected (authentification)
@@ -33,3 +33,17 @@ symptoms: list of strings
 
 web/public: Express JS
 web/public/client: React JS
+
+Local:
+`npm run build` from IHC/web/public/client to build React
+`npm start` from IHC/web/public to start Express
+
+Pipeline:
+`git push`
+`npm run build` from IHC/web/public/client
+`firebase deploy` from IHC/web
+
+TODO:
+React native on mobile
+Web server and frontend
+Setup firebase database (Admin SDK Setup?)

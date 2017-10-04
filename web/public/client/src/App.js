@@ -1,9 +1,26 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+//import logo from './logo.svg';
 import './App.css';
 
 class App extends Component {
+  state = { result: "" };
+  load = () => {
+    fetch('/api/1/all')
+      .then(res => res.json())
+      .then(res => this.setState({result: res}));
+  }
+
   render() {
+    var result = this.state.result;
+    this.load();
+
+    return(
+        <div className="App">
+          <p className="App-intro">{result}
+          </p>
+        </div>
+        );
+    /*
     return (
       <div className="App">
         <header className="App-header">
@@ -15,6 +32,7 @@ class App extends Component {
         </p>
       </div>
     );
+    */
   }
 }
 

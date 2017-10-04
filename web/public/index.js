@@ -4,23 +4,13 @@ const path = require('path');
 const app = express();
 
 // Serve static files from the React app
-app.use(express.static(path.join(__dirname, 'client/build')));
+ app.use(express.static(path.join(__dirname, 'client/build')));
 
-/*
-app.get('/api/passwords', (req, res) => {
-  const count = 5;
+// Local
+//app.use(express.static(path.join(__dirname, 'client/public')));
 
-  // Generate some passwords
-  const passwords = Array.from(Array(count).keys()).map(i =>
-    generatePassword(12, false)
-  )
-
-  // Return them as json
-  res.json(passwords);
-
-  console.log(`Sent ${count} passwords`);
-});
-*/
+// Routes
+require('./routes')(app);
 
 // The "catchall" handler: for any request that doesn't
 // match one above, send back React's index.html file.
