@@ -21,10 +21,10 @@ PATCH /:group/:id   => Update information for person
 PATCH /:group/all   => Update for all updates
 
 Database schema:
-Last updated timestamp
+Last updated timestamp/Date
 First name
 last name
-age
+age/birth day
 weight
 height
 blood pressure: int
