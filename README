@@ -12,7 +12,7 @@ React frontend for access on web (Firebase)
 - password protected (authentification)
 - view all info on searchable table
 
-Backend server hosted on Firebase?
+Express API hosted within Firebase Cloud Functions
 API:
 GET   /:group/all   => Return information for everyone
 GET   /:group/:id   => Return information for that person
@@ -31,16 +31,12 @@ blood pressure: int
 current meds: list of strings
 symptoms: list of strings
 
-web/public: Express JS
-web/public/client: React JS
-
 Local:
 `npm run build` from IHC/web/public/client to build React
-`npm start` from IHC/web/public to start Express
 
 Pipeline:
 `git push`
-`npm run build` from IHC/web/public/client
+`npm run build` from IHC/web/react
 `firebase deploy` from IHC/web
 
 TODO:

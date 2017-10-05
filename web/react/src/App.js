@@ -5,7 +5,8 @@ import './App.css';
 class App extends Component {
   state = { result: "" };
   load = () => {
-    fetch('/api/1/all')
+//    fetch('/api')
+    fetch('http://localhost:5000/api/1/all')
       .then(res => res.json())
       .then(res => this.setState({result: res}));
   }
