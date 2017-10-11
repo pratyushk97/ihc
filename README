@@ -4,6 +4,7 @@ React native frontend for access on android
 - include button "Upload Updates" and "Download Updates"
 - disable "Download" if updates exist
 - include form for signup
+- request permission to store info
 
 Web:
 Node, Express, React
@@ -14,11 +15,12 @@ React frontend for access on web (Firebase)
 
 Express API hosted within Firebase Cloud Functions
 API:
-GET   /:group/all   => Return information for everyone
+GET   /:group/all/:timestamp   => Return information for updates after timestamp
+PATCH /:group/all   => Update information for all people
+
 GET   /:group/:id   => Return information for that person
 POST  /:group      => Add information for new person
 PATCH /:group/:id   => Update information for person
-PATCH /:group/all   => Update for all updates
 
 Database schema:
 Last updated timestamp/Date
@@ -30,6 +32,36 @@ height
 blood pressure: int
 current meds: list of strings
 symptoms: list of strings
+
+React native GET -> Express API:
+
+React native PATCH -> Express API:
+Pass a list of all updates:
+[{ firstname: _, lastname: _, birthday: _, weight: _, height: _, bloodpressure:
+_, meds: _, symptoms: _, currentdate: _, notes: _ }, ...]
+
+GET /:group/all/:timestamp   => Return information for updates after timestamp
+1. Grab list of timestamps from groups/:groupid
+2. For each timestamp that is later than the "Last synced" timestamp
+  ("Last synced" is property of the tablet)
+  - Get list of updates from groups/:timestamp and consolidate into one list
+
+PATCH /:group/all   => Update information for all people
+- Body contains list of user updates
+Go through list and patch each user individually:
+
+ihc-database.firebaseio.com/
+  groups/:groupid
+    timestamps when last updated ("Send updates" button on tablet was clicked)
+  groups/:timestamp
+    list of updates at that timestamp
+
+ihc-database.firebaseio.com/
+  groups/:groupid
+    firstname, lastname, birthday
+
+  /users/:firstnamelastnamebirthdayhash
+    weight, height, blood pressure, meds, symptoms, current date, misc notes
 
 Local:
 `npm run build` from IHC/web/public/client to build React

@@ -21,10 +21,6 @@ var _bodyParser = require("body-parser");
 
 var _bodyParser2 = _interopRequireDefault(_bodyParser);
 
-var _multer = require("multer");
-
-var _multer2 = _interopRequireDefault(_multer);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
@@ -40,6 +36,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 var app = (0, _express2.default)();
 admin.initializeApp(functions.config().firebase);
 var db = admin.database();
+app.use(_bodyParser2.default.urlencoded({ extended: false }));
 app.use(_bodyParser2.default.json());
 
 app.get("/:group/all", function (req, res) {
@@ -50,14 +47,14 @@ app.get("/:group/:id", function (req, res) {
   res.send("group/:id");
 });
 
-app.post("/:group", (0, _multer2.default)().array(), function (req, res) {
+app.post("/:group", function (req, res) {
   var groupId = req.params.group;
   var personId = "" + req.body.firstname + req.body.lastname + req.body.birthday;
+  console.log("post /group to person " + personId);
 
-  res.send(req.body);
-  //res.send("post /group to ID " + personId);
   var ref = db.ref("/" + groupId + "/" + personId);
-  ref.push(req.body);
+  ref.push(extractData(req.body));
+  res.send(true);
 });
 
 app.patch("/:group/:id", function (req, res) {
@@ -67,5 +64,9 @@ app.patch("/:group/:id", function (req, res) {
 app.patch("/:group/all", function (req, res) {
   res.send("patch /group/all");
 });
+
+function extractData(body) {
+  return { firstname: body.firstname, lastname: body.lastname, birthday: body.birthday };
+}
 
 var api = exports.api = functions.https.onRequest(app);
