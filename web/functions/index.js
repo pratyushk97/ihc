@@ -27,11 +27,20 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 /*
  * API:
- * GET   /:group/all   => Return information for everyone
- * GET   /:group/:id   => Return information for that person
- * POST  /:group       => Add information for new person
- * PATCH /:group/:id   => Update information for person
- * PATCH /:group/all   => Update for all updates
+ * ESSENTIAL:
+ * GET   /groups/:group/all/:timestamp   => Return information for updates after
+ *                                          last_synced_timestamp
+ * PATCH /groups/:group/all              => Update information
+ *                                          for all people
+ * - Body should contain list of people objects
+ *
+ * NONESSENTIAL:
+ * GET   /:group/:id   => Return information
+ *                        for that person
+ * POST  /:group       => Add information for
+ *                        new person
+ * PATCH /:group/:id   => Update information
+ *                        for person
  */
 var app = (0, _express2.default)();
 admin.initializeApp(functions.config().firebase);
@@ -39,30 +48,53 @@ var db = admin.database();
 app.use(_bodyParser2.default.urlencoded({ extended: false }));
 app.use(_bodyParser2.default.json());
 
-app.get("/:group/all", function (req, res) {
+app.get("/groups/:group/all/:timestamp", function (req, res) {
   res.send("group/all");
 });
 
-app.get("/:group/:id", function (req, res) {
-  res.send("group/:id");
+app.patch("/groups/:group/all", function (req, res) {
+  var groupId = req.params.group;
+
+  // When the "Send updates" button was clicked
+  var timestamp = req.body.timestamp;
+  // List of user updates
+  var userUpdates = req.body.user_updates;
+
+  var timestampRef = db.ref("/groups/" + groupId + "/timestamps/");
+  timestampRef.push(timestamp);
+
+  var updateRef = db.ref("/groups/" + groupId + "/updates/" + timestamp);
+  updateRef.set(userUpdates);
+  res.send(true);
+  // Send false if error?
 });
 
-app.post("/:group", function (req, res) {
-  var groupId = req.params.group;
-  var personId = "" + req.body.firstname + req.body.lastname + req.body.birthday;
-  console.log("post /group to person " + personId);
+/*
+app.post("/groups/:group/newpatient", (req, res) => {
+  const groupId = req.params.group;
+  const personId = `${req.body.firstname}${req.body.lastname}${req.body.birthday}`;
+  console.log("post /group/newpatient to person " + personId);
 
-  var ref = db.ref("/" + groupId + "/" + personId);
+  const ref = db.ref(`/${groupId}/${personId}`);
   ref.push(extractData(req.body));
   res.send(true);
 });
+*/
 
-app.patch("/:group/:id", function (req, res) {
-  res.send("patch /group/:id");
+app.get("/groups/:group/:id", function (req, res) {
+  res.send("patch /groups/:group/:id");
 });
 
-app.patch("/:group/all", function (req, res) {
-  res.send("patch /group/all");
+app.post("/groups/:group", function (req, res) {
+  res.send("patch /groups/:group/all");
+});
+
+app.patch("/groups/:group/:id", function (req, res) {
+  res.send("patch /groups/:group/:id");
+});
+
+app.get("*", function (req, res) {
+  res.send("Error: No path matched");
 });
 
 function extractData(body) {

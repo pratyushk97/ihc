@@ -31,7 +31,22 @@ app.get("/groups/:group/all/:timestamp", (req, res) => {
 });
 
 app.patch("/groups/:group/all", (req, res) => {
-  res.send("group/:id")
+  const groupId = req.params.group;
+
+  // When the "Send updates" button was clicked
+  const timestamp = req.body.timestamp;
+  // List of user updates
+  const userUpdates = req.body.user_updates;
+
+  const timestampRef = db.ref(`/groups/${groupId}/timestamps/`);
+  timestampRef.push(timestamp);
+
+  // If they send updates at exact same timestamp, may overwrite the first
+  // updates... for now, very unlikely so don't bother
+  const updateRef = db.ref(`/groups/${groupId}/updates/${timestamp}`);
+  updateRef.set(userUpdates);
+  res.send(true);
+  // Send false if error?
 });
 
 /*
