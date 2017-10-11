@@ -49,7 +49,55 @@ app.use(_bodyParser2.default.urlencoded({ extended: false }));
 app.use(_bodyParser2.default.json());
 
 app.get("/groups/:group/all/:timestamp", function (req, res) {
-  res.send("group/all");
+  var groupId = req.params.group;
+  var timestampParam = parseInt(req.params.timestamp);
+  // :timestamp should be a number, but wasn't
+  if (Number.isNaN(timestampParam)) {
+    res.status(400).send({ error: 'Invalid "' + req.params.timestamp + ' passed as timestamp' });
+  }
+
+  // Grab list of timestamps from groups/:groupid
+  var timestampRef = db.ref("/groups/" + groupId + "/timestamps");
+
+  // Only care about timestamps after the passed in time
+  timestampRef.once("value").then(function (snapshot) {
+    return snapshot.val();
+  })
+  // Map to actual timestamps instead of firebase generated keys
+  .then(function (keysObj) {
+    return Object.keys(keysObj).map(function (key) {
+      return keysObj[key];
+    });
+  }).then(function (timestamps) {
+    return timestamps.filter(function (curr) {
+      return curr > timestampParam;
+    });
+  }, function (error) {
+    return [];
+  }).then(function (timestamps) {
+    // Build list of promises to resolve
+    var promises = [];
+    var updateRef = db.ref("/groups/" + groupId + "/updates");
+    timestamps.forEach(function (elem) {
+      var currRef = updateRef.child("/" + elem);
+      promises.push(currRef.once("value"));
+    });
+    return Promise.all(promises);
+  }).then(function (snapshots) {
+    return snapshots.map(function (snapshot) {
+      return snapshot.val();
+    });
+  }).then(function (updatesList) {
+    var list = [];
+    updatesList.forEach(function (updates) {
+      return list = list.concat(updates);
+    });
+    return list;
+  }).then(function (list) {
+    res.status(200).send({ updates: list });
+  }, function (error) {
+    res.status(500).send({ error: 'Error: ' + error });
+  });
 });
 
 app.patch("/groups/:group/all", function (req, res) {
@@ -63,6 +111,8 @@ app.patch("/groups/:group/all", function (req, res) {
   var timestampRef = db.ref("/groups/" + groupId + "/timestamps/");
   timestampRef.push(timestamp);
 
+  // If they send updates at exact same timestamp, may overwrite the first
+  // updates... for now, very unlikely so don't bother
   var updateRef = db.ref("/groups/" + groupId + "/updates/" + timestamp);
   updateRef.set(userUpdates);
   res.send(true);

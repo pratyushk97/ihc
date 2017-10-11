@@ -6,8 +6,8 @@ React native frontend for access on android
 - include form for signup
 - request permission to store info
 
-Web:
-Node, Express, React
+Frameworks:
+Node, Express, React, React Native
 
 React frontend for access on web (Firebase)
 - password protected (authentification)
@@ -60,7 +60,7 @@ PATCH /:group/all   => Update information for all people, add timestamp to db
 }
 
 ihc-database.firebaseio.com/
-  groups/timestamps/:groupid
+  groups/:groupid/timestamps
     list of send_update_timestamps when last updated 
     ("Send updates" button on tablet was clicked)
   groups/:groupid/updates/:timestamp
@@ -68,6 +68,7 @@ ihc-database.firebaseio.com/
 
 Local:
 `npm run build` from IHC/web/public/client to build React
+`npm run devserver` to run firebase cloud functions
 
 Pipeline:
 `git push`
@@ -78,4 +79,3 @@ TODO:
 Authentication
 React native on mobile
 Web server and frontend
-Setup firebase database (Admin SDK Setup?)

@@ -27,7 +27,42 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.get("/groups/:group/all/:timestamp", (req, res) => {
-  res.send("group/all")
+  const groupId = req.params.group;
+  const timestampParam = parseInt(req.params.timestamp);
+  // :timestamp should be a number, but wasn't
+  if(Number.isNaN(timestampParam)) {
+    res.status(400).send({error: 'Invalid "' + req.params.timestamp + ' passed as timestamp'});
+  }
+
+  // Grab list of timestamps from groups/:groupid/timestamps
+  const timestampRef = db.ref(`/groups/${groupId}/timestamps`);
+
+  timestampRef.once("value")
+    .then(snapshot => snapshot.val())
+    // Map to actual timestamps instead of firebase generated keys
+    .then(keysObj => Object.keys(keysObj).map(key => keysObj[key]))
+    // Only care about timestamps after the passed in time
+    .then(timestamps => timestamps.filter(curr => curr > timestampParam),
+        error => [])
+    // Build list of promises to resolve
+    .then(timestamps => {
+        let promises = [];
+        const updateRef = db.ref(`/groups/${groupId}/updates`);
+        timestamps.forEach(elem => {
+          const currRef = updateRef.child(`/${elem}`);
+          promises.push(currRef.once("value"));
+        });
+        return Promise.all(promises);
+    })
+    .then(snapshots => snapshots.map(snapshot => snapshot.val()))
+    .then(updatesList => {
+      let list = [];
+      updatesList.forEach(updates => list = list.concat(updates) );
+      return list;
+    })
+    .then(list => {
+        res.status(200).send({updates: list});
+    }, error => { res.status(500).send({error: 'Error: ' + error}); });
 });
 
 app.patch("/groups/:group/all", (req, res) => {
