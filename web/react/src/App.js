@@ -1,19 +1,23 @@
 import React, { Component } from 'react';
 //import logo from './logo.svg';
 import './App.css';
+import * as config from './config';
 
+let done = false;
 class App extends Component {
   state = { result: "" };
   load = () => {
-    //fetch('/api/groups/1/all/1')
-    fetch('http://localhost:5000/api/groups/1/all')
+    if(!done){
+    fetch(config.api_home + '/groups/1/all/1')
       .then(res => res.json(), error => console.log(error))
-      .then(res => this.setState({result: res}), error => console.log(error));
+      .then(res => this.setState({result: "done"}), error => console.log(error));
+    }
   }
 
   render() {
     var result = this.state.result;
     this.load();
+    done = true;
 
     return(
         <div className="App">

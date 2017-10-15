@@ -21,13 +21,11 @@ var _bodyParser = require("body-parser");
 
 var _bodyParser2 = _interopRequireDefault(_bodyParser);
 
-var _cors = require("cors");
-
-var _cors2 = _interopRequireDefault(_cors);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+var cors = require('cors')({ origin: true });
 
 /*
  * API:
@@ -49,15 +47,16 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 var app = (0, _express2.default)();
 admin.initializeApp(functions.config().firebase);
 var db = admin.database();
-app.use(_bodyParser2.default.urlencoded({ extended: false }));
-app.use(_bodyParser2.default.json());
-
 var corsOptions = {
   origin: 'http://localhost:3000',
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
-};
 
-app.use((0, _cors2.default)(corsOptions));
+
+  // app.use(cors(corsOptions));
+};app.use(cors);
+
+app.use(_bodyParser2.default.urlencoded({ extended: false }));
+app.use(_bodyParser2.default.json());
 
 app.get("/groups/:group/all/:timestamp", function (req, res) {
   var groupId = req.params.group;

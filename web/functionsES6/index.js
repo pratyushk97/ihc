@@ -2,7 +2,7 @@ import * as functions from "firebase-functions"
 import express from "express"
 import * as admin from "firebase-admin"
 import bodyParser from "body-parser"
-import cors from "cors"
+const cors = require('cors')({origin: true});
 
 /*
  * API:
@@ -24,15 +24,16 @@ import cors from "cors"
 const app = express();
 admin.initializeApp(functions.config().firebase);
 const db = admin.database();
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
-
 var corsOptions = {
     origin: 'http://localhost:3000',
     optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
+app.use(cors);
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 app.get("/groups/:group/all/:timestamp", (req, res) => {
   const groupId = req.params.group;
