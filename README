@@ -6,6 +6,10 @@ React native frontend for access on android
 - include form for signup
 - request permission to store info
 
+React native GET -> Express API:
+Returns list of all updates, and add new updates
+  - This list may contain duplicates 
+
 Frameworks:
 Node, Express, React, React Native
 
@@ -32,17 +36,9 @@ age/birth day
 weight
 height
 blood pressure: int
-current meds: list of strings
-symptoms: list of strings
-
-React native GET -> Express API:
-Return list of all updates, and add new updates
-  - This list may contain duplicates 
-
-React native PATCH -> Express API:
-Pass a list of all updates:
-[{ firstname: _, lastname: _, birthday: _, weight: _, height: _, bloodpressure:
-_, meds: _, symptoms: _, currentdate: _, notes: _ }, ...]
+current meds: strings
+symptoms: strings
+notes: string
 
 Express API:
 GET /:group/all/:timestamp   => Return information for updates after :timestamp
@@ -57,6 +53,8 @@ PATCH /:group/all   => Update information for all people, add timestamp to db
 {
   timestamp: send_update_timestamps,
   user_updates: list of user updates
+      [{ firstname: _, lastname: _, birthday: _, weight: _, height: _, bloodpressure:
+      _, meds: _, symptoms: _, currentdate: _, notes: _ }, ...]
 }
 
 ihc-database.firebaseio.com/
@@ -68,7 +66,7 @@ ihc-database.firebaseio.com/
 
 Local:
 `npm run build` from IHC/web/public/client to build React
-`npm run devserver` to run firebase cloud functions
+`npm run devserver` from IHC/web to run firebase cloud functions
 
 Pipeline:
 `git push`

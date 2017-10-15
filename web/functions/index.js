@@ -21,6 +21,10 @@ var _bodyParser = require("body-parser");
 
 var _bodyParser2 = _interopRequireDefault(_bodyParser);
 
+var _cors = require("cors");
+
+var _cors2 = _interopRequireDefault(_cors);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
@@ -48,6 +52,13 @@ var db = admin.database();
 app.use(_bodyParser2.default.urlencoded({ extended: false }));
 app.use(_bodyParser2.default.json());
 
+var corsOptions = {
+  origin: 'http://localhost:3000',
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+};
+
+app.use((0, _cors2.default)(corsOptions));
+
 app.get("/groups/:group/all/:timestamp", function (req, res) {
   var groupId = req.params.group;
   var timestampParam = parseInt(req.params.timestamp);
@@ -56,10 +67,9 @@ app.get("/groups/:group/all/:timestamp", function (req, res) {
     res.status(400).send({ error: 'Invalid "' + req.params.timestamp + ' passed as timestamp' });
   }
 
-  // Grab list of timestamps from groups/:groupid
+  // Grab list of timestamps from groups/:groupid/timestamps
   var timestampRef = db.ref("/groups/" + groupId + "/timestamps");
 
-  // Only care about timestamps after the passed in time
   timestampRef.once("value").then(function (snapshot) {
     return snapshot.val();
   })
@@ -68,14 +78,17 @@ app.get("/groups/:group/all/:timestamp", function (req, res) {
     return Object.keys(keysObj).map(function (key) {
       return keysObj[key];
     });
-  }).then(function (timestamps) {
+  })
+  // Only care about timestamps after the passed in time
+  .then(function (timestamps) {
     return timestamps.filter(function (curr) {
       return curr > timestampParam;
     });
   }, function (error) {
     return [];
-  }).then(function (timestamps) {
-    // Build list of promises to resolve
+  })
+  // Build list of promises to resolve
+  .then(function (timestamps) {
     var promises = [];
     var updateRef = db.ref("/groups/" + groupId + "/updates");
     timestamps.forEach(function (elem) {

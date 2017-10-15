@@ -5,10 +5,10 @@ import './App.css';
 class App extends Component {
   state = { result: "" };
   load = () => {
-//    fetch('/api')
-    fetch('http://localhost:5000/api/1/all')
-      .then(res => res.json())
-      .then(res => this.setState({result: res}));
+    //fetch('/api/groups/1/all/1')
+    fetch('http://localhost:5000/api/groups/1/all')
+      .then(res => res.json(), error => console.log(error))
+      .then(res => this.setState({result: res}), error => console.log(error));
   }
 
   render() {
