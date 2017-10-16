@@ -1,68 +1,133 @@
-React native frontend for access on android
-- Beginning: register device with backend, passing some local id?
-- locally store updates with AsyncStorage
-- include button "Upload Updates" and "Download Updates"
-- disable "Download" if updates exist
-- include form for signup
-- request permission to store info
+Overview Use Cases:
+  Mobile:
+    - Patients sign in on tablets
+    - Member adds data for that patient as they go through clinic (?)
+    - IHC Member sends new updates to Express API
+    - IHC Member syncs and downloads updates from Express API
 
-React native GET -> Express API:
-Returns list of all updates, and add new updates
-  - This list may contain duplicates 
+  Web:
+    - Member signs in to gain authentication
+    - Member views table of all patients
+    - Member can select patient and view all their checkins
 
-Frameworks:
-Node, Express, React, React Native
-
-React frontend for access on web (Firebase)
-- password protected (authentification)
-- view all info on searchable table
-
-Express API hosted within Firebase Cloud Functions
-ESSENTIAL:
-GET   /groups/:group/all/:timestamp   => Return information for updates after
-                                  last_synced_timestamp
-PATCH /groups/:group/all   => Update information for all people
-
-NONESSENTIAL:
-GET   /groups/:group/:id   => Return information for that person
-POST  /groups/:group      => Add information for new person
-PATCH /groups/:group/:id   => Update information for person
-
-Database schema:
-Date
-First name
-last name
-age/birth day
-weight
-height
-blood pressure: int
-current meds: strings
-symptoms: strings
-notes: string
-
-Express API:
-GET /:group/all/:timestamp   => Return information for updates after :timestamp
-                                (last_synced_timestamp)
-1. Grab list of send_update_timestamps from groups/:groupid
-2. For each send_update_timestamp that is later than the last_synced_timestamp
-  ("Last synced" is property of the tablet)
-  - Get list of updates from groups/:timestamp and consolidate into one list
-
-PATCH /:group/all   => Update information for all people, add timestamp to db
-- Body contains 
-{
-  timestamp: send_update_timestamps,
-  user_updates: list of user updates
-      [{ firstname: _, lastname: _, birthday: _, weight: _, height: _, bloodpressure:
-      _, meds: _, symptoms: _, currentdate: _, notes: _ }, ...]
-}
-
+==========================================
+Database design:
 ihc-database.firebaseio.com/
-  groups/:groupid/timestamps
-    list of send_update_timestamps when last updated 
-    ("Send updates" button on tablet was clicked)
-  groups/:groupid/updates/:timestamp
-    list of updates at that send_update_timestamp
+  groups/
+    :groupid/
+      timestamps/
+        List of auto generated timestamp keys pointing to the time "Upload
+        updates" was clicked
+        [{
+          timestampKey: number 
+        }, ...]
+      updates/
+        :timestampKey/
+          List of auto generated update keys, don't care about value
+          [{
+            updateKey: true
+          }, ...]
+      updates/
+        :updateKey/
+          Object of update, contains all data entered for a patient
+          {
+            firstname: string
+            lastname: string
+            date: number (yyyymmdd)
+            birthday: number (yyyymmdd)
+            weight: string
+            height: string
+            blood pressure: string
+            current meds: string
+            symptoms: string
+            notes: string
+          }
+      users/
+        :lastnamefirstnamebirthday/ <-- Is this unique? Birthday guaranteed?
+          List of updateKey for that user
+          [{
+            updateKey: true
+          }]
+
+==========================================
+Mobile:
+React Native
+
+TODO
+- Register device with backend, passing some local id (?)
+  - May not care about this because private app  
+- "Upload Updates" button
+- "Sync" button
+  -Locally store updates with AsyncStorage
+- Disable "Sync" if updates exist (?)
+- Include form for signing in and going through clinic
+- Request permission to store info
+  - Legal disclaimer type thing necessary?
+
+"Upload Updates" PATCH /groups/:group/all -> Express API:
+Send list of local updates
+Locally save list of timestamps when "Upload Updates" was clicked
+Body:
+  {
+    timestamp: When "Upload Updates" button is clicked,
+    user_updates: list of user updates
+        [{ <Match user object in database design section> }]
+  }
+
+"Sync" GET /groups/:group/all/:timestamp?exclude=[timestamps] -> Express API:
+Pass in 
+  :timestamp of when last synced
+  [timestamps] 
+    - Timestamps when "Upload Updates" was clicked to exclude from results to
+      avoid duplicates
+
+Retrieve list of all updates since given timestamp (last synced)
+  - Go through list and locally save updates
+  - Clear local list of "Upload Updates" timestamps
+
+==========================================
+Web Frontend:
+React, Firebase Hosting
+Talks directly to Firebase Database (without going through Express API)
+
+TODO
+- Password protected (authentication)
+- View all info on searchable table
+- Click on patient and view data
+- Form to manually add new information
+
+==========================================
+Server API;
+Express, Firebase Cloud Functions
+
+TODO
+- Fix to align with new database design
+- Nonessential API endpoints (?)
+
+Routes:
+  ESSENTIAL:
+  GET   /groups/:group/all/:timestamp   => Return information for updates after
+                                           last_synced_timestamp
+    1. Grab list of send_update_timestamps from groups/:groupid
+    2. For each send_update_timestamp that is later than the last_synced_timestamp
+      ("Last synced" is property of the tablet)
+      - Ignore timestamps passed in to exclude param 
+      - Get list of updates from groups/:timestamp and consolidate into one list
+
+  PATCH /groups/:group/all   => Update information for all people
+    - Body contains 
+    {
+      timestamp: send_update_timestamps,
+      user_updates: list of user updates
+    }
+
+  NONESSENTIAL:
+  GET   /groups/:group/:id   => Return information for that person
+  POST  /groups/:group      => Add information for new person
+  PATCH /groups/:group/:id   => Update information for person
+
+==========================================
+Commandline:
 
 Local:
 `npm run build` from IHC/web/public/client to build React
@@ -72,8 +137,3 @@ Pipeline:
 `git push`
 `npm run build` from IHC/web/react
 `firebase deploy` from IHC/web
-
-TODO:
-Authentication
-React native on mobile
-Web server and frontend

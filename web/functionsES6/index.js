@@ -2,7 +2,7 @@ import * as functions from "firebase-functions"
 import express from "express"
 import * as admin from "firebase-admin"
 import bodyParser from "body-parser"
-const cors = require('cors')({origin: true});
+//const cors = require('cors')({origin: true});
 
 /*
  * API:
@@ -24,6 +24,10 @@ const cors = require('cors')({origin: true});
 const app = express();
 admin.initializeApp(functions.config().firebase);
 const db = admin.database();
+
+/* Web frontend will talk directly to firebase and not through here. Only mobile
+ * will request through Express and CORS isn't required for mobile
+ *
 var corsOptions = {
     origin: 'http://localhost:3000',
     optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
@@ -31,6 +35,7 @@ var corsOptions = {
 
 // app.use(cors(corsOptions));
 app.use(cors);
+*/
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
