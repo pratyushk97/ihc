@@ -1,28 +1,31 @@
 import React, { Component } from 'react';
 //import logo from './logo.svg';
 import './App.css';
-import * as config from './config';
+import {firebase} from './config';
+import UsersTable from './UsersTable';
 
-let done = false;
 class App extends Component {
-  state = { result: "" };
+  database = firebase.database();
+  increment = () => { this.setState({result: this.state.result+1})};
+  state = { result: 0 };
   load = () => {
-    if(!done){
+    /* Only mobile part calls Express API 
     fetch(config.api_home + '/groups/1/all/1')
       .then(res => res.json(), error => console.log(error))
       .then(res => this.setState({result: "done"}), error => console.log(error));
-    }
+    */
   }
 
   render() {
     var result = this.state.result;
     this.load();
-    done = true;
 
     return(
         <div className="App">
+          <UsersTable />
           <p className="App-intro">{result}
           </p>
+          <button onClick={this.increment}/>
         </div>
         );
     /*
