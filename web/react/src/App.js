@@ -18,7 +18,7 @@ class App extends Component {
 
   render() {
     var result = this.state.result;
-    this.load();
+    // this.load();
 
     return(
         <div className="App">

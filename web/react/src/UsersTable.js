@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 // import './UsersTable.css';
-import {firebase} from './config';
+import * as firebase from './Firebase';
 
 class UsersTable extends Component {
-  database = firebase.database();
 
   constructor(props) {
     super(props);
@@ -12,15 +11,8 @@ class UsersTable extends Component {
   }
 
   initUsers = () => {
-    const updatesRef = this.database.ref(`/groups/1/updates`);
-    updatesRef.once('value')
-      .then(snapshot => snapshot.val() )
-      .then(updates => Object.keys(updates).map(updateKey => updates[updateKey]))
-      .then(updatesLists => 
-        updatesLists.reduce((acc = [], currentValue) => 
-            acc = acc.concat(currentValue))
-      )
-      .then(users => this.setState({users: users}));
+    const groupId = '1';
+    firebase.getAllUsers(groupId).then(users => this.setState(users: users));
   }
 
   renderUsers = (users) => {
@@ -36,6 +28,22 @@ class UsersTable extends Component {
     )
   }
 
+  addUpdate = () => {
+    const update = {
+      firstname: "Matt",
+      lastname: "Chinn",
+      birthday: "19960807",
+      symptoms: "sexy"
+    };
+    const update2 = {
+      firstname: "Brandon",
+      lastname: "Chinn",
+      birthday: "19950516",
+      symptoms: "sexy"
+    };
+    firebase.addUpdates([update, update2], 1);
+  }
+
   render() {
     const users = this.state.users;
 
@@ -43,6 +51,7 @@ class UsersTable extends Component {
         <div className="UsersTable">
           {users.length ? this.renderUsers(users) :
                           <span>No users found</span>}
+          <button onClick={this.addUpdate}>Add Update</button>
         </div>
         );
   }
