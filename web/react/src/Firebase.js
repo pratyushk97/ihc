@@ -80,6 +80,12 @@ function extractUserFromHash(hash) {
 /*
  * Call callback on every update, passing in the list of users
  * Returns the callback function that can be passed in to off()
+ *
+ * Example:
+ *     firebase.setupAllUsersStream(groupId, users => {
+ *           this.setState({users: users});
+ *     });
+ *
  */
 export function setupAllUsersStream(groupId, callback) {
   const updatesRef = database.ref(`/groups/${groupId}/users`);
@@ -97,7 +103,14 @@ export function setupAllUsersStream(groupId, callback) {
  * WARNING: Will not fire callback if an old update has been modified
  * Takes in a user object with fields: firstname, lastname, birthday
  * Returns the callback function that can be passed in to off()
+ *
+ * Example:
+ *     firebase.setupUserUpdatesStream(user, groupId, updates => {
+ *           this.setState({updates: updates})
+ *     });
+ *
  */
+
 export function setupUserUpdatesStream(user, groupId, callback) {
   const hash = userHash(user);
   const updateKeysRef = database.ref(`/groups/${groupId}/user/${hash}`);

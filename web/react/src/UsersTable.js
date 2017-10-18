@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-// import './UsersTable.css';
 import * as firebase from './Firebase';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
@@ -10,7 +9,6 @@ class UsersTable extends Component {
     super(props);
     this.state = { users: [], updates: [] };
     this.initUsers();
-    this.setupUserUpdatesStream();
   }
 
   initUsers = () => {
@@ -19,63 +17,6 @@ class UsersTable extends Component {
       this.setState({users: users});
     });
   }
-
-  /*
-  renderUsers = (users) => {
-    return (
-      <ol>
-        {users.map(user => (
-              <div className="user-row">
-                <li>{user.firstname} {user.lastname}</li>
-                <li>{user.birthday}</li>
-              </div>
-              ))}
-      </ol>
-    )
-  }
-
-  renderUpdates = (updates) => {
-    return (
-        <div>
-        {updates.map(update => (
-              <div className="update-row">
-                <span>{update.firstname}</span>
-                <span>{update.symptoms}</span>
-              </div>
-            ))}
-        </div>
-    )
-  }
-  */
-
-  addUpdate = () => {
-    const update = {
-      firstname: "Matt",
-      lastname: "Chinn",
-      birthday: "19960807",
-      symptoms: "sexy"
-    };
-    const update2 = {
-      firstname: "Brandon",
-      lastname: "Chinn",
-      birthday: "19950516",
-      symptoms: "sexy"
-    };
-    firebase.addUpdates([update, update2], 1);
-  }
-
- setupUserUpdatesStream = () => {
-    const user = {
-      firstname: "Matt",
-      lastname: "Chinn",
-      birthday: "19960807",
-    };
-
-    firebase.setupUserUpdatesStream(user, 1, updates => {
-      this.setState({updates: updates})
-    });
-  }
-
   render() {
     const users = this.state.users;
     const columns = [{
@@ -90,7 +31,10 @@ class UsersTable extends Component {
     }];
 
     return(
-        <ReactTable data={users} columns={columns}/>
+        <ReactTable data={users}
+            columns={columns}
+            noDataText="No users found"
+            defaultPageSize="10" />
     );
   }
 }
