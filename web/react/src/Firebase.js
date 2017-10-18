@@ -77,38 +77,45 @@ function extractUserFromHash(hash) {
 
 // public functions ===================================
 
-/* Returns Promise of List of users for given groupId */
-export function getAllUsers(groupId) {
+/*
+ * Call callback on every update, passing in the list of users
+ * Returns the callback function that can be passed in to off()
+ */
+export function setupAllUsersStream(groupId, callback) {
   const updatesRef = database.ref(`/groups/${groupId}/users`);
-  return updatesRef.once('value')
-    .then(snapshot => snapshot.val() )
-    .then(usersObj => Object.keys(usersObj).map(key => usersObj[key]))
-    .then(hashedUsers => hashedUsers.map(hashedUser =>
-          extractUserFromHash(hashedUser)))
+  return updatesRef.on('value', snapshot => {
+    let usersObj = snapshot.val();
+    usersObj = usersObj ? usersObj : {};
+    const hashedUsers = Object.keys(usersObj).map(key => usersObj[key]);
+    const users = hashedUsers.map(hashedUser => extractUserFromHash(hashedUser));
+    callback(users);
+  })
 }
 
 /*
- * Returns Promise of List of updates for that user
+ * Call callback on every new update, passing in the user's updates
+ * WARNING: Will not fire callback if an old update has been modified
  * Takes in a user object with fields: firstname, lastname, birthday
+ * Returns the callback function that can be passed in to off()
  */
-export function getUserUpdates(user, groupId) {
+export function setupUserUpdatesStream(user, groupId, callback) {
   const hash = userHash(user);
   const updateKeysRef = database.ref(`/groups/${groupId}/user/${hash}`);
-  const updates = [];
-  return updateKeysRef.once('value')
-    .then(snapshot => snapshot.val() )
-    .then(val => val ? val : [])
-    .then(updateKeysObj => Object.keys(updateKeysObj))
-    .then(updateKeys => {
-      const promises = [];
-      updateKeys.forEach(updateKey => {
-        const promise = getUpdate(updateKey, groupId)
-          .then(update => updates.push(update));
-        promises.push(promise);
-      });
-      return Promise.all(promises);
-    })
-    .then(() => updates );
+  return updateKeysRef.on('value', snapshot => {
+    const updateKeysObj = snapshot.val();
+    const updateKeys = updateKeysObj ? Object.keys(updateKeysObj) : [];
+    const updates = [];
+    const promises = [];
+
+    updateKeys.forEach(updateKey => {
+      const promise = getUpdate(updateKey, groupId)
+        .then(update => updates.push(update));
+      promises.push(promise);
+    });
+    // When all updates are added and promises are resolved, then call callback
+    Promise.all(promises)
+      .then(() => callback(updates));
+  });
 }
 
 /*
