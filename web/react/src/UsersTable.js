@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 // import './UsersTable.css';
 import * as firebase from './Firebase';
+import ReactTable from 'react-table';
+import 'react-table/react-table.css';
 
 class UsersTable extends Component {
 
@@ -18,6 +20,7 @@ class UsersTable extends Component {
     });
   }
 
+  /*
   renderUsers = (users) => {
     return (
       <ol>
@@ -43,6 +46,7 @@ class UsersTable extends Component {
         </div>
     )
   }
+  */
 
   addUpdate = () => {
     const update = {
@@ -74,17 +78,20 @@ class UsersTable extends Component {
 
   render() {
     const users = this.state.users;
-    const updates = this.state.updates;
+    const columns = [{
+      Header: 'First Name',
+      accessor: 'firstname'
+    }, {
+      Header: 'Last Name',
+      accessor: 'lastname'
+    }, {
+      Header: 'Birthday',
+      accessor: 'birthday'
+    }];
 
     return(
-        <div className="UsersTable">
-          {users.length ? this.renderUsers(users) :
-                          <span>No users found</span>}
-          <button onClick={this.addUpdate}>Add Update</button>
-
-          {this.renderUpdates(updates)}
-        </div>
-        );
+        <ReactTable data={users} columns={columns}/>
+    );
   }
 }
 

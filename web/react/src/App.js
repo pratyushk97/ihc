@@ -22,6 +22,7 @@ class App extends Component {
 
     return(
         <div className="App">
+          <h1>Users</h1>
           <UsersTable />
           <p className="App-intro">{result}
           </p>
