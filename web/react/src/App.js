@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 //import logo from './logo.svg';
 import './App.css';
-import {firebase} from './config';
-import UsersTable from './UsersTable';
+import {firebase} from './utility/firebase_config';
+import UsersTable from './components/UsersTable';
 
 class App extends Component {
   database = firebase.database();

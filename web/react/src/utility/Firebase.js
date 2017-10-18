@@ -1,5 +1,5 @@
 /* Wrapper class to handle all firebase calls for this application */
-import {firebase} from './config';
+import {firebase} from './firebase_config';
 
 const database = firebase.database();
 

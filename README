@@ -4,6 +4,7 @@ Overview Use Cases:
     - Member adds data for that patient as they go through clinic (?)
     - IHC Member sends new updates to Express API
     - IHC Member syncs and downloads updates from Express API
+    - SPANISH
 
   Web:
     - Member signs in to gain authentication

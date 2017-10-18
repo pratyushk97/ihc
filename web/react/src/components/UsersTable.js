@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import * as firebase from './Firebase';
+import * as firebase from '../utility/Firebase';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 
