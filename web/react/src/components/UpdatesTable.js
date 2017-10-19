@@ -7,7 +7,7 @@ class UsersTable extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { users: [] };
+    this.state = { users: [], updates: [] };
     this.initUsers();
   }
 

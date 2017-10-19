@@ -1,5 +1,6 @@
 /* Wrapper class to handle all firebase calls for this application */
 import {firebase} from './firebase_config';
+import {userHash, extractUserFromHash, extractUpdateToSave} from './UserUtil';
 
 const database = firebase.database();
 
@@ -16,13 +17,16 @@ function addUpdate(update, updatesTimestampRef, groupId) {
   // Get new update key for each update
   const updateKey = updatesTimestampRef.push(true).key;
 
+  const hash = userHash(update);
+  const userKey = getUserKey(hash, groupId);
+  update = extractUpdateToSave(update, userKey);
+
   // TODO: Error handling of this set call
   const updateRef = database.ref(`/groups/${groupId}/updates/${updateKey}`);
   updateRef.set(update)
     .catch(error => console.log('Error while calling Firebase set()', error));
 
-  const hash = userHash(update);
-  const userUpdatesRef = database.ref(`/groups/${groupId}/user/${hash}/${updateKey}`);
+  const userUpdatesRef = database.ref(`/groups/${groupId}/user/${userKey}/${updateKey}`);
   userUpdatesRef.set(true);
 }
 
@@ -51,28 +55,6 @@ function getUserKey(hash, groupId) {
   const usersRef = database.ref(`/groups/${groupId}/users`);
   return usersRef.orderByValue().equalTo(hash).once('value')
     .then(snapshot => snapshot.val())
-}
-
-/*
- * Takes in an object with birthday, firstname, lastname fields
- */
-function userHash(update) {
-  return update.birthday + update.firstname + "&" + update.lastname;
-}
-
-/**
- * Takes in string hash that matches form from above userHash function, converts back
- * to a user
- */
-function extractUserFromHash(hash) {
-  const bday = hash.slice(0, 8); // First 8 chars are bday format yyyymmdd
-  const firstname = hash.slice(8, hash.indexOf('&'));
-  const lastname = hash.slice(hash.indexOf('&') + 1);
-  return {
-    firstname: firstname,
-    lastname: lastname,
-    birthday: bday
-  };
 }
 
 // public functions ===================================
