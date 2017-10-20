@@ -3,40 +3,59 @@ import * as firebase from '../utility/Firebase';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 
-class UsersTable extends Component {
+class UpdatesTable extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { users: [], updates: [] };
-    this.initUsers();
+    this.state = { updates: [], loading: true };
+    this.initUpdates(props);
   }
 
-  initUsers = () => {
-    const groupId = '1';
-    firebase.setupAllUsersStream(groupId, users => {
-      this.setState({users: users});
+  initUpdates = (props) => {
+    const groupId = props.groupId;
+    firebase.setupUserUpdatesStream(props.user, props.groupId, updates => {
+      this.setState({updates: updates, loading: false});
     });
   }
+
   render() {
-    const users = this.state.users;
+    const updates = this.state.updates;
+    const loading = this.state.loading;
+
     const columns = [{
-      Header: 'First Name',
-      accessor: 'firstname'
+      Header: 'Date',
+      accessor: 'date'
     }, {
-      Header: 'Last Name',
-      accessor: 'lastname'
+      Header: 'Weight',
+      accessor: 'Weight'
     }, {
-      Header: 'Birthday',
-      accessor: 'birthday'
+      Header: 'Height',
+      accessor: 'height'
+    }, {
+      Header: 'Blood Pressure',
+      accessor: 'bloodpressure'
+    }, {
+      Header: 'Medications',
+      accessor: 'medications'
+    }, {
+      Header: 'Symptoms',
+      accessor: 'symptoms'
+    }, {
+      Header: 'Notes',
+      accessor: 'notes'
     }];
 
     return(
-        <ReactTable data={users}
-            columns={columns}
-            noDataText="No users found"
-            defaultPageSize="10" />
+        <div class="table">
+          <h3>Updates for {props.user.firstname}</h3>
+          <ReactTable data={updates}
+              columns={columns}
+              loading={loading}
+              noDataText="No Updates found"
+              defaultPageSize="10" />
+        </div>
     );
   }
 }
 
-export default UsersTable;
+export default UpdatesTable;

@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 //import logo from './logo.svg';
 import './App.css';
-import {firebase} from './utility/firebase_config';
+import * as firebase from './utility/Firebase';
 import UsersTable from './components/UsersTable';
 
 class App extends Component {
-  database = firebase.database();
-  increment = () => { this.setState({result: this.state.result+1})};
   state = { result: 0 };
   load = () => {
     /* Only mobile part calls Express API 
@@ -15,6 +13,22 @@ class App extends Component {
       .then(res => this.setState({result: "done"}), error => console.log(error));
     */
   }
+
+
+  addUser = () => { 
+    const update = {
+      firstname: 'brandon',
+      lastname: 'chinn',
+      birthday: '19960807',
+      date: '20170920',
+      bloodpressure: 123,
+      medications: 'tylenol',
+      symptoms: 'hot',
+      notes: 'sexy'
+    }
+
+    firebase.addUpdates([update], 1);
+  };
 
   render() {
     var result = this.state.result;
@@ -26,7 +40,7 @@ class App extends Component {
           <UsersTable />
           <p className="App-intro">{result}
           </p>
-          <button onClick={this.increment}/>
+          <button onClick={this.addUser}>Add</button>
         </div>
         );
     /*

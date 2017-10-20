@@ -7,18 +7,20 @@ class UsersTable extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { users: [] };
+    this.state = { users: [], loading: true };
     this.initUsers();
   }
 
   initUsers = () => {
     const groupId = '1';
     firebase.setupAllUsersStream(groupId, users => {
-      this.setState({users: users});
+      this.setState({users: users, loading: false});
     });
   }
   render() {
     const users = this.state.users;
+    const loading = this.state.loading;
+
     const columns = [{
       Header: 'First Name',
       accessor: 'firstname'
@@ -33,7 +35,8 @@ class UsersTable extends Component {
     return(
         <ReactTable data={users}
             columns={columns}
-            noDataText="No users found"
+            loading={loading}
+            noDataText="No updates found"
             defaultPageSize="10" />
     );
   }

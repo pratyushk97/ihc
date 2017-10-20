@@ -16,22 +16,20 @@ function getUpdate(updateKey, groupId) {
 function addUpdate(update, updatesTimestampRef, groupId) {
   // Get new update key for each update
   const updateKey = updatesTimestampRef.push(true).key;
-
-  const hash = userHash(update);
-  const userKey = getUserKey(hash, groupId);
-  update = extractUpdateToSave(update, userKey);
+  update = extractUpdateToSave(update, update.user);
 
   // TODO: Error handling of this set call
   const updateRef = database.ref(`/groups/${groupId}/updates/${updateKey}`);
   updateRef.set(update)
     .catch(error => console.log('Error while calling Firebase set()', error));
 
-  const userUpdatesRef = database.ref(`/groups/${groupId}/user/${userKey}/${updateKey}`);
+  const userUpdatesRef = database.ref(`/groups/${groupId}/user/${update.user}/${updateKey}`);
   userUpdatesRef.set(true);
 }
 
 // Returns a promise that resolves when all users are confirmed to be added to
 // the database
+// Also updates the updates objects to include the user: userKey key/value pair
 function addNewUsers(updates, groupId) {
   const usersRef = database.ref(`/groups/${groupId}/users`);
   const newUserPromises = [];
@@ -42,9 +40,12 @@ function addNewUsers(updates, groupId) {
       // User doesn't exist yet
       if(!userKey) {
         // Add them
-        const promise = usersRef.push().set(hash);
+        const pushRef = usersRef.push();
+        userKey = pushRef.key;
+        const promise = pushRef.set(hash);
         newUserPromises.push(promise);
       }
+      update.user = userKey;
     });
   });
   return Promise.all(newUserPromises);
@@ -55,6 +56,7 @@ function getUserKey(hash, groupId) {
   const usersRef = database.ref(`/groups/${groupId}/users`);
   return usersRef.orderByValue().equalTo(hash).once('value')
     .then(snapshot => snapshot.val())
+    .then(keyObj => keyObj ? Object.keys(keyObj)[0] : null);
 }
 
 // public functions ===================================
@@ -128,7 +130,7 @@ export function addUpdates(updates, groupId) {
   const timestampKey = newTimestampRef.key;
   const updatesTimestampRef = database.ref(`/groups/${groupId}/updates/timestamp/${timestampKey}`);
 
-  // Add any new users
+  // Add any new users, also adds the userKey to the update objects
   addNewUsers(updates, groupId)
     .then(() => true)
     .catch(() => {throw new Error('addNewUsers() failed');})
