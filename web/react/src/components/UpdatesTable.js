@@ -13,8 +13,10 @@ class UpdatesTable extends Component {
   }
 
   initUpdates = (props) => {
-    firebase.setupUserUpdatesStream(this.props.user, this.props.groupId, updates => {
-      this.setState({updates: updates, loading: false});
+    // TODO: If we call this setup function multiple times, is it leaving old
+    // callbacks active? Doesn't seem like it but maybe look into it
+    firebase.setupUserUpdatesStream(this.props.user, this.props.groupId,
+        updates => {this.setState({updates: updates, loading: false});
     });
   }
 
@@ -27,7 +29,7 @@ class UpdatesTable extends Component {
       accessor: 'date'
     }, {
       Header: 'Weight',
-      accessor: 'Weight'
+      accessor: 'weight'
     }, {
       Header: 'Height',
       accessor: 'height'

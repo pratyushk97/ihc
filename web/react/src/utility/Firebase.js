@@ -97,22 +97,31 @@ export function setupAllUsersStream(groupId, callback) {
 
 export function setupUserUpdatesStream(user, groupId, callback) {
   const hash = userHash(user);
-  const updateKeysRef = database.ref(`/groups/${groupId}/user/${hash}`);
-  return updateKeysRef.on('value', snapshot => {
-    const updateKeysObj = snapshot.val();
-    const updateKeys = updateKeysObj ? Object.keys(updateKeysObj) : [];
-    const updates = [];
-    const promises = [];
+  getUserKey(hash, groupId).then(key => {
+    const updateKeysRef = database.ref(`/groups/${groupId}/user/${key}`);
+    return updateKeysRef.on('value', snapshot => {
+      const updateKeysObj = snapshot.val();
+      const updateKeys = updateKeysObj ? Object.keys(updateKeysObj) : [];
+      const updates = [];
+      const promises = [];
 
-    updateKeys.forEach(updateKey => {
-      const promise = getUpdate(updateKey, groupId)
-        .then(update => updates.push(update));
-      promises.push(promise);
+      updateKeys.forEach(updateKey => {
+        const promise = getUpdate(updateKey, groupId)
+          .then(update => updates.push(update));
+        promises.push(promise);
+      });
+      // When all updates are added and promises are resolved, then call callback
+      Promise.all(promises)
+        .then(() => callback(updates));
     });
-    // When all updates are added and promises are resolved, then call callback
-    Promise.all(promises)
-      .then(() => callback(updates));
   });
+}
+
+// Probably needs tinkering, untested
+export function turnOffUserUpdatesStream(user, groupId, callback) {
+  const hash = userHash(user);
+  const updateKeysRef = database.ref(`/groups/${groupId}/user/${hash}`);
+  updateKeysRef.off(callback);
 }
 
 /*
