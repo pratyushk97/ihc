@@ -5,7 +5,6 @@ import * as firebase from './utility/Firebase';
 import UsersTable from './components/UsersTable';
 
 class App extends Component {
-  state = { result: 0 };
   load = () => {
     /* Only mobile part calls Express API 
     fetch(config.api_home + '/groups/1/all/1')
@@ -31,15 +30,11 @@ class App extends Component {
   };
 
   render() {
-    var result = this.state.result;
-    // this.load();
-
+    // TODO: If open up to other groupIds, remove hardcoded 1
     return(
         <div className="App">
           <h1>Users</h1>
           <UsersTable groupId={1}/>
-          <p className="App-intro">{result}
-          </p>
           <button onClick={this.addUser}>Add</button>
         </div>
         );
