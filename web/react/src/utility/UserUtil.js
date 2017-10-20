@@ -3,25 +3,26 @@
  */
 
 /*
- *  * Takes in an object with birthday, firstname, lastname fields
- *   */
+ *  Takes in an object with birthday, firstname, lastname fields
+ */
 export function userHash(obj) {
   return obj.birthday + obj.firstname + "&" + obj.lastname;
 }
 
 /**
- *  * Takes in string hash that matches form from above userHash function,
- *  converts back
- *   * to a user
- *    */
-export function extractUserFromHash(hash) {
+ * Takes in string hash that matches form from above userHash function,
+ * converts back to a user
+ */
+export function extractUser(obj) {
+  const hash = obj.data;
   const bday = hash.slice(0, 8); // First 8 chars are bday format yyyymmdd
   const firstname = hash.slice(8, hash.indexOf('&'));
   const lastname = hash.slice(hash.indexOf('&') + 1);
   return {
     firstname: firstname,
     lastname: lastname,
-    birthday: bday
+    birthday: bday,
+    lastupdated: obj.lastupdated
   };
 }
 

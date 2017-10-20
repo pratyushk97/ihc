@@ -1,6 +1,6 @@
 /* Wrapper class to handle all firebase calls for this application */
 import {firebase} from './firebase_config';
-import {userHash, extractUserFromHash, extractUpdateToSave} from './UserUtil';
+import {userHash, extractUser, extractUpdateToSave} from './UserUtil';
 
 const database = firebase.database();
 
@@ -42,8 +42,10 @@ function addNewUsers(updates, groupId) {
         // Add them
         const pushRef = usersRef.push();
         userKey = pushRef.key;
-        const promise = pushRef.set(hash);
+        const promise = pushRef.child('data').set(hash);
+        const promise2 = pushRef.child('lastupdated').set(new Date().getTime());
         newUserPromises.push(promise);
+        newUserPromises.push(promise2);
       }
       update.user = userKey;
     });
@@ -54,7 +56,7 @@ function addNewUsers(updates, groupId) {
 // Returns a promise of userKey
 function getUserKey(hash, groupId) {
   const usersRef = database.ref(`/groups/${groupId}/users`);
-  return usersRef.orderByValue().equalTo(hash).once('value')
+  return usersRef.orderByChild('data').equalTo(hash).once('value')
     .then(snapshot => snapshot.val())
     .then(keyObj => keyObj ? Object.keys(keyObj)[0] : null);
 }
@@ -74,10 +76,12 @@ function getUserKey(hash, groupId) {
 export function setupAllUsersStream(groupId, callback) {
   const updatesRef = database.ref(`/groups/${groupId}/users`);
   return updatesRef.on('value', snapshot => {
-    let usersObj = snapshot.val();
-    usersObj = usersObj ? usersObj : {};
-    const hashedUsers = Object.keys(usersObj).map(key => usersObj[key]);
-    const users = hashedUsers.map(hashedUser => extractUserFromHash(hashedUser));
+    let userKeysObj = snapshot.val();
+    userKeysObj = userKeysObj ? userKeysObj : {};
+
+    // usersObjs contains data: yyyymmdd&firstname&lastname and lastupdated
+    const usersObjs = Object.keys(userKeysObj).map(key => userKeysObj[key]);
+    const users = usersObjs.map(userObj=> extractUser(userObj));
     callback(users);
   })
 }

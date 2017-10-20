@@ -16,9 +16,9 @@ class App extends Component {
 
   addUser = () => { 
     const update = {
-      firstname: 'matt',
+      firstname: 'bran',
       lastname: 'chinn',
-      birthday: '19960807',
+      birthday: '19950516',
       date: '20170920',
       bloodpressure: 123,
       medications: 'tylenol',

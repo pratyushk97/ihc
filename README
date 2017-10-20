@@ -99,9 +99,9 @@ Talks directly to Firebase Database (without going through Express API)
 
 TODO
 - Password protected (authentication)
-- View all info on searchable table
-- Click on patient and view data
 - Form to manually add new information
+- In updates table, format the date
+- In users table, add column for "Last updated"
 
 ==========================================
 Server API;
