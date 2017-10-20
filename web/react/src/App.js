@@ -17,7 +17,7 @@ class App extends Component {
 
   addUser = () => { 
     const update = {
-      firstname: 'brandon',
+      firstname: 'matt',
       lastname: 'chinn',
       birthday: '19960807',
       date: '20170920',
@@ -37,7 +37,7 @@ class App extends Component {
     return(
         <div className="App">
           <h1>Users</h1>
-          <UsersTable />
+          <UsersTable groupId={1}/>
           <p className="App-intro">{result}
           </p>
           <button onClick={this.addUser}>Add</button>

@@ -5,8 +5,8 @@
 /*
  *  * Takes in an object with birthday, firstname, lastname fields
  *   */
-export function userHash(update) {
-  return update.birthday + update.firstname + "&" + update.lastname;
+export function userHash(obj) {
+  return obj.birthday + obj.firstname + "&" + obj.lastname;
 }
 
 /**

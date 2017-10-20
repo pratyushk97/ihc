@@ -5,6 +5,7 @@ import 'react-table/react-table.css';
 
 class UpdatesTable extends Component {
 
+  // Takes in a user object with firstname/lastname/birthday and groupId
   constructor(props) {
     super(props);
     this.state = { updates: [], loading: true };
@@ -12,8 +13,7 @@ class UpdatesTable extends Component {
   }
 
   initUpdates = (props) => {
-    const groupId = props.groupId;
-    firebase.setupUserUpdatesStream(props.user, props.groupId, updates => {
+    firebase.setupUserUpdatesStream(this.props.user, this.props.groupId, updates => {
       this.setState({updates: updates, loading: false});
     });
   }
@@ -46,8 +46,7 @@ class UpdatesTable extends Component {
     }];
 
     return(
-        <div class="table">
-          <h3>Updates for {props.user.firstname}</h3>
+        <div className="table">
           <ReactTable data={updates}
               columns={columns}
               loading={loading}
