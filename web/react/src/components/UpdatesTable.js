@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import * as firebase from '../utility/Firebase';
+import * as converter from '../utility/Converter';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 
@@ -26,7 +27,8 @@ class UpdatesTable extends Component {
 
     const columns = [{
       Header: 'Date',
-      accessor: 'date'
+      accessor: row => converter.expandDate(row.date),
+      id: 'date'
     }, {
       Header: 'Weight',
       accessor: 'weight'

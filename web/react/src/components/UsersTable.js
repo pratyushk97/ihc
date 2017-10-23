@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import * as firebase from '../utility/Firebase';
+import * as converter from '../utility/Converter';
 import ReactTable from 'react-table';
 import ReactModal from 'react-modal';
 import UpdatesTable from './UpdatesTable';
@@ -40,7 +41,8 @@ class UsersTable extends Component {
       accessor: 'lastname'
     }, {
       Header: 'Birthday',
-      accessor: 'birthday'
+      accessor: row => converter.expandDate(row.birthday),
+      id: 'birthday'
     }, {
       Header: 'Last Updated',
       accessor: row => new Date(row.lastupdated).toISOString().substring(0, 10),
