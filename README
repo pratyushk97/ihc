@@ -47,6 +47,7 @@ ihc-database.firebaseio.com/
           Unique user info (Is it guaranteed unique?)
           {
             data: string (birthday (yyyymmdd) + && + firstname + &&  + lastname)
+            lastupdated: number
           }
       user/
         :userKey/
@@ -99,9 +100,12 @@ Talks directly to Firebase Database (without going through Express API)
 
 TODO
 - Password protected (authentication)
-- Form to manually add new information
+- Form to manually add new information (?)
 - In updates table, format the date
-- In users table, add column for "Last updated"
+- In users table
+  add column for "Last updated"
+  format the birthday
+
 
 ==========================================
 Server API;
