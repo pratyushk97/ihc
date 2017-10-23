@@ -32,6 +32,7 @@ class UsersTable extends Component {
     const users = this.state.users;
     const loading = this.state.loading;
     const modalUserInfo = this.state.modalUserInfo;
+    console.log(users);
 
     const columns = [{
       Header: 'First Name',
@@ -45,7 +46,7 @@ class UsersTable extends Component {
       id: 'birthday'
     }, {
       Header: 'Last Updated',
-      accessor: row => new Date(row.lastupdated).toISOString().substring(0, 10),
+      accessor: row => row.lastupdated ? new Date(row.lastupdated).toISOString().substring(0, 10) : "",
       id: 'lastupdated'
     }];
 
