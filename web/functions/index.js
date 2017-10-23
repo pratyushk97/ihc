@@ -25,7 +25,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-var cors = require('cors')({ origin: true });
+//const cors = require('cors')({origin: true});
 
 /*
  * API:
@@ -47,13 +47,18 @@ var cors = require('cors')({ origin: true });
 var app = (0, _express2.default)();
 admin.initializeApp(functions.config().firebase);
 var db = admin.database();
+
+/* Web frontend will talk directly to firebase and not through here. Only mobile
+ * will request through Express and CORS isn't required for mobile
+ *
 var corsOptions = {
-  origin: 'http://localhost:3000',
-  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+    origin: 'http://localhost:3000',
+    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
 
-
-  // app.use(cors(corsOptions));
-};app.use(cors);
+// app.use(cors(corsOptions));
+app.use(cors);
+*/
 
 app.use(_bodyParser2.default.urlencoded({ extended: false }));
 app.use(_bodyParser2.default.json());
@@ -61,9 +66,14 @@ app.use(_bodyParser2.default.json());
 app.get("/groups/:group/all/:timestamp", function (req, res) {
   var groupId = req.params.group;
   var timestampParam = parseInt(req.params.timestamp);
+  var excludeTimestamps = req.query.exclude;
+  console.log('exclude', excludeTimestamps);
+
   // :timestamp should be a number, but wasn't
   if (Number.isNaN(timestampParam)) {
-    res.status(400).send({ error: 'Invalid "' + req.params.timestamp + ' passed as timestamp' });
+    res.status(400).send({
+      error: 'Invalid "' + req.params.timestamp + ' passed as timestamp'
+    });
   }
 
   // Grab list of timestamps from groups/:groupid/timestamps
@@ -72,26 +82,34 @@ app.get("/groups/:group/all/:timestamp", function (req, res) {
   timestampRef.once("value").then(function (snapshot) {
     return snapshot.val();
   })
-  // Map to actual timestamps instead of firebase generated keys
-  .then(function (keysObj) {
-    return Object.keys(keysObj).map(function (key) {
-      return keysObj[key];
-    });
-  })
   // Only care about timestamps after the passed in time
-  .then(function (timestamps) {
-    return timestamps.filter(function (curr) {
-      return curr > timestampParam;
+  // and filter out keys that are labeled as exclude
+  .then(function (val) {
+    console.log('before filter', val);return val;
+  }).then(function (keysObj) {
+    return Object.keys(keysObj).filter(function (key) {
+      var currTimestamp = keysObj[key];
+      if (currTimestamp < timestampParam) return false;
+
+      if (Array.isArray(excludeTimestamps)) {
+        console.log("1", currTimestamp);
+        return excludeTimestamps.indexOf(currTimestamp.toString()) === -1;
+      } else {
+        console.log("2", currTimestamp);
+        return excludeTimestamps !== currTimestamp;
+      }
     });
   }, function (error) {
     return [];
+  }).then(function (val) {
+    console.log('after filter', val);return val;
   })
-  // Build list of promises to resolve
-  .then(function (timestamps) {
+  // Build list of promises of updateKey to resolve
+  .then(function (timestampKeys) {
     var promises = [];
-    var updateRef = db.ref("/groups/" + groupId + "/updates");
-    timestamps.forEach(function (elem) {
-      var currRef = updateRef.child("/" + elem);
+    var updateRef = db.ref("/groups/" + groupId + "/updates/timestamp");
+    timestampKeys.forEach(function (timestampKey) {
+      var currRef = updateRef.child("/" + timestampKey);
       promises.push(currRef.once("value"));
     });
     return Promise.all(promises);
@@ -99,14 +117,28 @@ app.get("/groups/:group/all/:timestamp", function (req, res) {
     return snapshots.map(function (snapshot) {
       return snapshot.val();
     });
-  }).then(function (updatesList) {
-    var list = [];
-    updatesList.forEach(function (updates) {
-      return list = list.concat(updates);
+  }).then(function (val) {
+    console.log('lists of updateKeyObjs', val);return val;
+  })
+  // Have updateKeyObjs, extract updateKey and combine into one list
+  .then(function (objs) {
+    return objs.reduce(function (total, curr) {
+      return total.concat(Object.keys(curr));
+    }, []);
+  }).then(function (val) {
+    console.log('combined updateKeys lists', val);return val;
+  })
+  // For each updateKey, get the actual update promise
+  .then(function (updateKeys) {
+    var promises = [];
+    var updateRef = db.ref("/groups/" + groupId + "/updates/");
+    updateKeys.forEach(function (updateKey) {
+      var currRef = updateRef.child("/" + updateKey);
+      promises.push(currRef.once("value"));
     });
-    return list;
-  }).then(function (list) {
-    res.status(200).send({ updates: list });
+    return Promise.all(promises);
+  }).then(function (updates) {
+    res.status(200).send({ updates: updates });
   }, function (error) {
     res.status(500).send({ error: 'Error: ' + error });
   });

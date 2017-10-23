@@ -43,9 +43,13 @@ app.use(bodyParser.json());
 app.get("/groups/:group/all/:timestamp", (req, res) => {
   const groupId = req.params.group;
   const timestampParam = parseInt(req.params.timestamp);
+  const excludeTimestamps = req.query.exclude;
+
   // :timestamp should be a number, but wasn't
   if(Number.isNaN(timestampParam)) {
-    res.status(400).send({error: 'Invalid "' + req.params.timestamp + ' passed as timestamp'});
+    res.status(400).send({
+      error: 'Invalid "' + req.params.timestamp + ' passed as timestamp'
+    });
   }
 
   // Grab list of timestamps from groups/:groupid/timestamps
@@ -53,29 +57,49 @@ app.get("/groups/:group/all/:timestamp", (req, res) => {
 
   timestampRef.once("value")
     .then(snapshot => snapshot.val())
-    // Map to actual timestamps instead of firebase generated keys
-    .then(keysObj => Object.keys(keysObj).map(key => keysObj[key]))
     // Only care about timestamps after the passed in time
-    .then(timestamps => timestamps.filter(curr => curr > timestampParam),
+    // and filter out keys that are labeled as exclude
+    .then(keysObj => Object.keys(keysObj)
+        .filter(key => {
+          const currTimestamp = keysObj[key];
+          if(currTimestamp < timestampParam)
+            return false;
+
+          if(Array.isArray(excludeTimestamps)) {
+            return excludeTimestamps.indexOf(currTimestamp.toString()) === -1;
+          }
+          else {
+            return excludeTimestamps !== currTimestamp;
+          }
+        }),
         error => [])
-    // Build list of promises to resolve
-    .then(timestamps => {
+    // Build list of promises of updateKey to resolve
+    .then(timestampKeys => {
         let promises = [];
-        const updateRef = db.ref(`/groups/${groupId}/updates`);
-        timestamps.forEach(elem => {
-          const currRef = updateRef.child(`/${elem}`);
+        const updateRef = db.ref(`/groups/${groupId}/updates/timestamp`);
+        timestampKeys.forEach(timestampKey=> {
+          const currRef = updateRef.child(`/${timestampKey}`);
           promises.push(currRef.once("value"));
         });
         return Promise.all(promises);
     })
     .then(snapshots => snapshots.map(snapshot => snapshot.val()))
-    .then(updatesList => {
-      let list = [];
-      updatesList.forEach(updates => list = list.concat(updates) );
-      return list;
+    // Have updateKeyObjs, extract updateKey and combine into one list
+    .then(objs => 
+      objs.reduce( (total, curr) => total.concat(Object.keys(curr)), [] )
+    )
+    // For each updateKey, get the actual update promise
+    .then(updateKeys => {
+        let promises = [];
+        const updateRef = db.ref(`/groups/${groupId}/updates/`);
+        updateKeys.forEach(updateKey => {
+          const currRef = updateRef.child(`/${updateKey}`);
+          promises.push(currRef.once("value"));
+        });
+        return Promise.all(promises);
     })
-    .then(list => {
-        res.status(200).send({updates: list});
+    .then(updates => {
+        res.status(200).send({updates: updates});
     }, error => { res.status(500).send({error: 'Error: ' + error}); });
 });
 
