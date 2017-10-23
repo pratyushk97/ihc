@@ -3,7 +3,7 @@
     "rules": "database.rules.json"
   },
   "hosting": {
-    "public": "react/public",
+    "public": "react/build",
     "rewrites": [ {
       "source": "/api", "function": "api"
     }],

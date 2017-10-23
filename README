@@ -100,6 +100,8 @@ Talks directly to Firebase Database (without going through Express API)
 
 TODO
 - Password protected (authentication)
+  - And change rules for firebase database
+  - Hide API key and other security stuff
 - Form to manually add new information (?)
 - In updates table, format the date
 - In users table
