@@ -25,6 +25,9 @@ function addUpdate(update, updatesTimestampRef, groupId) {
 
   const userUpdatesRef = database.ref(`/groups/${groupId}/user/${update.user}/${updateKey}`);
   userUpdatesRef.set(true);
+
+  const usersRef = database.ref(`/groups/${groupId}/users/${update.user}`);
+  usersRef.child('lastupdated').set(new Date().getTime());
 }
 
 // Returns a promise that resolves when all users are confirmed to be added to

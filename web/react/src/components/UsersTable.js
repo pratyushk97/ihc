@@ -41,6 +41,10 @@ class UsersTable extends Component {
     }, {
       Header: 'Birthday',
       accessor: 'birthday'
+    }, {
+      Header: 'Last Updated',
+      accessor: row => new Date(row.lastupdated).toISOString().substring(0, 10),
+      id: 'lastupdated'
     }];
 
     return(
