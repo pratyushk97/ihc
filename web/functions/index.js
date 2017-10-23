@@ -21,6 +21,10 @@ var _bodyParser = require("body-parser");
 
 var _bodyParser2 = _interopRequireDefault(_bodyParser);
 
+var _Firebase = require("../react/src/utility/Firebase");
+
+var firebase = _interopRequireWildcard(_Firebase);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
@@ -67,7 +71,6 @@ app.get("/groups/:group/all/:timestamp", function (req, res) {
   var groupId = req.params.group;
   var timestampParam = parseInt(req.params.timestamp);
   var excludeTimestamps = req.query.exclude;
-  console.log('exclude', excludeTimestamps);
 
   // :timestamp should be a number, but wasn't
   if (Number.isNaN(timestampParam)) {
@@ -84,25 +87,19 @@ app.get("/groups/:group/all/:timestamp", function (req, res) {
   })
   // Only care about timestamps after the passed in time
   // and filter out keys that are labeled as exclude
-  .then(function (val) {
-    console.log('before filter', val);return val;
-  }).then(function (keysObj) {
+  .then(function (keysObj) {
     return Object.keys(keysObj).filter(function (key) {
       var currTimestamp = keysObj[key];
       if (currTimestamp < timestampParam) return false;
 
       if (Array.isArray(excludeTimestamps)) {
-        console.log("1", currTimestamp);
         return excludeTimestamps.indexOf(currTimestamp.toString()) === -1;
       } else {
-        console.log("2", currTimestamp);
         return excludeTimestamps !== currTimestamp;
       }
     });
   }, function (error) {
     return [];
-  }).then(function (val) {
-    console.log('after filter', val);return val;
   })
   // Build list of promises of updateKey to resolve
   .then(function (timestampKeys) {
@@ -117,16 +114,12 @@ app.get("/groups/:group/all/:timestamp", function (req, res) {
     return snapshots.map(function (snapshot) {
       return snapshot.val();
     });
-  }).then(function (val) {
-    console.log('lists of updateKeyObjs', val);return val;
   })
   // Have updateKeyObjs, extract updateKey and combine into one list
   .then(function (objs) {
     return objs.reduce(function (total, curr) {
       return total.concat(Object.keys(curr));
     }, []);
-  }).then(function (val) {
-    console.log('combined updateKeys lists', val);return val;
   })
   // For each updateKey, get the actual update promise
   .then(function (updateKeys) {
@@ -155,12 +148,11 @@ app.patch("/groups/:group/all", function (req, res) {
   var timestampRef = db.ref("/groups/" + groupId + "/timestamps/");
   timestampRef.push(timestamp);
 
-  // If they send updates at exact same timestamp, may overwrite the first
-  // updates... for now, very unlikely so don't bother
-  var updateRef = db.ref("/groups/" + groupId + "/updates/" + timestamp);
-  updateRef.set(userUpdates);
-  res.send(true);
-  // Send false if error?
+  firebase.addUpdates(userUpdates, groupId, timestamp).then(function () {
+    return res.send(true);
+  }, function (error) {
+    return res.status(500).send({ error: error });
+  });
 });
 
 /*

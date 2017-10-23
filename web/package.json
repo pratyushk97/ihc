@@ -16,7 +16,7 @@
     "fn": "babel 'functionsES6' --out-dir 'functions' --presets=es2015 --copy-files --ignore 'node_modules'",
     "prefn": "rimraf functions",
     "postfn": "cd functions && npm install",
-    "deploy": "npm run fn && firebase deploy",
+    "deploy": "npm run fn && cd react && npm run build && cd .. && firebase deploy",
     "serve": "firebase serve --only hosting,functions",
     "devserver": "npm run fn && npm run serve",
     "test": "echo \"Error: no test specified\" && exit 1"

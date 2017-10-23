@@ -2,6 +2,7 @@ import * as functions from "firebase-functions"
 import express from "express"
 import * as admin from "firebase-admin"
 import bodyParser from "body-parser"
+import * as firebase from "../react/src/utility/Firebase"
 //const cors = require('cors')({origin: true});
 
 /*
@@ -114,12 +115,8 @@ app.patch("/groups/:group/all", (req, res) => {
   const timestampRef = db.ref(`/groups/${groupId}/timestamps/`);
   timestampRef.push(timestamp);
 
-  // If they send updates at exact same timestamp, may overwrite the first
-  // updates... for now, very unlikely so don't bother
-  const updateRef = db.ref(`/groups/${groupId}/updates/${timestamp}`);
-  updateRef.set(userUpdates);
-  res.send(true);
-  // Send false if error?
+  firebase.addUpdates(userUpdates, groupId, timestamp)
+    .then( () => res.send(true), (error) => res.status(500).send({error: error}))
 });
 
 /*

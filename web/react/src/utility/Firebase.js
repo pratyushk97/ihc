@@ -133,12 +133,15 @@ export function turnOffUserUpdatesStream(user, groupId, callback) {
 
 /*
  * Adds updates for list of users
+ * If timestamp is not defined, will create one
  */
-export function addUpdates(updates, groupId) {
+export function addUpdates(updates, groupId, timestamp) {
   if(!Array.isArray(updates)) {
     throw new Error('addUpdates(updates): Non-array type passed in as updates');
   }
-  const timestamp = new Date().getTime();
+  if(!timestamp)
+    timestamp = new Date().getTime();
+
   const groupRef = database.ref(`/groups/${groupId}/`);
 
   // Add timestamp and extract its generated key
@@ -147,7 +150,7 @@ export function addUpdates(updates, groupId) {
   const updatesTimestampRef = database.ref(`/groups/${groupId}/updates/timestamp/${timestampKey}`);
 
   // Add any new users, also adds the userKey to the update objects
-  addNewUsers(updates, groupId)
+  return addNewUsers(updates, groupId)
     .then(() => true)
     .catch(() => {throw new Error('addNewUsers() failed');})
     .then(() => {
