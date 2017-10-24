@@ -11,28 +11,21 @@ var _UserUtil = require('./UserUtil');
 
 // Gets a new update key and then adds the update
 function addUpdate(update, updatesTimestampRef, groupId, database) {
-  console.log('addupdate', update);
   // Get new update key for each update
   var updateKey = updatesTimestampRef.push(true).key;
   update = (0, _UserUtil.extractUpdateToSave)(update, update.user);
 
-  console.log('1');
-  console.log('database', database);
   // TODO: Error handling of this set call
   var updateRef = database.ref('/groups/' + groupId + '/updates/' + updateKey);
-  console.log('updateref', updateRef);
   updateRef.set(update).catch(function (error) {
     return console.log('Error while calling Firebase set()', error);
   });
 
-  console.log('2');
   var userUpdatesRef = database.ref('/groups/' + groupId + '/user/' + update.user + '/' + updateKey);
   userUpdatesRef.set(true);
 
-  console.log('3');
   var usersRef = database.ref('/groups/' + groupId + '/users/' + update.user);
   usersRef.child('lastupdated').set(new Date().getTime());
-  console.log('4');
 }
 
 // Returns a promise that resolves when all users are confirmed to be added to
@@ -40,7 +33,6 @@ function addUpdate(update, updatesTimestampRef, groupId, database) {
 // Also updates the updates objects to include the user:userKey key/value pair
 /* Wrapper class to handle all firebase calls for the MOBILE side */
 function addNewUsers(updates, groupId, database) {
-  console.log('addnewusers');
   var usersRef = database.ref('/groups/' + groupId + '/users');
   var promises = [];
   var newUpdates = [];
@@ -61,7 +53,6 @@ function addNewUsers(updates, groupId, database) {
       var newUpdate = Object.assign({}, update);
       newUpdate.user = userKey;
       newUpdates.push(newUpdate);
-      console.log('newupdates', newUpdates);
     });
     promises.push(getUserKeyPromise);
   });
@@ -72,7 +63,6 @@ function addNewUsers(updates, groupId, database) {
 
 // Returns a promise of userKey
 function getUserKey(hash, groupId, database) {
-  console.log('getuserkey', hash);
   var usersRef = database.ref('/groups/' + groupId + '/users');
   return usersRef.orderByChild('data').equalTo(hash).once('value').then(function (snapshot) {
     return snapshot.val();
@@ -101,9 +91,7 @@ function addUpdates(updates, groupId, database, timestamp) {
   var updatesTimestampRef = database.ref('/groups/' + groupId + '/updates/timestamp/' + timestampKey);
 
   // Add any new users, returns updates with the userKey
-  return addNewUsers(updates, groupId, database).then(function (val) {
-    console.log('after addnewusers', val);return val;
-  }).catch(function () {
+  return addNewUsers(updates, groupId, database).catch(function () {
     throw new Error('addNewUsers() failed');
   }).then(function (updates) {
     updates.forEach(function (update) {
