@@ -11,6 +11,8 @@ Overview Use Cases:
     - Member views table of all patients
     - Member can select patient and view all their checkins
 
+Misc TODO:
+Refactor react/src/utility/ and web/utility/
 ==========================================
 Database design:
 ihc-database.firebaseio.com/
@@ -103,11 +105,6 @@ TODO
   - And change rules for firebase database
   - Hide API key and other security stuff
 - Form to manually add new information (?)
-- In updates table, format the date
-- In users table
-  add column for "Last updated"
-  format the birthday
-
 
 ==========================================
 Server API;

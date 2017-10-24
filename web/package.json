@@ -17,7 +17,7 @@
     "prefn": "rimraf functions",
     "postfn": "cd functions && npm install",
     "deploy": "npm run fn && cd react && npm run build && cd .. && firebase deploy",
-    "serve": "firebase serve --only hosting,functions",
+    "serve": "firebase serve --only functions",
     "devserver": "npm run fn && npm run serve",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

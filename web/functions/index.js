@@ -21,7 +21,7 @@ var _bodyParser = require("body-parser");
 
 var _bodyParser2 = _interopRequireDefault(_bodyParser);
 
-var _Firebase = require("../react/src/utility/Firebase");
+var _Firebase = require("./utility/Firebase");
 
 var firebase = _interopRequireWildcard(_Firebase);
 
@@ -145,10 +145,7 @@ app.patch("/groups/:group/all", function (req, res) {
   // List of user updates
   var userUpdates = req.body.user_updates;
 
-  var timestampRef = db.ref("/groups/" + groupId + "/timestamps/");
-  timestampRef.push(timestamp);
-
-  firebase.addUpdates(userUpdates, groupId, timestamp).then(function () {
+  firebase.addUpdates(userUpdates, groupId, db, timestamp).then(function () {
     return res.send(true);
   }, function (error) {
     return res.status(500).send({ error: error });

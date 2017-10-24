@@ -2,7 +2,7 @@ import * as functions from "firebase-functions"
 import express from "express"
 import * as admin from "firebase-admin"
 import bodyParser from "body-parser"
-import * as firebase from "../react/src/utility/Firebase"
+import * as firebase from "./utility/Firebase"
 //const cors = require('cors')({origin: true});
 
 /*
@@ -112,10 +112,7 @@ app.patch("/groups/:group/all", (req, res) => {
   // List of user updates
   const userUpdates = req.body.user_updates;
 
-  const timestampRef = db.ref(`/groups/${groupId}/timestamps/`);
-  timestampRef.push(timestamp);
-
-  firebase.addUpdates(userUpdates, groupId, timestamp)
+  firebase.addUpdates(userUpdates, groupId, db, timestamp)
     .then( () => res.send(true), (error) => res.status(500).send({error: error}))
 });
 
