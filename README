@@ -13,6 +13,8 @@ Overview Use Cases:
 
 Misc TODO:
 Refactor react/src/utility/ and web/utility/
+Tests
+
 ==========================================
 Database design:
 ihc-database.firebaseio.com/
