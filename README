@@ -1,4 +1,11 @@
 Overview Use Cases:
+SOAP and Triage new forms every visit
+Medication and growth chart forms reused
+
+How do private servers work?
+  - Integrate with it
+  - Patients check in and then data shared within private network
+
   Mobile:
     - Patients sign in on tablets
     - Member adds data for that patient as they go through clinic (?)
@@ -12,7 +19,7 @@ Overview Use Cases:
     - Member can select patient and view all their checkins
 
 Misc TODO:
-Refactor react/src/utility/ and web/utility/
+Refactor react/src/utility/ and web/utility/ to reference same file
 Tests
 
 ==========================================
@@ -69,7 +76,7 @@ TODO
   - May not care about this because private app  
 - "Upload Updates" button
 - "Sync" button
-  -Locally store updates with AsyncStorage
+  - Locally store updates with AsyncStorage
 - Disable "Sync" if updates exist (?)
 - Include form for signing in and going through clinic
 - Request permission to store info
@@ -149,3 +156,6 @@ Pipeline:
 `git push`
 `npm run build` from IHC/web/react
 `firebase deploy` from IHC/web
+
+`npm start` from IHC/mobile/ihc
+Start emulator/plug in physical device
