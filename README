@@ -2,28 +2,101 @@ Overview Use Cases:
 SOAP and Triage new forms every visit
 Medication and growth chart forms reused
 
-How do private servers work?
-  - Integrate with it
-  - Patients check in and then data shared within private network
+Very high level plan:
+Central laptop runs local server over a local network (through router)
+- Laptop can be held at relay station to monitor?
+- Tablets call API endpoints for local server
+  - Store all data received locally in case of router problems
+    - Figure out how to update new data efficiently!!!
+    - Have a sync button that syncs up all tablets
 
   Mobile:
     - Patients sign in on tablets
-    - Member adds data for that patient as they go through clinic (?)
-    - IHC Member sends new updates to Express API
-    - IHC Member syncs and downloads updates from Express API
-    - SPANISH
+    - Stations add data for that patient as they go through clinic
+    - Must include Spanish
 
-  Web:
-    - Member signs in to gain authentication
-    - Member views table of all patients
-    - Member can select patient and view all their checkins
+  Laptop:
+    - Primary need: run local server
+    - Other use cases:
+      - View table of all patients and go through data
 
-Misc TODO:
-Refactor react/src/utility/ and web/utility/ to reference same file
-Tests
+Local server API:
+TODO
+
+==========================================
+Mobile:
+React Native
+
+TODO
+- "Sync" button
+  - Locally store updates with AsyncStorage
+  - Disable "Sync" if updates exist
+
+PLAN OUT LOCAL STORAGE PLAN
+
+-- Begin N/A --
+"Upload Updates" PATCH /groups/:group/all -> Express API:
+Send list of local updates
+Locally save list of timestamps when "Upload Updates" was clicked
+Body:
+  {
+    timestamp: When "Upload Updates" button is clicked,
+    user_updates: list of user updates
+        [{ <Match user object in database design section> }]
+  }
+
+"Sync" GET /groups/:group/all/:timestamp?exclude=[timestamps] -> Express API:
+Pass in 
+  :timestamp of when last synced
+  [timestamps] 
+    - Timestamps when "Upload Updates" was clicked to exclude from results to
+      avoid duplicates
+
+Retrieve list of all updates since given timestamp (last synced)
+  - Go through list and locally save updates
+  - Clear local list of "Upload Updates" timestamps
+
+-- End N/A --
+
+
+==========================================
+Laptop:
+React and Express local server
+
+TODO
+- Form to manually add new information (?)
+
+-- Begin N/A --
+Routes:
+  ESSENTIAL:
+  GET   /groups/:group/all/:timestamp   => Return information for updates after
+                                           last_synced_timestamp
+    1. Grab list of send_update_timestamps from groups/:groupid
+    2. For each send_update_timestamp that is later than the last_synced_timestamp
+      ("Last synced" is property of the tablet)
+      - Ignore timestamps passed in to exclude param 
+      - Get list of updates from groups/:timestamp and consolidate into one list
+
+  PATCH /groups/:group/all   => Update information for all people
+    - Body contains 
+    {
+      timestamp: send_update_timestamps,
+      user_updates: list of user updates
+    }
+
+  NONESSENTIAL:
+  GET   /groups/:group/:id   => Return information for that person
+  POST  /groups/:group      => Add information for new person
+  PATCH /groups/:group/:id   => Update information for person
+
+-- End N/A --
 
 ==========================================
 Database design:
+
+REDO WITH LOCAL MONGODB
+
+-- Begin N/A --
 ihc-database.firebaseio.com/
   groups/
     :groupid/
@@ -67,83 +140,7 @@ ihc-database.firebaseio.com/
             updateKey: true
           }]
 
-==========================================
-Mobile:
-React Native
-
-TODO
-- Register device with backend, passing some local id (?)
-  - May not care about this because private app  
-- "Upload Updates" button
-- "Sync" button
-  - Locally store updates with AsyncStorage
-- Disable "Sync" if updates exist (?)
-- Include form for signing in and going through clinic
-- Request permission to store info
-  - Legal disclaimer type thing necessary?
-
-"Upload Updates" PATCH /groups/:group/all -> Express API:
-Send list of local updates
-Locally save list of timestamps when "Upload Updates" was clicked
-Body:
-  {
-    timestamp: When "Upload Updates" button is clicked,
-    user_updates: list of user updates
-        [{ <Match user object in database design section> }]
-  }
-
-"Sync" GET /groups/:group/all/:timestamp?exclude=[timestamps] -> Express API:
-Pass in 
-  :timestamp of when last synced
-  [timestamps] 
-    - Timestamps when "Upload Updates" was clicked to exclude from results to
-      avoid duplicates
-
-Retrieve list of all updates since given timestamp (last synced)
-  - Go through list and locally save updates
-  - Clear local list of "Upload Updates" timestamps
-
-==========================================
-Web Frontend:
-React, Firebase Hosting
-Talks directly to Firebase Database (without going through Express API)
-  Allows us to ignore CORS complications
-
-TODO
-- Password protected (authentication)
-  - And change rules for firebase database
-  - Hide API key and other security stuff
-- Form to manually add new information (?)
-
-==========================================
-Server API;
-Express, Firebase Cloud Functions
-
-TODO
-- Fix to align with new database design
-- Nonessential API endpoints (?)
-
-Routes:
-  ESSENTIAL:
-  GET   /groups/:group/all/:timestamp   => Return information for updates after
-                                           last_synced_timestamp
-    1. Grab list of send_update_timestamps from groups/:groupid
-    2. For each send_update_timestamp that is later than the last_synced_timestamp
-      ("Last synced" is property of the tablet)
-      - Ignore timestamps passed in to exclude param 
-      - Get list of updates from groups/:timestamp and consolidate into one list
-
-  PATCH /groups/:group/all   => Update information for all people
-    - Body contains 
-    {
-      timestamp: send_update_timestamps,
-      user_updates: list of user updates
-    }
-
-  NONESSENTIAL:
-  GET   /groups/:group/:id   => Return information for that person
-  POST  /groups/:group      => Add information for new person
-  PATCH /groups/:group/:id   => Update information for person
+-- End N/A --
 
 ==========================================
 Commandline:
