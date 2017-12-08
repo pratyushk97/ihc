@@ -18,11 +18,94 @@ Central laptop runs local server over a local network (through router)
   Laptop:
     - Primary need: run local server
     - Other use cases:
+      (Low priority)
       - View table of all patients and go through data
 
 Local server API:
-TODO
+GET /signin/newpatient/unique (SHOULD BE HANDLED LOCALLY)
+  - Ensure name and DOB is unique
+POST /signin/newpatient
+  - Create record for that patient if didn't already exist
+POST /signin/:id
+  - Ensure name and DOB exists, patient's records exist
+  - Add patient to queue (including checkin time)
+  - Return true if all goes well
+POST /signout/:id
+GET /patients?checkin=true/false
+  - Return all patients, or just patients checked in 
+  - Patient info should include:
+    name, DOB, checkin time, which stations completed, misc notes
+    - maybe include all forms? could then save locally, except for history
+PATCH /patients/:id/soap/:date
+  - Update patient's soap form
+PATCH /patients/:id/triage/:date
+  - Update patient's triage form
+  - Also update the growthchart info
+PATCH /patients/:id/growthchart/:date
+GET /patients/:id/growthchart
+PATCH /patients/:id/medications
+  - Add update to patient's overall records
+    Update: {
+      type: 'N'/'R'/'C'/'D',
+      drugname: "tylenol",
+      date: _,
+      dose: "30mg",
+      frequency: "1/day",
+      duration: "1 month"
+    }
 
+
+Low Priority:
+GET /patients/:id/history
+  - Return list of triages and soaps dates, not the actual forms
+GET /patients/:id/triage/:date
+GET /patients/:id/soap/:date
+
+
+GET /patients/:id?date=yyyymmdd (May not be necessary if saving data locally
+from /patients?checkin=val call)
+  - If date included, return Triage, SOAP, Med list, Growth Chart, History (just
+    ids, not actual records)
+  - If not included, return Med List, Growth Chart, History (just ids, not
+    actual records)
+
+
+
+Misc:
+Portal for inputting records, probably into Excel and import csv
+
+
+==========================================
+Handling LOCAL STORAGE as backup:
+If router goes out...
+Biggest need is viewing old data, they could use paper forms temporarily
+Needs to be in sync with history and current changes from a previous station
+
+Beginning:
+Start with all history of previous patients
+Signin:
+- If new patient, then add to local storage and send to server for others to
+grab
+- All stuff on patient select page don't store locally
+  - including patients that are checked in, which stations they are done with,
+    special notes/requests (notes section will not be persistent)
+
+Triage/SOAP:
+(Only let one person modify at a time)
+- Call server, if it doesn't have a form yet then open blank form
+  - If form does exist, render
+- On clicking "View Growth Chart", Add weight and height to local storage and
+  read local storage to get rest of growth chart data
+- If "Save", add to local storage and then send to server
+
+Medication List:
+Display past from local storage
+On "Save", add to local storage and send to server
+
+At end of session:
+Tablets click "Sync and end session" or something
+- Grab all patients with updates later than timestamp
+- Replace patients with new data
 ==========================================
 Mobile:
 React Native
