@@ -1,3 +1,27 @@
+Directory organization:
+IHC/
+  - mobile
+    - Ihc
+      - React native code
+  - web
+
+==========================================
+Command line:
+Run react native:
+1. Start emulator
+  (Setup instructions here: https://facebook.github.io/react-native/docs/getting-started.html
+    "Building Projects With Native Code" -> Target OS: Android)
+
+  i.e. In my ~/.bashrc I made this function, so I could just call run_emulator 
+  function run_emulator {
+      /Users/Matt/Library/Android/sdk/tools/emulator -avd Nexus_7_API_23
+  }
+  export -f run_emulator
+
+2. react-native run-android
+
+
+==========================================
 Overview Use Cases:
 SOAP and Triage new forms every visit
 Medication and growth chart forms reused
@@ -225,17 +249,3 @@ ihc-database.firebaseio.com/
 
 -- End N/A --
 
-==========================================
-Commandline:
-
-Local:
-`npm run build` from IHC/web/public/client to build React
-`npm run devserver` from IHC/web to run firebase cloud functions
-
-Pipeline:
-`git push`
-`npm run build` from IHC/web/react
-`firebase deploy` from IHC/web
-
-`npm start` from IHC/mobile/ihc
-Start emulator/plug in physical device
