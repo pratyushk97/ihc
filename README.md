@@ -7,8 +7,8 @@ Shortcuts:
 * [Overview](#overview-use-cases)
 * [API](#local-server-api)
 * [Local storage plan](#handling-local-storage)
-* [Mobile](#mobile-plan)
-* [Laptop](#laptop-plan)
+* [Mobile](#mobile-plantodo)
+* [Laptop](#laptop-plantodo)
 * [Database](#database-design)
 
 ### Directory organization
