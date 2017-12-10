@@ -15,6 +15,7 @@ Run react native:
   i.e. In my ~/.bashrc I made this function, so I could just call run_emulator 
   function run_emulator {
       /Users/Matt/Library/Android/sdk/tools/emulator -avd Nexus_7_API_23
+      # Wherever your emulator is stored
   }
   export -f run_emulator
 
