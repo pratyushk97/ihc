@@ -28,6 +28,8 @@ public class MainApplication extends NavigationApplication {
 }
 
 /*
+ // Don't need any of this because of new react-native-navigation setup, but
+ // will leave just in case
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;

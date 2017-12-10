@@ -1,75 +1,137 @@
-Directory organization:
+# IHC EMR Overview
+
+Shortcuts:
+
+* [Command line](#command-line)
+* [How to](#how-to)
+* [Overview](#overview)
+* [API](#local-server-api)
+* [Local storage plan](#handling-local-storage)
+* [Mobile](#mobile)
+* [Laptop](#laptop)
+* [Database](#database-design)
+
+### Directory organization
+
 IHC/
   - mobile
     - Ihc
       - React native code
   - web
 
+Moqup:
+https://app.moqups.com/mattchinn/ix0mjskH6z/edit/page/aa9df7b72
+
 ==========================================
-Command line:
-Run react native:
+
+### Command line
+
+##### Run react native:
 1. Start emulator
+ 
   (Setup instructions here: https://facebook.github.io/react-native/docs/getting-started.html
     "Building Projects With Native Code" -> Target OS: Android)
 
   i.e. In my ~/.bashrc I made this function, so I could just call run_emulator 
+  ```
   function run_emulator {
       /Users/Matt/Library/Android/sdk/tools/emulator -avd Nexus_7_API_23
       # Wherever your emulator is stored
   }
   export -f run_emulator
+  ```
 
-2. react-native run-android
-
+2. Run ```react-native run-android```
 
 ==========================================
-Overview Use Cases:
-SOAP and Triage new forms every visit
+
+### How to...
+##### 1. make a new screen
+
+  *  First of all, distinguish component vs screen:
+      - Component is a reusable piece of small UI, aka a common table
+      - Screen is akin to single webpage, and the moqup pages almost all represent a
+        new screen. In terms of React, a Screen is a component, but the smaller
+        reusable components will go in IHC/mobile/Ihc/components instead.
+        
+  i. Create the screen component in IHC/mobile/Ihc/screens
+  
+  ii. Register the component in screens/index.js
+  
+  iii. Can navigate to a screen by doing
+  ```javascript
+    this.props.navigator.push({
+      screen: 'Ihc.<Component name>'
+    });
+  ```
+  
+Other options are available: https://wix.github.io/react-native-navigation/#/screen-api
+
+==========================================
+
+### Overview Use Cases:
+Patient gets a new SOAP and Triage form every visit
+
 Medication and growth chart forms reused
 
-Very high level plan:
-Central laptop runs local server over a local network (through router)
-- Laptop can be held at relay station to monitor?
+##### High level plan:
+
+Mobile:
+
+- Patients sign in on tablets
+- Stations add data for that patient as they go through clinic
 - Tablets call API endpoints for local server
   - Store all data received locally in case of router problems
     - Figure out how to update new data efficiently!!!
     - Have a sync button that syncs up all tablets
+- Must include Spanish
 
-  Mobile:
-    - Patients sign in on tablets
-    - Stations add data for that patient as they go through clinic
-    - Must include Spanish
+Laptop:
 
-  Laptop:
-    - Primary need: run local server
-    - Other use cases:
-      (Low priority)
-      - View table of all patients and go through data
+- Primary need: 
+        - Run local server over a local network through router
+        - Store all data in local mongo database
+- Other use cases:
+  (Low priority)
+  - View table of all patients and go through data
+- Portal for inputting records, probably into Excel and import csv
+  
+==========================================
 
-Local server API:
+### Local server API:
+
 GET /signin/newpatient/unique (SHOULD BE HANDLED LOCALLY)
   - Ensure name and DOB is unique
+  
 POST /signin/newpatient
   - Create record for that patient if didn't already exist
+  
 POST /signin/:id
   - Ensure name and DOB exists, patient's records exist
   - Add patient to queue (including checkin time)
   - Return true if all goes well
+  
 POST /signout/:id
+
 GET /patients?checkin=true/false
   - Return all patients, or just patients checked in 
-  - Patient info should include:
-    name, DOB, checkin time, which stations completed, misc notes
+  - Patient info should include: name, DOB, checkin time, which stations completed, miscellaneous notes
     - maybe include all forms? could then save locally, except for history
+    
 PATCH /patients/:id/soap/:date
   - Update patient's soap form
+  
 PATCH /patients/:id/triage/:date
   - Update patient's triage form
   - Also update the growthchart info
+  
 PATCH /patients/:id/growthchart/:date
+
 GET /patients/:id/growthchart
+
 PATCH /patients/:id/medications
   - Add update to patient's overall records
+  - ```
     Update: {
       type: 'N'/'R'/'C'/'D',
       drugname: "tylenol",
@@ -78,36 +140,40 @@ PATCH /patients/:id/medications
       frequency: "1/day",
       duration: "1 month"
     }
+    ```
 
 
-Low Priority:
+##### Low Priority:
+
 GET /patients/:id/history
   - Return list of triages and soaps dates, not the actual forms
+  
 GET /patients/:id/triage/:date
+
 GET /patients/:id/soap/:date
 
 
-GET /patients/:id?date=yyyymmdd (May not be necessary if saving data locally
-from /patients?checkin=val call)
+GET /patients/:id?date=yyyymmdd 
+
+  - May not be necessary if saving data locally from /patients?checkin=val call
   - If date included, return Triage, SOAP, Med list, Growth Chart, History (just
     ids, not actual records)
   - If not included, return Med List, Growth Chart, History (just ids, not
     actual records)
 
-
-
-Misc:
-Portal for inputting records, probably into Excel and import csv
-
-
 ==========================================
-Handling LOCAL STORAGE as backup:
+
+### Handling LOCAL STORAGE as backup:
 If router goes out...
-Biggest need is viewing old data, they could use paper forms temporarily
-Needs to be in sync with history and current changes from a previous station
+
+- Biggest need is viewing old data, they could use paper forms temporarily.
+- Needs to be in sync with history and current changes from a previous station
+
+##### Lifecycle:
 
 Beginning:
-Start with all history of previous patients
+- Start with all history of previous patients
+
 Signin:
 - If new patient, then add to local storage and send to server for others to
 grab
@@ -124,18 +190,19 @@ Triage/SOAP:
 - If "Save", add to local storage and then send to server
 
 Medication List:
-Display past from local storage
-On "Save", add to local storage and send to server
+- Display past from local storage
+- On "Save", add to local storage and send to server
 
 At end of session:
-Tablets click "Sync and end session" or something
-- Grab all patients with updates later than timestamp
-- Replace patients with new data
+- Tablets click "Sync and end session" or something
+  - Grab all patients with updates later than timestamp
+  - Replace patients with new data
+ 
 ==========================================
-Mobile:
+
+### Mobile Plan/TODO:
 React Native
 
-TODO
 - "Sync" button
   - Locally store updates with AsyncStorage
   - Disable "Sync" if updates exist
@@ -143,6 +210,7 @@ TODO
 PLAN OUT LOCAL STORAGE PLAN
 
 -- Begin N/A --
+
 "Upload Updates" PATCH /groups/:group/all -> Express API:
 Send list of local updates
 Locally save list of timestamps when "Upload Updates" was clicked
@@ -168,15 +236,18 @@ Retrieve list of all updates since given timestamp (last synced)
 
 
 ==========================================
-Laptop:
+
+### Laptop Plan/TODO:
 React and Express local server
 
 TODO
 - Form to manually add new information (?)
 
 -- Begin N/A --
+
 Routes:
   ESSENTIAL:
+  
   GET   /groups/:group/all/:timestamp   => Return information for updates after
                                            last_synced_timestamp
     1. Grab list of send_update_timestamps from groups/:groupid
@@ -200,7 +271,8 @@ Routes:
 -- End N/A --
 
 ==========================================
-Database design:
+
+### Database design:
 
 REDO WITH LOCAL MONGODB
 
@@ -249,4 +321,6 @@ ihc-database.firebaseio.com/
           }]
 
 -- End N/A --
+
+
 
