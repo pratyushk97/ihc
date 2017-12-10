@@ -4,11 +4,11 @@ Shortcuts:
 
 * [Command line](#command-line)
 * [How to](#how-to)
-* [Overview](#overview)
+* [Overview](#overview-use-cases)
 * [API](#local-server-api)
 * [Local storage plan](#handling-local-storage)
-* [Mobile](#mobile)
-* [Laptop](#laptop)
+* [Mobile](#mobile-plan)
+* [Laptop](#laptop-plan)
 * [Database](#database-design)
 
 ### Directory organization
