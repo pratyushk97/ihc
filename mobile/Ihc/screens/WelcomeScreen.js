@@ -39,7 +39,7 @@ export default class WelcomeScreen extends Component<{}> {
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>
-          Welcome to React Native!
+          Welcome to clinic!
         </Text>
         <Button onPress={this.goToSignin}
           title="Signin"

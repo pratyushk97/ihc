@@ -6,32 +6,77 @@
 
 import React, { Component } from 'react';
 import {
-  Platform,
   StyleSheet,
   Button,
   Text,
   View
 } from 'react-native';
+//import t from 'tcomb-form-native';
+var t = require('tcomb-form-native');
+var Form = t.form.Form;
 
 export default class SigninScreen extends Component<{}> {
   constructor(props) {
     super(props);
   }
 
+  Signin = t.struct({
+    firstName: t.String,
+    motherName: t.maybe(t.String),
+    fatherName: t.maybe(t.String),
+    newPatient: t.Boolean
+  });
+
+  options = {
+    fields: {
+      motherName: {label: "Mother's last name"},
+      fatherName: {label: "Father's last name"},
+      newPatient: {label: "New patient?"}
+    }
+  }
+
+  goToWelcome = () => {
+    this.props.navigator.push({
+      screen: 'Ihc.WelcomeScreen',
+      title: 'Welcome'
+    });
+  }
+
+  //TODO
+  submit = () => {
+  }
+
   render() {
-    // TODO create signin form
     return (
       <View style={styles.container}>
-        <Text style={styles.Signin}>
+        <Text style={styles.title}>
           Signin
         </Text>
-        <Text style={styles.instructions}>
-          To get started, edit SigninScreen.js
-        </Text>
-        <Text style={styles.instructions}>
-          {instructions}
-        </Text>
+
+        <View>
+          <Form ref="form" type={this.Signin}
+            options={this.options}
+          />
+          <Button onPress={this.submit}
+            title="Submit" />
+          <Button onPress={this.goToWelcome}
+            title="Back to home" />
+        </View>
       </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F5FCFF',
+  },
+  title: {
+    fontSize: 20,
+    textAlign: 'center',
+    margin: 10,
+  },
+});
