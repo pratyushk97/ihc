@@ -296,16 +296,16 @@ Routes:
         * info/
           * Patient object
         * medications/
-                * : drugName/
-                        * [DrugUpdate object, DrugUpdate object, ...]
+          * : drugName/
+            * [DrugUpdate object, DrugUpdate object, ...]
         * soaps/
-                * : date/
-                        * Soap object
+          * : date/
+            * Soap object
         * triages/
-                * : date/
-                        * Triage object
+          * : date/
+            * Triage object
         * growthchart/
-                * GrowthChart object 
+            * GrowthChart object 
         
 
 *  checkedin/
