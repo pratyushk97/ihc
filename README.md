@@ -328,7 +328,7 @@ Patient
 DrugUpdate
 ```
 {
-        date: date,
+    date: date,
     dose: string,
     frequency: string,
     duration: string,
@@ -339,7 +339,7 @@ DrugUpdate
 Soap
 ```
 {
-        subjective: string,
+    subjective: string,
     objective: string,
     assessment: string,
     plan: string,
@@ -351,7 +351,7 @@ Soap
 Triage
 ```
 {
-        has_insurance: boolean,
+    has_insurance: boolean,
     location: string (Girasoles/TJP),
     arrival_time: date/string,
     time_in: date/string,
@@ -375,7 +375,7 @@ Triage
     miscarriages: string,
     ---END IF---
     history: string (past medical history),
-        ---IF LABS DONE---
+    ---IF LABS DONE---
     bgl: string,
     a1c: string,
     fasting: boolean,
@@ -404,7 +404,7 @@ Triage
 GrowthChart
 ```
 {
-        mother_height: double,
+    mother_height: double,
     father_height: double,
     rows: [GrowthChartRow object, ...]
 }
@@ -424,7 +424,7 @@ GrowthChartRow
 Status
 ```
 {
-        patient: patientId (string?),
+    patient: patientId (string?),
     birthday: date,
     checkin_time: date8time,
     triage_completed: boolean,
