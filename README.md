@@ -18,6 +18,11 @@ IHC/
     - Ihc
       - React native code
   - web
+    - React code to view admin panel
+    - Current directory is very messy, filter out unnecessary stuff
+    - Low priority
+  - server
+    - ExpressJS local server
 
 Moqup:
 https://app.moqups.com/mattchinn/ix0mjskH6z/edit/page/aa9df7b72
@@ -41,7 +46,16 @@ https://app.moqups.com/mattchinn/ix0mjskH6z/edit/page/aa9df7b72
   export -f run_emulator
   ```
 
-2. Run ```react-native run-android```
+2. Run ```react-native run-android``` inside IHC/mobile/Ihc directory
+
+##### Run Express server:
+
+*Inside IHC/server directory
+
+1. After making changes, must build the code (transpile from ES6 to JS). Run
+   ```npm run make```
+2. Run server by calling ```npm run server```
+3. To both make and run server, call ```npm start```
 
 ==========================================
 

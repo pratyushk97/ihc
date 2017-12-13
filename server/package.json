@@ -1,0 +1,26 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "local server implementation for EMR",
+  "main": "build/init.js",
+  "dependencies": {
+    "babel-preset-es2015": "^6.24.1",
+    "express": "^4.16.2",
+    "rimraf": "^2.6.2"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.0"
+  },
+  "scripts": {
+    "fn": "babel 'src' --out-dir 'build' --presets=es2015 --copy-files",
+    "prefn": "rimraf build/node_modules",
+    "postfn": "cd build && npm install",
+    "make": "npm run fn",
+    "server": "node build/init.js",
+    "start": "npm run make && npm run server",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
