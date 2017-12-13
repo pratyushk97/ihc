@@ -125,7 +125,8 @@ POST /signin/:id
   - Add patient to queue (including checkin time)
   - Return true if all goes well
   
-POST /signout/:id
+PATCH /signin/:id
+  - Update patient's status, such as if they completed a station
 
 GET /patients?checkin=true/false
   - Return all patients, or just patients checked in 
@@ -139,7 +140,7 @@ PATCH /patients/:id/triage/:date
   - Update patient's triage form
   - Also update the growthchart info
   
-PATCH /patients/:id/growthchart/:date
+PATCH /patients/:id/growthchart/
 
 GET /patients/:id/growthchart
 
@@ -288,53 +289,147 @@ Routes:
 
 ### Database design:
 
-REDO WITH LOCAL MONGODB
+/
+        
+* patients/
+    * :firstname&fathers&mothers&birthday/
+        * info/
+          * Patient object
+        * medications/
+                * : drugName/
+                        * [DrugUpdate object, DrugUpdate object, ...]
+        * soaps/
+                * : date/
+                        * Soap object
+        * triages/
+                * : date/
+                        * Triage object
+        * growthchart/
+                * GrowthChart object 
+        
 
--- Begin N/A --
-ihc-database.firebaseio.com/
-  groups/
-    :groupid/
-      timestamps/
-        List of auto generated timestamp keys pointing to the times "Upload
-        updates" was clicked
-        [{
-          timestampKey: number 
-        }, ...]
-      updates/
-        timestamp/
-          :timestampKey/
-            List of auto generated update keys, don't care about value
-            [{
-              updateKey: true
-            }, ...]
-      updates/
-        :updateKey/
-          Object of update, contains all data entered for a patient
-          {
-            user: string (userKey)
-            date: number (yyyymmdd)
-            weight: string
-            height: string
-            blood pressure: string
-            current meds: string
-            symptoms: string
-            notes: string
-          }
-      users/
-        :userKey/
-          Unique user info (Is it guaranteed unique?)
-          {
-            data: string (birthday (yyyymmdd) + && + firstname + &&  + lastname)
-            lastupdated: number
-          }
-      user/
-        :userKey/
-          List of updateKeys for that user
-          [{
-            updateKey: true
-          }]
+*  checkedin/
+    * [Status object, ...]
 
--- End N/A --
+Classes:
 
+Patient
+```
+{
+  firstname: string,
+  father name: string,
+  mother name: string,
+  birthday: date,
+  sex: int?,
+  phone: string
+}
+```
 
+DrugUpdate
+```
+{
+        date: date,
+    dose: string,
+    frequency: string,
+    duration: string,
+    notes: string
+}
+```
 
+Soap
+```
+{
+        subjective: string,
+    objective: string,
+    assessment: string,
+    plan: string,
+    wishlist: string,
+    provider: string (Provider's name)
+}
+```
+
+Triage
+```
+{
+        has_insurance: boolean,
+    location: string (Girasoles/TJP),
+    arrival_time: date/string,
+    time_in: date/string,
+    time_out: date/string,
+    triager: string (Triager's name),
+    status: int? (EMT/Student/Nurse/Other),
+    status_clarification: string (If Other),
+    weight: double,
+    height: double,
+    temp: double,
+    rr: double,
+    o2: double,
+    bp: string,
+    hr: double,
+    ---IF FEMALE---
+    LMP: string,
+    Regular: boolean,
+    pregnancies: string,
+    live_births: string,
+    abortions: string,
+    miscarriages: string,
+    ---END IF---
+    history: string (past medical history),
+        ---IF LABS DONE---
+    bgl: string,
+    a1c: string,
+    fasting: boolean,
+    pregnancy_test: boolean,
+    --END IF---
+    allergies: string,
+    meications: string,
+    surgeries: string,
+    immunizations: string,
+    chief_complaint: string,
+    ---IF URINE TEST---
+    leukocytes: string,
+    blood: string,
+    nitrites: string,
+    specific_gravity: string,
+    urobilirubin: string,
+    ketone: string,
+    protein: string,
+    bilirubin: string,
+    ph: string,
+    glucose: string,
+    pharmacy_section: string (For pharmacy use only section)
+}
+```
+
+GrowthChart
+```
+{
+        mother_height: double,
+    father_height: double,
+    rows: [GrowthChartRow object, ...]
+}
+```
+
+GrowthChartRow
+```
+{
+    date: date,
+    age: int,
+    weight: double,
+    height: double,
+    bmi: double (Or don't store if we can calculate)
+}
+```
+
+Status
+```
+{
+        patient: patientId (string?),
+    birthday: date,
+    checkin_time: date8time,
+    triage_completed: boolean,
+    doctor_completed: boolean,
+    pharmacy_completed: boolean,
+    notes: string
+}
+```

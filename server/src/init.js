@@ -25,8 +25,6 @@ const port = process.argv[2] || 8000;
  */
 const app = express();
 
-app.get('/', (req, res) => res.send('Hello World!'))
-
 /* Web frontend will talk directly to firebase and not through here. Only mobile
  * will request through Express and CORS isn't required for mobile
  *
