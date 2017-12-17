@@ -57,6 +57,8 @@ https://app.moqups.com/mattchinn/ix0mjskH6z/edit/page/aa9df7b72
 2. Run server by calling ```npm run server```
 3. To both make and run server, call ```npm start```
 
+4. Start database server with ```npm run db```
+
 ==========================================
 
 ### How to...

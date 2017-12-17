@@ -40,10 +40,6 @@ var port = process.argv[2] || 8000;
  */
 var app = (0, _express2.default)();
 
-app.get('/', function (req, res) {
-  return res.send('Hello World!');
-});
-
 /* Web frontend will talk directly to firebase and not through here. Only mobile
  * will request through Express and CORS isn't required for mobile
  *
@@ -55,6 +51,36 @@ var corsOptions = {
 // app.use(cors(corsOptions));
 app.use(cors);
 */
+
+/* ES6 
+var MongoClient = require('mongodb').MongoClient,
+  co = require('co'),
+  assert = require('assert');
+
+co(function*() {
+  // Connection URL
+  var url = 'mongodb://localhost:27017/data';
+  // Use connect method to connect to the Server
+  var db = yield MongoClient.connect(url);
+  // Close the connection
+  db.close();
+}).catch(function(err) {
+  console.log(err.stack);
+});
+*/
+var MongoClient = require('mongodb').MongoClient,
+    assert = require('assert');
+
+// Connection URL
+var url = 'mongodb://localhost:27017/data';
+
+// Use connect method to connect to the server
+MongoClient.connect(url, function (err, db) {
+  assert.equal(null, err);
+  console.log("Connected successfully to server");
+
+  db.close();
+});
 
 app.use(_bodyParser2.default.urlencoded({ extended: false }));
 app.use(_bodyParser2.default.json());
@@ -177,5 +203,5 @@ function extractData(body) {
 }
 
 app.listen(port, function () {
-  return console.log('Example app listening on port 3000!');
+  return console.log('Example app listening on port ' + port);
 });
