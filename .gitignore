@@ -3,3 +3,4 @@ node_modules/
 *.swo
 *.log
 mongo_docs/
+server/build/

@@ -15,8 +15,8 @@
   },
   "scripts": {
     "build": "babel 'src' --out-dir 'build' --presets=es2015 --copy-files --ignore 'node_modules'",
-    "prebuild": "rimraf build/node_modules",
-    "postbuild": "cd build && npm install",
+    "disableprebuild": "rimraf build/node_modules",
+    "disablepostbuild": "cd build && npm install",
     "make": "npm run build",
     "server": "node build/init.js",
     "start": "npm run make && npm run server",

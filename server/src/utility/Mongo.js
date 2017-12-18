@@ -1,4 +1,49 @@
-/* Wrapper class to handle all firebase calls for the MOBILE side */
+/* Wrapper class to handle all mongo db calls */
+var MongoClient = require('mongodb').MongoClient
+  , assert = require('assert');
+
+// Connection URL
+var url = 'mongodb://localhost:27017/data';
+
+export function databaseCheck() {
+  // Use connect method to connect to the database server
+  console.log("Database connection check...");
+  MongoClient.connect(url, function(err, db) {
+    if(err) {
+      console.log("Database connection failed...");
+      return;
+    }
+    console.log("Database connection successful!");
+    db.close();
+  });
+}
+
+export function createPatient(patientInfo) {
+  connect((db) => {
+    db.collection('patients').insertOne({info: patientInfo}, function(err, r) {
+      assert.equal(null, err);
+      assert.equal(1, r.insertedCount);
+    });
+  });
+}
+
+// Helper functions ===================================
+// Pass function to operate with db object
+function connect(fn) {
+  MongoClient.connect(url, function(err, db) {
+    if(err) {
+      console.log("Database connection failed...");
+      throw new Error('db connection failed');
+    }
+    fn(db);
+    db.close();
+  });
+}
+
+
+
+// OLD FIREBASE STUFF BELOW, delete when not necessary
+
 import {userHash, extractUser, extractUpdateToSave} from './UserUtil';
 
 // Helper functions ===================================

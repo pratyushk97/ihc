@@ -1,33 +1,19 @@
+/*
+ * API follows from the README
+ */
+
 import express from "express"
 import bodyParser from "body-parser"
-import * as firebase from "./utility/Firebase"
+import * as db from "./utility/Mongo"
 //const cors = require('cors')({origin: true});
 
 // Can customize port on CLI by doing `node build/init.js PORT_NUMBER`
 const port = process.argv[2] || 8000;
 
-/*
- * API:
- * ESSENTIAL:
- * GET   /groups/:group/all/:timestamp   => Return information for updates after
- *                                          last_synced_timestamp
- * PATCH /groups/:group/all              => Update information
- *                                          for all people
- * - Body should contain list of people objects
- *
- * NONESSENTIAL:
- * GET   /:group/:id   => Return information
- *                        for that person
- * POST  /:group       => Add information for
- *                        new person
- * PATCH /:group/:id   => Update information
- *                        for person
- */
 const app = express();
 
-/* Web frontend will talk directly to firebase and not through here. Only mobile
- * will request through Express and CORS isn't required for mobile
- *
+/*
+ * Just in case CORS is necesssary
 var corsOptions = {
     origin: 'http://localhost:3000',
     optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
@@ -37,24 +23,26 @@ var corsOptions = {
 app.use(cors);
 */
 
-var MongoClient = require('mongodb').MongoClient
-  , assert = require('assert');
+db.databaseCheck();
 
-// Connection URL
-var url = 'mongodb://localhost:27017/data';
+// TODO move express routes to separate file
 
-// Use connect method to connect to the server
-MongoClient.connect(url, function(err, db) {
-  assert.equal(null, err);
-  console.log("Connected successfully to server");
-
-  db.close();
-});
-
-
+// Allow JSON
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+app.post("/signin/newpatient", (req,res) => {
+  db.createPatient(req.query.patientInfo);
+});
+
+app.get("*", (req,res) => {
+  res.send("Error: No path matched");
+});
+
+app.listen(port, () => console.log('Server listening on port ' + port))
+
+// OLD FIREBASE STUFF BELOW, delete when not necessary
+/*
 app.get("/groups/:group/all/:timestamp", (req, res) => {
   const groupId = req.params.group;
   const timestampParam = parseInt(req.params.timestamp);
@@ -129,6 +117,7 @@ app.patch("/groups/:group/all", (req, res) => {
   firebase.addUpdates(userUpdates, groupId, db, timestamp)
     .then( () => res.send(true), (error) => res.status(500).send({error: error}))
 });
+*/
 
 /*
 app.post("/groups/:group/newpatient", (req, res) => {
@@ -142,6 +131,7 @@ app.post("/groups/:group/newpatient", (req, res) => {
 });
 */
 
+/*
 app.get("/groups/:group/:id", (req, res) => {
   res.send("patch /groups/:group/:id")
 });
@@ -154,13 +144,7 @@ app.patch("/groups/:group/:id", (req, res) => {
   res.send("patch /groups/:group/:id")
 });
 
-app.get("*", (req,res) => {
-  res.send("Error: No path matched");
-});
-
 function extractData(body) {
   return {firstname: body.firstname, lastname: body.lastname, birthday: body.birthday};
 }
-
-
-app.listen(port, () => console.log('Example app listening on port ' + port))
+*/
