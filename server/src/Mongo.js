@@ -18,25 +18,26 @@ export function databaseCheck() {
   });
 }
 
-export function createPatient(patientInfo) {
+export function createPatient(patientInfo, callback, errFn) {
   connect((db) => {
-    db.collection('patients').insertOne({info: patientInfo}, function(err, r) {
-      assert.equal(null, err);
-      assert.equal(1, r.insertedCount);
-    });
-  });
+    db.collection('patients').insertOne({patientInfo: patientInfo},
+        function(err, r) {
+          assert.equal(null, err);
+          assert.equal(1, r.insertedCount);
+        });
+  }, callback, errFn);
 }
 
 // Helper functions ===================================
 // Pass function to operate with db object
-function connect(fn) {
-  MongoClient.connect(url, function(err, db) {
+function connect(fn, callback, errFn) {
+  MongoClient.connect(url, function(err, client) {
     if(err) {
-      console.log("Database connection failed...");
-      throw new Error('db connection failed');
+      errFn();
     }
-    fn(db);
-    db.close();
+    fn(client.db('ihc'));
+    client.close();
+    callback();
   });
 }
 
@@ -44,7 +45,7 @@ function connect(fn) {
 
 // OLD FIREBASE STUFF BELOW, delete when not necessary
 
-import {userHash, extractUser, extractUpdateToSave} from './UserUtil';
+import {userHash, extractUser, extractUpdateToSave} from './utility/UserUtil';
 
 // Helper functions ===================================
 

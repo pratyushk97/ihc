@@ -4,7 +4,7 @@
 
 import express from "express"
 import bodyParser from "body-parser"
-import * as db from "./utility/Mongo"
+import * as db from "./Mongo"
 //const cors = require('cors')({origin: true});
 
 // Can customize port on CLI by doing `node build/init.js PORT_NUMBER`
@@ -32,7 +32,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.post("/signin/newpatient", (req,res) => {
-  db.createPatient(req.query.patientInfo);
+  // try req.body
+  db.createPatient(req.body.patientInfo, () => res.send(true),
+      (error) => res.status(500).send({error: error}));
 });
 
 app.get("*", (req,res) => {
