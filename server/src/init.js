@@ -10,8 +10,6 @@ import * as db from "./Mongo"
 // Can customize port on CLI by doing `node build/init.js PORT_NUMBER`
 const port = process.argv[2] || 8000;
 
-const app = express();
-
 /*
  * Just in case CORS is necesssary
 var corsOptions = {
@@ -25,21 +23,13 @@ app.use(cors);
 
 db.databaseCheck();
 
-// TODO move express routes to separate file
-
+const app = express();
 // Allow JSON
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.post("/signin/newpatient", (req,res) => {
-  // try req.body
-  db.createPatient(req.body.patientInfo, () => res.send(true),
-      (error) => res.status(500).send({error: error}));
-});
-
-app.get("*", (req,res) => {
-  res.send("Error: No path matched");
-});
+// import routes from ./routes.js
+require('./routes')(app);
 
 app.listen(port, () => console.log('Server listening on port ' + port))
 

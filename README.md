@@ -83,9 +83,9 @@ https://app.moqups.com/mattchinn/ix0mjskH6z/edit/page/aa9df7b72
   
 Other options are available: https://wix.github.io/react-native-navigation/#/screen-api
 
-##### 2. make a new Express Server route
+##### 2. make a new Express API route
 
-  1. Go to server/src/init and add the route (To be changed)
+  1. Go to server/src/routes.js and add the route
 
   2. Add any database interactions to src/Mongo.js
 
