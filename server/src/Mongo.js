@@ -18,6 +18,13 @@ export function databaseCheck() {
   });
 }
 
+export function patientExists(patientInfo, callback, errFn) {
+  connect((db) => {
+    // TODO
+    db.collection('patients').find();
+  }, callback, errFn);
+}
+
 export function createPatient(patientInfo, callback, errFn) {
   connect((db) => {
     db.collection('patients').insertOne({patientInfo: patientInfo},
@@ -33,11 +40,11 @@ export function createPatient(patientInfo, callback, errFn) {
 function connect(fn, callback, errFn) {
   MongoClient.connect(url, function(err, client) {
     if(err) {
-      errFn();
+      errFn(err);
     }
-    fn(client.db('ihc'));
+    const result = fn(client.db('ihc'));
     client.close();
-    callback();
+    callback(result);
   });
 }
 

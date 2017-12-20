@@ -1,4 +1,4 @@
-module.exports = function(app) {
+module.exports = function(app, db) {
   app.post("/signin/newpatient", (req,res) => {
     // try req.body
     db.createPatient(req.body.patientInfo, () => res.send(true),

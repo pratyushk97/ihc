@@ -29,7 +29,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // import routes from ./routes.js
-require('./routes')(app);
+require('./routes')(app, db);
 
 app.listen(port, () => console.log('Server listening on port ' + port))
 
