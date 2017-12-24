@@ -8,45 +8,41 @@ var url = 'mongodb://localhost:27017/data';
 export function databaseCheck() {
   // Use connect method to connect to the database server
   console.log("Database connection check...");
-  MongoClient.connect(url, function(err, db) {
+  MongoClient.connect(url, function(err, client) {
     if(err) {
       console.log("Database connection failed...");
       return;
     }
     console.log("Database connection successful!");
-    db.close();
+    client.close();
   });
 }
 
-export function patientExists(patientInfo, callback, errFn) {
-  connect((db) => {
-    // TODO
-    db.collection('patients').find();
-  }, callback, errFn);
+export function patientExists(patientInfo, callback) {
+  MongoClient.connect(url, function(err, client) {
+    assert.equal(null, err);
+    client.db('ihc').collection('patients').find({patientInfo: patientInfo})
+      .next( (err,doc) => {
+        client.close();
+        callback(doc);
+      });
+  });
 }
 
-export function createPatient(patientInfo, callback, errFn) {
-  connect((db) => {
-    db.collection('patients').insertOne({patientInfo: patientInfo},
+export function createPatient(patientInfo, callback) {
+  MongoClient.connect(url, function(err, client) {
+    assert.equal(null, err);
+    client.db('ihc').collection('patients').insertOne({patientInfo: patientInfo},
         function(err, r) {
           assert.equal(null, err);
           assert.equal(1, r.insertedCount);
+          client.close();
+          callback();
         });
-  }, callback, errFn);
+  });
 }
 
 // Helper functions ===================================
-// Pass function to operate with db object
-function connect(fn, callback, errFn) {
-  MongoClient.connect(url, function(err, client) {
-    if(err) {
-      errFn(err);
-    }
-    const result = fn(client.db('ihc'));
-    client.close();
-    callback(result);
-  });
-}
 
 
 

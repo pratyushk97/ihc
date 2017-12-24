@@ -88,6 +88,48 @@ Other options are available: https://wix.github.io/react-native-navigation/#/scr
   1. Go to server/src/routes.js and add the route
 
   2. Add any database interactions to src/Mongo.js
+      - Generally functions should follow format of
+      ```javascript
+        export function patientExists(param, callback)
+          MongoClient.connect(url, function(err, client) {
+            assert.equal(null, err);
+            client.db('ihc').collection('patients').find({patientInfo: patientInfo})
+              .next( (err,doc) => {
+                client.close();
+                callback(doc);
+              });
+          });
+        }
+      ```
+      callback(o) is where the caller handles the return object.
+
+      Example route:
+      ```javascript
+        app.post("/signin/newpatient", (req,res) => {
+          try {
+            db.patientExists(req.body.patientInfo, (exists) => {
+              if(!exists) {
+                db.createPatient(req.body.patientInfo, () => res.send(true));
+              } else {
+                res.send(false);
+              }
+            } 
+          } catch(err) {
+            res.status(500).send({error: error}));
+          }
+        });
+      ```
+
+        
+##### 3. test the API
+
+  1. Run a CURL command like this:
+    ```
+    curl -d '{"patientInfo": {"firstname": "Brandony"}}' -X POST -H "Content-Type:
+    application/json" http://localhost:8000/signin/newpatient
+    ```
+
+  2. Or use Postman
 
 ==========================================
 
@@ -300,7 +342,7 @@ Routes:
 /
         
 * patients/
-    * :firstname&fathers&mothers&birthday/
+    * :id/ (firstname&fathers&mothers&birthday)
         * info/
           * Patient object
         * medications/
