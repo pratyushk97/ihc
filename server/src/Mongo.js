@@ -21,7 +21,10 @@ export function databaseCheck() {
 export function patientExists(patientInfo, callback) {
   MongoClient.connect(url, function(err, client) {
     assert.equal(null, err);
-    client.db('ihc').collection('patients').find({patientInfo: patientInfo})
+    client.db('ihc').collection('patients').find({
+        // TODO: eventually update to include all aspects of patient id
+        patientInfo: { firstname: patientInfo.firstname }
+      })
       .next( (err,doc) => {
         client.close();
         callback(doc);
