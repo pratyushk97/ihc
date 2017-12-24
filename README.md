@@ -164,9 +164,6 @@ Laptop:
 
 ### Local server API:
 
-GET /signin/newpatient/unique (SHOULD BE HANDLED LOCALLY)
-  - Ensure name and DOB is unique
-  
 POST /signin/newpatient :white_check_mark:
   - Create record for that patient if didn't already exist
   
@@ -263,6 +260,7 @@ Medication List:
 At end of session:
 - Tablets click "Sync and end session" or something
   - Grab all patients with updates later than timestamp
+  - (Should base last_updated_timestamps on local device, not the server)
   - Replace patients with new data
  
 ==========================================
