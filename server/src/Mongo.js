@@ -26,9 +26,25 @@ export function patientExists(patientInfo, callback) {
         patientInfo: { firstname: patientInfo.firstname }
       })
       .next( (err,doc) => {
+        assert.equal(null, err);
         client.close();
         callback(doc);
       });
+  });
+}
+
+export function patientSignin(patientInfo, callback) {
+  const statusObj = extractStatusObject(patientInfo);
+
+  MongoClient.connect(url, function(err, client) {
+    assert.equal(null, err);
+    client.db('ihc').collection('signedin').insertOne(statusObj,
+        function(err, r) {
+          assert.equal(null, err);
+          assert.equal(1, r.insertedCount);
+          client.close();
+          callback();
+        });
   });
 }
 
@@ -47,6 +63,15 @@ export function createPatient(patientInfo, callback) {
 
 // Helper functions ===================================
 
+function extractStatusObject(patientInfo) {
+  const statusObj = {};
+  statusObj.firstname = patientInfo.firstname;
+  statusObj.checkin_time = new Date().getTime();
+  statusObj.triage_completed = false;
+  statusObj.doctor_completed = false;
+  statusObj.pharmacy_completed = false;
+  return statusObj;
+}
 
 
 // OLD FIREBASE STUFF BELOW, delete when not necessary

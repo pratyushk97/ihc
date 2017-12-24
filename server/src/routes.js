@@ -13,8 +13,18 @@ module.exports = function(app, db) {
     }
   });
 
-  app.post("/signin/:id", (req,res) => {
-
+  app.post("/signin", (req,res) => {
+    try {
+      db.patientExists(req.body.patientInfo, (exists) => {
+        if(!exists) {
+          res.send(false);
+        } else {
+          db.patientSignin(req.body.patientInfo, () => res.send(true));
+        }
+      });
+    } catch(err) {
+      res.status(500).send({error: error});
+    }
   });
 
   app.get("*", (req,res) => {

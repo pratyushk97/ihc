@@ -167,15 +167,17 @@ Laptop:
 GET /signin/newpatient/unique (SHOULD BE HANDLED LOCALLY)
   - Ensure name and DOB is unique
   
-POST /signin/newpatient
+POST /signin/newpatient :white_check_mark:
   - Create record for that patient if didn't already exist
   
-POST /signin/:id
+POST /signin/ :white_check_mark:
+  - Pass patient's signin info in body
   - Ensure name and DOB exists, patient's records exist
   - Add patient to queue (including checkin time)
   - Return true if all goes well
   
-PATCH /signin/:id
+PATCH /signin/
+  - Pass patient's signin info in body
   - Update patient's status, such as if they completed a station
 
 GET /patients?checkin=true/false
@@ -358,7 +360,7 @@ Routes:
             * GrowthChart object 
         
 
-*  checkedin/
+*  signedin/
     * [Status object, ...]
 
 Classes:
