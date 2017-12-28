@@ -22,8 +22,7 @@ export function patientExists(patientInfo, callback) {
   MongoClient.connect(url, function(err, client) {
     assert.equal(null, err);
     client.db('ihc').collection('patients').find({
-        // TODO: eventually update to include all aspects of patient id
-        patientInfo: { firstname: patientInfo.firstname }
+        patientInfo: extractIdentificationObject(patientInfo)
       })
       .next( (err,doc) => {
         assert.equal(null, err);
@@ -38,6 +37,7 @@ export function patientSignin(patientInfo, callback) {
 
   MongoClient.connect(url, function(err, client) {
     assert.equal(null, err);
+    // TODO: ensure only one signin exists per person
     client.db('ihc').collection('signedin').insertOne(statusObj,
         function(err, r) {
           assert.equal(null, err);
@@ -61,15 +61,36 @@ export function createPatient(patientInfo, callback) {
   });
 }
 
+export function updateStatus(newStatus, callback) {
+  MongoClient.connect(url, function(err, client) {
+    assert.equal(null, err);
+    // Filter by finding matching identifying info
+    client.db('ihc').collection('signedin')
+      .replaceOne(extractIdentificationObject(newStatus),
+        newStatus,
+        function(err, r) {
+          assert.equal(null, err);
+          client.close();
+          callback(r);
+        });
+  });
+}
+
 // Helper functions ===================================
 
 function extractStatusObject(patientInfo) {
-  const statusObj = {};
-  statusObj.firstname = patientInfo.firstname;
+  const statusObj = extractIdentificationObject(patientInfo);
   statusObj.checkin_time = new Date().getTime();
   statusObj.triage_completed = false;
   statusObj.doctor_completed = false;
   statusObj.pharmacy_completed = false;
+  return statusObj;
+}
+
+function extractIdentificationObject(patientInfo) {
+  const statusObj = {};
+  // TODO add rest of identifying info
+  statusObj.first_name = patientInfo.first_name;
   return statusObj;
 }
 

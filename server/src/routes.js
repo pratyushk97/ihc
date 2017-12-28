@@ -19,11 +19,13 @@ module.exports = function(app, db) {
     });
   });
 
-  /*
-  app.patch("/status/:patientId", (req,res) => {
-    const patientId = req.params.patientId;
+  app.patch("/status/", (req,res) => {
+    const newStatus = req.body.status;
+    db.updateStatus(newStatus, (result) => {
+      // Extract if update was successful
+      res.send(result.result.ok === 1);
+    });
   });
-  */
 
   app.get("*", (req,res) => {
     res.send("Error: No path matched");

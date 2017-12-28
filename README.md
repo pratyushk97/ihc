@@ -125,7 +125,7 @@ Other options are available: https://wix.github.io/react-native-navigation/#/scr
 
   1. Run a CURL command like this:
     ```
-    curl -d '{"patientInfo": {"firstname": "Brandony"}}' -X POST -H "Content-Type:
+    curl -d '{"patientInfo": {"first_name": "Brandony"}}' -X POST -H "Content-Type:
     application/json" http://localhost:8000/signin/newpatient
     ```
 
@@ -166,16 +166,24 @@ Laptop:
 
 POST /signin/newpatient :white_check_mark:
   - Create record for that patient if didn't already exist
+  ```
+  body: { patientInfo: MinimizedPatientObject }
+  ```
   
 POST /signin/ :white_check_mark:
   - Pass patient's signin info in body
   - Ensure name and DOB exists, patient's records exist
   - Add patient to queue (including checkin time)
   - Return true if all goes well
+  ```
+  body: { patientInfo: MinimizedPatientObject }
+  ```
   
-PATCH /status/:patientId
-  - Pass patient's signin info in body
-  - Update patient's status, such as if they completed a station
+PATCH /status/:patientId :white_check_mark:
+  - Pass patient's new status, such as if they completed a station
+  ```
+  body: { status: StatusObject }
+  ```
 
 GET /patients?checkin=true/false
   - Return all patients, or just patients checked in 
@@ -363,12 +371,23 @@ Routes:
 
 Classes:
 
+MinimizedPatient (Everything needed for signin/identification)
+```
+{
+  first_name: string,
+  father_name: string,
+  mother_name: string,
+  birthday: date,
+  sex: int?,
+}
+```
+
 Patient
 ```
 {
-  firstname: string,
-  father name: string,
-  mother name: string,
+  first_name: string,
+  father_name: string,
+  mother_name: string,
   birthday: date,
   sex: int?,
   phone: string
@@ -474,7 +493,7 @@ GrowthChartRow
 Status
 ```
 {
-    patient: patientId (string?),
+    MinimizedPatientObject, 
     birthday: date,
     checkin_time: date8time,
     triage_completed: boolean,

@@ -28,10 +28,8 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-// import routes from ./routes.js
-require('./routes')(app, db);
-
 // Error handling
+// TODO: Make sure this actually works properly
 app.use(catchError);
 function catchError(err, req, res, next) {
   if (req.xhr) {
@@ -40,6 +38,9 @@ function catchError(err, req, res, next) {
     next(err)
   }            
 }
+
+// import routes from ./routes.js
+require('./routes')(app, db);
 
 app.listen(port, () => console.log('Server listening on port ' + port))
 
