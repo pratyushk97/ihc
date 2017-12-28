@@ -31,6 +31,16 @@ app.use(bodyParser.json());
 // import routes from ./routes.js
 require('./routes')(app, db);
 
+// Error handling
+app.use(catchError);
+function catchError(err, req, res, next) {
+  if (req.xhr) {
+    res.status(500).send({ error: err })
+  } else {
+    next(err)
+  }            
+}
+
 app.listen(port, () => console.log('Server listening on port ' + port))
 
 // OLD FIREBASE STUFF BELOW, delete when not necessary

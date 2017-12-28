@@ -173,7 +173,7 @@ POST /signin/ :white_check_mark:
   - Add patient to queue (including checkin time)
   - Return true if all goes well
   
-PATCH /signin/
+PATCH /status/:patientId
   - Pass patient's signin info in body
   - Update patient's status, such as if they completed a station
 
