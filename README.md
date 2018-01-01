@@ -125,8 +125,9 @@ Other options are available: https://wix.github.io/react-native-navigation/#/scr
 
   1. Run a CURL command like this:
     ```
-    curl -d '{"patientInfo": {"first_name": "Brandony"}}' -X POST -H "Content-Type:
-    application/json" http://localhost:8000/signin/newpatient
+    curl -d '{"patientInfo": {"first_name": "Brandony"}}' \
+    -X POST -H "Content-Type: application/json" \
+    http://localhost:8000/signin/newpatient
     ```
 
   2. Or use Postman
