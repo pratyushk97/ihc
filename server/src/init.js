@@ -42,7 +42,15 @@ function catchError(err, req, res, next) {
 // import routes from ./routes.js
 require('./routes')(app, db);
 
+// Temporarily work with the localhost to make dev life easier
 app.listen(port, () => console.log('Server listening on port ' + port))
+
+// Looks to currently be 192.168.1.147
+/*
+const host = process.env.HOST || '0.0.0.0';
+app.listen(port, host, 500, () => console.log('Server listenin on port ' + port +
+    ' and host ' + host));
+*/
 
 // OLD FIREBASE STUFF BELOW, delete when not necessary
 /*
