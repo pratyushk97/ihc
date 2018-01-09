@@ -187,10 +187,11 @@ PATCH /status/ :white_check_mark:
           patientInfo: Patient object }
   ```
 
-GET /patients?checkedin=true/false
+GET /patients?checkedin=true/false :white_check_mark:
   - Return all patients, or just patients checked in 
   - Patient info should include: name, DOB, checkin time, which stations completed, miscellaneous notes
-    - maybe include all forms? could then save locally, except for history
+    - maybe include all forms based on another parameter?
+      could then save locally, except for history
     
 PATCH /patients/:id/soap/:date
   - Update patient's soap form
@@ -215,6 +216,8 @@ PATCH /patients/:id/medications
       duration: "1 month"
     }
     ```
+POST /signout
+  - Signout everyone that is currently marked as "active"
 
 
 ##### Low Priority:
@@ -352,8 +355,14 @@ Routes:
 /
         
 * patients/
+    * [Patient object]
+
+# Classes:
+
+Patient
+
     * info/
-      * Patient object
+      * PatientInfo object
     * medications/
       * : drugName/
         * [DrugUpdate object, DrugUpdate object, ...]
@@ -368,8 +377,6 @@ Routes:
     * status/
         * Status object
         
-Classes:
-
 MinimizedPatient (Everything needed for signin/identification)
 ```
 {
@@ -381,7 +388,7 @@ MinimizedPatient (Everything needed for signin/identification)
 }
 ```
 
-Patient
+PatientInfo
 ```
 {
   first_name: string,

@@ -65,19 +65,20 @@ export function updateStatus(patientInfo, newStatus, callback) {
   });
 }
 
-// TODO
 export function getPatients(returnOnlyCheckedInPatients, callback) {
   MongoClient.connect(url, function(err, client) {
     assert.equal(null, err);
-    // Filter by finding matching identifying info
-    client.db('ihc').collection('signedin')
-      .replaceOne(extractIdentificationObject(newStatus),
-        newStatus,
-        function(err, r) {
-          assert.equal(null, err);
-          client.close();
-          callback(r);
-        });
+    if(returnOnlyCheckedInPatients) {
+      var cursor = client.db('ihc').collection('patients').find({
+        "status.active": true 
+      });
+    } else {
+      var cursor = client.db('ihc').collection('patients').find();
+    }
+    cursor.toArray().then( (documents) => {
+      client.close();
+      callback(documents) 
+    });
   });
 }
 
