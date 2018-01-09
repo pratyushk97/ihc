@@ -192,7 +192,7 @@ GET /patients?checkedin=true/false :white_check_mark:
   - Patient info should include: name, DOB, checkin time, which stations completed, miscellaneous notes
     - maybe include all forms based on another parameter?
       could then save locally, except for history
-    
+
 PATCH /patients/:id/soap/:date
   - Update patient's soap form
   
@@ -221,6 +221,9 @@ POST /signout
 
 
 ##### Low Priority:
+
+GET /patients/:id/forms
+  - Return all forms for that patient
 
 GET /patients/:id/history
   - Return list of triages and soaps dates, not the actual forms
