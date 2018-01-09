@@ -2,7 +2,9 @@ module.exports = function(app, db) {
   app.post("/signin/newpatient", (req,res) => {
     db.patientExists(req.body.patientInfo, (exists) => {
       if(!exists) {
-        db.createPatient(req.body.patientInfo, () => res.send(true));
+        db.createPatient(req.body.patientInfo, () => {
+          db.patientSignin(req.body.patientInfo, () => res.send(true))
+        });
       } else {
         res.send(false);
       }
@@ -19,9 +21,10 @@ module.exports = function(app, db) {
     });
   });
 
-  app.patch("/status/", (req,res) => {
+  app.patch("/status", (req,res) => {
+    const patientInfo = req.body.patientInfo;
     const newStatus = req.body.status;
-    db.updateStatus(newStatus, (result) => {
+    db.updateStatus(patientInfo, newStatus, (result) => {
       // Extract if update was successful
       res.send(result.result.ok === 1);
     });

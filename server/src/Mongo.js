@@ -32,22 +32,6 @@ export function patientExists(patientInfo, callback) {
   });
 }
 
-export function patientSignin(patientInfo, callback) {
-  const statusObj = extractStatusObject(patientInfo);
-
-  MongoClient.connect(url, function(err, client) {
-    assert.equal(null, err);
-    // TODO: ensure only one signin exists per person
-    client.db('ihc').collection('signedin').insertOne(statusObj,
-        function(err, r) {
-          assert.equal(null, err);
-          assert.equal(1, r.insertedCount);
-          client.close();
-          callback();
-        });
-  });
-}
-
 export function createPatient(patientInfo, callback) {
   MongoClient.connect(url, function(err, client) {
     assert.equal(null, err);
@@ -61,21 +45,27 @@ export function createPatient(patientInfo, callback) {
   });
 }
 
-export function updateStatus(newStatus, callback) {
+export function patientSignin(patientInfo, callback) {
+  updateStatus(patientInfo, newStatusObject(), callback);
+}
+
+export function updateStatus(patientInfo, newStatus, callback) {
   MongoClient.connect(url, function(err, client) {
     assert.equal(null, err);
     // Filter by finding matching identifying info
-    client.db('ihc').collection('signedin')
-      .replaceOne(extractIdentificationObject(newStatus),
-        newStatus,
+    client.db('ihc').collection('patients')
+      .updateOne({info: patientInfo},
+        { $set: { status: newStatus } },
         function(err, r) {
           assert.equal(null, err);
+          assert.equal(r.modifiedCount, 1);
           client.close();
           callback(r);
         });
   });
 }
 
+// TODO
 export function getPatients(returnOnlyCheckedInPatients, callback) {
   MongoClient.connect(url, function(err, client) {
     assert.equal(null, err);
@@ -93,8 +83,9 @@ export function getPatients(returnOnlyCheckedInPatients, callback) {
 
 // Helper functions ===================================
 
-function extractStatusObject(patientInfo) {
-  const statusObj = extractIdentificationObject(patientInfo);
+function newStatusObject() {
+  const statusObj = {};
+  statusObj.active = true; // True if currently checked in
   statusObj.checkin_time = new Date().getTime();
   statusObj.triage_completed = false;
   statusObj.doctor_completed = false;

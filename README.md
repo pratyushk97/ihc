@@ -180,10 +180,11 @@ POST /signin/ :white_check_mark:
   body: { patientInfo: MinimizedPatientObject }
   ```
   
-PATCH /status/:patientId :white_check_mark:
+PATCH /status/ :white_check_mark:
   - Pass patient's new status, such as if they completed a station
   ```
-  body: { status: StatusObject }
+  body: { status: StatusObject,
+          patientInfo: Patient object }
   ```
 
 GET /patients?checkedin=true/false
@@ -364,11 +365,9 @@ Routes:
         * Triage object
     * growthchart/
         * GrowthChart object 
+    * status/
+        * Status object
         
-
-*  signedin/
-    * [Status object, ...]
-
 Classes:
 
 MinimizedPatient (Everything needed for signin/identification)
@@ -493,9 +492,8 @@ GrowthChartRow
 Status
 ```
 {
-    MinimizedPatientObject, 
-    birthday: date,
-    checkin_time: date8time,
+    active: boolean,
+    checkin_time: datetime,
     triage_completed: boolean,
     doctor_completed: boolean,
     pharmacy_completed: boolean,
