@@ -186,7 +186,7 @@ PATCH /status/:patientId :white_check_mark:
   body: { status: StatusObject }
   ```
 
-GET /patients?checkin=true/false
+GET /patients?checkedin=true/false
   - Return all patients, or just patients checked in 
   - Patient info should include: name, DOB, checkin time, which stations completed, miscellaneous notes
     - maybe include all forms? could then save locally, except for history
@@ -351,20 +351,19 @@ Routes:
 /
         
 * patients/
-    * :id/ (firstname&fathers&mothers&birthday)
-        * info/
-          * Patient object
-        * medications/
-          * : drugName/
-            * [DrugUpdate object, DrugUpdate object, ...]
-        * soaps/
-          * : date/
-            * Soap object
-        * triages/
-          * : date/
-            * Triage object
-        * growthchart/
-            * GrowthChart object 
+    * info/
+      * Patient object
+    * medications/
+      * : drugName/
+        * [DrugUpdate object, DrugUpdate object, ...]
+    * soaps/
+      * : date/
+        * Soap object
+    * triages/
+      * : date/
+        * Triage object
+    * growthchart/
+        * GrowthChart object 
         
 
 *  signedin/

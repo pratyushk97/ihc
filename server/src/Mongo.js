@@ -22,7 +22,7 @@ export function patientExists(patientInfo, callback) {
   MongoClient.connect(url, function(err, client) {
     assert.equal(null, err);
     client.db('ihc').collection('patients').find({
-        patientInfo: extractIdentificationObject(patientInfo)
+        info: extractIdentificationObject(patientInfo)
       })
       .next( (err,doc) => {
         assert.equal(null, err);
@@ -51,7 +51,7 @@ export function patientSignin(patientInfo, callback) {
 export function createPatient(patientInfo, callback) {
   MongoClient.connect(url, function(err, client) {
     assert.equal(null, err);
-    client.db('ihc').collection('patients').insertOne({patientInfo: patientInfo},
+    client.db('ihc').collection('patients').insertOne({info: patientInfo},
         function(err, r) {
           assert.equal(null, err);
           assert.equal(1, r.insertedCount);
@@ -62,6 +62,21 @@ export function createPatient(patientInfo, callback) {
 }
 
 export function updateStatus(newStatus, callback) {
+  MongoClient.connect(url, function(err, client) {
+    assert.equal(null, err);
+    // Filter by finding matching identifying info
+    client.db('ihc').collection('signedin')
+      .replaceOne(extractIdentificationObject(newStatus),
+        newStatus,
+        function(err, r) {
+          assert.equal(null, err);
+          client.close();
+          callback(r);
+        });
+  });
+}
+
+export function getPatients(returnOnlyCheckedInPatients, callback) {
   MongoClient.connect(url, function(err, client) {
     assert.equal(null, err);
     // Filter by finding matching identifying info

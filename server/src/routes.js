@@ -27,6 +27,13 @@ module.exports = function(app, db) {
     });
   });
 
+  app.get("/patients", (req, res) => {
+    const onlyCheckedInPatients = req.query.checkedin;
+    db.getPatients(onlyCheckedInPatients, (patients) => {
+      res.send({patients: patients});
+    });
+  });
+
   app.get("*", (req,res) => {
     res.send("Error: No path matched");
   });
