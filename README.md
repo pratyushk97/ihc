@@ -366,19 +366,20 @@ Patient
 
     * info/
       * PatientInfo object
-    * medications/
-      * : drugName/
-        * [DrugUpdate object, DrugUpdate object, ...]
-    * soaps/
-      * : date/
-        * Soap object
-    * triages/
-      * : date/
-        * Triage object
-    * growthchart/
-        * GrowthChart object 
     * status/
         * Status object
+    * forms/
+        * medications/
+          * : drugName/
+            * [DrugUpdate object, DrugUpdate object, ...]
+        * soaps/
+          * : date/
+            * Soap object
+        * triages/
+          * : date/
+            * Triage object
+        * growthchart/
+            * GrowthChart object 
         
 MinimizedPatient (Everything needed for signin/identification)
 ```
