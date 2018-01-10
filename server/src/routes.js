@@ -31,8 +31,9 @@ module.exports = function(app, db) {
   });
 
   app.get("/patients", (req, res) => {
-    const onlyCheckedInPatients = req.query.checkedin;
-    db.getPatients(onlyCheckedInPatients, (patients) => {
+    const onlyCheckedInPatients = req.query.checkedin === 'true';
+    const includeForms = req.query.forms === 'true';
+    db.getPatients(onlyCheckedInPatients, includeForms, (patients) => {
       res.send({patients: patients});
     });
   });

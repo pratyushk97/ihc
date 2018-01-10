@@ -65,7 +65,7 @@ export function updateStatus(patientInfo, newStatus, callback) {
   });
 }
 
-export function getPatients(returnOnlyCheckedInPatients, callback) {
+export function getPatients(returnOnlyCheckedInPatients, includeForms, callback) {
   MongoClient.connect(url, function(err, client) {
     assert.equal(null, err);
     if(returnOnlyCheckedInPatients) {
@@ -75,6 +75,13 @@ export function getPatients(returnOnlyCheckedInPatients, callback) {
     } else {
       var cursor = client.db('ihc').collection('patients').find();
     }
+
+    if(includeForms) {
+      cursor = cursor.project({info: 1, status: 1, forms: 1});
+    } else {
+      cursor = cursor.project({info: 1, status: 1});
+    }
+
     cursor.toArray().then( (documents) => {
       client.close();
       callback(documents) 
