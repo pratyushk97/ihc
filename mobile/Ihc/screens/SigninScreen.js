@@ -11,7 +11,6 @@ import {
   Text,
   View
 } from 'react-native';
-//import t from 'tcomb-form-native';
 var t = require('tcomb-form-native');
 var Form = t.form.Form;
 
