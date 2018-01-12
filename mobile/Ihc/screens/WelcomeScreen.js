@@ -4,6 +4,7 @@
  * @flow
  */
 
+import * as data from '../services/FakeDataService';
 import React, { Component } from 'react';
 import {
   Platform,
@@ -34,6 +35,7 @@ export default class WelcomeScreen extends Component<{}> {
 
   // TODO: Download updates from server and add them to local storage
   sync = () => {
+    const updates = data.getUpdates();
   }
 
   render() {
