@@ -25,14 +25,14 @@ IHC/
     - ExpressJS local server
 
 Moqup:
-https://app.moqups.com/mattchinn/ix0mjskH6z/edit/page/aa9df7b72
+https://app.moqups.com/mattchinn/ix0mjskH6z/view
 
 ==========================================
 
 ### Command line
 
 ##### Run react native:
-1. Start emulator
+1. Start emulator (10 inch tablet)
  
   (Setup instructions here: https://facebook.github.io/react-native/docs/getting-started.html
     "Building Projects With Native Code" -> Target OS: Android)
@@ -40,7 +40,7 @@ https://app.moqups.com/mattchinn/ix0mjskH6z/edit/page/aa9df7b72
   i.e. In my ~/.bashrc I made this function, so I could just call run_emulator 
   ```
   function run_emulator {
-      /Users/Matt/Library/Android/sdk/tools/emulator -avd Nexus_7_API_23
+      /Users/Matt/Library/Android/sdk/tools/emulator -avd Nexus_10_API_23_Tablet
       # Wherever your emulator is stored
   }
   export -f run_emulator
