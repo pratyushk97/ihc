@@ -198,11 +198,20 @@ PATCH /status/ :white_check_mark:
           patientInfo: Patient object }
   ```
 
-GET /patients?checkedin=true/false :white_check_mark:
+GET /patients?checkedin=true/false&forms=true/false :white_check_mark:
   - Return all patients, or just patients checked in 
-  - Patient info should include: name, DOB, checkin time, which stations completed, miscellaneous notes
-    - maybe include all forms based on another parameter?
-      could then save locally, except for history
+  ```
+  returns:
+    If forms = false: [ {info: PatientInfo object, status: Status object} ]
+    If forms = true: [{
+      info: PatientInfo object,
+      status: Status object,
+      forms: { medications: ...,
+               soaps: ...,
+               triages: ...,
+               growthchart: ... }
+    }]
+  ```
 
 PATCH /patients/:id/soap/:date
   - Update patient's soap form
