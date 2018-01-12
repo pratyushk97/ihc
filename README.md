@@ -213,8 +213,6 @@ PATCH /patients/:id/triage/:date
   
 PATCH /patients/:id/growthchart/
 
-GET /patients/:id/growthchart
-
 PATCH /patients/:id/medications
   - Add update to patient's overall records
   - ```
@@ -227,30 +225,22 @@ PATCH /patients/:id/medications
       duration: "1 month"
     }
     ```
-POST /signout
-  - Signout everyone that is currently marked as "active"
-
-
-##### Low Priority:
-
 GET /patients/:id/forms
   - Return all forms for that patient
 
-GET /patients/:id/history
-  - Return list of triages and soaps dates, not the actual forms
-  
+GET /patients/:id/medications
+
+GET /patients/:id/growthchart
+
 GET /patients/:id/triage/:date
 
 GET /patients/:id/soap/:date
 
+GET /patients/:id/history
+  - Return list of triages and soaps dates, not the actual forms
 
-GET /patients/:id?date=yyyymmdd 
-
-  - May not be necessary if saving data locally from /patients?checkin=val call
-  - If date included, return Triage, SOAP, Med list, Growth Chart, History (just
-    ids, not actual records)
-  - If not included, return Med List, Growth Chart, History (just ids, not
-    actual records)
+POST /signout
+  - Signout everyone that is currently marked as "active"
 
 ==========================================
 
