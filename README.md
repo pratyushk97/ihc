@@ -6,7 +6,7 @@ Shortcuts:
 * [How to](#how-to)
 * [Overview](#overview-use-cases)
 * [API](#local-server-api)
-* [Local storage plan](#handling-local-storage)
+* [Local storage plan](#local-storage)
 * [Mobile](#mobile-plantodo)
 * [Laptop](#laptop-plantodo)
 * [Database](#database-design)
@@ -143,6 +143,17 @@ Other options are available: https://wix.github.io/react-native-navigation/#/scr
 
   2. Or use Postman
 
+##### 4. start the router setup for tablets
+  
+  1. Connect computer to router with ethernet cable
+
+  2. Start the server with ```npm start``` or ```npm run server```
+
+  3. Make the computer's IP address a hardcoded value i.e. 192.168.1.100
+
+  4. Update config file for variable SERVER_URL to equal <ip address>:<port>
+     i.e. '192.168.1.100:8000' // TODO make config file
+
 ==========================================
 
 ### Overview Use Cases:
@@ -253,7 +264,9 @@ POST /signout
 
 ==========================================
 
-### Handling LOCAL STORAGE as backup:
+### Local Storage:
+
+Handling LOCAL STORAGE as backup:
 If router goes out...
 
 - Biggest need is viewing old data, they could use paper forms temporarily.
