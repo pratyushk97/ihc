@@ -64,6 +64,8 @@ https://app.moqups.com/mattchinn/ix0mjskH6z/view
 3. To both make and run server, call ```npm start```
 
 4. Start database server with ```npm run db```
+5. // TODO: Create a command that spawns a new shell that runs the db (if it
+   hasn't been started yet), and then runs npm start
 
 ==========================================
 
@@ -148,6 +150,7 @@ Other options are available: https://wix.github.io/react-native-navigation/#/scr
   1. Connect computer to router with ethernet cable
 
   2. Start the server with ```npm start``` or ```npm run server```
+     and the database with ```npm run db```
 
   3. Make the computer's IP address a hardcoded value i.e. 192.168.1.100
 
