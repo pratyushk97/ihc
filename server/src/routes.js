@@ -26,7 +26,7 @@ module.exports = function(app, db) {
     const newStatus = req.body.status;
     db.updateStatus(patientInfo, newStatus, (result) => {
       // Extract if update was successful
-      res.send(result.result.ok === 1);
+      res.send(result);
     });
   });
 
@@ -35,6 +35,14 @@ module.exports = function(app, db) {
     const includeForms = req.query.forms === 'true';
     db.getPatients(onlyCheckedInPatients, includeForms, (patients) => {
       res.send({patients: patients});
+    });
+  });
+
+  app.patch("/patients/soap", (req,res) => {
+    const patientInfo = req.body.patientInfo;
+    const newSoap = req.body.soap;
+    db.updateSoap(patientInfo, newSoap, (result) => {
+      res.send(result);
     });
   });
 

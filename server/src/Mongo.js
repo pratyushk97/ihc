@@ -22,7 +22,7 @@ export function patientExists(patientInfo, callback) {
   MongoClient.connect(url, function(err, client) {
     assert.equal(null, err);
     client.db('ihc').collection('patients').find({
-        info: extractIdentificationObject(patientInfo)
+        info: patientInfo
       })
       .next( (err,doc) => {
         assert.equal(null, err);
@@ -60,7 +60,29 @@ export function updateStatus(patientInfo, newStatus, callback) {
           assert.equal(null, err);
           assert.equal(r.modifiedCount, 1);
           client.close();
-          callback(r);
+          callback(r.result.ok === 1);
+        });
+  });
+}
+
+export function updateSoap(patientInfo, newSoap, callback) {
+  MongoClient.connect(url, function(err, client) {
+    assert.equal(null, err);
+
+    const intermediaryUpdate = { $set : {} };
+    intermediaryUpdate.$set['forms.soaps.' + newSoap.date] = newSoap;
+
+    client.db('ihc').collection('patients')
+      .updateOne(
+        {
+          info: patientInfo,
+        },
+        intermediaryUpdate,
+        function(err, r) {
+          assert.equal(null, err);
+          assert.equal(r.modifiedCount, 1);
+          client.close();
+          callback(r.result.ok === 1);
         });
   });
 }
@@ -100,14 +122,6 @@ function newStatusObject() {
   statusObj.pharmacy_completed = false;
   return statusObj;
 }
-
-function extractIdentificationObject(patientInfo) {
-  const statusObj = {};
-  // TODO add rest of identifying info
-  statusObj.first_name = patientInfo.first_name;
-  return statusObj;
-}
-
 
 // OLD FIREBASE STUFF BELOW, delete when not necessary
 

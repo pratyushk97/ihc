@@ -132,7 +132,8 @@ Other options are available: https://wix.github.io/react-native-navigation/#/scr
           }
         });
       ```
-
+  3. Update the README API Section for that route with the body and return
+     object information (if necessary)
         
 ##### 3. test the API
 
@@ -190,10 +191,21 @@ Laptop:
 
 ### Local server API:
 
+All of the routes should include a PatientIdentification object in the
+body, just in case we change up the id mechanism later. 
+i.e. should look like this
+
+```
+body: { patientInfo: PatientIdentification }
+```
+
+Any :date field should be represented as yyyymmdd
+
+
 POST /signin/newpatient :white_check_mark:
   - Create record for that patient if didn't already exist
   ```
-  body: { patientInfo: MinimizedPatientObject }
+  body: { patientInfo: PatientIdentification}
   ```
   
 POST /signin/ :white_check_mark:
@@ -202,7 +214,7 @@ POST /signin/ :white_check_mark:
   - Add patient to queue (including checkin time)
   - Return true if all goes well
   ```
-  body: { patientInfo: MinimizedPatientObject }
+  body: { patientInfo: PatientIdentification }
   ```
   
 PATCH /status/ :white_check_mark:
@@ -227,16 +239,24 @@ GET /patients?checkedin=true/false&forms=true/false :white_check_mark:
     }]
   ```
 
-PATCH /patients/:id/soap/:date
+PATCH /patients/soap/
   - Update patient's soap form
+  ```
+  body: {
+    patientInfo: PatientInfo object,
+    soap: Soap object
+  }
+
+  returns: true if successful
+  ```
   
-PATCH /patients/:id/triage/:date
+PATCH /patients/triage/
   - Update patient's triage form
   - Also update the growthchart info
   
-PATCH /patients/:id/growthchart/
+PATCH /patients/growthchart/
 
-PATCH /patients/:id/medications
+PATCH /patients/medications
   - Add update to patient's overall records
   - ```
     Update: {
@@ -248,18 +268,18 @@ PATCH /patients/:id/medications
       duration: "1 month"
     }
     ```
-GET /patients/:id/forms
+GET /patients/forms
   - Return all forms for that patient
 
-GET /patients/:id/medications
+GET /patients/medications
 
-GET /patients/:id/growthchart
+GET /patients/growthchart
 
-GET /patients/:id/triage/:date
+GET /patients/triage/:date
 
-GET /patients/:id/soap/:date
+GET /patients/soap/:date
 
-GET /patients/:id/history
+GET /patients/history
   - Return list of triages and soaps dates, not the actual forms
 
 POST /signout
@@ -399,15 +419,17 @@ Patient
           * : drugName/
             * [DrugUpdate object, DrugUpdate object, ...]
         * soaps/
-          * : date/
+          * :date/
             * Soap object
         * triages/
-          * : date/
+          * :date/
             * Triage object
         * growthchart/
             * GrowthChart object 
+    * last_updated/
+      * timestamp (ms since epoch)
         
-MinimizedPatient (Everything needed for signin/identification)
+PatientIdentification (Everything needed for signin/identification)
 ```
 {
   first_name: string,
@@ -418,7 +440,7 @@ MinimizedPatient (Everything needed for signin/identification)
 }
 ```
 
-PatientInfo
+PatientInfo (Full patient information)
 ```
 {
   first_name: string,
@@ -444,6 +466,7 @@ DrugUpdate
 Soap
 ```
 {
+    date: date,
     subjective: string,
     objective: string,
     assessment: string,
@@ -456,6 +479,7 @@ Soap
 Triage
 ```
 {
+    date: date,
     has_insurance: boolean,
     location: string (Girasoles/TJP),
     arrival_time: date/string,
