@@ -239,7 +239,7 @@ GET /patients?checkedin=true/false&forms=true/false :white_check_mark:
     }]
   ```
 
-PATCH /patients/soap/
+PATCH /patients/soap/ :white_check_mark:
   - Update patient's soap form
   ```
   body: {
@@ -250,9 +250,17 @@ PATCH /patients/soap/
   returns: true if successful
   ```
   
-PATCH /patients/triage/
+PATCH /patients/triage/ :white_check_mark:
   - Update patient's triage form
   - Also update the growthchart info
+  ```
+  body: {
+    patientInfo: PatientInfo object,
+    triage: Triage object
+  }
+
+  returns: true if successful
+  ```
   
 PATCH /patients/growthchart/
 

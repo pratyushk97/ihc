@@ -46,6 +46,14 @@ module.exports = function(app, db) {
     });
   });
 
+  app.patch("/patients/triage", (req,res) => {
+    const patientInfo = req.body.patientInfo;
+    const newTriage = req.body.triage;
+    db.updateTriage(patientInfo, newTriage, (result) => {
+      res.send(result);
+    });
+  });
+
   app.get("*", (req,res) => {
     res.send("Error: No path matched");
   });
