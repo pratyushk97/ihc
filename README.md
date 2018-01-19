@@ -70,7 +70,29 @@ https://app.moqups.com/mattchinn/ix0mjskH6z/view
 ==========================================
 
 ### How to...
-##### 1. make a new screen
+
+##### 0. setup the environment
+
+  * This is not meant to be a comprehensive list, but hopefully provides a solid
+    list of all the steps required
+      1. Go to the github page (github.com/matthew-chinn/ihc) and click "Fork" to
+         get your own copy on github
+      2. From terminal, use ```git clone <your github repo url>``` to get a
+         local copy of the repository
+      3. Download mongodb (for backend)
+      4. Download an Android emulator (i.e. Nexus 10 inch tablet), probably
+         through Android Studio (for frontend)
+      5. run ```npm install``` in ihc/mobile, ihc/server, and ihc/server/src to
+         download dependencies
+
+##### 1. go through coding process
+    1. Make code changes
+    2. Push code changes to your own Github repository
+    3. Click on "New pull request"
+    4. I will review pull requests and either merge the changes or reply with
+       feedback
+
+##### 2. make a new screen
 
   *  First of all, distinguish component vs screen:
       - Component is a reusable piece of small UI, aka a common table
@@ -96,7 +118,7 @@ https://app.moqups.com/mattchinn/ix0mjskH6z/view
 
 Other options are available: https://wix.github.io/react-native-navigation/#/screen-api
 
-##### 2. make a new Express API route
+##### 3. make a new Express API route
 
   1. Go to server/src/routes.js and add the route
 
@@ -135,7 +157,8 @@ Other options are available: https://wix.github.io/react-native-navigation/#/scr
   3. Update the README API Section for that route with the body and return
      object information (if necessary)
         
-##### 3. test the API
+##### 4. test the API
+  * Make sure the database server is running (```mongod```)
 
   1. Run a CURL command like this:
     ```
@@ -144,9 +167,22 @@ Other options are available: https://wix.github.io/react-native-navigation/#/scr
     http://localhost:8000/signin/newpatient
     ```
 
-  2. Or use Postman
+  2. Or use Postman (an app that allows you to test server routes in a easier
+     way)
 
-##### 4. start the router setup for tablets
+  3. Inspect the mongo database (to ensure changes go through properly) 
+     with a command sequence such as:
+     ```mongo``` to start a database shell, which will allow you to look around
+     the db
+
+     ```use ihc``` to switch to the 'ihc' database
+
+     ```db.patients.find()``` to view all of the patients in the database
+
+     ```db.patients.find(<filter>)``` to view patients that meet the specified
+     filter. Look up MongoDB documentation for details
+
+##### 5. start the router setup for tablets
   
   1. Connect computer to router with ethernet cable
 
