@@ -69,8 +69,32 @@ export function updateSoap(patientInfo, newSoap, callback) {
   MongoClient.connect(url, function(err, client) {
     assert.equal(null, err);
 
+    // Workaround to set the proper location
     const intermediaryUpdate = { $set : {} };
     intermediaryUpdate.$set['forms.soaps.' + newSoap.date] = newSoap;
+
+    client.db('ihc').collection('patients')
+      .updateOne(
+        {
+          info: patientInfo,
+        },
+        intermediaryUpdate,
+        function(err, r) {
+          assert.equal(null, err);
+          assert.equal(r.modifiedCount, 1);
+          client.close();
+          callback(r.result.ok === 1);
+        });
+  });
+}
+
+export function updateTriage(patientInfo, newTriage, callback) {
+  MongoClient.connect(url, function(err, client) {
+    assert.equal(null, err);
+
+    // Workaround to set the proper location
+    const intermediaryUpdate = { $set : {} };
+    intermediaryUpdate.$set['forms.triages.' + newTriage.date] = newTriage;
 
     client.db('ihc').collection('patients')
       .updateOne(
