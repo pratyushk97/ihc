@@ -80,6 +80,11 @@ https://app.moqups.com/mattchinn/ix0mjskH6z/view
       2. From terminal, use ```git clone <your github repo url>``` to get a
          local copy of the repository
       3. Download mongodb (for backend)
+	-in \C:\data\db (you need to create data folder and db folder)
+	-then install mongodb
+	-and run command $ mongod
+	-command $ mongo
+	-https://stackoverflow.com/questions/13312358/mongo-couldnt-connect-to-server-127-0-0-127017
       4. Download an Android emulator (i.e. Nexus 10 inch tablet), probably
          through Android Studio (for frontend)
       5. run ```npm install``` in ihc/mobile, ihc/server, and ihc/server/src to
