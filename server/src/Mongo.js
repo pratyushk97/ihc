@@ -1,137 +1,120 @@
 /* Wrapper class to handle all mongo db calls */
-var MongoClient = require('mongodb').MongoClient
-  , assert = require('assert');
+const MongoClient = require('mongodb').MongoClient;
+const assert = require('assert');
 
 // Connection URL
-var url = 'mongodb://localhost:27017/data';
+// TODO: Move to config file
+const url = 'mongodb://localhost:27017/data';
 
-export function databaseCheck() {
+let db, myClient;
+
+export function databaseConnect() {
   // Use connect method to connect to the database server
   console.log("Database connection check...");
-  MongoClient.connect(url, function(err, client) {
+  const options = {
+    autoReconnect: true
+  }
+
+  MongoClient.connect(url, options, function(err, client) {
     if(err) {
-      console.log("Database connection failed...");
+      console.log("Database connection failed... Make sure database server is running (mongod)");
       return;
     }
     console.log("Database connection successful!");
-    client.close();
+
+    db = client.db('ihc');
+    myClient = client;
   });
 }
 
-export function patientExists(patientInfo, callback) {
-  MongoClient.connect(url, function(err, client) {
-    assert.equal(null, err);
-    client.db('ihc').collection('patients').find({
-        info: patientInfo
-      })
-      .next( (err,doc) => {
-        assert.equal(null, err);
-        client.close();
-        callback(doc);
-      });
-  });
-}
-
-export function createPatient(patientInfo, callback) {
-  MongoClient.connect(url, function(err, client) {
-    assert.equal(null, err);
-    client.db('ihc').collection('patients').insertOne({info: patientInfo},
-        function(err, r) {
-          assert.equal(null, err);
-          assert.equal(1, r.insertedCount);
-          client.close();
-          callback();
-        });
-  });
-}
-
-export function patientSignin(patientInfo, callback) {
-  updateStatus(patientInfo, newStatusObject(), callback);
-}
-
-export function updateStatus(patientInfo, newStatus, callback) {
-  MongoClient.connect(url, function(err, client) {
-    assert.equal(null, err);
-    // Filter by finding matching identifying info
-    client.db('ihc').collection('patients')
-      .updateOne({info: patientInfo},
-        { $set: { status: newStatus } },
-        function(err, r) {
-          assert.equal(null, err);
-          assert.equal(r.modifiedCount, 1);
-          client.close();
-          callback(r.result.ok === 1);
-        });
-  });
-}
-
-export function updateSoap(patientInfo, newSoap, callback) {
-  MongoClient.connect(url, function(err, client) {
-    assert.equal(null, err);
-
-    // Workaround to set the proper location
-    const intermediaryUpdate = { $set : {} };
-    intermediaryUpdate.$set['forms.soaps.' + newSoap.date] = newSoap;
-
-    client.db('ihc').collection('patients')
-      .updateOne(
-        {
-          info: patientInfo,
-        },
-        intermediaryUpdate,
-        function(err, r) {
-          assert.equal(null, err);
-          assert.equal(r.modifiedCount, 1);
-          client.close();
-          callback(r.result.ok === 1);
-        });
-  });
-}
-
-export function updateTriage(patientInfo, newTriage, callback) {
-  MongoClient.connect(url, function(err, client) {
-    assert.equal(null, err);
-
-    // Workaround to set the proper location
-    const intermediaryUpdate = { $set : {} };
-    intermediaryUpdate.$set['forms.triages.' + newTriage.date] = newTriage;
-
-    client.db('ihc').collection('patients')
-      .updateOne(
-        {
-          info: patientInfo,
-        },
-        intermediaryUpdate,
-        function(err, r) {
-          assert.equal(null, err);
-          assert.equal(r.modifiedCount, 1);
-          client.close();
-          callback(r.result.ok === 1);
-        });
-  });
-}
-
-export function getPatients(returnOnlyCheckedInPatients, includeForms, callback) {
-  MongoClient.connect(url, function(err, client) {
-    assert.equal(null, err);
-    if(returnOnlyCheckedInPatients) {
-      var cursor = client.db('ihc').collection('patients').find({
-        "status.active": true 
-      });
-    } else {
-      var cursor = client.db('ihc').collection('patients').find();
-    }
-
-    if(includeForms) {
-      cursor = cursor.project({info: 1, status: 1, forms: 1});
-    } else {
-      cursor = cursor.project({info: 1, status: 1});
-    }
-
-    cursor.toArray().then( (documents) => {
-      client.close();
-      callback(documents) 
+export function patientExists(patientInfo, callback, next) {
+  db.collection('patients').find({
+      info: patientInfo
+    })
+    .next( (err,doc) => {
+      assert.equal(null, err);
+      callback(doc);
     });
+}
+
+export function createPatient(patientInfo, callback, next) {
+  db.collection('patients').insertOne({info: patientInfo},
+      function(err, r) {
+        assert.equal(null, err);
+        assert.equal(1, r.insertedCount);
+        callback();
+      });
+}
+
+export function patientSignin(patientInfo, callback, next) {
+  updateStatus(patientInfo, newStatusObject(), callback, next);
+}
+
+export function updateStatus(patientInfo, newStatus, callback, next) {
+  // Filter by finding matching identifying info
+  db.collection('patients')
+    .updateOne({info: patientInfo},
+      { $set: { status: newStatus } },
+      function(err, r) {
+        assert.equal(null, err);
+        assert.equal(r.modifiedCount, 1);
+        callback(r.result.ok === 1);
+      });
+}
+
+export function updateSoap(patientInfo, newSoap, callback, next) {
+  // Workaround to set the proper location
+  const intermediaryUpdate = { $set : {} };
+  intermediaryUpdate.$set['forms.soaps.' + newSoap.date] = newSoap;
+
+  db.collection('patients')
+    .updateOne(
+      {
+        info: patientInfo,
+      },
+      intermediaryUpdate,
+      function(err, r) {
+        assert.equal(null, err);
+        assert.equal(r.modifiedCount, 1);
+        callback(r.result.ok === 1);
+      });
+}
+
+export function updateTriage(patientInfo, newTriage, callback, next) {
+  // Workaround to set the proper location
+  const intermediaryUpdate = { $set : {} };
+  intermediaryUpdate.$set['forms.triages.' + newTriage.date] = newTriage;
+
+  db.collection('patients')
+    .updateOne(
+      {
+        info: patientInfo,
+      },
+      intermediaryUpdate,
+      function(err, r) {
+        assert.equal(null, err);
+        assert.equal(r.modifiedCount, 1);
+        callback(r.result.ok === 1);
+      });
+}
+
+export function getPatients(returnOnlyCheckedInPatients, includeForms, callback, next) {
+  if(returnOnlyCheckedInPatients) {
+    var cursor = db.collection('patients').find({
+      "status.active": true
+    });
+  } else {
+    var cursor = db.collection('patients').find();
+  }
+
+  if(includeForms) {
+    cursor = cursor.project({info: 1, status: 1, forms: 1});
+  } else {
+    cursor = cursor.project({info: 1, status: 1});
+  }
+
+  cursor.toArray().then( (documents) => {
+    callback(documents);
   });
 }
 

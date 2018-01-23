@@ -125,33 +125,26 @@ Other options are available: https://wix.github.io/react-native-navigation/#/scr
   2. Add any database interactions to src/Mongo.js
       - Generally functions should follow format of
       ```javascript
-        export function patientExists(param, callback)
-          MongoClient.connect(url, function(err, client) {
-            assert.equal(null, err);
-            client.db('ihc').collection('patients').find({patientInfo: patientInfo})
-              .next( (err,doc) => {
-                client.close();
-                callback(doc);
-              });
-          });
+        export function patientExists(param, callback, next)
+          db.collection('patients').find({patientInfo: patientInfo})
+            .next( (err,doc) => {
+              callback(doc);
+            });
         }
       ```
       callback(o) is where the caller handles the return object.
+      next() is the Express argument that we are using as part of error handling
 
       Example route:
       ```javascript
-        app.post("/signin/newpatient", (req,res) => {
-          try {
-            db.patientExists(req.body.patientInfo, (exists) => {
-              if(!exists) {
-                db.createPatient(req.body.patientInfo, () => res.send(true));
-              } else {
-                res.send(false);
-              }
-            } 
-          } catch(err) {
-            res.status(500).send({error: error}));
-          }
+        app.post("/signin/newpatient", (req,res,next) => {
+          db.patientExists(req.body.patientInfo, (exists) => {
+            if(!exists) {
+              db.createPatient(req.body.patientInfo, () => res.send(true));
+            } else {
+              res.send(false);
+            }
+          }, next); 
         });
       ```
   3. Update the README API Section for that route with the body and return

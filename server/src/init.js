@@ -21,26 +21,21 @@ var corsOptions = {
 app.use(cors);
 */
 
-db.databaseCheck();
+db.databaseConnect();
 
 const app = express();
 // Allow JSON
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-// Error handling
-// TODO: Make sure this actually works properly
-app.use(catchError);
-function catchError(err, req, res, next) {
-  if (req.xhr) {
-    res.status(500).send({ error: err })
-  } else {
-    next(err)
-  }            
-}
-
 // import routes from ./routes.js
 require('./routes')(app, db);
+
+// Generic error handling
+app.use(catchError);
+function catchError(err, req, res, next) {
+  res.status(500).send({ error: err.message });
+}
 
 // Tablets should fetch from the computer's IP Address, i.e. 192.168.1.100
 app.listen(port, () => console.log('Server listening on port ' + port))
