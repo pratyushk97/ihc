@@ -6,6 +6,7 @@ const assert = require('assert');
 // TODO: Move to config file
 const url = 'mongodb://localhost:27017/data';
 
+const dbName = 'ihc';
 let db, myClient;
 
 export function databaseConnect() {
@@ -18,11 +19,11 @@ export function databaseConnect() {
   MongoClient.connect(url, options, function(err, client) {
     if(err) {
       console.log("Database connection failed... Make sure database server is running (mongod)");
-      return;
+      process.exit();
     }
     console.log("Database connection successful!");
 
-    db = client.db('ihc');
+    db = client.db(dbName);
     myClient = client;
   });
 }
@@ -32,7 +33,13 @@ export function patientExists(patientInfo, callback, next) {
       info: patientInfo
     })
     .next( (err,doc) => {
-      assert.equal(null, err);
+      try {
+        assert.equal(null, err);
+      } catch(e) {
+        const msg = err ? err.message : e.message;
+        next(new Error("Error for patientExists: " + msg));
+        return;
+      }
       callback(doc);
     });
 }
@@ -40,8 +47,14 @@ export function patientExists(patientInfo, callback, next) {
 export function createPatient(patientInfo, callback, next) {
   db.collection('patients').insertOne({info: patientInfo},
       function(err, r) {
-        assert.equal(null, err);
-        assert.equal(1, r.insertedCount);
+        try {
+          assert.equal(null, err);
+          assert.equal(1, r.insertedCount);
+        } catch(e) {
+          const msg = err ? err.message : e.message;
+          next(new Error("Error for createPatient: " + msg));
+          return;
+        }
         callback();
       });
 }
@@ -55,11 +68,7 @@ export function updateStatus(patientInfo, newStatus, callback, next) {
   db.collection('patients')
     .updateOne({info: patientInfo},
       { $set: { status: newStatus } },
-      function(err, r) {
-        assert.equal(null, err);
-        assert.equal(r.modifiedCount, 1);
-        callback(r.result.ok === 1);
-      });
+      (err, r) => postUpdateFunction(err, r, callback, next, 'updateStatus', 1, 0));
 }
 
 export function updateSoap(patientInfo, newSoap, callback, next) {
@@ -73,11 +82,7 @@ export function updateSoap(patientInfo, newSoap, callback, next) {
         info: patientInfo,
       },
       intermediaryUpdate,
-      function(err, r) {
-        assert.equal(null, err);
-        assert.equal(r.modifiedCount, 1);
-        callback(r.result.ok === 1);
-      });
+      (err, r) => postUpdateFunction(err, r, callback, next, 'updateSoap', 1, 0));
 }
 
 export function updateTriage(patientInfo, newTriage, callback, next) {
@@ -91,11 +96,7 @@ export function updateTriage(patientInfo, newTriage, callback, next) {
         info: patientInfo,
       },
       intermediaryUpdate,
-      function(err, r) {
-        assert.equal(null, err);
-        assert.equal(r.modifiedCount, 1);
-        callback(r.result.ok === 1);
-      });
+      (err, r) => postUpdateFunction(err, r, callback, next, 'updateTriage', 1, 0));
 }
 
 export function getPatients(returnOnlyCheckedInPatients, includeForms, callback, next) {
@@ -129,6 +130,29 @@ function newStatusObject() {
   statusObj.pharmacy_completed = false;
   return statusObj;
 }
+
+/*
+ * Function called after many of the db interactions
+ * Encapsulates error checking
+ */
+function postUpdateFunction(err, r, callback, next, functionName = "",
+    expectedModifiedCount = 0, expectedInsertCount = 0) {
+  try {
+    assert.equal(null, err);
+    if(r.modifiedCount != null && expectedModifiedCount != r.modifiedCount)
+      throw new Error(`Modified count expected to be ${expectedModifiedCount} but was ${r.modifiedCount}`)
+    if(r.insertedCount != null && expectedInsertCount != r.insertedCount)
+      throw new Error(`Inserted count expected to be ${expectedInsertCount} but was ${r.insertedCount}`)
+  } catch(e) {
+    const msgBegin = functionName ? `Error for ${functionName}: ` : 'Error: ' ;
+    const msg = err ? err.message : e.message;
+    next(new Error(msgBegin + msg));
+    return;
+  }
+  callback(r.result.ok === 1);
+}
+
+
 
 // OLD FIREBASE STUFF BELOW, delete when not necessary
 

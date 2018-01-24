@@ -29,7 +29,7 @@ module.exports = function(app, db) {
     db.patientExists(req.body.patientInfo, (exists) => {
       if(!exists) {
         db.createPatient(req.body.patientInfo, () => {
-          db.patientSignin(req.body.patientInfo, () => res.send(true))
+          db.patientSignin(req.body.patientInfo, () => res.send(true), next)
         }, next);
       } else {
         res.send(false);
@@ -42,7 +42,7 @@ module.exports = function(app, db) {
       if(!exists) {
         res.send(false);
       } else {
-        db.patientSignin(req.body.patientInfo, () => res.send(true));
+        db.patientSignin(req.body.patientInfo, () => res.send(true), next);
       }
     }, next);
   });
