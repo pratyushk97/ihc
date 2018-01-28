@@ -28,7 +28,7 @@ export default class WelcomeScreen extends Component<{}> {
 
   goToSelectPatient = () => {
     this.props.navigator.push({
-      screen: 'Ihc.SelectPatientScreen',
+      screen: 'Ihc.PatientSelectScreen',
       title: 'Select patient'
     });
   }
