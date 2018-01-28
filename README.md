@@ -281,7 +281,6 @@ PATCH /patients/soap/ :white_check_mark:
   
 PATCH /patients/triage/ :white_check_mark:
   - Update patient's triage form
-  - Also update the growthchart info
   ```
   body: {
     patientInfo: PatientInfo object,
@@ -291,9 +290,18 @@ PATCH /patients/triage/ :white_check_mark:
   returns: true if successful
   ```
   
-PATCH /patients/growthchart/
+POST /patients/growthchartupdate :white_check_mark:
+  - Add update to patient's overall records
+  ```
+  body: {
+    patientInfo: PatientInfo object,
+    update: GrowthChartRow object
+  }
 
-PATCH /patients/medications
+  returns: true if successful
+  ```
+
+POST /patients/medicationsupdate
   - Add update to patient's overall records
   - ```
     Update: {
@@ -453,7 +461,7 @@ Patient
         * Status object
     * forms/
         * medications/
-          * : drugName/
+          * :drugName/
             * [DrugUpdate object, DrugUpdate object, ...]
         * soaps/
           * :date/
@@ -492,6 +500,7 @@ PatientInfo (Full patient information)
 DrugUpdate
 ```
 {
+    name: string,
     date: date,
     dose: string,
     frequency: string,

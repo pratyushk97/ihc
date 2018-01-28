@@ -71,6 +71,14 @@ module.exports = function(app, db) {
       res.send(result);
     }, next);
   });
+
+  app.post("/patients/growthchartupdate", (req,res,next) => {
+    const patientInfo = req.body.patientInfo;
+    const update = req.body.update;
+    db.addGrowthChartUpdate(patientInfo, update, (result) => {
+      res.send(result);
+    }, next);
+  });
 }
 
 

@@ -99,6 +99,16 @@ export function updateTriage(patientInfo, newTriage, callback, next) {
       (err, r) => postUpdateFunction(err, r, callback, next, 'updateTriage', 1, 0));
 }
 
+export function addGrowthChartUpdate(patientInfo, update, callback, next) {
+  db.collection('patients')
+    .updateOne(
+      {
+        info: patientInfo,
+      },
+      { $push: {'forms.growthchart.rows': update } },
+      (err, r) => postUpdateFunction(err, r, callback, next, 'addGrowthChartUpdate', 1, 0));
+}
+
 export function getPatients(returnOnlyCheckedInPatients, includeForms, callback, next) {
   if(returnOnlyCheckedInPatients) {
     var cursor = db.collection('patients').find({
