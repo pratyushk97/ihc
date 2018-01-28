@@ -300,6 +300,9 @@ POST /patients/growthchartupdate :white_check_mark:
 
   returns: true if successful
   ```
+PATCH /patients/growthchart
+  - Add info for GrowthChart object that is not a GrowthChartRow
+  - For now, includes father and mother's heights
 
 POST /patients/medicationsupdate
   - Add update to patient's overall records
@@ -327,7 +330,7 @@ GET /patients/soap/:date
 GET /patients/history
   - Return list of triages and soaps dates, not the actual forms
 
-POST /signout
+POST /signout :white_check_mark:
   - Signout everyone that is currently marked as "active"
 
 ==========================================
@@ -599,7 +602,7 @@ GrowthChartRow
 Status
 ```
 {
-    active: boolean,
+    active: boolean (if they came to clinic today),
     checkin_time: datetime,
     triage_completed: boolean,
     doctor_completed: boolean,

@@ -12,6 +12,12 @@ module.exports = function(app, db) {
     next(new Error('No path matched for URL: ' + req.originalUrl));
   });
 
+  app.post("/signout", (req,res,next) => {
+    db.signoutEveryone((result) => {
+      res.send(result);
+    }, next);
+  });
+
   /* =========================================================================
    * All routes below this line expect a patientInfo object in the req.body
    */

@@ -109,6 +109,16 @@ export function addGrowthChartUpdate(patientInfo, update, callback, next) {
       (err, r) => postUpdateFunction(err, r, callback, next, 'addGrowthChartUpdate', 1, 0));
 }
 
+export function signoutEveryone(callback, next) {
+  db.collection('patients')
+    .updateMany(
+      {
+        "status.active": true,
+      },
+      { $set: {'status.active': false} },
+      (err, r) => postUpdateFunction(err, r, callback, next, 'signoutEveryone', -1, 0));
+}
+
 export function getPatients(returnOnlyCheckedInPatients, includeForms, callback, next) {
   if(returnOnlyCheckedInPatients) {
     var cursor = db.collection('patients').find({
@@ -144,15 +154,23 @@ function newStatusObject() {
 /*
  * Function called after many of the db interactions
  * Encapsulates error checking
+ * If expectedXXXCount is negative, then don't check
  */
 function postUpdateFunction(err, r, callback, next, functionName = "",
     expectedModifiedCount = 0, expectedInsertCount = 0) {
   try {
     assert.equal(null, err);
-    if(r.modifiedCount != null && expectedModifiedCount != r.modifiedCount)
-      throw new Error(`Modified count expected to be ${expectedModifiedCount} but was ${r.modifiedCount}`)
-    if(r.insertedCount != null && expectedInsertCount != r.insertedCount)
-      throw new Error(`Inserted count expected to be ${expectedInsertCount} but was ${r.insertedCount}`)
+    if(r.modifiedCount !== null ) {
+      if( expectedModifiedCount > 0 && expectedModifiedCount !== r.modifiedCount) {
+        throw new Error(`Modified count expected to be ${expectedModifiedCount} but was ${r.modifiedCount}`);
+      }
+    }
+
+    if(r.insertedCount !== null ) {
+      if( expectedInsertCount > 0 && expectedInsertCount != r.insertedCount) {
+        throw new Error(`Inserted count expected to be ${expectedInsertCount} but was ${r.insertedCount}`);
+      }
+    }
   } catch(e) {
     const msgBegin = functionName ? `Error for ${functionName}: ` : 'Error: ' ;
     const msg = err ? err.message : e.message;
