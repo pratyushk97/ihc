@@ -11,28 +11,31 @@ import {
 import TableRow from './TableRow';
 
 export default class Table extends Component<{}> {
+  /*
+   * Expects:
+   *  {
+   *    headers: [string],
+   *    rows: [[data]],
+   *    loading: boolean,
+   *    renderRow: function (custom renderRow fn?)
+   *  }
+   */
   constructor(props) {
     super(props);
-
-    /*
-    this.state = {
-      loading: false,
-      headers: props.headers,
-      rowData: props.rowData,
-      columnOrder: []
-      error: null
-    };
-    */
   }
 
-  /*
-   * Take in data (Array of object), and for each object, convert it to an array
-   * with the elements ordered as designated by the columnOrder array
-   */
-  createMatrix(data, columnOrder) {
-    return data.map((obj) => {
-      columnOrder.map( (key) => obj[key] );
-    });
+  // TODO: Support for header style, checkable cells, click events
+  renderRow(data, keyFn) {
+    const cols = data.map( (e,i) => (
+      <View style={styles.row} key={keyFn(i)}>
+        <Text>{e}</Text>
+      </View>
+    ) );
+    return (
+      <View style={styles.rowContainer} key={keyFn(cols.length)}>
+        {cols}
+      </View>
+    )
   }
 
   render() {
@@ -44,37 +47,37 @@ export default class Table extends Component<{}> {
       )
     }
 
-    /*
-    const rows = this.createMatrix(this.props.rowData, this.props.columnOrder);
-    console.log(rows);
-    */
-
+    // Render row for header, then render all the rows
     return (
-      <View>
-        <FlatList data={this.props.headers}
-          horizontal={true}
-          renderItem={({item}) => (
-            <Text>{item}</Text>
-          )}
-          keyExtractor={(item,i) => i}
-        />
-
-        <FlatList data={this.props.rows}
-          renderItem={({item}) => (
-            <Text>{item}</Text>
-          )}
-          keyExtractor={(item,i) => i}
-        />
-
-        <FlatList data={this.props.rows}
-          renderItem={({ row }) => (
-            <View>
-            <Text>{row}</Text>
-            </View>
-          )}
-          keyExtractor={(item,i) => i}
-        />
+      <View style={styles.container}>
+        {this.renderRow(this.props.headers, (i) => `header${i}`)}
+        {this.props.rows.map( (row, i) => this.renderRow(row, (i) => `row${i}`) )}
       </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    minWidth: '80%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F5FCFF',
+  },
+  title: {
+    fontSize: 20,
+    textAlign: 'center',
+    margin: 10,
+  },
+  rowContainer: {
+    flex: 1,
+    alignSelf: 'stretch',
+    flexDirection: 'row'
+  },
+  row: {
+    flex: 1,
+    alignSelf: 'stretch',
+    minWidth: 64
+  }
+});
