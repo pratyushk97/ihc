@@ -52,9 +52,14 @@ export default class PatientSelectScreen extends Component<{}> {
     this.loadPatients();
   }
 
-  // TODO: Go to that patient's homepage
+  // TODO: Currently hardcoding in patientInfo, update that
   // Also need to modify service call to include identifying information
   goToPatient = (patient) => {
+    this.props.navigator.push({
+      screen: 'Ihc.PatientHomeScreen',
+      title: patient.name,
+      passProps: { patientInfo: { name: patient[0] } }
+    });
   }
 
   renderRow = (data, keyFn) => {

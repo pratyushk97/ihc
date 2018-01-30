@@ -7,6 +7,7 @@ import {
   ScrollView
 } from 'react-native';
 
+// TODO: Maybe rewrite with react-native-easy-grid?
 export default class Table extends Component<{}> {
   /*
    * Expects in props:
