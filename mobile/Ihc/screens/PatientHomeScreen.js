@@ -70,10 +70,17 @@ export default class PatientHomeScreen extends Component<{}> {
   }
 
   render() {
+    const date = new Date();
+    //const dateString = `${date.getMonth()} ${date.getDate()}, ${date.getYear()}`;
+    const dateString = date.toDateString();
     return (
       <View style={styles.container}>
         <Text style={styles.title}>
           {this.props.patientInfo.name}
+        </Text>
+
+        <Text style={styles.title}>
+          {dateString}
         </Text>
 
         <View style={styles.gridContainer}>
@@ -135,7 +142,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     textAlign: 'center',
-    margin: 10,
+    margin: 5,
   },
   buttonContainer: {
     width: 150,
