@@ -4,35 +4,31 @@ import {
   Button,
   Text,
   View,
-  List,
-  ListItem,
-  FlatList
+  ScrollView
 } from 'react-native';
-import TableRow from './TableRow';
 
 export default class Table extends Component<{}> {
   /*
-   * Expects:
+   * Expects in props:
    *  {
    *    headers: [string],
    *    rows: [[data]],
    *    loading: boolean,
-   *    renderRow: function (custom renderRow fn?)
+   *    renderRow: function
    *  }
    */
   constructor(props) {
     super(props);
   }
 
-  // TODO: Support for header style, checkable cells, click events
-  renderRow(data, keyFn) {
+  renderHeader(data, keyFn) {
     const cols = data.map( (e,i) => (
-      <View style={styles.row} key={keyFn(i)}>
+      <View style={tableStyles.col} key={keyFn(i)}>
         <Text>{e}</Text>
       </View>
     ) );
     return (
-      <View style={styles.rowContainer} key={keyFn(cols.length)}>
+      <View style={tableStyles.rowContainer} key={keyFn(cols.length)}>
         {cols}
       </View>
     )
@@ -49,15 +45,24 @@ export default class Table extends Component<{}> {
 
     // Render row for header, then render all the rows
     return (
-      <View style={styles.container}>
-        {this.renderRow(this.props.headers, (i) => `header${i}`)}
-        {this.props.rows.map( (row, i) => this.renderRow(row, (i) => `row${i}`) )}
-      </View>
+      <ScrollView contentContainerStyle={tableStyles.scroller}>
+        {this.renderHeader(this.props.headers, (i) => `header${i}`)}
+        {this.props.rows.map( (row, i) => this.props.renderRow(row, (i) => `row${i}`) )}
+      </ScrollView>
     );
   }
 }
 
-const styles = StyleSheet.create({
+/*
+ * Files that create a renderRow() function should use these styles for
+ * consistency
+ */
+export const tableStyles = StyleSheet.create({
+  scroller: {
+    flex: 0,
+    minWidth: '80%',
+    backgroundColor: '#F5FCFF',
+  },
   container: {
     flex: 1,
     minWidth: '80%',
@@ -73,9 +78,10 @@ const styles = StyleSheet.create({
   rowContainer: {
     flex: 1,
     alignSelf: 'stretch',
-    flexDirection: 'row'
+    flexDirection: 'row',
+    minHeight: 32
   },
-  row: {
+  col: {
     flex: 1,
     alignSelf: 'stretch',
     minWidth: 64

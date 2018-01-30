@@ -16,7 +16,15 @@ export function getPatientSelectRows() {
   const arr =
     [
       newFakePatientSelectRow('Jose'),
-      newFakePatientSelectRow('Bob')
+      newFakePatientSelectRow('Bob'),
+      newFakePatientSelectRow('Matt'),
+      newFakePatientSelectRow('Coco'),
+      newFakePatientSelectRow('Brandon'),
+      newFakePatientSelectRow('Evan'),
+      newFakePatientSelectRow('Sarah'),
+      newFakePatientSelectRow('Daniel'),
+      newFakePatientSelectRow('Neil'),
+      newFakePatientSelectRow('William')
     ];
 
   const columnOrder = ['name', 'birthday', 'checkin_time', 'triage_completed',
@@ -28,15 +36,18 @@ export function getPatientSelectRows() {
   });
 }
 
+const numFakePatients = 0;
+// Currently ignore triage/doctor/pharmacy params
 function newFakePatientSelectRow(name, triage = false, doctor = false,
     pharm = false, notes = "") {
+  numFakePatients++;
   return {
     name: name,
     birthday: '20180201',
     checkin_time: new Date().getTime(),
-    triage_completed: triage,
-    doctor_completed: doctor,
-    pharmacy_completed: pharm,
+    triage_completed: numFakePatients % 2 === 0,
+    doctor_completed: numFakePatients % 4 === 0,
+    pharmacy_completed: numFakePatients % 8 ===0,
     notes: notes
   }
 }

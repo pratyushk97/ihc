@@ -8,21 +8,20 @@ import React, { Component } from 'react';
 import {
   StyleSheet,
   Button,
+  CheckBox,
   Text,
-  View,
-  List,
-  ListItem,
-  FlatList
+  TouchableOpacity,
+  View
 } from 'react-native';
-//import { List, ListItem } from 'react-native-elements';
 import * as data from '../services/FakeDataService';
-import Table from '../components/Table';
+import Table, {tableStyles} from '../components/Table';
 
 export default class PatientSelectScreen extends Component<{}> {
   constructor(props) {
     super(props);
 
-    this.tableHeaders = ['Name', 'Birthday', 'Checkin time', 'Triage', 'Doctor',
+    this.rowNum = 0;
+    this.tableHeaders = ['Name', 'Birthday', 'Checkin', 'Triage', 'Doctor',
             'Pharmacy', 'Notes'];
     this.state = {
       loading: false,
@@ -53,12 +52,48 @@ export default class PatientSelectScreen extends Component<{}> {
     this.loadPatients();
   }
 
+  // TODO: Go to that patient's homepage
+  // Also need to modify service call to include identifying information
+  goToPatient = (patient) => {
+  }
+
+  renderRow = (data, keyFn) => {
+    const cols = data.map( (e,i) => (
+      <View style={tableStyles.col} key={keyFn(i)}>
+        {( () => {
+          switch(i) {
+            // TODO: format birthday
+            case 2: //checkin time
+              const date = new Date(e);
+              // TODO: update checkintime format
+              return <Text>{`${date.getHours()}:${date.getMinutes()}`}</Text>
+              break;
+            case 3:
+            case 4:
+            case 5:
+              return <CheckBox disabled={true} value={e} />
+            default:
+              return <Text>{e}</Text>
+          }
+        })() }
+      </View>
+    ) );
+    return (
+      <TouchableOpacity style={tableStyles.rowContainer}
+          key={`row${this.rowNum++}`} onPress={() => this.goToPatient(data)}>
+        <View style={tableStyles.rowContainer} key={keyFn(cols.length)}>
+          {cols}
+        </View>
+      </TouchableOpacity>
+    )
+  }
+
   render() {
     if(this.state.loading) {
       return (
         <View style={styles.container}>
           <Text style={styles.title}>
-            PatientSelect
+            Select a Patient
           </Text>
           <Text>Loading...</Text>
         </View>
@@ -67,13 +102,14 @@ export default class PatientSelectScreen extends Component<{}> {
     return (
       <View style={styles.container}>
         <Text style={styles.title}>
-          PatientSelect
+          Select a Patient
         </Text>
 
         <Table
           headers={this.tableHeaders}
           rows={this.state.rows}
           loading={this.state.loading}
+          renderRow={this.renderRow}
         />
 
         <Button onPress={this.goToWelcome}
@@ -94,5 +130,5 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: 'center',
     margin: 10,
-  },
+  }
 });
