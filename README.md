@@ -194,6 +194,19 @@ Patient gets a new SOAP and Triage form every visit
 
 Medication and growth chart forms reused
 
+Other considerations:
+Misc file upload per patient
+  - folder to hold scans of anything
+Ensure pharmacy can change medications after doctor wrote it in
+  - editable table
+Timestamp instead of checkbox for patient select for when they finished
+  - does this need to persist?
+Field for who was triager
+Potential password? lock screen after given amount of time?
+If router went out, potentailly pass tablets around
+  - But wouldnt know patients are signed-in in the first place
+  - Maybe have offline patient search
+
 ##### High level plan:
 
 Mobile:
@@ -604,9 +617,9 @@ Status
 {
     active: boolean (if they came to clinic today),
     checkin_time: datetime,
-    triage_completed: boolean,
-    doctor_completed: boolean,
-    pharmacy_completed: boolean,
+    triage_completed: boolean, timestamp?
+    doctor_completed: boolean, timestamp?
+    pharmacy_completed: boolean, timestamp?
     notes: string
 }
 ```
