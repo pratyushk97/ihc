@@ -45,9 +45,9 @@ function newFakePatientSelectRow(name, triage = false, doctor = false,
     name: name,
     birthday: '20180201',
     checkin_time: new Date().getTime(),
-    triage_completed: numFakePatients % 2 === 0,
-    doctor_completed: numFakePatients % 4 === 0,
-    pharmacy_completed: numFakePatients % 8 ===0,
+    triage_completed: numFakePatients % 2 === 0 ? new Date().getTime() : null,
+    doctor_completed: numFakePatients % 4 === 0 ? new Date().getTime() : null,
+    pharmacy_completed: numFakePatients % 8 === 0 ? new Date().getTime() : null,
     notes: notes
   }
 }
