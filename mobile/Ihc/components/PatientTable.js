@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 
 // TODO: Maybe rewrite with react-native-easy-grid?
-export default class Table extends Component<{}> {
+export default class PatientTable extends Component<{}> {
   /*
    * Expects in props:
    *  {

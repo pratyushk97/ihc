@@ -36,6 +36,37 @@ export function getPatientSelectRows() {
   });
 }
 
+export function getMedicationUpdates() {
+  const arr = [
+    newFakeMedicationUpdate('Tylenol'),
+    newFakeMedicationUpdate('Tylenol'),
+    newFakeMedicationUpdate('Advil'),
+  ];
+
+  return new Promise((resolve, reject) => {
+    setTimeout(resolve, 100, arr);
+  });
+}
+
+const medsToCount = {}
+function newFakeMedicationUpdate(name) {
+  if (name in medsToCount) {
+    medsToCount[name]++;
+  }
+  else {
+    medsToCount[name] = 1;
+  }
+
+  return {
+    name: name,
+    date: `2018020${medsToCount[name]}`,
+    dose: '10mg',
+    frequency: 'bid',
+    duration: '1 month',
+    notes: 'yes'
+  }
+}
+
 const numFakePatients = 0;
 // Currently ignore triage/doctor/pharmacy params
 function newFakePatientSelectRow(name, triage = false, doctor = false,

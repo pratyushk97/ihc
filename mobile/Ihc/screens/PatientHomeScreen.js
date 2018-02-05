@@ -26,7 +26,7 @@ export default class PatientHomeScreen extends Component<{}> {
     });
   }
 
-  // TODO all of these
+  // TODO all of these except medications
   goToTriage = () => {
     this.props.navigator.push({
       screen: 'Ihc.PatientSelectScreen',
@@ -43,8 +43,9 @@ export default class PatientHomeScreen extends Component<{}> {
 
   goToMedicationList = () => {
     this.props.navigator.push({
-      screen: 'Ihc.PatientSelectScreen',
-      title: 'Select patient'
+      screen: 'Ihc.MedicationScreen',
+      title: 'Medications',
+      passProps: { patientInfo: this.props.patientInfo }
     });
   }
 

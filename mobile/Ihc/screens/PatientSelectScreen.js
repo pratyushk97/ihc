@@ -14,7 +14,7 @@ import {
   View
 } from 'react-native';
 import * as data from '../services/FakeDataService';
-import Table, {tableStyles} from '../components/Table';
+import PatientTable, {tableStyles} from '../components/PatientTable';
 
 export default class PatientSelectScreen extends Component<{}> {
   constructor(props) {
@@ -113,7 +113,7 @@ export default class PatientSelectScreen extends Component<{}> {
           Select a Patient
         </Text>
 
-        <Table
+        <PatientTable
           headers={this.tableHeaders}
           rows={this.state.rows}
           loading={this.state.loading}
