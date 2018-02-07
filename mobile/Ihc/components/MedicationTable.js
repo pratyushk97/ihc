@@ -58,6 +58,50 @@ export default class MedicationTable extends Component<{}> {
     this.loadMedications();
   }
 
+  // Returns the update with that name, or null if not found
+  // updates: Array of update objects
+  // name: string
+  updateWithName(updates, name) {
+    return updates.find( (update) => {
+      return update.name === name;
+    });
+  }
+
+  renderRow(updates, name, columnIndex, rowIndex) {
+    let update = this.updateWithName(updates, name);
+    if(!update) {
+      update = {
+        dose: "",
+        frequency: "",
+        duration: "",
+        notes: ""
+      }
+    }
+
+    return (
+      <Row style={styles.row} key={`col${columnIndex}row${rowIndex}`}>
+        <Col style={styles.smallCol}><Text style={styles.text}>{update.dose}</Text></Col>
+        <Col style={styles.smallCol}><Text style={styles.text}>{update.frequency}</Text></Col>
+        <Col style={styles.smallCol}><Text style={styles.text}>{update.duration}</Text></Col>
+        <Col style={styles.notesCol}><Text style={styles.text}>{update.notes}</Text></Col>
+      </Row>
+    )
+  }
+
+  // Row order should follow names array
+  renderColumn(date, updates, names, i) {
+    const rows = names.map( (name, rowIndex) => {
+      return this.renderRow(updates, name, i, rowIndex);
+    });
+
+    return (
+      <Col style={styles.fullCol} key={`col${i}`}>
+        <Row style={styles.headerRow}><Text>{date}</Text></Row>
+        {rows}  
+      </Col>
+    );
+  }
+
   render() {
     if (!this.state.drugNames || !this.state.dateToUpdates) {
       return (
@@ -70,20 +114,26 @@ export default class MedicationTable extends Component<{}> {
     const names = Array.from(this.state.drugNames).sort();
     const nameColumn = names.map( (name,i) => {
         return (
-          <Row key={`name${i}`}><Text>{name}</Text></Row>
+          <Row style={styles.row} key={`name${i}`}><Text>{name}</Text></Row>
         )
       });
 
+    const updateColumns = Object.keys(this.state.dateToUpdates).map( (date, i) => {
+        return this.renderColumn(date, this.state.dateToUpdates[date], names, i);
+      });
 
     // Render row for header, then render all the rows
     return (
-      <ScrollView contentContainerStyle={tableStyles.scroller}>
-        <Grid>
-          <Col>
-            <Text>Drug name</Text>
-            {nameColumn}
-          </Col>
-        </Grid>
+      <ScrollView contentContainerStyle={styles.verticalScroller}>
+        <ScrollView horizontal contentContainerStyle={styles.horizontalScroller}>
+          <Grid>
+            <Col style={styles.nameColumn}>
+              <Row style={styles.headerRow}><Text>Drug name</Text></Row>
+              {nameColumn}
+            </Col>
+            {updateColumns}
+          </Grid>
+        </ScrollView>
       </ScrollView>
     );
   }
@@ -93,15 +143,17 @@ export default class MedicationTable extends Component<{}> {
  * Files that create a renderRow() function should use these styles for
  * consistency
  */
-export const tableStyles = StyleSheet.create({
-  scroller: {
-    flex: 0,
-    minWidth: '80%',
-    backgroundColor: '#F5FCFF',
+export const styles = StyleSheet.create({
+  horizontalScroller: {
+    minWidth: 700,
+  },
+  verticalScroller: {
+    minHeight: '60%',
   },
   container: {
-    flex: 1,
-    minWidth: '80%',
+    minWidth: '90%',
+    minHeight: '90%',
+    margin: 4,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
@@ -111,15 +163,38 @@ export const tableStyles = StyleSheet.create({
     textAlign: 'center',
     margin: 10,
   },
-  rowContainer: {
-    flex: 1,
-    alignSelf: 'stretch',
-    flexDirection: 'row',
-    minHeight: 32
+  headerRow: {
+    maxHeight: 40,
+    backgroundColor: '#dbdbdb',
+    borderWidth: 1
   },
-  col: {
-    flex: 1,
-    alignSelf: 'stretch',
-    minWidth: 64
+  row: {
+    height: 60,
+    backgroundColor: '#dddddd',
+    borderWidth: 1
+  },
+  notesCol: {
+    minWidth: 150,
+    backgroundColor: '#adadad',
+    borderWidth: 1
+  },
+  smallCol: {
+    minWidth: 60,
+    backgroundColor: '#adadad',
+    borderWidth: 1
+  },
+  fullCol: {
+    minWidth: 250,
+    backgroundColor: '#adadad',
+    borderWidth: 1
+  },
+  nameColumn: {
+    minWidth: 100,
+    maxWidth: 100,
+    backgroundColor: '#adada0',
+    borderWidth: 1
+  },
+  text: {
+    textAlign: 'center',
   }
 });

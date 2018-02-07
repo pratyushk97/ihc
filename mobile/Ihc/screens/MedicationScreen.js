@@ -74,7 +74,7 @@ export default class MedicationScreen extends Component<{}> {
           {this.props.patientInfo.name}'s Medications
         </Text>
 
-        <MedicationTable />
+        <MedicationTable style={styles.table} />
 
         <Button onPress={this.backToPatient}
           title="Back to patient" />
@@ -96,5 +96,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: 'center',
     margin: 10,
+  },
+  table: {
   }
 });

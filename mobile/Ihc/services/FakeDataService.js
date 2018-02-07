@@ -41,6 +41,10 @@ export function getMedicationUpdates() {
     newFakeMedicationUpdate('Tylenol'),
     newFakeMedicationUpdate('Tylenol'),
     newFakeMedicationUpdate('Advil'),
+    newFakeMedicationUpdate('Aspirin'),
+    newFakeMedicationUpdate('Aspirin'),
+    newFakeMedicationUpdate('Aspirin'),
+    newFakeMedicationUpdate('Cold meds'),
   ];
 
   return new Promise((resolve, reject) => {
