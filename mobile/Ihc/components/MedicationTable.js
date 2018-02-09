@@ -8,55 +8,21 @@ import {
 } from 'react-native';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import * as data from '../services/FakeDataService';
-import MedicationTableColumn from './MedicationTableColumn';
 
 export default class MedicationTable extends Component<{}> {
   /*
    * Expects in props:
    *  {
    *    refill, discontinue, change functions
+   *    updates: [DrugUpdate obj, ...]
+   *    dateToUpdates: {date: [DrugUpdate objs with that date]}
+   *    drugNames: [drugNames]
    *  }
    */
+  // TODO: only take in updates prop and calculate dateToUpdates and drugNames
+  // here
   constructor(props) {
     super(props);
-    this.state = {
-      dateToUpdates: {},
-      drugNames: new Set(),
-      updates: []
-    }
-  }
-
-  componentDidMount() {
-    this.setup();
-  }
-
-  loadMedications = () => {
-    this.setState({ loading: true });
-    data.getMedicationUpdates()
-      .then( updates => {
-        const dateToUpdates = {};
-        const drugNames = new Set();
-
-        updates.forEach( (update) => {
-          if(update.date in dateToUpdates) {
-            dateToUpdates[update.date].push(update);
-          } else{
-            dateToUpdates[update.date] = [update];
-          }
-
-          drugNames.add(update.name);
-        });
-
-        this.setState({updates: updates, dateToUpdates: dateToUpdates,
-          drugNames: drugNames, loading: false});
-      })
-      .catch(err => {
-        this.setState({ error: err, loading: false });
-      });
-  }
-
-  componentDidMount() {
-    this.loadMedications();
   }
 
   // Returns the update with that name, or null if not found
@@ -103,15 +69,19 @@ export default class MedicationTable extends Component<{}> {
     );
   }
 
+  /*
+   * Take in updates for most recent date, and drug names
+   */
   renderButtonColumn(updates, names) {
     const rows = names.map( (name, i) => {
       const update = this.updateWithName(updates, name);
+      const exists = Boolean(update);
       return (
         <Row style={styles.row} key={`buttonRow${i}`}>
           <TouchableOpacity
-              style={styles.buttonContainer}
+              style={[styles.buttonContainer, !exists && {opacity: 0.5}]}
               onPress={() => this.props.refill(update)}
-              disabled={Boolean(update)}>
+              disabled={!exists}>
             <Text style={styles.button}>R</Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -120,9 +90,10 @@ export default class MedicationTable extends Component<{}> {
             <Text style={styles.button}>C</Text>
           </TouchableOpacity>
           <TouchableOpacity
-              style={styles.buttonContainer}
+              style={[styles.buttonContainer, !exists && {opacity: 0.5}]}
               onPress={() => this.props.discontinue(update)}
-              disabled={Boolean(update)}>
+              activeOpacity={!exists ? 1 : 0.7}
+              disabled={!exists}>
             <Text style={styles.button}>D</Text>
           </TouchableOpacity>
         </Row>
@@ -138,7 +109,7 @@ export default class MedicationTable extends Component<{}> {
   }
 
   render() {
-    if (!this.state.drugNames || !this.state.dateToUpdates) {
+    if (!this.props.drugNames || !this.props.dateToUpdates) {
       return (
         <View>
           <Text>No data to show</Text>
@@ -146,21 +117,21 @@ export default class MedicationTable extends Component<{}> {
       )
     }
 
-    const names = Array.from(this.state.drugNames).sort();
+    const names = Array.from(this.props.drugNames).sort();
     const nameColumn = names.map( (name,i) => {
         return (
           <Row style={styles.row} key={`name${i}`}><Text>{name}</Text></Row>
         )
       });
 
-    const dates = Object.keys(this.state.dateToUpdates).sort().reverse();
+    const dates = Object.keys(this.props.dateToUpdates).sort().reverse();
 
     const updateColumns = dates.map( (date, i) => {
-        return this.renderColumn(date, this.state.dateToUpdates[date], names, i);
+        return this.renderColumn(date, this.props.dateToUpdates[date], names, i);
       });
 
     const mostRecentDate = dates[0];
-    const buttonColumn = this.renderButtonColumn(this.state.dateToUpdates[mostRecentDate],
+    const buttonColumn = this.renderButtonColumn(this.props.dateToUpdates[mostRecentDate],
         names);
 
     // Render row for header, then render all the rows

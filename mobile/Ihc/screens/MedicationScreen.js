@@ -16,6 +16,8 @@ export default class MedicationScreen extends Component<{}> {
     this.state = {
       loading: false,
       updates: [],
+      dateToUpdates: {},
+      drugNames: new Set(),
       error: null
     };
   }
@@ -36,10 +38,28 @@ export default class MedicationScreen extends Component<{}> {
     });
   }
 
-  // TODO buttons
   refillMedication = (prevDrugUpdate) => {
+    // TODO get date in whatever format we end up choosing
+    // also ensure an update for that date doesn't already exist
+    const date = '20180303';
+    const newUpdate = Object.assign({}, prevDrugUpdate);
+    newUpdate.date = date;
+    const oldUpdates = this.state.updates;
+    oldUpdates.push(newUpdate);
+    const oldDateToUpdates = this.state.dateToUpdates;
+    if( date in oldDateToUpdates ) {
+      oldDateToUpdates[date].push(newUpdate);
+    } else {
+      oldDateToUpdates[date] = [newUpdate];
+    }
+
+    this.setState({
+      updates: oldUpdates,
+      dateToUpdates: oldDateToUpdates,
+    });
   }
 
+  // TODO buttons
   changeMedication = (prevDrugUpdate) => {
   }
 
@@ -48,6 +68,36 @@ export default class MedicationScreen extends Component<{}> {
 
   createNewMedication = () => {
   }
+
+  loadMedications = () => {
+    this.setState({ loading: true });
+    data.getMedicationUpdates()
+      .then( updates => {
+        const dateToUpdates = {};
+        const drugNames = new Set();
+
+        updates.forEach( (update) => {
+          if(update.date in dateToUpdates) {
+            dateToUpdates[update.date].push(update);
+          } else{
+            dateToUpdates[update.date] = [update];
+          }
+
+          drugNames.add(update.name);
+        });
+
+        this.setState({updates: updates, dateToUpdates: dateToUpdates,
+          drugNames: drugNames, loading: false});
+      })
+      .catch(err => {
+        this.setState({ error: err, loading: false });
+      });
+  }
+
+  componentDidMount() {
+    this.loadMedications();
+  }
+
 
   render() {
     if(this.props.loading) {
@@ -80,6 +130,9 @@ export default class MedicationScreen extends Component<{}> {
             refill={this.refillMedication}
             change={this.changeMedication}
             discontinue={this.discontinueMedication}
+            updates={this.state.updates}
+            dateToUpdates={this.state.dateToUpdates}
+            drugNames={this.state.drugNames}
            />
         </View>
 
