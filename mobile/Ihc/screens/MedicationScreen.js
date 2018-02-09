@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import {
   StyleSheet,
-  Button,
   CheckBox,
   Text,
   TouchableOpacity,
@@ -60,9 +59,11 @@ export default class MedicationScreen extends Component<{}> {
 
           <Text>Loading</Text>
 
-          <Button onPress={this.backToPatient}
+          <TouchableOpacity onPress={this.createNewMedication}
+            title="New Medication" />
+          <TouchableOpacity onPress={this.backToPatient}
             title="Back to patient" />
-          <Button onPress={this.goToSoap}
+          <TouchableOpacity onPress={this.goToSoap}
             title="To SOAP" />
         </View>
       );
@@ -74,12 +75,35 @@ export default class MedicationScreen extends Component<{}> {
           {this.props.patientInfo.name}'s Medications
         </Text>
 
-        <MedicationTable style={styles.table} />
+        <View style={styles.tableContainer}>
+          <MedicationTable style={styles.table}
+            refill={this.refillMedication}
+            change={this.changeMedication}
+            discontinue={this.discontinueMedication}
+           />
+        </View>
 
-        <Button onPress={this.backToPatient}
-          title="Back to patient" />
-        <Button onPress={this.goToSoap}
-          title="To SOAP" />
+        <Text>R: Refill, C: Change, D: Discontinue</Text>
+
+        <View style={styles.footer}>
+          <TouchableOpacity
+              style={styles.buttonContainer}
+              onPress={this.backToPatient}>
+            <Text style={styles.button}>Back to patient</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+              style={styles.buttonContainer}
+              onPress={this.createNewMedication}>
+            <Text style={styles.button}>New Medication</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+              style={styles.buttonContainer}
+              onPress={this.goToSoap}>
+            <Text style={styles.button}>To SOAP</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
@@ -95,8 +119,27 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     textAlign: 'center',
-    margin: 10,
+    margin: 4,
   },
-  table: {
+  tableContainer: {
+    maxHeight: '70%',
+    maxWidth: '95%',
+  },
+  buttonContainer: {
+    width: 150,
+    margin: 4,
+    padding: 8,
+    elevation: 4,
+    borderRadius: 2,
+    backgroundColor: '#2196F3',
+  },
+  button: {
+    fontWeight: '500',
+    color: '#fefefe',
+    textAlign: 'center',
+  },
+  footer: {
+    flex: 1,
+    flexDirection: 'row'
   }
 });

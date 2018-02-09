@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {
   StyleSheet,
-  Button,
+  TouchableOpacity,
   Text,
   View,
   ScrollView
@@ -14,6 +14,7 @@ export default class MedicationTable extends Component<{}> {
   /*
    * Expects in props:
    *  {
+   *    refill, discontinue, change functions
    *  }
    */
   constructor(props) {
@@ -102,6 +103,40 @@ export default class MedicationTable extends Component<{}> {
     );
   }
 
+  renderButtonColumn(updates, names) {
+    const rows = names.map( (name, i) => {
+      const update = this.updateWithName(updates, name);
+      return (
+        <Row style={styles.row} key={`buttonRow${i}`}>
+          <TouchableOpacity
+              style={styles.buttonContainer}
+              onPress={() => this.props.refill(update)}
+              disabled={Boolean(update)}>
+            <Text style={styles.button}>R</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+              style={styles.buttonContainer}
+              onPress={() => this.props.change(update)}>
+            <Text style={styles.button}>C</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+              style={styles.buttonContainer}
+              onPress={() => this.props.discontinue(update)}
+              disabled={Boolean(update)}>
+            <Text style={styles.button}>D</Text>
+          </TouchableOpacity>
+        </Row>
+      )
+    });
+
+    return (
+        <Col style={styles.nameColumn}>
+          <Row style={styles.headerRow}><Text>Actions</Text></Row>
+          {rows}
+        </Col>
+    )
+  }
+
   render() {
     if (!this.state.drugNames || !this.state.dateToUpdates) {
       return (
@@ -118,9 +153,15 @@ export default class MedicationTable extends Component<{}> {
         )
       });
 
-    const updateColumns = Object.keys(this.state.dateToUpdates).map( (date, i) => {
+    const dates = Object.keys(this.state.dateToUpdates).sort().reverse();
+
+    const updateColumns = dates.map( (date, i) => {
         return this.renderColumn(date, this.state.dateToUpdates[date], names, i);
       });
+
+    const mostRecentDate = dates[0];
+    const buttonColumn = this.renderButtonColumn(this.state.dateToUpdates[mostRecentDate],
+        names);
 
     // Render row for header, then render all the rows
     return (
@@ -131,6 +172,7 @@ export default class MedicationTable extends Component<{}> {
               <Row style={styles.headerRow}><Text>Drug name</Text></Row>
               {nameColumn}
             </Col>
+            {buttonColumn}
             {updateColumns}
           </Grid>
         </ScrollView>
@@ -150,21 +192,13 @@ export const styles = StyleSheet.create({
   verticalScroller: {
     minHeight: '60%',
   },
-  container: {
-    minWidth: '90%',
-    minHeight: '90%',
-    margin: 4,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
   title: {
     fontSize: 20,
     textAlign: 'center',
     margin: 10,
   },
   headerRow: {
-    maxHeight: 40,
+    maxHeight: 20,
     backgroundColor: '#dbdbdb',
     borderWidth: 1
   },
@@ -195,6 +229,19 @@ export const styles = StyleSheet.create({
     borderWidth: 1
   },
   text: {
+    textAlign: 'center',
+  },
+  buttonContainer: {
+    flex: 1,
+    margin: 2,
+    padding: 4,
+    elevation: 4,
+    borderRadius: 2,
+    backgroundColor: '#2196F3',
+  },
+  button: {
+    fontWeight: '500',
+    color: '#fefefe',
     textAlign: 'center',
   }
 });
