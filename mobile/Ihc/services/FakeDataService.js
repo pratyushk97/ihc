@@ -52,18 +52,13 @@ export function getMedicationUpdates() {
   });
 }
 
-const medsToCount = {}
+const medsCount = 0;
 function newFakeMedicationUpdate(name) {
-  if (name in medsToCount) {
-    medsToCount[name]++;
-  }
-  else {
-    medsToCount[name] = 1;
-  }
+  medsCount = ++medsCount % 3;
 
   return {
     name: name,
-    date: `2018020${medsToCount[name]}`,
+    date: `2018020${medsCount}`,
     dose: '10mg',
     frequency: 'bid',
     duration: '1 month',
