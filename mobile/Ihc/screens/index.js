@@ -5,6 +5,7 @@ import SigninScreen from './SigninScreen';
 import PatientSelectScreen from './PatientSelectScreen';
 import PatientHomeScreen from './PatientHomeScreen';
 import MedicationScreen from './MedicationScreen';
+import WeightGrowthChartScreen from './WeightGrowthChartScreen';
 
 // register all screens of the app (including internal ones)
 export function registerScreens() {
@@ -14,4 +15,5 @@ export function registerScreens() {
   Navigation.registerComponent('Ihc.PatientSelectScreen', () => PatientSelectScreen);
   Navigation.registerComponent('Ihc.PatientHomeScreen', () => PatientHomeScreen);
   Navigation.registerComponent('Ihc.MedicationScreen', () => MedicationScreen);
+  Navigation.registerComponent('Ihc.WeightGrowthChartScreen', () => WeightGrowthChartScreen);
 }

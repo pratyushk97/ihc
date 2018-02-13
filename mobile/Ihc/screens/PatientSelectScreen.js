@@ -8,7 +8,6 @@ import React, { Component } from 'react';
 import {
   StyleSheet,
   Button,
-  CheckBox,
   Text,
   TouchableOpacity,
   View
