@@ -1,13 +1,13 @@
 import csv
 import json
 
-csvfile = open('statage.csv', 'r')
-boysjson = open('boys_heights.json', 'w')
-girlsjson = open('girls_heights.json', 'w')
+#csvfile = open('statage.csv', 'r')
+#boysjson = open('boys_heights.json', 'w')
+#girlsjson = open('girls_heights.json', 'w')
 
-#csvfile = open('wtage.csv', 'r')
-#boysjson = open('boys_weights.json', 'w')
-#girlsjson = open('girls_weights.json', 'w')
+csvfile = open('wtage.csv', 'r')
+boysjson = open('boys_weights.json', 'w')
+girlsjson = open('girls_weights.json', 'w')
 
 def convert(row):
     obj = {}
