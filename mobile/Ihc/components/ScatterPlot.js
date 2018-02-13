@@ -25,14 +25,19 @@ const propTypes = {
 
         })
     ), // takes array of series of data (array of arrays of {x, y})
-    chartWidth: PropTypes.number, // by default uses entire width of the device
-    chartHeight: PropTypes.number, // by default 200 scaled px
+    chartWidth: PropTypes.oneOfType([
+      PropTypes.number, // by default uses entire width of the device
+      PropTypes.string]),
+    chartHeight: PropTypes.oneOfType([
+      PropTypes.number, // by default uses entire height of the device
+      PropTypes.string]),
     backgroundColor: PropTypes.string, // 'white' by default
     colors: PropTypes.arrayOf(PropTypes.string), // specify the colors for each series of data
     minY: PropTypes.number,
     maxY: PropTypes.number,
     minX: PropTypes.number,
     maxX: PropTypes.number,
+    title: PropTypes.string,
     unitX: PropTypes.string,
     unitY: PropTypes.string,
     horizontalLinesAt: PropTypes.arrayOf(PropTypes.number),
@@ -43,7 +48,8 @@ const defaultProps = {
     chartWidth: Dimensions.get('window').width,
     backgroundColor: 'white',
     unitX: '',
-    unitY: ''
+    unitY: '',
+    title: ''
 }
 
 class ScatterPlot extends React.PureComponent {
@@ -59,14 +65,31 @@ class ScatterPlot extends React.PureComponent {
             horizontalLinesAt: undefined
         };
     }
+
     render() {
-        const { data, chartHeight, chartWidth, backgroundColor, colors, unitX, unitY } = this.props;
+        const { data, chartHeight, chartWidth, backgroundColor, colors, title, unitX, unitY } = this.props;
         const { minY, maxY, minX, maxX, horizontalLinesAt, verticalLinesAt } = this.state;
         const { getX, getY } = this;
         const windowHeight = Dimensions.get('window').height, windowWidth = Dimensions.get('window').width;
 
-        const horizontalLines = horizontalLinesAt ? horizontalLinesAt.map((line, idx) => <HorizontalLine key={idx} bottom={getY(line)} width={chartWidth} displayText={`${line} ${unitY}`} />) : undefined;
-        const verticalLines = verticalLinesAt ? verticalLinesAt.map((line, idx) => <View key={idx} style={{ opacity: .5, backgroundColor: 'gray', width: 1, height: chartHeight, bottom: 0, left: getX(line), position: 'absolute' }} />) : undefined;
+        const horizontalLines = horizontalLinesAt ?
+            horizontalLinesAt.map((line, idx) => {
+                return <HorizontalLine key={idx} bottom={getY(line)} width={chartWidth} displayText={`${line} ${unitY}`} />
+              }) : undefined;
+        const verticalLines = verticalLinesAt ?
+            verticalLinesAt.map((line, idx) => {
+              return (
+                <View key={idx}
+                  style={{
+                    opacity: .5,
+                    backgroundColor: 'gray',
+                    width: 1,
+                    height: chartHeight,
+                    bottom: 0,
+                    left: getX(line),
+                    position: 'absolute' }} />
+              )
+            }) : undefined;
         // const ref1 = ;
         // for (let i = 0; i < windowWidth; i++) {
         //     points.push(<Dot key={points.length} left={i} bottom={Math.round(Math.random() * chartHeight)} />)
@@ -83,6 +106,7 @@ class ScatterPlot extends React.PureComponent {
         }
         return (
             <View style={{ height: chartHeight, width: chartWidth, backgroundColor: backgroundColor }}>
+                <Text>{title}</Text>
                 {points}
                 {horizontalLines}
                 {verticalLines}

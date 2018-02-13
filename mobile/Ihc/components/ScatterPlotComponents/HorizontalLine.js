@@ -11,7 +11,7 @@ const propTypes = {
     displayText: PropTypes.string,
     color: PropTypes.string,
     opacity: PropTypes.number,
-    width: PropTypes.number.isRequired
+    width: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
 };
 
 const defaultProps = {
