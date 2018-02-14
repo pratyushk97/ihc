@@ -19,13 +19,6 @@ export default class PatientHomeScreen extends Component<{}> {
     super(props);
   }
 
-  goToSelectPatient = () => {
-    this.props.navigator.push({
-      screen: 'Ihc.PatientSelectScreen',
-      title: 'Select patient'
-    });
-  }
-
   // TODO all of these except medications
   goToTriage = () => {
     this.props.navigator.push({
@@ -58,15 +51,9 @@ export default class PatientHomeScreen extends Component<{}> {
 
   goToGrowthChart = () => {
     this.props.navigator.push({
-      screen: 'Ihc.PatientSelectScreen',
-      title: 'Select patient'
-    });
-  }
-
-  goToSelectPatient = () => {
-    this.props.navigator.push({
-      screen: 'Ihc.PatientSelectScreen',
-      title: 'Select patient'
+      screen: 'Ihc.GrowthChartScreen',
+      title: 'Growth Chart',
+      passProps: { patientInfo: this.props.patientInfo }
     });
   }
 
@@ -112,11 +99,6 @@ export default class PatientHomeScreen extends Component<{}> {
               <TouchableOpacity style={styles.buttonContainer}
                   onPress={this.goToGrowthChart}>
                 <Text style={styles.button}>Growth Chart</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity style={styles.buttonContainer}
-                  onPress={this.goToSelectPatient}>
-                <Text style={styles.button}>Select another patient</Text>
               </TouchableOpacity>
             </Col>
           </Grid>

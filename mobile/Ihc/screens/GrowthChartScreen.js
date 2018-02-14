@@ -18,7 +18,10 @@ const PLOT_HEIGHT = 400;
 const PLOT_WIDTH = 400;
 const PLOTS_HEIGHT = PLOT_HEIGHT * 2 + 150;
 
-export default class WeightGrowthChartScreen extends Component<{}> {
+export default class GrowthChartScreen extends Component<{}> {
+  /*
+   * Gets a patientInfo prop
+   */
   constructor(props) {
     super(props);
   }

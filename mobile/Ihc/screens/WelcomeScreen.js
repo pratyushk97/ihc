@@ -38,7 +38,7 @@ export default class WelcomeScreen extends Component<{}> {
     const updates = data.getUpdates();
     // TODO: Delete, temp for testing:
     this.props.navigator.push({
-      screen: 'Ihc.WeightGrowthChartScreen',
+      screen: 'Ihc.GrowthChartScreen',
       title: 'Growth Chart'
     });
   }
