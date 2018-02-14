@@ -10,19 +10,20 @@ const propTypes = {
     size: PropTypes.number,
     color: PropTypes.string,
     opacity: PropTypes.number,
-    left: PropTypes.number.isRequired,
-    bottom: PropTypes.number.isRequired
+    left: PropTypes.number,
+    bottom: PropTypes.number
 };
 
 const defaultProps = {
     opacity: .3,
     color: 'red',
-    size: 5
+    size: 5,
+    position: 'absolute',
 };
 
 class Dot extends React.Component {
     render() {
-        const { opacity, size, color, left, bottom } = this.props
+        const { opacity, size, color, left, bottom, position } = this.props
         return (
             <View
                 style={
@@ -31,10 +32,11 @@ class Dot extends React.Component {
                         width: size,
                         height: size,
                         backgroundColor: color,
-                        bottom: bottom - Math.round(size / 2),
-                        left: left - Math.round(size / 2),
-                        position: 'absolute',
-                        borderRadius: size
+                        bottom: bottom && bottom - Math.round(size / 2),
+                        left: left && left - Math.round(size / 2),
+                        position: position,
+                        borderRadius: size,
+                        margin: 0
                     }
                 }
             />

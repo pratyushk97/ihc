@@ -1,5 +1,6 @@
 import csv
 import json
+from collections import defaultdict
 
 hcsvfile = open('statage.csv', 'r')
 hboysjson = open('boys_heights.json', 'w')
@@ -10,30 +11,25 @@ wboysjson = open('boys_weights.json', 'w')
 wgirlsjson = open('girls_weights.json', 'w')
 
 def convert(row):
-    obj = {}
+    data = {}
     for k in row.keys():
-        obj[k] = float(row[k])
-    return obj
+        data[k] = float(row[k])
+    return data
 
-def extractPoints(obj):
-    arr = []
-#    arr.append({"Sex": obj["Sex"], "Agemos": obj["Agemos"], "P3": obj["P3"]})
-#    arr.append({"Sex": obj["Sex"], "Agemos": obj["Agemos"], "P5": obj["P5"]})
-#    arr.append({"Sex": obj["Sex"], "Agemos": obj["Agemos"], "P10": obj["P10"]})
-#    arr.append({"Sex": obj["Sex"], "Agemos": obj["Agemos"], "P25": obj["P25"]})
-#    arr.append({"Sex": obj["Sex"], "Agemos": obj["Agemos"], "P50": obj["P50"]})
-#    arr.append({"Sex": obj["Sex"], "Agemos": obj["Agemos"], "P75": obj["P75"]})
-#    arr.append({"Sex": obj["Sex"], "Agemos": obj["Agemos"], "P90": obj["P90"]})
-#    arr.append({"Sex": obj["Sex"], "Agemos": obj["Agemos"], "P95": obj["P95"]})
-    arr.append([obj["Agemos"], obj["P3"]])
-    arr.append([obj["Agemos"], obj["P5"]])
-    arr.append([obj["Agemos"], obj["P10"]])
-    arr.append([obj["Agemos"], obj["P25"]])
-    arr.append([obj["Agemos"], obj["P50"]])
-    arr.append([obj["Agemos"], obj["P75"]])
-    arr.append([obj["Agemos"], obj["P90"]])
-    arr.append([obj["Agemos"], obj["P95"]])
-    return arr
+def extractPoints(data, boyObj, girlObj):
+    if data["Sex"] == 1:
+        obj = boyObj
+    else:
+        obj = girlObj
+    obj["P3"].append([data["Agemos"], data["P3"]])
+    obj["P5"].append([data["Agemos"], data["P5"]])
+    obj["P10"].append([data["Agemos"], data["P10"]])
+    obj["P25"].append([data["Agemos"], data["P25"]])
+    obj["P50"].append([data["Agemos"], data["P50"]])
+    obj["P75"].append([data["Agemos"], data["P75"]])
+    obj["P90"].append([data["Agemos"], data["P90"]])
+    obj["P95"].append([data["Agemos"], data["P95"]])
+    return
 
 # Sample 1/skipFactor points by skipping other rows
 skipFactor = 8
@@ -42,15 +38,16 @@ def do(csvfile, boysjson, girlsjson):
     fieldnames = ("Sex", "Agemos", "L", "M", "S", "P3", "P5", "P10", "P25", "P50", \
             "P75", "P90", "P95", "P97")
     reader = csv.DictReader(csvfile, fieldnames)
-    boysjson.write('[')
-    girlsjson.write('[')
-    boysCount = 0
+    boysCount = 0 # count of rows (months)
     girlsCount = 0
     boyDone = 0
     girlDone = 0
+    # the return objs
+    boyObj = defaultdict(list)
+    girlObj = defaultdict(list)
     for row in reader:
-        obj = convert(row)
-        if obj["Sex"] == 1:
+        data = convert(row)
+        if data["Sex"] == 1:
             boysCount = boysCount + 1
             if not boysCount % skipFactor == 0:
                 continue
@@ -58,24 +55,10 @@ def do(csvfile, boysjson, girlsjson):
             girlsCount = girlsCount + 1
             if not girlsCount % skipFactor == 0:
                 continue
-        points = extractPoints(obj)
+        points = extractPoints(data, boyObj, girlObj)
         # temps to clear first row without comma
-        if obj["Sex"] == 1:
-            for o in points:
-                if boyDone == 0:
-                    boyDone = 1
-                else:
-                    boysjson.write(',\n')
-                json.dump(o, boysjson)
-        else:
-            for o in points:
-                if girlDone == 0:
-                    girlDone = 1
-                else:
-                    girlsjson.write(',\n')
-                json.dump(o, girlsjson)
-    boysjson.write(']')
-    girlsjson.write(']')
+    json.dump(girlObj, girlsjson)
+    json.dump(boyObj, boysjson)
 
 do(hcsvfile, hboysjson, hgirlsjson)
 do(wcsvfile, wboysjson, wgirlsjson)

@@ -14,38 +14,43 @@ const girlsWeightData = require('../growthchartdata/girls_weights.json');
 const boysHeightData = require('../growthchartdata/boys_heights.json');
 const girlsHeightData = require('../growthchartdata/girls_heights.json');
 
-const PLOT_HEIGHT = 400
-const PLOT_WIDTH = 400
+const PLOT_HEIGHT = 400;
+const PLOT_WIDTH = 400;
+const PLOTS_HEIGHT = PLOT_HEIGHT * 2 + 150;
 
 export default class WeightGrowthChartScreen extends Component<{}> {
   constructor(props) {
     super(props);
   }
 
+  extractData(data) {
+    const arr = [];
+    arr.push({ color: 'red', unit: '%', values: data["P3"]})
+    arr.push({ color: 'orange', unit: '%', values: data["P5"]})
+    arr.push({ color: 'purple', unit: '%', values: data["P10"]})
+    arr.push({ color: 'green', unit: '%', values: data["P25"]})
+    arr.push({ color: 'blue', unit: '%', values: data["P50"]})
+    arr.push({ color: 'purple', unit: '%', values: data["P75"]})
+    arr.push({ color: 'orange', unit: '%', values: data["P90"]})
+    arr.push({ color: 'red', unit: '%', values: data["P95"]})
+    return arr;
+  }
+
   render() {
-    const weightData = [
-      {
-        color: 'red',
-        unit: '%',
-        values: boysWeightData
-      }
-    ];
-    const heightData = [
-      {
-        color: 'red',
-        unit: '%',
-        values: boysHeightData
-      }
-    ];
+    // TODO: show boy or girl dependent on person
+    const weightData = this.extractData(girlsWeightData);
+    const heightData = this.extractData(girlsHeightData);
+    // TODO: add data for this person's height/weight
+
     // Mark every 2 yrs
     const arrYears = Array.from({length: 10}, (v,i) => i * 24 ); 
-    // Mark every 50 cm
-    const arrCm = Array.from({length: 5}, (v,i) => i * 50 ); 
+    // Mark every 25 cm
+    const arrCm = Array.from({length: 10}, (v,i) => i * 25 ); 
     // Mark every 25 kg
     const arrKg = Array.from({length: 5}, (v,i) => i * 25 ); 
 
     return (
-      // TODO: Scatterplot axes labels, label the grid lines
+      // TODO: Label the grid lines
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <Text style={styles.title}>Growth Chart</Text>
 
@@ -95,11 +100,13 @@ const styles = StyleSheet.create({
     margin: 8,
   },
   plotContainer: {
-    flex: 1,
-    minHeight: PLOT_HEIGHT + 20,
+    height: PLOT_HEIGHT + 20,
     margin: 4,
+    padding: 8,
+    backgroundColor: '#ededed'
   },
   scrollContainer: {
+    minHeight: PLOTS_HEIGHT,
     flex: 0,
     justifyContent: 'center',
     alignItems: 'center',
