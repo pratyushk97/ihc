@@ -1,5 +1,6 @@
 package com.ihc;
 
+import io.realm.react.RealmReactPackage;
 import com.facebook.react.ReactPackage;
 import com.reactnativenavigation.NavigationApplication;
 import java.util.Arrays;
@@ -17,7 +18,8 @@ public class MainApplication extends NavigationApplication {
      // Add additional packages you require here
      // No need to add RnnPackage and MainReactPackage
      return Arrays.<ReactPackage>asList(
-         // eg. new VectorIconsPackage()
+        // eg. new VectorIconsPackage()
+        new RealmReactPackage()
      );
   }
 
@@ -26,55 +28,3 @@ public class MainApplication extends NavigationApplication {
      return getPackages();
   }
 }
-
-/*
- // Don't need any of this because of new react-native-navigation setup, but
- // will leave just in case
-import android.app.Application;
-
-import com.facebook.react.ReactApplication;
-import com.horcrux.svg.SvgPackage;
-import com.facebook.react.ReactNativeHost;
-import com.facebook.react.ReactPackage;
-import com.facebook.react.shell.MainReactPackage;
-import com.facebook.soloader.SoLoader;
-
-import java.util.Arrays;
-import java.util.List;
-
-public class MainApplication extends Application implements ReactApplication {
-
-  private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
-    @Override
-    public boolean getUseDeveloperSupport() {
-      return BuildConfig.DEBUG;
-    }
-
-    @Override
-    protected List<ReactPackage> getPackages() {
-      return Arrays.<ReactPackage>asList(
-          new MainReactPackage(),
-            new SvgPackage()
-      );
-    }
-
-    @Override
-    protected String getJSMainModuleName() {
-      return "index";
-    }
-  };
-
-  @Override
-  public ReactNativeHost getReactNativeHost() {
-    return mReactNativeHost;
-  }
-
-  @Override
-  public void onCreate() {
-    super.onCreate();
-    /* native exopackage */ 
-/*
-    SoLoader.init(this, false);
-  }
-}
-*/

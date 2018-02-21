@@ -1,9 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
 import * as data from '../services/FakeDataService';
 import React, { Component } from 'react';
 import {
