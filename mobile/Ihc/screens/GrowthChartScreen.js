@@ -1,4 +1,4 @@
-import * as data from '../services/FakeDataService';
+import data from '../services/DataService';
 import React, { Component } from 'react';
 import {
   Platform,
