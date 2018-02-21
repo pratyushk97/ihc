@@ -6,6 +6,7 @@ import {
   ScrollView,
   View
 } from 'react-native';
+import {formatDate} from '../util/Date';
 var t = require('tcomb-form-native');
 var Form = t.form.Form;
 
@@ -16,16 +17,25 @@ export default class SigninScreen extends Component<{}> {
 
   Signin = t.struct({
     firstName: t.String,
-    motherName: t.maybe(t.String),
-    fatherName: t.maybe(t.String),
-    newPatient: t.Boolean
+    motherName: t.String,
+    fatherName: t.String,
+    birthday: t.Date,
+    newPatient: t.Boolean,
   });
 
   options = {
     fields: {
       motherName: {label: "Mother's last name"},
       fatherName: {label: "Father's last name"},
-      newPatient: {label: "New patient?"}
+      birthday: {
+        label: "Birthday",
+        mode: 'date',
+        config: {
+          format: formatDate,
+          dialogMode: 'spinner'
+        }
+      },
+      newPatient: {label: "New patient?"},
     }
   }
 
