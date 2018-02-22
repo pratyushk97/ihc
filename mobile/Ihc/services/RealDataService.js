@@ -9,14 +9,15 @@ const realm = new Realm({
   deleteRealmIfMigrationNeeded: true, // TODO: delete when done with dev
 });
 export function createPatient(patientInfo) {
-    try {
-      realm.write(() => {
-        realm.create('Patient', patientInfo);
-      });
-      return Promise.resolve(true);
-    } catch (e) {
-      return Promise.reject(e);
-    }
+  patientInfo.key = Patient.makeKey(patientInfo);
+  try {
+    realm.write(() => {
+      realm.create('Patient', patientInfo);
+    });
+    return Promise.resolve(true);
+  } catch (e) {
+    return Promise.reject(e);
+  }
 }
 
 export function getPatients(param) {
