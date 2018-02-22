@@ -1,5 +1,6 @@
 // This file should hold all the fetch() calls to the Express server
 // and the local database calls to the Realm DB
+// TODO: Keep realm in sync with mongo
 import Patient from '../models/Patient';
 import Realm from 'realm';
 
