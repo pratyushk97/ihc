@@ -2,7 +2,6 @@ import { Navigation } from 'react-native-navigation';
 
 import WelcomeScreen from './WelcomeScreen';
 import SigninScreen from './SigninScreen';
-import NewPatientScreen from './NewPatientScreen';
 import PatientSelectScreen from './PatientSelectScreen';
 import PatientHomeScreen from './PatientHomeScreen';
 import MedicationScreen from './MedicationScreen';
@@ -17,5 +16,4 @@ export function registerScreens() {
   Navigation.registerComponent('Ihc.PatientHomeScreen', () => PatientHomeScreen);
   Navigation.registerComponent('Ihc.MedicationScreen', () => MedicationScreen);
   Navigation.registerComponent('Ihc.GrowthChartScreen', () => GrowthChartScreen);
-  Navigation.registerComponent('Ihc.NewPatientScreen', () => NewPatientScreen);
 }
