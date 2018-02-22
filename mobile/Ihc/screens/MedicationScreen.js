@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   View
 } from 'react-native';
-import * as data from '../services/FakeDataService';
+import data from '../services/DataService';
 import MedicationTable, {tableStyles} from '../components/MedicationTable';
 
 export default class MedicationScreen extends Component<{}> {

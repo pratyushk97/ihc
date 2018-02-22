@@ -1,9 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
 import React, { Component } from 'react';
 import {
   StyleSheet,
@@ -12,7 +6,7 @@ import {
   TouchableOpacity,
   View
 } from 'react-native';
-import * as data from '../services/FakeDataService';
+import data from '../services/DataService';
 import PatientTable, {tableStyles} from '../components/PatientTable';
 
 export default class PatientSelectScreen extends Component<{}> {
