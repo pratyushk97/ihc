@@ -6,6 +6,7 @@ import {
   Text,
   View
 } from 'react-native';
+import data from '../services/DataService';
 
 export default class WelcomeScreen extends Component<{}> {
   constructor(props) {
@@ -28,11 +29,6 @@ export default class WelcomeScreen extends Component<{}> {
 
   // TODO: Download updates from server and add them to local storage
   sync = () => {
-    // TODO: Delete, temp for testing:
-    this.props.navigator.push({
-      screen: 'Ihc.GrowthChartScreen',
-      title: 'Growth Chart'
-    });
   }
 
   render() {

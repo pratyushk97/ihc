@@ -9,18 +9,30 @@ import {
 import {formatDate} from '../util/Date';
 var t = require('tcomb-form-native');
 var Form = t.form.Form;
+import data from '../services/DataService';
 
-export default class SigninScreen extends Component<{}> {
+export default class NewPatientScreen extends Component<{}> {
+  /*
+   * Expects
+   *  patientInfo: PatientInfo object
+   */
   constructor(props) {
     super(props);
+    this.state = {success: false, patients: []}
   }
+
+  Gender = t.enums({
+    Male: 'Male',
+    Female: 'Female',
+  });
 
   Signin = t.struct({
     firstName: t.String,
     motherName: t.String,
     fatherName: t.String,
     birthday: t.Date,
-    newPatient: t.Boolean,
+    gender: this.Gender,
+    phone: t.maybe(t.String),
   });
 
   options = {
@@ -28,15 +40,20 @@ export default class SigninScreen extends Component<{}> {
       motherName: {label: "Mother's last name"},
       fatherName: {label: "Father's last name"},
       birthday: {
-        label: "Birthday",
         mode: 'date',
         config: {
           format: formatDate,
           dialogMode: 'spinner'
         }
       },
-      newPatient: {label: "New patient?"},
     }
+  }
+
+  value = {
+    firstName: this.props.patientInfo.firstName,
+    motherName: this.props.patientInfo.motherName,
+    fatherName: this.props.patientInfo.fatherName,
+    birthday: this.props.patientInfo.birthday
   }
 
   submit = () => {
@@ -44,29 +61,31 @@ export default class SigninScreen extends Component<{}> {
       return;
     }
     const form = this.refs.form.getValue();
-
-    if(form.newPatient) {
-      this.props.navigator.push({
-        screen: 'Ihc.NewPatientScreen',
-        title: 'Signin',
-        passProps: {patientInfo: form}
-      });
-    } else {
-      // TODO: Sign person in, then clear screen
-    }
+    const patient = Object.assign({}, form);
+    // 1 is male, 2 is female
+    patient.gender = form.gender === 'Male' ? 1 : 2;
+    // TODO: create person, then pop back to blank signin page
+    data.createPatient(patient)
+        .then( () => {
+          this.setState({success: true});
+        })
+        .catch( (e) => {
+          this.setState({success: false});
+        });
   }
 
   render() {
     return (
       <ScrollView contentContainerStyle={styles.container}>
         <Text style={styles.title}>
-          Signin
+          New Patient {this.state.patients.length}
         </Text>
 
         <View>
           <Form ref="form" type={this.Signin}
             style={styles.form}
             options={this.options}
+            value={this.value}
           />
           <Button onPress={this.submit}
             title="Submit" />

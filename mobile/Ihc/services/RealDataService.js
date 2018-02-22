@@ -1,8 +1,25 @@
 // This file should hold all the fetch() calls to the Express server
 // and the local database calls to the Realm DB
+import Patient from '../models/Patient';
+import Realm from 'realm';
+
+const realm = new Realm({
+  schema: [Patient],
+  deleteRealmIfMigrationNeeded: true, // TODO: delete when done with dev
+});
+export function createPatient(patientInfo) {
+    try {
+      realm.write(() => {
+        realm.create('Patient', patientInfo);
+      });
+      return Promise.resolve(true);
+    } catch (e) {
+      return Promise.reject(e);
+    }
+}
 
 export function getPatients(param) {
-  return []; // Return whatever sample data you want
+  return realm.objects('Patient');
 }
 
 export function getUpdates(param) {
