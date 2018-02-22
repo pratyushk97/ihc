@@ -155,7 +155,7 @@ Other options are available: https://wix.github.io/react-native-navigation/#/scr
 
   1. Run a CURL command like this:
     ```
-    curl -d '{"patientInfo": {"first_name": "Brandony"}}' \
+    curl -d '{"patientInfo": {"firstName": "Brandony"}}' \
     -X POST -H "Content-Type: application/json" \
     http://localhost:8000/signin/newpatient
     ```
@@ -405,7 +405,7 @@ Locally save list of timestamps when "Upload Updates" was clicked
 Body:
   {
     timestamp: When "Upload Updates" button is clicked,
-    user_updates: list of user updates
+    userUpdates: list of user updates
         [{ <Match user object in database design section> }]
   }
 
@@ -487,15 +487,15 @@ Patient
             * Triage object
         * growthchart/
             * GrowthChart object 
-    * last_updated/
+    * lastUpdated/
       * timestamp (ms since epoch)
         
 PatientIdentification (Everything needed for signin/identification)
 ```
 {
-  first_name: string,
-  father_name: string,
-  mother_name: string,
+  firstName: string,
+  fatherName: string,
+  motherName: string,
   birthday: date,
   sex: int?,
 }
@@ -504,9 +504,9 @@ PatientIdentification (Everything needed for signin/identification)
 PatientInfo (Full patient information)
 ```
 {
-  first_name: string,
-  father_name: string,
-  mother_name: string,
+  firstName: string,
+  fatherName: string,
+  motherName: string,
   birthday: date,
   sex: int?,
   phone: string
@@ -542,14 +542,14 @@ Triage
 ```
 {
     date: date,
-    has_insurance: boolean,
+    hasInsurance: boolean,
     location: string (Girasoles/TJP),
-    arrival_time: date/string,
-    time_in: date/string,
-    time_out: date/string,
+    arrivalTime: date/string,
+    timeIn: date/string,
+    timeOut: date/string,
     triager: string (Triager's name),
     status: int? (EMT/Student/Nurse/Other),
-    status_clarification: string (If Other),
+    statusClarification: string (If Other),
     weight: double,
     height: double,
     temp: double,
@@ -561,7 +561,7 @@ Triage
     LMP: string,
     Regular: boolean,
     pregnancies: string,
-    live_births: string,
+    liveBirths: string,
     abortions: string,
     miscarriages: string,
     ---END IF---
@@ -570,33 +570,33 @@ Triage
     bgl: string,
     a1c: string,
     fasting: boolean,
-    pregnancy_test: boolean,
+    pregnancyTest: boolean,
     --END IF---
     allergies: string,
     meications: string,
     surgeries: string,
     immunizations: string,
-    chief_complaint: string,
+    chiefComplaint: string,
     ---IF URINE TEST---
     leukocytes: string,
     blood: string,
     nitrites: string,
-    specific_gravity: string,
+    specificGravity: string,
     urobilirubin: string,
     ketone: string,
     protein: string,
     bilirubin: string,
     ph: string,
     glucose: string,
-    pharmacy_section: string (For pharmacy use only section)
+    pharmacySection: string (For pharmacy use only section)
 }
 ```
 
 GrowthChart
 ```
 {
-    mother_height: double,
-    father_height: double,
+    motherHeight: double,
+    fatherHeight: double,
     rows: [GrowthChartRow object, ...]
 }
 ```
@@ -616,10 +616,10 @@ Status
 ```
 {
     active: boolean (if they came to clinic today),
-    checkin_time: datetime,
-    triage_completed: boolean, timestamp?
-    doctor_completed: boolean, timestamp?
-    pharmacy_completed: boolean, timestamp?
+    checkinTime: datetime,
+    triageCompleted: boolean, timestamp?
+    doctorCompleted: boolean, timestamp?
+    pharmacyCompleted: boolean, timestamp?
     notes: string
 }
 ```

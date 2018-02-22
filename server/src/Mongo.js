@@ -144,10 +144,10 @@ export function getPatients(returnOnlyCheckedInPatients, includeForms, callback,
 function newStatusObject() {
   const statusObj = {};
   statusObj.active = true; // True if currently checked in
-  statusObj.checkin_time = new Date().getTime();
-  statusObj.triage_completed = false;
-  statusObj.doctor_completed = false;
-  statusObj.pharmacy_completed = false;
+  statusObj.checkinTime = new Date().getTime();
+  statusObj.triageCompleted = false;
+  statusObj.doctorCompleted = false;
+  statusObj.pharmacyCompleted = false;
   return statusObj;
 }
 
