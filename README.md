@@ -9,7 +9,8 @@ Shortcuts:
 * [Local storage plan](#local-storage)
 * [Mobile](#mobile-plantodo)
 * [Laptop](#laptop-plantodo)
-* [Database](#database-design)
+* [Local Database](#realm-database-design)
+* [Server Database](#mongo-database-design)
 
 ### Directory organization
 
@@ -350,6 +351,8 @@ POST /signout :white_check_mark:
 
 ### Local Storage:
 
+Use Realm as the mobile database
+
 Handling LOCAL STORAGE as backup:
 If router goes out...
 
@@ -460,7 +463,11 @@ Routes:
 
 ==========================================
 
-### Database design:
+### Realm Database design:
+
+The schema for the local storage Realm database is defined in mobile/Ihc/models.
+
+### Mongo Database design:
 
 /
         
@@ -474,7 +481,7 @@ Patient
     * info/
       * PatientInfo object
     * status/
-        * Status object
+        * [Status object]
     * forms/
         * medications/
           * :drugName/
