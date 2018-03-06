@@ -7,7 +7,7 @@ Soap.schema = {
   name: 'Soap',
   properties: {
     patientKey: 'string',
-    date: 'date',
+    date: 'string',
     subjective: 'string',
     objective: 'string',
     assessment: 'string',

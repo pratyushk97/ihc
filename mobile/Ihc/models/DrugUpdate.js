@@ -8,7 +8,7 @@ DrugUpdate.schema = {
   properties: {
     patientKey: 'string',
     name: 'string',
-    date: 'date',
+    date: 'string',
     dose: 'string',
     frequency: 'string',
     duration: 'string',

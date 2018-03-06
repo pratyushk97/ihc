@@ -7,12 +7,12 @@ Triage.schema = {
   name: 'Triage',
   properties: {
     patientKey: 'string',
-    date: 'date',
+    date: 'string',
     hasInsurance: 'bool',
     location: 'string', // Girasoles or TJP or somewhere else
-    arrivalTime: 'date', // Should match the arrival time 
-    timeIn: 'date',
-    timeOut: 'date',
+    arrivalTime: 'int', // should match checkin time from Status 
+    timeIn: 'int',
+    timeOut: 'int',
     triager: 'string', // Name of triager
     status: 'int', // 1 = EMT, 2 = Student, 3 = Nurse, 4 = Other
     statusClarification: 'string?', // If Other status, explain

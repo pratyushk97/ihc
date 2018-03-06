@@ -14,9 +14,21 @@ export default class Patient {
 
   // To be used as primary key
   static makeKey(patient) {
-    const str = patient.firstName + patient.fatherName + patient.motherName +
-      patient.birthday;
+    const str = `${patient.firstName}&${patient.fatherName}&${patient.motherName}` +
+      `&${patient.birthday.getFullYear()}&${patient.birthday.getMonth()}` +
+      `&${patient.birthday.getDate()}`;
     return str;
+  }
+
+  static extractFromForm(form) {
+    const patient = Object.assign({}, form);
+    patient.key = Patient.makeKey(patient);
+    if(form.newPatient) {
+      // 1 is male, 2 is female
+      patient.gender = form.gender === 'Male' ? 1 : 2;
+      patient.lastUpdated = new Date();
+    }
+    return patient;
   }
 }
 
@@ -37,7 +49,7 @@ Patient.schema = {
     medications: 'DrugUpdate[]',
     soaps: 'Soap[]',
     triages: 'Triage[]',
-    growthchart: 'GrowthChart[]',
+    growthchart: 'GrowthChartUpdate[]',
     lastUpdated: 'date'
   }
 };
