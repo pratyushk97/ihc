@@ -1,3 +1,4 @@
+import {stringDate} from '../util/Date';
 export default class Patient {
   // Insert any class methods here
   get drugUpdates() {
@@ -15,18 +16,18 @@ export default class Patient {
   // To be used as primary key
   static makeKey(patient) {
     const str = `${patient.firstName}&${patient.fatherName}&${patient.motherName}` +
-      `&${patient.birthday.getFullYear()}&${patient.birthday.getMonth()}` +
-      `&${patient.birthday.getDate()}`;
+      `&${patient.birthday}`;
     return str;
   }
 
   static extractFromForm(form) {
     const patient = Object.assign({}, form);
+    patient.birthday = stringDate(form.birthday);
     patient.key = Patient.makeKey(patient);
     if(form.newPatient) {
       // 1 is male, 2 is female
       patient.gender = form.gender === 'Male' ? 1 : 2;
-      patient.lastUpdated = new Date();
+      patient.lastUpdated = new Date().getTime();
     }
     return patient;
   }
@@ -40,7 +41,7 @@ Patient.schema = {
     firstName: 'string',
     fatherName: 'string', // last name
     motherName: 'string', // last name
-    birthday: 'date',
+    birthday: 'string',
     gender: 'int', // 1 = boy, 2 = girl, 0 = undefined
     phone: 'string?',
     motherHeight: 'double?',
@@ -50,6 +51,6 @@ Patient.schema = {
     soaps: 'Soap[]',
     triages: 'Triage[]',
     growthchart: 'GrowthChartUpdate[]',
-    lastUpdated: 'date'
+    lastUpdated: 'int' // timestamp
   }
 };

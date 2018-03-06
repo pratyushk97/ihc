@@ -10,6 +10,7 @@ import {formatDate} from '../util/Date';
 var t = require('tcomb-form-native');
 var Form = t.form.Form;
 import data from '../services/DataService';
+import Patient from '../models/Patient';
 
 export default class SigninScreen extends Component<{}> {
   constructor(props) {
@@ -44,6 +45,8 @@ export default class SigninScreen extends Component<{}> {
     newPatient: t.Boolean,
     gender: this.Gender,
     phone: t.maybe(t.String),
+    fatherHeight: t.maybe(t.Number),
+    motherHeight: t.maybe(t.Number),
   });
 
   options = {
@@ -77,24 +80,37 @@ export default class SigninScreen extends Component<{}> {
     const form = this.refs.form.getValue();
 
     if(form.newPatient) {
-      const patient = Object.assign({}, form);
-      // 1 is male, 2 is female
-      patient.gender = form.gender === 'Male' ? 1 : 2;
+      const patient = Patient.extractFromForm(form);
       data.createPatient(patient)
           .then( () => {
             this.setState({
               // Clear form, reset to Signin form
               success: true,
-              formValues: null,
+              formValues: {newPatient: false},
               formType: this.Signin,
-              successMsg: `${patient.firstName} added successfully`
+              successMsg: `${patient.firstName} added successfully`,
+              error: null
             });
           })
           .catch( (e) => {
             this.setState({success: false, error: e.message});
           });
     } else {
-      // TODO: Sign person in, then clear screen
+      const patient = Patient.extractFromForm(form);
+      data.signinPatient(patient)
+          .then( () => {
+            this.setState({
+              // Clear form, reset to Signin form
+              success: true,
+              formValues: {newPatient: false},
+              formType: this.Signin,
+              successMsg: `${patient.firstName} signed in successfully`,
+              error: null
+            });
+          })
+          .catch( (e) => {
+            this.setState({success: false, error: e.message, successMsg: null});
+          });
     }
   }
 
@@ -111,14 +127,16 @@ export default class SigninScreen extends Component<{}> {
             options={this.options}
             onChange={this.onFormChange}
           />
+
+          <Text style={styles.error}>
+            {this.state.error}
+          </Text>
+
           <Button onPress={this.submit}
             title="Submit" />
 
           <Text style={styles.success}>
             {this.state.successMsg}
-          </Text>
-          <Text style={styles.error}>
-            {this.state.error}
           </Text>
         </View>
       </ScrollView>

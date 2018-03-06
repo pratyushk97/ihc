@@ -1,3 +1,4 @@
+import {stringDate} from '../util/Date';
 /*
  * A patient's status as they go through their appointment
  */
@@ -7,8 +8,9 @@ export default class Status {
   static newStatus(patientKey) {
     const obj = {
       patientKey: patientKey,
-      date: new Date(),
+      date: stringDate(new Date()),
       active: true,
+      checkinTime: new Date().getTime(),
     }
     return obj;
   }
