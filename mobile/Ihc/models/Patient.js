@@ -13,6 +13,10 @@ export default class Patient {
     return drugToUpdates;
   }
 
+  static fullName(patient) {
+    return `${patient.firstName} ${patient.fatherName} ${patient.motherName}`;
+  }
+
   // To be used as primary key
   static makeKey(patient) {
     const str = `${patient.firstName}&${patient.fatherName}&${patient.motherName}` +
@@ -49,6 +53,7 @@ Patient.schema = {
     medications: 'DrugUpdate[]',
     soaps: 'Soap[]',
     triages: 'Triage[]',
+    statuses: 'Status[]',
     growthchart: 'GrowthChartUpdate[]',
     lastUpdated: 'int' // timestamp
   }

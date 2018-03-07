@@ -1,13 +1,15 @@
 import {stringDate} from '../util/Date';
+import Patient from './Patient';
 /*
  * A patient's status as they go through their appointment
  */
 export default class Status {
   // Insert any class methods here
 
-  static newStatus(patientKey) {
+  static newStatus(patient) {
     const obj = {
-      patientKey: patientKey,
+      patientKey: patient.key,
+      name: Patient.fullName(patient),
       date: stringDate(new Date()),
       active: true,
       checkinTime: new Date().getTime(),
@@ -20,6 +22,7 @@ Status.schema = {
   name: 'Status',
   properties: {
     patientKey: 'string',
+    name: 'string',
     date: 'string',
     active: 'bool',
     checkinTime: 'int', // Timestamp, milliseconds
