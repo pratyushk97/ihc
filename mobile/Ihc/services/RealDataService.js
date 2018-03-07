@@ -82,12 +82,10 @@ export function getUpdates(param) {
 export function getPatientSelectRows() {
   const statuses = Object.values(realm.objects('Status').filtered('date = "' +
       stringDate(new Date) + '" AND active = true').sorted('checkinTime'));
-  console.log(statuses);
 
   const columnOrder = ['name', 'birthday', 'checkinTime', 'triageCompleted',
     'doctorCompleted', 'pharmacyCompleted', 'notes'];
   const toReturn = createMatrix(statuses, columnOrder);
-  console.log(toReturn);
 
   return Promise.resolve(toReturn);
 }

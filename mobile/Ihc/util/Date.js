@@ -13,6 +13,11 @@ export function formatDate(date) {
   return day + ' ' + monthNames[monthIndex] + ' ' + year;
 }
 
+// Convert yyyymmdd to mm/dd/yy
+export function shortDate(date) {
+  return date.slice(4,6) + '/' + date.slice(6) + '/' + date.slice(2,4);
+}
+
 // Given a Date object, returns string in format yyyymmdd
 export function stringDate(dateObj) {
   const month = dateObj.getMonth()+1 < 10 ? '0' + (dateObj.getMonth()+1) : dateObj.getMonth()+1;

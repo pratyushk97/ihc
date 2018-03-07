@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import data from '../services/DataService';
 import PatientTable, {tableStyles} from '../components/PatientTable';
+import {shortDate} from '../util/Date';
 
 export default class PatientSelectScreen extends Component<{}> {
   constructor(props) {
@@ -56,22 +57,25 @@ export default class PatientSelectScreen extends Component<{}> {
   }
 
   renderRow = (data, keyFn) => {
+    // e is the current element
     const cols = data.map( (e,i) => (
       <View style={tableStyles.col} key={keyFn(i)}>
         {( () => {
           // TODO: format birthday, add ability to add notes
           switch(i) {
-            case 2: //checkin time
-            case 3:
-            case 4:
-            case 5:
-              // No checkin time provided
+            case 1: // birthday
+                return <Text>{shortDate(e)}</Text>;
+            case 2: // checkin time
+            case 3: // triage time
+            case 4: // doctor time
+            case 5: // pharmacy time
+              // No time provided
               if(!e)
                 return <Text></Text>
 
-              const date = new Date(e);
+              const time = new Date(e);
               // TODO: update checkintime format
-              return <Text>{`${date.getHours()}:${date.getMinutes()}`}</Text>
+              return <Text>{`${time.getHours()}:${time.getMinutes()}`}</Text>
               break;
             default:
               return <Text>{e}</Text>
