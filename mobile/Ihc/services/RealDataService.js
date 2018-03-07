@@ -9,6 +9,7 @@ import Triage from '../models/Triage';
 import DrugUpdate from '../models/DrugUpdate';
 
 import Realm from 'realm';
+import {stringDate} from '../util/Date';
 
 const realm = new Realm({
   schema: [Patient, Status, GrowthChartUpdate, Soap, Triage, DrugUpdate],
@@ -66,20 +67,19 @@ export function getUpdates(param) {
 }
 
 /*
- * active_only is true if we only want the statuses of patients that are
- * currently checked in
+ * Return the statuses of the patients that are active and for this date
  */
 export function getPatientSelectRows() {
-  const arr =
-    [ ];
+  const statuses = Object.values(realm.objects('Status').filtered('date = "' +
+      stringDate(new Date) + '" AND active = true').sorted('checkinTime'));
+  console.log(statuses);
 
-  const columnOrder = ['name', 'birthday', 'checkin_time', 'triage_completed',
-    'doctor_completed', 'pharmacy_completed', 'notes'];
-  const toReturn = createMatrix(arr, columnOrder);
+  const columnOrder = ['name', 'birthday', 'checkinTime', 'triageCompleted',
+    'doctorCompleted', 'pharmacyCompleted', 'notes'];
+  const toReturn = createMatrix(statuses, columnOrder);
+  console.log(toReturn);
 
-  return new Promise((resolve, reject) => {
-    setTimeout(resolve, 100, toReturn);
-  });
+  return Promise.resolve(toReturn);
 }
 
 export function getMedicationUpdates() {

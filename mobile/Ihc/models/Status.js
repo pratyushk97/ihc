@@ -10,6 +10,7 @@ export default class Status {
     const obj = {
       patientKey: patient.key,
       name: Patient.fullName(patient),
+      birthday: patient.birthday,
       date: stringDate(new Date()),
       active: true,
       checkinTime: new Date().getTime(),
@@ -23,6 +24,7 @@ Status.schema = {
   properties: {
     patientKey: 'string',
     name: 'string',
+    birthday: 'string', // For convenience in patient select table
     date: 'string',
     active: 'bool',
     checkinTime: 'int', // Timestamp, milliseconds
