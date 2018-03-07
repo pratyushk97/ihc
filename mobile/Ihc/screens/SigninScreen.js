@@ -25,8 +25,8 @@ export default class SigninScreen extends Component<{}> {
 
   Signin = t.struct({
     firstName: t.String,
-    motherName: t.String,
     fatherName: t.String,
+    motherName: t.String,
     birthday: t.Date,
     newPatient: t.Boolean,
   });
@@ -39,8 +39,8 @@ export default class SigninScreen extends Component<{}> {
   // Signin fields + whatever else a new patient needs
   NewPatient = t.struct({
     firstName: t.String,
-    motherName: t.String,
     fatherName: t.String,
+    motherName: t.String,
     birthday: t.Date,
     newPatient: t.Boolean,
     gender: this.Gender,

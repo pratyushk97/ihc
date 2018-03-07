@@ -16,11 +16,21 @@ const realm = new Realm({
   deleteRealmIfMigrationNeeded: true, // TODO: delete when done with dev
 });
 
-export function createPatient(patientInfo) {
+export function createPatient(patient) {
   try {
-    // check doesnt already exist, also sign them in
+    const patientObjs = realm.objects('Patient').filtered('key = "' + patient.key + '"');
+    const existingPatient = patientObjs['0'];
+
+    if(existingPatient) {
+      throw new Error("Patient already exists");
+    }
+
+    // Also sign them in
+    const statusObj = Status.newStatus(patient);
+
     realm.write(() => {
-      realm.create('Patient', patientInfo);
+      patient.statuses = [statusObj];
+      realm.create('Patient', patient);
     });
     return Promise.resolve(true);
   } catch (e) {
