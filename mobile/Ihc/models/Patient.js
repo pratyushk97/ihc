@@ -46,7 +46,6 @@ Patient.schema = {
     phone: 'string?',
     motherHeight: 'double?',
     fatherHeight: 'double?',
-    statuses: 'Status[]',
     medications: 'DrugUpdate[]',
     soaps: 'Soap[]',
     triages: 'Triage[]',

@@ -93,7 +93,7 @@ export default class SigninScreen extends Component<{}> {
             });
           })
           .catch( (e) => {
-            this.setState({success: false, error: e.message});
+            this.setState({success: false, error: e.message, successMsg: null});
           });
     } else {
       const patient = Patient.extractFromForm(form);

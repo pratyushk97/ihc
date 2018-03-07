@@ -39,14 +39,17 @@ export function signinPatient(patientForm) {
       throw new Error("More than one patient with key" + patientForm.key);
     }
 
+    console.log(realm.objects('Status'));
     realm.write(() => {
       const statusObj = Status.newStatus(patientForm.key);
-      for ( var k in patient.statuses ){
-        if(patient.statuses[k].date === statusObj.date) {
-          throw new Error("This patient already checked in");
-        }
+      // Status for that person and date already exists
+      const prevStatus = realm.objects('Status').filtered('date = "' + statusObj.date +
+          '" AND patientKey = "' + patientForm.key + '"');
+      console.log(prevStatus);
+      if(prevStatus['0']) {
+        throw new Error("This patient already checked in");
       }
-      patient.statuses.push(statusObj);
+      realm.create('Status', statusObj);
     });
     return Promise.resolve(true);
   } catch (e) {
