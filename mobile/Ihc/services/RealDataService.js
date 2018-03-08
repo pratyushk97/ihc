@@ -68,6 +68,36 @@ export function signinPatient(patientForm) {
   }
 }
 
+export function createDrugUpdate(update) {
+  try {
+    const patientObjs = realm.objects('Patient').filtered('key = "' + update.patientKey + '"');
+    const patient = patientObjs['0'];
+    if(!patient) {
+      throw new Error("Patient doesn't exist");
+    }
+
+    realm.write(() => {
+      // If an object for that drug and date already exists, update it
+      const date = stringDate(new Date());
+      for (var m in patient.medications) {
+        const old = patient.medications[m];
+        if(old.date === date && old.name === update.name) {
+          old.dose = update.dose;
+          old.frequency = update.frequency;
+          old.duration = update.duration;
+          old.notes = update.notes;
+          return Promise.resolve(true);
+        }
+      }
+
+      patient.medications.push(update);
+    });
+    return Promise.resolve(true);
+  } catch(e) {
+    return Promise.reject(e);
+  }
+}
+
 export function getPatients(param) {
   return realm.objects('Patient');
 }
@@ -84,18 +114,16 @@ export function getPatientSelectRows() {
       stringDate(new Date) + '" AND active = true').sorted('checkinTime'));
 
   const columnOrder = ['name', 'birthday', 'checkinTime', 'triageCompleted',
-    'doctorCompleted', 'pharmacyCompleted', 'notes'];
+    'doctorCompleted', 'pharmacyCompleted', 'notes', 'patientKey'];
   const toReturn = createMatrix(statuses, columnOrder);
 
   return Promise.resolve(toReturn);
 }
 
-export function getMedicationUpdates() {
-  const arr = [];
-
-  return new Promise((resolve, reject) => {
-    setTimeout(resolve, 100, arr);
-  });
+export function getMedicationUpdates(patientKey) {
+  const updates = Object.values(realm.objects('DrugUpdate').filtered('patientKey = "' +
+      patientKey + '"'));
+  return Promise.resolve(updates);
 }
 
 function createMatrix(data, columnOrder) {

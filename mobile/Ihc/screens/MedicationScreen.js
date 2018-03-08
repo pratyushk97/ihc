@@ -9,6 +9,11 @@ import data from '../services/DataService';
 import MedicationTable, {tableStyles} from '../components/MedicationTable';
 
 export default class MedicationScreen extends Component<{}> {
+  /*
+   * Props:
+   * name: patient's name for convenience
+   * patientKey: string of patient's key
+   */
   constructor(props) {
     super(props);
 
@@ -19,14 +24,14 @@ export default class MedicationScreen extends Component<{}> {
       drugNames: new Set(),
       error: null
     };
+    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
   }
 
-  backToPatient = () => {
-    this.props.navigator.push({
-      screen: 'Ihc.PatientHomeScreen',
-      title: this.props.patientInfo.name,
-      passProps: { patientInfo: this.props.patientInfo }
-    });
+  // Reload table after new medication updates
+  onNavigatorEvent(event) {
+    if (event.id === 'willAppear') {
+      this.loadMedications();
+    }
   }
 
   // TODO when soap screen is made
@@ -40,6 +45,7 @@ export default class MedicationScreen extends Component<{}> {
   refillMedication = (prevDrugUpdate) => {
     // TODO get date in whatever format we end up choosing
     // also ensure an update for that date doesn't already exist
+    // TODO make changes in realm to reflect refill
     const date = '20180303';
     const newUpdate = Object.assign({}, prevDrugUpdate);
     newUpdate.date = date;
@@ -60,17 +66,36 @@ export default class MedicationScreen extends Component<{}> {
 
   // TODO buttons
   changeMedication = (prevDrugUpdate) => {
+    this.props.navigator.push({
+      screen: 'Ihc.MedicationUpdateScreen',
+      title: 'Medication',
+      passProps: {
+        drugUpdate: prevDrugUpdate,
+        action: 'change',
+        patientKey: this.props.patientKey,
+        name: this.props.name
+      }
+    });
   }
 
   discontinueMedication = (prevDrugUpdate) => {
   }
 
   createNewMedication = () => {
+    this.props.navigator.push({
+      screen: 'Ihc.MedicationUpdateScreen',
+      title: 'Medication',
+      passProps: {
+        action: 'new',
+        patientKey: this.props.patientKey,
+        name: this.props.name
+      }
+    });
   }
 
   loadMedications = () => {
     this.setState({ loading: true });
-    data.getMedicationUpdates()
+    data.getMedicationUpdates(this.props.patientKey)
       .then( updates => {
         const dateToUpdates = {};
         const drugNames = new Set();
@@ -103,7 +128,7 @@ export default class MedicationScreen extends Component<{}> {
       return (
         <View style={styles.container}>
           <Text style={styles.title}>
-            {this.props.patientInfo.name}'s Medications
+            {this.props.name}'s Medications
           </Text>
 
           <Text>Loading</Text>
@@ -128,7 +153,7 @@ export default class MedicationScreen extends Component<{}> {
     return (
       <View style={styles.container}>
         <Text style={styles.title}>
-          {this.props.patientInfo.name}'s Medications
+          {this.props.name}'s Medications
         </Text>
 
         <View style={styles.tableContainer}>

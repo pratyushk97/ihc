@@ -12,7 +12,8 @@ export default class PatientHomeScreen extends Component<{}> {
   /*
    * Expects:
    *  {
-   *    patientInfo: PatientIdentification object
+   *    name: string, patient's name (for convenience)
+   *    patientKey: string
    *  }
    */
   constructor(props) {
@@ -38,7 +39,7 @@ export default class PatientHomeScreen extends Component<{}> {
     this.props.navigator.push({
       screen: 'Ihc.MedicationScreen',
       title: 'Medications',
-      passProps: { patientInfo: this.props.patientInfo }
+      passProps: { name: this.props.name, patientKey: this.props.patientKey }
     });
   }
 
@@ -53,7 +54,7 @@ export default class PatientHomeScreen extends Component<{}> {
     this.props.navigator.push({
       screen: 'Ihc.GrowthChartScreen',
       title: 'Growth Chart',
-      passProps: { patientInfo: this.props.patientInfo }
+      passProps: { patientKey: this.props.patientKey}
     });
   }
 
@@ -64,7 +65,7 @@ export default class PatientHomeScreen extends Component<{}> {
     return (
       <View style={styles.container}>
         <Text style={styles.title}>
-          {this.props.patientInfo.name}
+          {this.props.name}
         </Text>
 
         <Text style={styles.title}>

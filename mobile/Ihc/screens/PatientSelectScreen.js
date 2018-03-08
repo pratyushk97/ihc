@@ -52,7 +52,7 @@ export default class PatientSelectScreen extends Component<{}> {
     this.props.navigator.push({
       screen: 'Ihc.PatientHomeScreen',
       title: patient.name,
-      passProps: { patientInfo: { name: patient[0] } }
+      passProps: { name: patient[0], patientKey: patient[7] }
     });
   }
 
@@ -77,6 +77,8 @@ export default class PatientSelectScreen extends Component<{}> {
               // TODO: update checkintime format
               return <Text>{`${time.getHours()}:${time.getMinutes()}`}</Text>
               break;
+            case 7: // patient Key
+              return;
             default:
               return <Text>{e}</Text>
           }
