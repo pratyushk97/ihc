@@ -108,12 +108,19 @@ export default class MedicationScreen extends Component<{}> {
 
           <Text>Loading</Text>
 
-          <TouchableOpacity onPress={this.createNewMedication}
-            title="New Medication" />
-          <TouchableOpacity onPress={this.backToPatient}
-            title="Back to patient" />
-          <TouchableOpacity onPress={this.goToSoap}
-            title="To SOAP" />
+          <View style={styles.footer}>
+            <TouchableOpacity
+                style={styles.buttonContainer}
+                onPress={this.createNewMedication}>
+              <Text style={styles.button}>New Medication</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+                style={styles.buttonContainer}
+                onPress={this.goToSoap}>
+              <Text style={styles.button}>To SOAP</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       );
     }
@@ -138,12 +145,6 @@ export default class MedicationScreen extends Component<{}> {
         <Text>R: Refill, C: Change, D: Discontinue</Text>
 
         <View style={styles.footer}>
-          <TouchableOpacity
-              style={styles.buttonContainer}
-              onPress={this.backToPatient}>
-            <Text style={styles.button}>Back to patient</Text>
-          </TouchableOpacity>
-
           <TouchableOpacity
               style={styles.buttonContainer}
               onPress={this.createNewMedication}>
@@ -176,9 +177,11 @@ const styles = StyleSheet.create({
   tableContainer: {
     maxHeight: '70%',
     maxWidth: '95%',
+    padding: 0,
   },
   buttonContainer: {
     width: 150,
+    height: 50,
     margin: 4,
     padding: 8,
     elevation: 4,

@@ -109,10 +109,10 @@ export default class MedicationTable extends Component<{}> {
   }
 
   render() {
-    if (!this.props.drugNames || !this.props.dateToUpdates) {
+    if (!this.props.drugNames.size || !Object.keys(this.props.dateToUpdates).length) {
       return (
-        <View>
-          <Text>No data to show</Text>
+        <View style={styles.container}>
+          <Text style={styles.emptyText}>No data to show</Text>
         </View>
       )
     }
@@ -156,17 +156,26 @@ export default class MedicationTable extends Component<{}> {
  * Files that create a renderRow() function should use these styles for
  * consistency
  */
+const WIDTH = 700, HEIGHT = '60%';
 export const styles = StyleSheet.create({
+  container: {
+    minWidth: WIDTH,
+    minHeight: HEIGHT,
+  },
   horizontalScroller: {
-    minWidth: 700,
+    minWidth: WIDTH,
   },
   verticalScroller: {
-    minHeight: '60%',
+    minHeight: HEIGHT,
   },
   title: {
     fontSize: 20,
     textAlign: 'center',
     margin: 10,
+  },
+  emptyText: {
+    textAlign: 'center',
+    left: -64,
   },
   headerRow: {
     maxHeight: 20,
