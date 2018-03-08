@@ -7,6 +7,7 @@ import {
 } from 'react-native';
 import data from '../services/DataService';
 import MedicationTable, {tableStyles} from '../components/MedicationTable';
+import {stringDate} from '../util/Date';
 
 export default class MedicationScreen extends Component<{}> {
   /*
@@ -43,25 +44,18 @@ export default class MedicationScreen extends Component<{}> {
   }
 
   refillMedication = (prevDrugUpdate) => {
-    // TODO get date in whatever format we end up choosing
-    // also ensure an update for that date doesn't already exist
-    // TODO make changes in realm to reflect refill
-    const date = '20180303';
+    const date = stringDate(new Date());
     const newUpdate = Object.assign({}, prevDrugUpdate);
     newUpdate.date = date;
-    const oldUpdates = this.state.updates;
-    oldUpdates.push(newUpdate);
-    const oldDateToUpdates = this.state.dateToUpdates;
-    if( date in oldDateToUpdates ) {
-      oldDateToUpdates[date].push(newUpdate);
-    } else {
-      oldDateToUpdates[date] = [newUpdate];
-    }
 
-    this.setState({
-      updates: oldUpdates,
-      dateToUpdates: oldDateToUpdates,
-    });
+    data.createDrugUpdate(newUpdate)
+      .then( () => {
+        this.loadMedications();
+        this.setState({error: null});
+      })
+      .catch( (e) => {
+        this.setState({error: e.message});
+      });
   }
 
   // TODO buttons
@@ -156,6 +150,10 @@ export default class MedicationScreen extends Component<{}> {
           {this.props.name}'s Medications
         </Text>
 
+        <Text style={styles.error}>
+          {this.state.error}
+        </Text>
+
         <View style={styles.tableContainer}>
           <MedicationTable style={styles.table}
             refill={this.refillMedication}
@@ -221,5 +219,10 @@ const styles = StyleSheet.create({
   footer: {
     flex: 1,
     flexDirection: 'row'
-  }
+  },
+  error: {
+    textAlign: 'center',
+    color: 'red',
+    margin: 10,
+  },
 });

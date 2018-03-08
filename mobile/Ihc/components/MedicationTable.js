@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import * as data from '../services/FakeDataService';
+import {stringDate} from '../util/Date';
 
 export default class MedicationTable extends Component<{}> {
   /*
@@ -21,13 +22,14 @@ export default class MedicationTable extends Component<{}> {
    */
   // TODO: only take in updates prop and calculate dateToUpdates and drugNames
   // here
+  // TODO start with empty column for current date
   constructor(props) {
     super(props);
   }
 
   // Returns the update with that name, or null if not found
   // updates: Array of update objects
-  // name: string
+  // name: string of drug name
   updateWithName(updates, name) {
     return updates.find( (update) => {
       return update.name === name;
@@ -81,7 +83,7 @@ export default class MedicationTable extends Component<{}> {
           <TouchableOpacity
               style={[styles.buttonContainer, !exists && {opacity: 0.5}]}
               onPress={() => this.props.refill(update)}
-              disabled={!exists}>
+              disabled={!exists || update.date === stringDate(new Date())}>
             <Text style={styles.button}>R</Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -108,6 +110,20 @@ export default class MedicationTable extends Component<{}> {
     )
   }
 
+  /*
+   * Input the leftmost date
+   * We want the medications from the last checkup to be the ones potentially
+   * refilled. Thus, we want to save that date. However, when there are updates,
+   * that leftmost date will change to be today. We don't want to use today as
+   * the date though, so use the next value.
+   */
+  mostRecentDate(dates) {
+    if (dates[0] !== stringDate(new Date()) || !dates[1]) {
+      return dates[0];
+    }
+    return dates[1];
+  }
+
   render() {
     if (!this.props.drugNames.size || !Object.keys(this.props.dateToUpdates).length) {
       return (
@@ -130,7 +146,7 @@ export default class MedicationTable extends Component<{}> {
         return this.renderColumn(date, this.props.dateToUpdates[date], names, i);
       });
 
-    const mostRecentDate = dates[0];
+    const mostRecentDate = this.mostRecentDate(dates);
     const buttonColumn = this.renderButtonColumn(this.props.dateToUpdates[mostRecentDate],
         names);
 

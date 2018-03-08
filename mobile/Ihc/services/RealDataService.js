@@ -78,10 +78,9 @@ export function createDrugUpdate(update) {
 
     realm.write(() => {
       // If an object for that drug and date already exists, update it
-      const date = stringDate(new Date());
       for (var m in patient.medications) {
         const old = patient.medications[m];
-        if(old.date === date && old.name === update.name) {
+        if(old.date === update.date && old.name === update.name) {
           old.dose = update.dose;
           old.frequency = update.frequency;
           old.duration = update.duration;
