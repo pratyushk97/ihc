@@ -172,7 +172,7 @@ export default class MedicationTable extends Component<{}> {
  * Files that create a renderRow() function should use these styles for
  * consistency
  */
-const WIDTH = 700, HEIGHT = '60%';
+const WIDTH = 700, HEIGHT = '50%';
 export const styles = StyleSheet.create({
   container: {
     minWidth: WIDTH,
@@ -210,6 +210,7 @@ export const styles = StyleSheet.create({
   },
   smallCol: {
     minWidth: 60,
+    maxWidth: 60,
     backgroundColor: '#adadad',
     borderWidth: 1
   },

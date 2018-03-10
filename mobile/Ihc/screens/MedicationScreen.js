@@ -150,6 +150,8 @@ export default class MedicationScreen extends Component<{}> {
           {this.props.name}'s Medications
         </Text>
 
+        <Text>R: Refill, C: Change, D: Discontinue</Text>
+
         <Text style={styles.error}>
           {this.state.error}
         </Text>
@@ -164,8 +166,6 @@ export default class MedicationScreen extends Component<{}> {
             drugNames={this.state.drugNames}
            />
         </View>
-
-        <Text>R: Refill, C: Change, D: Discontinue</Text>
 
         <View style={styles.footer}>
           <TouchableOpacity
@@ -203,8 +203,8 @@ const styles = StyleSheet.create({
     padding: 0,
   },
   buttonContainer: {
-    width: 150,
-    height: 50,
+    width: 120,
+    height: 30,
     margin: 4,
     padding: 8,
     elevation: 4,
@@ -218,11 +218,12 @@ const styles = StyleSheet.create({
   },
   footer: {
     flex: 1,
-    flexDirection: 'row'
+    flexDirection: 'row',
+    maxHeight: 40,
   },
   error: {
     textAlign: 'center',
     color: 'red',
-    margin: 10,
+    margin: 0,
   },
 });
