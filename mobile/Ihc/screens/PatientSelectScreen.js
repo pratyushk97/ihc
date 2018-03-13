@@ -24,13 +24,6 @@ export default class PatientSelectScreen extends Component<{}> {
     };
   }
 
-  goToWelcome = () => {
-    this.props.navigator.push({
-      screen: 'Ihc.WelcomeScreen',
-      title: 'Welcome'
-    });
-  }
-
   loadPatients = () => {
     this.setState({ loading: true });
     data.getPatientSelectRows()
@@ -118,9 +111,6 @@ export default class PatientSelectScreen extends Component<{}> {
           loading={this.state.loading}
           renderRow={this.renderRow}
         />
-
-        <Button onPress={this.goToWelcome}
-          title="Back to home" />
       </View>
     );
   }

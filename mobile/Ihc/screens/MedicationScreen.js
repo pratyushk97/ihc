@@ -35,14 +35,6 @@ export default class MedicationScreen extends Component<{}> {
     }
   }
 
-  // TODO when soap screen is made
-  goToSoap = () => {
-    this.props.navigator.push({
-      screen: 'Ihc.PatientSelectScreen',
-      title: 'Select patient'
-    });
-  }
-
   refillMedication = (prevDrugUpdate) => {
     const date = stringDate(new Date());
     const newUpdate = Object.assign({}, prevDrugUpdate);
@@ -133,12 +125,6 @@ export default class MedicationScreen extends Component<{}> {
                 onPress={this.createNewMedication}>
               <Text style={styles.button}>New Medication</Text>
             </TouchableOpacity>
-
-            <TouchableOpacity
-                style={styles.buttonContainer}
-                onPress={this.goToSoap}>
-              <Text style={styles.button}>To SOAP</Text>
-            </TouchableOpacity>
           </View>
         </View>
       );
@@ -172,12 +158,6 @@ export default class MedicationScreen extends Component<{}> {
               style={styles.buttonContainer}
               onPress={this.createNewMedication}>
             <Text style={styles.button}>New Medication</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-              style={styles.buttonContainer}
-              onPress={this.goToSoap}>
-            <Text style={styles.button}>To SOAP</Text>
           </TouchableOpacity>
         </View>
       </View>
