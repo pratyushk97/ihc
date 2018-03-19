@@ -78,12 +78,13 @@ export default class MedicationTable extends Component<{}> {
     const rows = names.map( (name, i) => {
       const update = this.updateWithName(updates, name);
       const exists = Boolean(update);
+      const disableButton = !exists || update.date === stringDate(new Date());
       return (
         <Row style={styles.row} key={`buttonRow${i}`}>
           <TouchableOpacity
-              style={[styles.buttonContainer, !exists && {opacity: 0.5}]}
+              style={[styles.buttonContainer, disableButton && {opacity: 0.5}]}
               onPress={() => this.props.refill(update)}
-              disabled={!exists || update.date === stringDate(new Date())}>
+              disabled={disableButton}>
             <Text style={styles.button}>R</Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -92,10 +93,9 @@ export default class MedicationTable extends Component<{}> {
             <Text style={styles.button}>C</Text>
           </TouchableOpacity>
           <TouchableOpacity
-              style={[styles.buttonContainer, !exists && {opacity: 0.5}]}
+              style={[styles.buttonContainer, disableButton && {opacity: 0.5}]}
               onPress={() => this.props.discontinue(update)}
-              activeOpacity={!exists ? 1 : 0.7}
-              disabled={!exists}>
+              disabled={disableButton}>
             <Text style={styles.button}>D</Text>
           </TouchableOpacity>
         </Row>
