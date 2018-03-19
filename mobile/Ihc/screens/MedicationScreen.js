@@ -108,7 +108,6 @@ export default class MedicationScreen extends Component<{}> {
     this.loadMedications();
   }
 
-
   render() {
     if(this.props.loading) {
       return (

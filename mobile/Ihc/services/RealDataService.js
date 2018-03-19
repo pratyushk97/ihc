@@ -89,12 +89,54 @@ export function createDrugUpdate(update) {
         }
       }
 
+      // If doesn't exist, then add it
       patient.medications.push(update);
     });
     return Promise.resolve(true);
   } catch(e) {
     return Promise.reject(e);
   }
+}
+
+export function updateSoap(update) {
+  try {
+    const patientObjs = realm.objects('Patient').filtered('key = "' + update.patientKey + '"');
+    const patient = patientObjs['0'];
+
+    if(!patient) {
+      throw new Error("Patient doesn't exist");
+    }
+
+    const soap = realm.objects('Soap').filtered('date = "' +
+        stringDate(new Date) + '" AND patientKey = "' + update.patientKey +
+        '"')['0'];
+
+    realm.write(() => {
+      // If an object for that date already exists, update it
+      if(soap) {
+        soap.subjective = update.subjective;
+        soap.objective = update.objective;
+        soap.assessment = update.assessment;
+        soap.plan = update.plan;
+        soap.wishlist = update.wishlist;
+        soap.provider = update.provider;
+        return Promise.resolve(true);
+      }
+
+      // If doesn't exist, then add it
+      patient.soaps.push(update);
+    });
+    return Promise.resolve(true);
+  } catch(e) {
+    return Promise.reject(e);
+  }
+}
+
+// Returns SOAP object if it exists, or undefined if not
+export function getSoap(patientKey, strDate) {
+  const soap = realm.objects('Soap').filtered('date = "' +
+      stringDate(new Date) + '" AND patientKey = "' + patientKey + '"')['0'];
+  return Promise.resolve(soap);
 }
 
 export function getPatients(param) {

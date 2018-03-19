@@ -24,21 +24,22 @@ export default class PatientHomeScreen extends Component<{}> {
   goToTriage = () => {
     this.props.navigator.push({
       screen: 'Ihc.PatientSelectScreen',
-      title: 'Select patient'
+      title: 'Back to patient'
     });
   }
 
   goToSoap = () => {
     this.props.navigator.push({
-      screen: 'Ihc.PatientSelectScreen',
-      title: 'Select patient'
+      screen: 'Ihc.SoapScreen',
+      title: 'Back to patient',
+      passProps: { name: this.props.name, patientKey: this.props.patientKey }
     });
   }
 
   goToMedicationList = () => {
     this.props.navigator.push({
       screen: 'Ihc.MedicationScreen',
-      title: 'Medications',
+      title: 'Back to patient',
       passProps: { name: this.props.name, patientKey: this.props.patientKey }
     });
   }
@@ -46,14 +47,14 @@ export default class PatientHomeScreen extends Component<{}> {
   goToHistory = () => {
     this.props.navigator.push({
       screen: 'Ihc.PatientSelectScreen',
-      title: 'Select patient'
+      title: 'Back to patient',
     });
   }
 
   goToGrowthChart = () => {
     this.props.navigator.push({
       screen: 'Ihc.GrowthChartScreen',
-      title: 'Growth Chart',
+      title: 'Back to patient',
       passProps: { patientKey: this.props.patientKey}
     });
   }
