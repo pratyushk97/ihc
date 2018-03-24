@@ -105,11 +105,10 @@ export default class SigninScreen extends Component<{}> {
               formValues: {newPatient: false},
               formType: this.Signin,
               successMsg: `${patient.firstName} signed in successfully`,
-              error: null
             });
           })
           .catch( (e) => {
-            this.setState({success: false, error: e.message, successMsg: null});
+            this.setState({success: false, formValues: form, error: e.message, successMsg: null});
           });
     }
   }
