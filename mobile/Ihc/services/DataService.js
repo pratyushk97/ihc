@@ -1,9 +1,9 @@
-// This file should hold all the fetch() calls to the Express server
+// Returns either FakeData or RealData depending on config file
+// Config file:
+//   "dataService" : "FakeDataService" | "RealDataService"
+import * as fakeData from '../services/FakeDataService';
+import * as realData from '../services/RealDataService';
+import config from '../config.json';
 
-export function getPatients(param) {
-  return []; // Return whatever sample data you want
-}
-
-export function getUpdates(param) {
-  return []; // Return whatever sample data you want
-}
+let dataService = config.dataService === "FakeDataService" ? fakeData : realData;
+export default dataService;

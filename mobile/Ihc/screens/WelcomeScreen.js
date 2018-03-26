@@ -1,10 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
-import * as data from '../services/FakeDataService';
 import React, { Component } from 'react';
 import {
   Platform,
@@ -13,6 +6,7 @@ import {
   Text,
   View
 } from 'react-native';
+import data from '../services/DataService';
 
 export default class WelcomeScreen extends Component<{}> {
   constructor(props) {
@@ -28,14 +22,13 @@ export default class WelcomeScreen extends Component<{}> {
 
   goToSelectPatient = () => {
     this.props.navigator.push({
-      screen: 'Ihc.SelectPatientScreen',
+      screen: 'Ihc.PatientSelectScreen',
       title: 'Select patient'
     });
   }
 
   // TODO: Download updates from server and add them to local storage
   sync = () => {
-    const updates = data.getUpdates();
   }
 
   render() {

@@ -15,7 +15,7 @@
     "babel-preset-env": "^1.6.0"
   },
   "scripts": {
-    "build": "babel 'src' --out-dir 'build' --presets=es2015 --copy-files --ignore 'node_modules'",
+    "build": "npx babel src --out-dir build --presets=es2015 --copy-files --ignore 'node_modules'",
     "disableprebuild": "rimraf build/node_modules",
     "disablepostbuild": "cd build && npm install",
     "make": "npm run build",

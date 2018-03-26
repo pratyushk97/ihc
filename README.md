@@ -9,7 +9,8 @@ Shortcuts:
 * [Local storage plan](#local-storage)
 * [Mobile](#mobile-plantodo)
 * [Laptop](#laptop-plantodo)
-* [Database](#database-design)
+* [Local Database](#realm-database-design)
+* [Server Database](#mongo-database-design)
 
 ### Directory organization
 
@@ -125,33 +126,26 @@ Other options are available: https://wix.github.io/react-native-navigation/#/scr
   2. Add any database interactions to src/Mongo.js
       - Generally functions should follow format of
       ```javascript
-        export function patientExists(param, callback)
-          MongoClient.connect(url, function(err, client) {
-            assert.equal(null, err);
-            client.db('ihc').collection('patients').find({patientInfo: patientInfo})
-              .next( (err,doc) => {
-                client.close();
-                callback(doc);
-              });
-          });
+        export function patientExists(param, callback, next)
+          db.collection('patients').find({patientInfo: patientInfo})
+            .next( (err,doc) => {
+              callback(doc);
+            });
         }
       ```
       callback(o) is where the caller handles the return object.
+      next() is the Express argument that we are using as part of error handling
 
       Example route:
       ```javascript
-        app.post("/signin/newpatient", (req,res) => {
-          try {
-            db.patientExists(req.body.patientInfo, (exists) => {
-              if(!exists) {
-                db.createPatient(req.body.patientInfo, () => res.send(true));
-              } else {
-                res.send(false);
-              }
-            } 
-          } catch(err) {
-            res.status(500).send({error: error}));
-          }
+        app.post("/signin/newpatient", (req,res,next) => {
+          db.patientExists(req.body.patientInfo, (exists) => {
+            if(!exists) {
+              db.createPatient(req.body.patientInfo, () => res.send(true));
+            } else {
+              res.send(false);
+            }
+          }, next); 
         });
       ```
   3. Update the README API Section for that route with the body and return
@@ -162,7 +156,7 @@ Other options are available: https://wix.github.io/react-native-navigation/#/scr
 
   1. Run a CURL command like this:
     ```
-    curl -d '{"patientInfo": {"first_name": "Brandony"}}' \
+    curl -d '{"patientInfo": {"firstName": "Brandony"}}' \
     -X POST -H "Content-Type: application/json" \
     http://localhost:8000/signin/newpatient
     ```
@@ -200,6 +194,19 @@ Other options are available: https://wix.github.io/react-native-navigation/#/scr
 Patient gets a new SOAP and Triage form every visit
 
 Medication and growth chart forms reused
+
+Other considerations:
+Misc file upload per patient
+  - folder to hold scans of anything
+Ensure pharmacy can change medications after doctor wrote it in
+  - editable table
+Timestamp instead of checkbox for patient select for when they finished
+  - does this need to persist?
+Field for who was triager
+Potential password? lock screen after given amount of time?
+If router went out, potentailly pass tablets around
+  - But wouldnt know patients are signed-in in the first place
+  - Maybe have offline patient search
 
 ##### High level plan:
 
@@ -288,7 +295,6 @@ PATCH /patients/soap/ :white_check_mark:
   
 PATCH /patients/triage/ :white_check_mark:
   - Update patient's triage form
-  - Also update the growthchart info
   ```
   body: {
     patientInfo: PatientInfo object,
@@ -298,9 +304,21 @@ PATCH /patients/triage/ :white_check_mark:
   returns: true if successful
   ```
   
-PATCH /patients/growthchart/
+POST /patients/growthchartupdate :white_check_mark:
+  - Add update to patient's overall records
+  ```
+  body: {
+    patientInfo: PatientInfo object,
+    update: GrowthChartRow object
+  }
 
-PATCH /patients/medications
+  returns: true if successful
+  ```
+PATCH /patients/growthchart
+  - Add info for GrowthChart object that is not a GrowthChartRow
+  - For now, includes father and mother's heights
+
+POST /patients/medicationsupdate
   - Add update to patient's overall records
   - ```
     Update: {
@@ -326,12 +344,14 @@ GET /patients/soap/:date
 GET /patients/history
   - Return list of triages and soaps dates, not the actual forms
 
-POST /signout
+POST /signout :white_check_mark:
   - Signout everyone that is currently marked as "active"
 
 ==========================================
 
 ### Local Storage:
+
+Use Realm as the mobile database
 
 Handling LOCAL STORAGE as backup:
 If router goes out...
@@ -388,7 +408,7 @@ Locally save list of timestamps when "Upload Updates" was clicked
 Body:
   {
     timestamp: When "Upload Updates" button is clicked,
-    user_updates: list of user updates
+    userUpdates: list of user updates
         [{ <Match user object in database design section> }]
   }
 
@@ -443,7 +463,11 @@ Routes:
 
 ==========================================
 
-### Database design:
+### Realm Database design:
+
+The schema for the local storage Realm database is defined in mobile/Ihc/models.
+
+### Mongo Database design:
 
 /
         
@@ -457,10 +481,10 @@ Patient
     * info/
       * PatientInfo object
     * status/
-        * Status object
+        * [Status object]
     * forms/
         * medications/
-          * : drugName/
+          * :drugName/
             * [DrugUpdate object, DrugUpdate object, ...]
         * soaps/
           * :date/
@@ -470,15 +494,15 @@ Patient
             * Triage object
         * growthchart/
             * GrowthChart object 
-    * last_updated/
+    * lastUpdated/
       * timestamp (ms since epoch)
         
 PatientIdentification (Everything needed for signin/identification)
 ```
 {
-  first_name: string,
-  father_name: string,
-  mother_name: string,
+  firstName: string,
+  fatherName: string,
+  motherName: string,
   birthday: date,
   sex: int?,
 }
@@ -487,9 +511,9 @@ PatientIdentification (Everything needed for signin/identification)
 PatientInfo (Full patient information)
 ```
 {
-  first_name: string,
-  father_name: string,
-  mother_name: string,
+  firstName: string,
+  fatherName: string,
+  motherName: string,
   birthday: date,
   sex: int?,
   phone: string
@@ -499,6 +523,7 @@ PatientInfo (Full patient information)
 DrugUpdate
 ```
 {
+    name: string,
     date: date,
     dose: string,
     frequency: string,
@@ -524,14 +549,14 @@ Triage
 ```
 {
     date: date,
-    has_insurance: boolean,
+    hasInsurance: boolean,
     location: string (Girasoles/TJP),
-    arrival_time: date/string,
-    time_in: date/string,
-    time_out: date/string,
+    arrivalTime: date/string,
+    timeIn: date/string,
+    timeOut: date/string,
     triager: string (Triager's name),
     status: int? (EMT/Student/Nurse/Other),
-    status_clarification: string (If Other),
+    statusClarification: string (If Other),
     weight: double,
     height: double,
     temp: double,
@@ -543,7 +568,7 @@ Triage
     LMP: string,
     Regular: boolean,
     pregnancies: string,
-    live_births: string,
+    liveBirths: string,
     abortions: string,
     miscarriages: string,
     ---END IF---
@@ -552,33 +577,33 @@ Triage
     bgl: string,
     a1c: string,
     fasting: boolean,
-    pregnancy_test: boolean,
+    pregnancyTest: boolean,
     --END IF---
     allergies: string,
     meications: string,
     surgeries: string,
     immunizations: string,
-    chief_complaint: string,
+    chiefComplaint: string,
     ---IF URINE TEST---
     leukocytes: string,
     blood: string,
     nitrites: string,
-    specific_gravity: string,
+    specificGravity: string,
     urobilirubin: string,
     ketone: string,
     protein: string,
     bilirubin: string,
     ph: string,
     glucose: string,
-    pharmacy_section: string (For pharmacy use only section)
+    pharmacySection: string (For pharmacy use only section)
 }
 ```
 
 GrowthChart
 ```
 {
-    mother_height: double,
-    father_height: double,
+    motherHeight: double,
+    fatherHeight: double,
     rows: [GrowthChartRow object, ...]
 }
 ```
@@ -597,11 +622,11 @@ GrowthChartRow
 Status
 ```
 {
-    active: boolean,
-    checkin_time: datetime,
-    triage_completed: boolean,
-    doctor_completed: boolean,
-    pharmacy_completed: boolean,
+    active: boolean (if they came to clinic today),
+    checkinTime: datetime,
+    triageCompleted: boolean, timestamp?
+    doctorCompleted: boolean, timestamp?
+    pharmacyCompleted: boolean, timestamp?
     notes: string
 }
 ```

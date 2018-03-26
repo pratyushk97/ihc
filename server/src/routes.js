@@ -1,61 +1,89 @@
 module.exports = function(app, db) {
-  app.post("/signin/newpatient", (req,res) => {
+  app.get("/patients", (req,res,next) => {
+    const onlyCheckedInPatients = req.query.checkedin === 'true';
+    const includeForms = req.query.forms === 'true';
+    db.getPatients(onlyCheckedInPatients, includeForms, (patients) => {
+      res.send({patients: patients});
+    }, next);
+  });
+
+  app.get("*", (req,res,next) => {
+    //res.send("Error: No path matched");
+    next(new Error('No path matched for URL: ' + req.originalUrl));
+  });
+
+  app.post("/signout", (req,res,next) => {
+    db.signoutEveryone((result) => {
+      res.send(result);
+    }, next);
+  });
+
+  /* =========================================================================
+   * All routes below this line expect a patientInfo object in the req.body
+   */
+
+  // Assert that the param for req.body.patient info exists
+  const expectPatientInfoParam = function(req, res, next) {
+    if(!req.body.patientInfo) {
+      next(new Error('Expected a patientInfo object for path: ' + req.originalUrl));
+    }
+    next();
+  }
+  app.use(expectPatientInfoParam);
+
+  app.post("/signin/newpatient", (req,res,next) => {
     db.patientExists(req.body.patientInfo, (exists) => {
       if(!exists) {
         db.createPatient(req.body.patientInfo, () => {
-          db.patientSignin(req.body.patientInfo, () => res.send(true))
-        });
+          db.patientSignin(req.body.patientInfo, () => res.send(true), next)
+        }, next);
       } else {
         res.send(false);
       }
-    }); 
+    }, next); 
   });
 
-  app.post("/signin", (req,res) => {
+  app.post("/signin", (req,res,next) => {
     db.patientExists(req.body.patientInfo, (exists) => {
       if(!exists) {
         res.send(false);
       } else {
-        db.patientSignin(req.body.patientInfo, () => res.send(true));
+        db.patientSignin(req.body.patientInfo, () => res.send(true), next);
       }
-    });
+    }, next);
   });
 
-  app.patch("/status", (req,res) => {
+  app.patch("/status", (req,res,next) => {
     const patientInfo = req.body.patientInfo;
     const newStatus = req.body.status;
     db.updateStatus(patientInfo, newStatus, (result) => {
       // Extract if update was successful
       res.send(result);
-    });
+    }, next);
   });
 
-  app.get("/patients", (req, res) => {
-    const onlyCheckedInPatients = req.query.checkedin === 'true';
-    const includeForms = req.query.forms === 'true';
-    db.getPatients(onlyCheckedInPatients, includeForms, (patients) => {
-      res.send({patients: patients});
-    });
-  });
-
-  app.patch("/patients/soap", (req,res) => {
+  app.patch("/patients/soap", (req,res,next) => {
     const patientInfo = req.body.patientInfo;
     const newSoap = req.body.soap;
     db.updateSoap(patientInfo, newSoap, (result) => {
       res.send(result);
-    });
+    }, next);
   });
 
-  app.patch("/patients/triage", (req,res) => {
+  app.patch("/patients/triage", (req,res,next) => {
     const patientInfo = req.body.patientInfo;
     const newTriage = req.body.triage;
     db.updateTriage(patientInfo, newTriage, (result) => {
       res.send(result);
-    });
+    }, next);
   });
 
-  app.get("*", (req,res) => {
-    res.send("Error: No path matched");
+  app.post("/patients/growthchartupdate", (req,res,next) => {
+    const patientInfo = req.body.patientInfo;
+    const update = req.body.update;
+    db.addGrowthChartUpdate(patientInfo, update, (result) => {
+      res.send(result);
+    }, next);
   });
 }
 
