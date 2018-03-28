@@ -18,7 +18,6 @@ export default class SigninScreen extends Component<{}> {
     this.state = {
       formValues: {newPatient: false},
       formType: this.Signin,
-      success: true,
       error: '',
     }
   }
@@ -85,7 +84,6 @@ export default class SigninScreen extends Component<{}> {
           .then( () => {
             this.setState({
               // Clear form, reset to Signin form
-              success: true,
               formValues: {newPatient: false},
               formType: this.Signin,
               successMsg: `${patient.firstName} added successfully`,
@@ -93,7 +91,7 @@ export default class SigninScreen extends Component<{}> {
             });
           })
           .catch( (e) => {
-            this.setState({success: false, error: e.message, successMsg: null});
+            this.setState({error: e.message, successMsg: null});
           });
     } else {
       const patient = Patient.extractFromForm(form);
@@ -101,14 +99,13 @@ export default class SigninScreen extends Component<{}> {
           .then( () => {
             this.setState({
               // Clear form, reset to Signin form
-              success: true,
               formValues: {newPatient: false},
               formType: this.Signin,
               successMsg: `${patient.firstName} signed in successfully`,
             });
           })
           .catch( (e) => {
-            this.setState({success: false, formValues: form, error: e.message, successMsg: null});
+            this.setState({formValues: form, error: e.message, successMsg: null});
           });
     }
   }
