@@ -139,7 +139,15 @@ export function getSoap(patientKey, strDate) {
   return Promise.resolve(soap);
 }
 
-export function getPatients(param) {
+export function getPatient(patientKey) {
+  const patient = realm.objects('Patient').filtered('key = "' + patientKey + '"');
+  if(!patient) {
+    return Promise.reject(new Error('Patient does not exist'));
+  }
+  return Promise.resolve(patient['0']);
+}
+
+export function getPatients() {
   return realm.objects('Patient');
 }
 

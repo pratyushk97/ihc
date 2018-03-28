@@ -1,5 +1,38 @@
+var t = require('tcomb-form-native');
+
 export default class Triage {
-  // Insert any class methods here
+  /**
+   * Return the form type, given the value of certain buttons
+   */
+  static getFormType(form, gender) {
+    if(gender === 1 && form.labsDone && form.urineTestDone) { // male
+      return MaleTriageLabsUrine;
+    }
+    if(gender === 1 && form.labsDone && !form.urineTestDone) { // male
+      return MaleTriageLabs;
+    }
+    if(gender === 1 && !form.labsDone && form.urineTestDone) { // male
+      return MaleTriageUrine;
+    }
+    if(gender === 1 && !form.labsDone && !form.urineTestDone) { // male
+      return MaleTriage;
+    }
+
+    if(gender === 2 && form.labsDone && form.urineTestDone) { // Female
+      return FemaleTriageLabsUrine;
+    }
+    if(gender === 2 && form.labsDone && !form.urineTestDone) { // Female
+      return FemaleTriageLabs;
+    }
+    if(gender === 2 && !form.labsDone && form.urineTestDone) { // Female
+      return FemaleTriageUrine;
+    }
+    if(gender === 2 && !form.labsDone && !form.urineTestDone) { // Female
+      return FemaleTriage;
+    }
+
+    throw new Error('No form type for these settings...');
+  }
 
 }
 
@@ -14,7 +47,7 @@ Triage.schema = {
     timeIn: 'int',
     timeOut: 'int',
     triager: 'string', // Name of triager
-    status: 'int', // 1 = EMT, 2 = Student, 3 = Nurse, 4 = Other
+    status: 'string', // EMT, Student, Nurse, Other
     statusClarification: 'string?', // If Other status, explain
     weight: 'double',
     height: 'double',
@@ -23,26 +56,27 @@ Triage.schema = {
     o2: 'double',
     bp: 'string',
     hr: 'double',
+    history: 'string',
+    allergies: 'string',
+    medications: 'string',
+    surgeries: 'string',
+    immunizations: 'string',
+    chiefComplaint: 'string',
+    pharmacySection: 'string',
     //---IF FEMALE---
     LMP: 'string?',
-    Regular: 'bool?',
+    regular: 'bool?',
     pregnancies: 'string?',
     liveBirths: 'string?',
     abortions: 'string?',
     miscarriages: 'string?',
     //---END IF---
-    history: 'string',
     //---IF LABS DONE---
     bgl: 'string?',
     a1c: 'string?',
     fasting: 'bool?',
     pregnancyTest: 'bool?',
     //--END IF---
-    allergies: 'string',
-    medications: 'string',
-    surgeries: 'string',
-    immunizations: 'string',
-    chiefComplaint: 'string',
     //---IF URINE TEST---
     leukocytes: 'string?',
     blood: 'string?',
@@ -55,7 +89,88 @@ Triage.schema = {
     ph: 'string?',
     glucose: 'string?',
     //---END IF---
-    pharmacySection: 'string'
-
   }
 };
+
+TriagerStatus = t.enums({
+  EMT: 'EMT',
+  Student: 'Student',
+  Nurse: 'Nurse',
+  Other: 'Other'
+});
+
+Locations = t.enums({
+  TJP: 'TJP',
+  Girasoles: 'Girasoles',
+});
+
+// Insert any class methods here
+MaleTriage = t.struct({
+  hasInsurance: t.Boolean,
+  location: Locations,
+  /*
+  arrivalTime: t.Number, // should match checkin time from Status 
+  timeIn: t.Number,
+  timeOut: t.Number,
+  */
+  triager: t.String, // Name of triager
+  status: TriagerStatus,
+  statusClarification: t.maybe(t.String), // If Other status, explain
+  weight: t.Number,
+  height: t.Number,
+  temp: t.Number,
+  rr: t.Number,
+  o2: t.Number,
+  bp: t.String,
+  hr: t.Number,
+  history: t.String,
+  allergies: t.String,
+  medications: t.String,
+  surgeries: t.String,
+  immunizations: t.String,
+  chiefComplaint: t.String,
+  pharmacySection: t.String,
+  labsDone: t.Boolean,
+  urineTestDone: t.Boolean,
+});
+
+MaleTriageLabs = MaleTriage.extend({
+  bgl: t.maybe(t.String),
+  a1c: t.maybe(t.String),
+  fasting: t.maybe(t.Boolean),
+});
+
+urineTestObject = {
+  leukocytes: t.maybe(t.String),
+  blood: t.maybe(t.String),
+  nitrites: t.maybe(t.String),
+  specificGravity: t.maybe(t.String),
+  urobilirubin: t.maybe(t.String),
+  ketone: t.maybe(t.String),
+  protein: t.maybe(t.String),
+  bilirubin: t.maybe(t.String),
+  ph: t.maybe(t.String),
+  glucose: t.maybe(t.String),
+}
+
+MaleTriageUrine = MaleTriage.extend(urineTestObject);
+MaleTriageLabsUrine = MaleTriageLabs.extend(urineTestObject);
+
+FemaleTriage = MaleTriage.extend({
+  LMP: t.maybe(t.String),
+  regular: t.maybe(t.Boolean),
+  pregnancies: t.maybe(t.String),
+  liveBirths: t.maybe(t.String),
+  abortions: t.maybe(t.String),
+  miscarriages: t.maybe(t.String),
+});
+
+FemaleTriageLabs = FemaleTriage.extend({
+  bgl: t.maybe(t.String),
+  a1c: t.maybe(t.String),
+  fasting: t.maybe(t.Boolean),
+  pregnancyTest: t.maybe(t.Boolean),
+});
+
+FemaleTriageUrine = FemaleTriage.extend(urineTestObject);
+FemaleTriageLabsUrine = FemaleTriageLabs.extend(urineTestObject);
