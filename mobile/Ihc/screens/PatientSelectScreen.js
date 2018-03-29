@@ -35,6 +35,13 @@ export default class PatientSelectScreen extends Component<{}> {
       });
   }
 
+  // Reload table after moving back to table
+  onNavigatorEvent(event) {
+    if (event.id === 'willAppear') {
+      this.loadPatients();
+    }
+  }
+
   componentDidMount() {
     this.loadPatients();
   }
