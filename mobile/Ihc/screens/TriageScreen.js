@@ -12,6 +12,7 @@ var Form = t.form.Form;
 import data from '../services/DataService';
 import Patient from '../models/Patient';
 import Triage from '../models/Triage';
+import {stringDate} from '../util/Date';
 
 export default class TriageScreen extends Component<{}> {
   /**
@@ -32,6 +33,7 @@ export default class TriageScreen extends Component<{}> {
     }
   }
 
+  // TODO: any other styling? multiline fields needed?
   options = {
     fields: {
       statusClarification: {label: "Status clarification (if picked Other)"},
@@ -48,7 +50,6 @@ export default class TriageScreen extends Component<{}> {
     data.getPatient(this.props.patientKey)
       .then( data => {
         this.setState({
-          formType: Triage.getFormType(this.state.formValues, data.gender),
           gender: data.gender,
           loading: false
         });
@@ -58,8 +59,25 @@ export default class TriageScreen extends Component<{}> {
       });
   }
 
+  // Load existing SOAP info if it exists
+  loadFormValues = () => {
+    this.setState({ loading: true });
+    data.getTriage(this.props.patientKey, stringDate(new Date()))
+      .then( triage => {
+        this.setState({
+          formType: Triage.getFormType(triage, this.state.gender),
+          formValues: triage,
+          loading: false,
+        });
+      })
+      .catch(err => {
+        this.setState({ error: err, loading: false });
+      });
+  }
+
   componentDidMount() {
     this.loadPatient();
+    this.loadFormValues();
   }
 
   onFormChange = (value) => {
@@ -73,36 +91,20 @@ export default class TriageScreen extends Component<{}> {
     if(!this.refs.form.validate().isValid()) {
       return;
     }
+    this.setState({successMsg: 'Loading...'});
     const form = this.refs.form.getValue();
+    const triage = Triage.extractFromForm(form, this.props.patientKey);
 
-    if(form.newPatient) {
-      const patient = Patient.extractFromForm(form);
-      data.createPatient(patient)
-          .then( () => {
-            this.setState({
-              // Clear form, reset to Triage form
-              formValues: {newPatient: false},
-              successMsg: `${patient.firstName} added successfully`,
-              error: null
-            });
-          })
-          .catch( (e) => {
-            this.setState({error: e.message, successMsg: null});
+    data.updateTriage(triage)
+        .then( () => {
+          this.setState({
+            successMsg: 'Triage updated successfully',
+            error: null
           });
-    } else {
-      const patient = Patient.extractFromForm(form);
-      data.TriagePatient(patient)
-          .then( () => {
-            this.setState({
-              // Clear form, reset to Triage form
-              formValues: {newPatient: false},
-              successMsg: `${patient.firstName} signed in successfully`,
-            });
-          })
-          .catch( (e) => {
-            this.setState({formValues: form, error: e.message, successMsg: null});
-          });
-    }
+        })
+        .catch( (e) => {
+          this.setState({error: e.message, successMsg: null});
+        });
   }
 
   render() {

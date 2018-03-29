@@ -139,6 +139,45 @@ export function getSoap(patientKey, strDate) {
   return Promise.resolve(soap);
 }
 
+export function updateTriage(update) {
+  try {
+    const patientObjs = realm.objects('Patient').filtered('key = "' + update.patientKey + '"');
+    const patient = patientObjs['0'];
+
+    if(!patient) {
+      throw new Error("Patient doesn't exist");
+    }
+
+    const triage = realm.objects('Triage').filtered('date = "' +
+        stringDate(new Date) + '" AND patientKey = "' + update.patientKey +
+        '"')['0'];
+
+    realm.write(() => {
+      // If an object for that date already exists, update it
+      if(triage) {
+        const properties = Object.keys(Triage.schema.properties);
+        properties.forEach( p => {
+          triage[p] = update[p];
+        });
+        return Promise.resolve(true);
+      }
+
+      // If doesn't exist, then add it
+      patient.triages.push(update);
+    });
+    return Promise.resolve(true);
+  } catch(e) {
+    return Promise.reject(e);
+  }
+}
+
+// Returns Triage object if it exists, or undefined if not
+export function getTriage(patientKey, strDate) {
+  const triage = realm.objects('Triage').filtered('date = "' +
+      stringDate(new Date) + '" AND patientKey = "' + patientKey + '"')['0'];
+  return Promise.resolve(triage);
+}
+
 export function getPatient(patientKey) {
   const patient = realm.objects('Patient').filtered('key = "' + patientKey + '"');
   if(!patient) {

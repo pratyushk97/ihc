@@ -1,4 +1,5 @@
 var t = require('tcomb-form-native');
+import {stringDate} from '../util/Date';
 
 export default class Triage {
   /**
@@ -34,6 +35,12 @@ export default class Triage {
     throw new Error('No form type for these settings...');
   }
 
+  static extractFromForm(form, patientKey) {
+    const triage = Object.assign({}, form);
+    triage.patientKey = patientKey;
+    triage.date = stringDate(new Date());
+    return triage;
+  }
 }
 
 Triage.schema = {
@@ -43,9 +50,10 @@ Triage.schema = {
     date: 'string',
     hasInsurance: 'bool',
     location: 'string', // Girasoles or TJP or somewhere else
-    arrivalTime: 'int', // should match checkin time from Status 
-    timeIn: 'int',
-    timeOut: 'int',
+    arrivalTime: 'int?', // should match checkin time from Status
+        //make optional so don't have to deal with it for now
+    timeIn: 'string',
+    timeOut: 'string',
     triager: 'string', // Name of triager
     status: 'string', // EMT, Student, Nurse, Other
     statusClarification: 'string?', // If Other status, explain
@@ -72,12 +80,14 @@ Triage.schema = {
     miscarriages: 'string?',
     //---END IF---
     //---IF LABS DONE---
+    labsDone: 'bool',
     bgl: 'string?',
     a1c: 'string?',
     fasting: 'bool?',
     pregnancyTest: 'bool?',
     //--END IF---
     //---IF URINE TEST---
+    urineTestDone: 'bool',
     leukocytes: 'string?',
     blood: 'string?',
     nitrites: 'string?',
@@ -108,11 +118,9 @@ Locations = t.enums({
 MaleTriage = t.struct({
   hasInsurance: t.Boolean,
   location: Locations,
-  /*
-  arrivalTime: t.Number, // should match checkin time from Status 
-  timeIn: t.Number,
-  timeOut: t.Number,
-  */
+  arrivalTime: t.maybe(t.Number), // should match checkin time from Status 
+  timeIn: t.String,
+  timeOut: t.String,
   triager: t.String, // Name of triager
   status: TriagerStatus,
   statusClarification: t.maybe(t.String), // If Other status, explain
