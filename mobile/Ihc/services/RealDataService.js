@@ -68,6 +68,26 @@ export function signinPatient(patientForm) {
   }
 }
 
+// field: Any of fields from Status.schema
+// value: should match the type that the Status.schema says
+export function updateStatus(patientKey, strDate, field, value) {
+  try {
+    const statusObjs = realm.objects('Status').filtered('patientKey = "'
+      + patientKey + '" AND date = "' + strDate + '"');
+    const statusObj = statusObjs['0'];
+    if(!statusObj) {
+      throw new Error("Status doesn't exist");
+    }
+
+    realm.write(() => {
+      statusObj[field] = value;
+    });
+    return Promise.resolve(true);
+  } catch (e) {
+    return Promise.reject(e);
+  }
+}
+
 export function createDrugUpdate(update) {
   try {
     const patientObjs = realm.objects('Patient').filtered('key = "' + update.patientKey + '"');
@@ -114,12 +134,10 @@ export function updateSoap(update) {
     realm.write(() => {
       // If an object for that date already exists, update it
       if(soap) {
-        soap.subjective = update.subjective;
-        soap.objective = update.objective;
-        soap.assessment = update.assessment;
-        soap.plan = update.plan;
-        soap.wishlist = update.wishlist;
-        soap.provider = update.provider;
+        const properties = Object.keys(Soap.schema.properties);
+        properties.forEach( p => {
+          soap[p] = update[p];
+        });
         return Promise.resolve(true);
       }
 

@@ -18,10 +18,17 @@ export default class TriageScreen extends Component<{}> {
   /**
    * Expected props:
    * patientKey
+   * todayDate (optional, if doesn't exist, then assume date is for today,
+   *   can be used for gathering old traige data from history)
    */
   constructor(props) {
     super(props);
-    const startingFormValues = {labsDone: false, urineTestDone: false};
+    const startingFormValues = {
+      labsDone: false,
+      urineTestDone: false,
+      date: this.props.todayDate || stringDate(new Date())
+    };
+
     this.state = {
       formValues: startingFormValues,
       formType: Triage.getFormType(startingFormValues, 2),
@@ -30,6 +37,7 @@ export default class TriageScreen extends Component<{}> {
       error: '',
       disableLabs: false,
       disableUrine: false,
+      todayDate: startingFormValues.date,
     }
   }
 
@@ -41,6 +49,9 @@ export default class TriageScreen extends Component<{}> {
       fasting: {label: "Did this patient fast?"},
       urineTestDone: {label: "Did they take a urine test?"},
       labsDone: {label: "Did they get labs done?"},
+      date: {
+        editable: false,
+      }
     },
   }
 
@@ -62,8 +73,13 @@ export default class TriageScreen extends Component<{}> {
   // Load existing SOAP info if it exists
   loadFormValues = () => {
     this.setState({ loading: true });
-    data.getTriage(this.props.patientKey, stringDate(new Date()))
+    data.getTriage(this.props.patientKey, this.state.todayDate)
       .then( triage => {
+        if (!triage) {
+          this.setState({loading: false});
+          return;
+        }
+
         this.setState({
           formType: Triage.getFormType(triage, this.state.gender),
           formValues: triage,
@@ -85,6 +101,20 @@ export default class TriageScreen extends Component<{}> {
       formType: Triage.getFormType(value, this.state.gender),
       formValues: value,
     });
+  }
+
+  completed = () => {
+    data.updateStatus(this.props.patientKey, this.state.todayDate,
+        'triageCompleted', new Date().getTime())
+        .then( () => {
+          this.setState({
+            successMsg: 'Triage marked as completed, but not yet submitted',
+            error: null
+          });
+        })
+        .catch( (e) => {
+          this.setState({error: e.message, successMsg: null});
+        });
   }
 
   submit = () => {
@@ -126,8 +156,13 @@ export default class TriageScreen extends Component<{}> {
             {this.state.error}
           </Text>
 
+          <Button onPress={this.completed}
+            styles={styles.button}
+            title="Triage completed" />
+
           <Button onPress={this.submit}
-            title="Submit" />
+            styles={styles.button}
+            title="Update" />
 
           <Text style={styles.success}>
             {this.state.successMsg}
@@ -164,4 +199,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     margin: 10,
   },
+  button: {
+    margin: 4,
+  }
 });

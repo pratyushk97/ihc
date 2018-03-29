@@ -38,7 +38,6 @@ export default class Triage {
   static extractFromForm(form, patientKey) {
     const triage = Object.assign({}, form);
     triage.patientKey = patientKey;
-    triage.date = stringDate(new Date());
     return triage;
   }
 }
@@ -116,6 +115,7 @@ Locations = t.enums({
 
 // Insert any class methods here
 MaleTriage = t.struct({
+  date: t.String,
   hasInsurance: t.Boolean,
   location: Locations,
   arrivalTime: t.maybe(t.Number), // should match checkin time from Status 

@@ -19,18 +19,22 @@ export default class SoapScreen extends Component<{}> {
    * Props:
    * name: patient's name for convenience
    * patientKey: string of patient's key
+   * todayDate (optional, if doesn't exist, then assume date is for today,
+   *   can be used for gathering old traige data from history)
    */
   constructor(props) {
     super(props);
+    const todayDate = this.props.todayDate || stringDate(new Date());
     this.state = {
-      formValues: {},
-      success: true,
+      formValues: {date: todayDate},
       error: '',
+      todayDate: todayDate,
     }
   }
 
   // TODO: Make form fields larger, more like textarea
   Soap = t.struct({
+    date: t.String,
     subjective: t.maybe(t.String),
     objective: t.maybe(t.String),
     assessment: t.maybe(t.String),
@@ -41,6 +45,9 @@ export default class SoapScreen extends Component<{}> {
 
   formOptions = {
     fields: {
+      date: {
+        editable: false,
+      },
       subjective: {
         multiline: true,
       },
@@ -62,8 +69,13 @@ export default class SoapScreen extends Component<{}> {
   // Load existing SOAP info if it exists
   loadFormValues = () => {
     this.setState({ loading: true });
-    data.getSoap(this.props.patientKey, stringDate(new Date()))
+    data.getSoap(this.props.patientKey, this.state.todayDate)
       .then( soap => {
+        if (!soap) {
+          this.setState({loading: false});
+          return;
+        }
+
         this.setState({
           formValues: soap,
           loading: false
@@ -78,25 +90,46 @@ export default class SoapScreen extends Component<{}> {
     this.loadFormValues();
   }
 
-  submit = () => {
-    if(!this.refs.form.validate().isValid()) {
-      return;
-    }
-    const form = this.refs.form.getValue();
-
-    const soap = Soap.extractFromForm(form, this.props.patientKey);
-    data.updateSoap(soap)
+  completed = () => {
+    data.updateStatus(this.props.patientKey, this.state.todayDate,
+        'doctorCompleted', new Date().getTime())
         .then( () => {
           this.setState({
-            // Clear form, reset to Soap form
-            success: true,
-            successMsg: `SOAP updated successfully`,
+            successMsg: 'Soap marked as completed, but not yet submitted',
             error: null
           });
         })
         .catch( (e) => {
-          this.setState({success: false, error: e.message, successMsg: null});
+          this.setState({error: e.message, successMsg: null});
         });
+  }
+
+  submit = () => {
+    if(!this.refs.form.validate().isValid()) {
+      return;
+    }
+    this.setState({successMsg: 'Loading...'});
+    const form = this.refs.form.getValue();
+    const soap = Soap.extractFromForm(form, this.props.patientKey);
+
+    data.updateSoap(soap)
+        .then( () => {
+          this.setState({
+            successMsg: 'SOAP updated successfully',
+            error: null
+          });
+        })
+        .catch( (e) => {
+          this.setState({error: e.message, successMsg: null});
+        });
+  }
+
+  // Need this to update formValues so that after clicking completed button,
+  // form doesn't reset... IDK why :(
+  onFormChange = (value) => {
+    this.setState({
+      formValues: value,
+    });
   }
 
   render() {
@@ -107,17 +140,24 @@ export default class SoapScreen extends Component<{}> {
         </Text>
 
         <View style={styles.form}>
-          <Form ref="form" type={this.Soap}
+          <Form ref="form"
+            type={this.Soap}
             value={this.state.formValues}
             options={this.formOptions}
+            onChange={this.onFormChange}
           />
 
           <Text style={styles.error}>
             {this.state.error}
           </Text>
 
+          <Button onPress={this.completed}
+            styles={styles.button}
+            title="Soap completed" />
+
           <Button onPress={this.submit}
-            title="Submit" />
+            styles={styles.button}
+            title="Update" />
 
           <Text style={styles.success}>
             {this.state.successMsg}
