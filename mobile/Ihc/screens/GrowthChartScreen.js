@@ -20,10 +20,15 @@ const PLOTS_HEIGHT = PLOT_HEIGHT * 2 + 150;
 
 export default class GrowthChartScreen extends Component<{}> {
   /*
-   * Gets a patientInfo prop
+   * patientKey
    */
   constructor(props) {
     super(props);
+    this.state = {
+      loading: false,
+      error: null,
+      patient: {},
+    };
   }
 
   extractData(data) {
@@ -39,11 +44,44 @@ export default class GrowthChartScreen extends Component<{}> {
     return arr;
   }
 
+  loadPatient = () => {
+    this.setState({ loading: true });
+    data.getPatient(this.props.patientKey)
+      .then( patient => {
+        let weightData, heightData;
+        if (patient.isMale) {
+          weightData = this.extractData(boysWeightData);
+          heightData = this.extractData(boysHeightData);
+        } else {
+          weightData = this.extractData(girlsWeightData);
+          heightData = this.extractData(girlsHeightData);
+        }
+        
+        const growthChartData = patient.growthChartData;
+        weightData.push({ color: 'black', unit: '%', values: growthChartData.weights});
+        heightData.push({ color: 'black', unit: '%', values: growthChartData.heights});
+        this.setState({patient: patient, weightData: weightData, heightData: heightData,
+          error: null, loading: false});
+      })
+      .catch(err => {
+        this.setState({ error: err.message, loading: false });
+      });
+  }
+
+  componentDidMount() {
+    this.loadPatient();
+  }
+
   render() {
-    // TODO: show boy or girl dependent on person
-    const weightData = this.extractData(girlsWeightData);
-    const heightData = this.extractData(girlsHeightData);
-    // TODO: add data for this person's height/weight
+    if (!this.state.patient) {
+      return (
+        <ScrollView contentContainerStyle={styles.scrollContainer}>
+          <Text style={styles.title}>Growth Chart</Text>
+          <Text>No patient exists</Text>
+          <Text style={styles.error}>{this.state.error}</Text>
+        </ScrollView>
+      )
+    }
 
     // Mark every 2 yrs
     const arrYears = Array.from({length: 10}, (v,i) => i * 24 ); 
@@ -56,11 +94,12 @@ export default class GrowthChartScreen extends Component<{}> {
       // TODO: Label the grid lines
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <Text style={styles.title}>Growth Chart</Text>
+        <Text style={styles.error}>{this.state.error}</Text>
 
         <View style={styles.plotsContainer}>
           <View style={styles.plotContainer}>
             <ScatterPlot
-              data={weightData}
+              data={this.state.weightData}
               chartHeight={PLOT_HEIGHT}
               chartWidth={PLOT_WIDTH}
               minX={0}
@@ -78,7 +117,7 @@ export default class GrowthChartScreen extends Component<{}> {
             <ScatterPlot
               chartHeight={PLOT_HEIGHT}
               chartWidth={PLOT_WIDTH}
-              data={heightData}
+              data={this.state.heightData}
               minX={0}
               maxX={240}
               minY={0}
@@ -126,5 +165,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#333333',
     marginBottom: 5,
+  },
+  error: {
+    textAlign: 'center',
+    color: 'red',
+    margin: 10,
   },
 });
