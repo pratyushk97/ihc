@@ -46,8 +46,9 @@ export default class PatientHomeScreen extends Component<{}> {
 
   goToHistory = () => {
     this.props.navigator.push({
-      screen: 'Ihc.PatientSelectScreen',
+      screen: 'Ihc.PatientHistoryScreen',
       title: 'Back to patient',
+      passProps: { name: this.props.name, patientKey: this.props.patientKey }
     });
   }
 
