@@ -74,7 +74,8 @@ class ScatterPlot extends React.PureComponent {
         const windowHeight = Dimensions.get('window').height;
         const windowWidth = Dimensions.get('window').width;
 
-        const labelPairs = [['red', 'P3'], ['orange', 'P5'], ['purple', 'P10'],
+        const labelPairs = [['black', 'Patient'], ['red', 'P3'], ['orange', 'P5'],
+          ['purple', 'P10'],
           ['green', 'P25'], ['blue', 'P50'], ['purple', 'P75'], ['orange', 'P90'],
           ['red', 'P95']].reverse();
 

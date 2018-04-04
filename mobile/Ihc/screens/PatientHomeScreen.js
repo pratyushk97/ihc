@@ -20,11 +20,11 @@ export default class PatientHomeScreen extends Component<{}> {
     super(props);
   }
 
-  // TODO all of these except medications
   goToTriage = () => {
     this.props.navigator.push({
-      screen: 'Ihc.PatientSelectScreen',
-      title: 'Back to patient'
+      screen: 'Ihc.TriageScreen',
+      title: 'Back to patient',
+      passProps: { name: this.props.name, patientKey: this.props.patientKey }
     });
   }
 

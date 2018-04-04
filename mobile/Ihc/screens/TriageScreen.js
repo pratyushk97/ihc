@@ -6,78 +6,62 @@ import {
   ScrollView,
   View
 } from 'react-native';
+import {formatDate} from '../util/Date';
 var t = require('tcomb-form-native');
 var Form = t.form.Form;
-
 import data from '../services/DataService';
 import Patient from '../models/Patient';
-import Soap from '../models/Soap';
+import Triage from '../models/Triage';
 import {stringDate} from '../util/Date';
 
-export default class SoapScreen extends Component<{}> {
-  /*
-   * Props:
-   * name: patient's name for convenience
-   * patientKey: string of patient's key
+export default class TriageScreen extends Component<{}> {
+  /**
+   * Expected props:
+   * patientKey
    * todayDate (optional, if doesn't exist, then assume date is for today,
    *   can be used for gathering old traige data from history)
    */
   constructor(props) {
     super(props);
-    const todayDate = this.props.todayDate || stringDate(new Date());
+    const startingFormValues = {
+      labsDone: false,
+      urineTestDone: false,
+      date: this.props.todayDate || stringDate(new Date())
+    };
+
     this.state = {
-      formValues: {date: todayDate},
+      formValues: startingFormValues,
+      formType: Triage.getFormType(startingFormValues, 2),
+      gender: 2, // 1: male, 2: female
+      loading: false,
       error: '',
-      todayDate: todayDate,
+      disableLabs: false,
+      disableUrine: false,
+      todayDate: startingFormValues.date,
     }
   }
 
-  // TODO: Make form fields larger, more like textarea
-  Soap = t.struct({
-    date: t.String,
-    subjective: t.maybe(t.String),
-    objective: t.maybe(t.String),
-    assessment: t.maybe(t.String),
-    plan: t.maybe(t.String),
-    wishlist: t.maybe(t.String),
-    provider: t.String // Doctor's name
-  });
-
-  formOptions = {
+  // TODO: any other styling? multiline fields needed?
+  options = {
     fields: {
+      statusClarification: {label: "Status clarification (if picked Other)"},
+      pregnancyTest: {label: "Pregnancy test positive?"},
+      fasting: {label: "Did this patient fast?"},
+      urineTestDone: {label: "Did they take a urine test?"},
+      labsDone: {label: "Did they get labs done?"},
       date: {
         editable: false,
-      },
-      subjective: {
-        multiline: true,
-      },
-      objective: {
-        multiline: true,
-      },
-      assessment: {
-        multiline: true,
-      },
-      plan: {
-        multiline: true,
-      },
-      wishlist: {
-        multiline: true,
-      },
-    }
+      }
+    },
   }
 
-  // Load existing SOAP info if it exists
-  loadFormValues = () => {
+  // to set the triage form correctly depending on gender
+  loadPatient = () => {
     this.setState({ loading: true });
-    data.getSoap(this.props.patientKey, this.state.todayDate)
-      .then( soap => {
-        if (!soap) {
-          this.setState({loading: false});
-          return;
-        }
-
+    data.getPatient(this.props.patientKey)
+      .then( data => {
         this.setState({
-          formValues: soap,
+          gender: data.gender,
           loading: false
         });
       })
@@ -86,16 +70,45 @@ export default class SoapScreen extends Component<{}> {
       });
   }
 
+  // Load existing SOAP info if it exists
+  loadFormValues = () => {
+    this.setState({ loading: true });
+    data.getTriage(this.props.patientKey, this.state.todayDate)
+      .then( triage => {
+        if (!triage) {
+          this.setState({loading: false});
+          return;
+        }
+
+        this.setState({
+          formType: Triage.getFormType(triage, this.state.gender),
+          formValues: triage,
+          loading: false,
+        });
+      })
+      .catch(err => {
+        this.setState({ error: err, loading: false });
+      });
+  }
+
   componentDidMount() {
+    this.loadPatient();
     this.loadFormValues();
+  }
+
+  onFormChange = (value) => {
+    this.setState({
+      formType: Triage.getFormType(value, this.state.gender),
+      formValues: value,
+    });
   }
 
   completed = () => {
     data.updateStatus(this.props.patientKey, this.state.todayDate,
-        'doctorCompleted', new Date().getTime())
+        'triageCompleted', new Date().getTime())
         .then( () => {
           this.setState({
-            successMsg: 'Soap marked as completed, but not yet submitted',
+            successMsg: 'Triage marked as completed, but not yet submitted',
             error: null
           });
         })
@@ -110,12 +123,12 @@ export default class SoapScreen extends Component<{}> {
     }
     this.setState({successMsg: 'Loading...'});
     const form = this.refs.form.getValue();
-    const soap = Soap.extractFromForm(form, this.props.patientKey);
+    const triage = Triage.extractFromForm(form, this.props.patientKey);
 
-    data.updateSoap(soap)
+    data.updateTriage(triage)
         .then( () => {
           this.setState({
-            successMsg: 'SOAP updated successfully',
+            successMsg: 'Triage updated successfully',
             error: null
           });
         })
@@ -124,26 +137,18 @@ export default class SoapScreen extends Component<{}> {
         });
   }
 
-  // Need this to update formValues so that after clicking completed button,
-  // form doesn't reset... IDK why :(
-  onFormChange = (value) => {
-    this.setState({
-      formValues: value,
-    });
-  }
-
   render() {
     return (
       <ScrollView contentContainerStyle={styles.container}>
         <Text style={styles.title}>
-          Soap
+          Triage
         </Text>
 
         <View style={styles.form}>
           <Form ref="form"
-            type={this.Soap}
+            type={this.state.formType}
             value={this.state.formValues}
-            options={this.formOptions}
+            options={this.options}
             onChange={this.onFormChange}
           />
 
@@ -153,7 +158,7 @@ export default class SoapScreen extends Component<{}> {
 
           <Button onPress={this.completed}
             styles={styles.button}
-            title="Soap completed" />
+            title="Triage completed" />
 
           <Button onPress={this.submit}
             styles={styles.button}
@@ -194,4 +199,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     margin: 10,
   },
+  button: {
+    margin: 4,
+  }
 });

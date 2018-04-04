@@ -5,7 +5,6 @@ export default class Soap {
 
   static extractFromForm(form, patientKey) {
     const soap = Object.assign({}, form);
-    soap.date = stringDate(new Date());
     soap.patientKey = patientKey;
     return soap;
   }

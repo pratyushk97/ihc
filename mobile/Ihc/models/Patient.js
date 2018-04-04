@@ -13,6 +13,43 @@ export default class Patient {
     return drugToUpdates;
   }
 
+  get age() {
+    const strBirthday = this.birthday;
+    const today = stringDate(new Date());
+    const birthdayYear = parseInt(strBirthday.slice(0,4)); // Get the year
+    const birthdayMonthDay= parseInt(strBirthday.slice(4));
+    const todayYear = parseInt(today.slice(0,4));
+    const todayMonthDay = parseInt(today.slice(4));
+
+    let age = todayYear - birthdayYear;
+    // If hasn't passed their birthday this year, then subtract
+    if(birthdayMonthDay < todayMonthDay) {
+      age--;
+    }
+    return age;
+  }
+
+  /* Returns {
+   *   weights: [[ageInMonths, weight (kg)],...]},
+   *   heights: [[ageInMonths, height (cm)],...]}
+   * }
+   */
+  get growthChartData() {
+    const triages = this.triages;
+    const weights = [];
+    const heights = [];
+    triages.forEach( triage => {
+      const ageInMonths = triage.age * 12; // Rounds off to whole year, should be fine
+      weights.push([ageInMonths, triage.weight]);
+      heights.push([ageInMonths, triage.height]);
+    });
+    return {weights, heights};
+  }
+
+  get isMale() {
+    return this.gender === 1;
+  }
+
   static fullName(patient) {
     return `${patient.firstName} ${patient.fatherName} ${patient.motherName}`;
   }

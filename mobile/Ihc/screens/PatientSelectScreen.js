@@ -35,6 +35,14 @@ export default class PatientSelectScreen extends Component<{}> {
       });
   }
 
+  // Reload table after moving back to table
+  // TODO: Not triggering correctly after hitting back button
+  onNavigatorEvent(event) {
+    if (event.id === 'willAppear') {
+      this.loadPatients();
+    }
+  }
+
   componentDidMount() {
     this.loadPatients();
   }

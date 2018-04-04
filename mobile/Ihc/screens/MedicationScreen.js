@@ -50,7 +50,6 @@ export default class MedicationScreen extends Component<{}> {
       });
   }
 
-  // TODO buttons
   changeMedication = (prevDrugUpdate) => {
     this.props.navigator.push({
       screen: 'Ihc.MedicationUpdateScreen',
@@ -64,6 +63,7 @@ export default class MedicationScreen extends Component<{}> {
     });
   }
 
+  // TODO
   discontinueMedication = (prevDrugUpdate) => {
   }
 
@@ -106,6 +106,21 @@ export default class MedicationScreen extends Component<{}> {
 
   componentDidMount() {
     this.loadMedications();
+  }
+
+  completed = () => {
+    data.updateStatus(this.props.patientKey, stringDate(new Date()),
+        'pharmacyCompleted', new Date().getTime())
+        .then( () => {
+          this.setState({
+            successMsg: 'Pharmacy marked as completed',
+            error: null
+          });
+        })
+        .catch( (e) => {
+          this.setState({error: 'No status exists for today. Should not need to' +
+            'mark as completed.', successMsg: null});
+        });
   }
 
   render() {
@@ -152,12 +167,30 @@ export default class MedicationScreen extends Component<{}> {
            />
         </View>
 
-        <View style={styles.footer}>
-          <TouchableOpacity
-              style={styles.buttonContainer}
-              onPress={this.createNewMedication}>
-            <Text style={styles.button}>New Medication</Text>
-          </TouchableOpacity>
+        <View style={styles.footerContainer}>
+          <View style={styles.footer}>
+            <Text style={styles.error}>
+              {this.state.error}
+            </Text>
+
+            <Text style={styles.success}>
+              {this.state.successMsg}
+            </Text>
+          </View>
+
+          <View style={styles.footer}>
+            <TouchableOpacity
+                style={styles.buttonContainer}
+                onPress={this.createNewMedication}>
+              <Text style={styles.button}>New Medication</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+                style={styles.buttonContainer}
+                onPress={this.completed}>
+              <Text style={styles.button}>Completed</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     );
@@ -183,7 +216,6 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     width: 120,
-    height: 30,
     margin: 4,
     padding: 8,
     elevation: 4,
@@ -198,11 +230,20 @@ const styles = StyleSheet.create({
   footer: {
     flex: 1,
     flexDirection: 'row',
-    maxHeight: 40,
+    margin: 0
+  },
+  footerContainer: {
+    margin: 0,
+    maxHeight: 80,
+  },
+  success: {
+    textAlign: 'center',
+    color: 'green',
+    margin: 10,
   },
   error: {
     textAlign: 'center',
     color: 'red',
-    margin: 0,
+    margin: 10,
   },
 });
