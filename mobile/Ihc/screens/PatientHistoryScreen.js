@@ -7,8 +7,10 @@ import {
   View,
 } from 'react-native';
 import { Col, Row, Grid } from "react-native-easy-grid";
+import data from '../services/DataService';
+import Patient from '../models/Patient';
 
-export default class PatientHomeScreen extends Component<{}> {
+export default class PatientHistoryScreen extends Component<{}> {
   /*
    * Expects:
    *  {
@@ -18,33 +20,46 @@ export default class PatientHomeScreen extends Component<{}> {
    */
   constructor(props) {
     super(props);
+    this.state = {
+      patient: {},
+      //rows: [],
+      soaps: [],
+      triages: [],
+      loading: false,
+      error: null
+    };
   }
 
-  goToTriage = () => {
-    this.props.navigator.push({
-      screen: 'Ihc.TriageScreen',
-      title: 'Back to patient',
-      passProps: { name: this.props.name, patientKey: this.props.patientKey }
-    });
+  loadPreviousVisits = () => {
+    this.setState({ loading: true });
+    data.getPatient(this.props.patientKey)
+      .then( data => {
+        this.setState({ patient: data, soaps: data.soaps, triages: data.triages, loading: false });
+        //for (i = 0; i < data.soaps.length; i ++) {
+          //this.state.rows[i] = data.soaps[i].date;
+        //}
+      })
+      .catch( err => {
+        this.setState({ error: err, loading: false });
+      });
+  }
+/*
+  loadPreviousVisits = () => {
+    this.setState({ loading: true });
+    data.getSoap(patientKey, ) 
+      .then( data => {
+        this.setState({ rows: data, loading: false });
+      })
+      .catch( err => {
+        this.setState({ error: err, loading: false });
+      });
+  }
+*/
+  loadAll() {
+    this.loadPreviousVisits();
   }
 
   goToSoap = () => {
-    this.props.navigator.push({
-      screen: 'Ihc.SoapScreen',
-      title: 'Back to patient',
-      passProps: { name: this.props.name, patientKey: this.props.patientKey }
-    });
-  }
-
-  goToMedicationList = () => {
-    this.props.navigator.push({
-      screen: 'Ihc.MedicationScreen',
-      title: 'Back to patient',
-      passProps: { name: this.props.name, patientKey: this.props.patientKey }
-    });
-  }
-
-  goToHistory = () => {
     this.props.navigator.push({
       screen: 'Ihc.PatientHistoryScreen',
       title: 'Back to patient',
@@ -52,56 +67,55 @@ export default class PatientHomeScreen extends Component<{}> {
     });
   }
 
-  goToGrowthChart = () => {
+  goToTriage = () => { 
     this.props.navigator.push({
-      screen: 'Ihc.GrowthChartScreen',
+      screen: 'Ihc.PatientHistoryScreen',
       title: 'Back to patient',
-      passProps: { patientKey: this.props.patientKey}
+      passProps: { name: this.props.name, patientKey: this.props.patientKey }
     });
   }
-
+/*
+  renderRow = (data, keyFn) => {
+    const cols = data.map( (e,i) => (
+      <View style={styles.col} key={keyFn(i)}>
+        {( () => {
+          switch(i) {
+            case 1: //date
+              return <Text>{e.
+            case 2: //soap
+            case 3: //traige
+          }
+        })() }
+      </View>
+    ) );
+  }
+*/
   render() {
-    const date = new Date();
-    //const dateString = `${date.getMonth()} ${date.getDate()}, ${date.getYear()}`;
-    const dateString = date.toDateString();
     return (
       <View style={styles.container}>
         <Text style={styles.title}>
-          {this.props.name}
-        </Text>
-
-        <Text style={styles.title}>
-          {dateString}
+          Previous Visits
         </Text>
 
         <View style={styles.gridContainer}>
           <Grid>
             <Col style={styles.col}>
-              <TouchableOpacity style={styles.buttonContainer}
-                  onPress={this.goToTriage}>
-                <Text style={styles.button}>Triage</Text>
-              </TouchableOpacity>
+              <Text>
+                {this.state.patient.name}
+              </Text>
+            </Col>
 
+            <Col style={styles.col}>
               <TouchableOpacity style={styles.buttonContainer}
                   onPress={this.goToSoap}>
                 <Text style={styles.button}>SOAP</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity style={styles.buttonContainer}
-                  onPress={this.goToMedicationList}>
-                <Text style={styles.button}>Medications</Text>
               </TouchableOpacity>
             </Col>
 
             <Col style={styles.col}>
               <TouchableOpacity style={styles.buttonContainer}
-                  onPress={this.goToHistory}>
-                <Text style={styles.button}>History</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity style={styles.buttonContainer}
-                  onPress={this.goToGrowthChart}>
-                <Text style={styles.button}>Growth Chart</Text>
+                  onPress={this.goToTriage}>
+                <Text style={styles.button}>Triage</Text>
               </TouchableOpacity>
             </Col>
           </Grid>
