@@ -82,7 +82,7 @@ export default class SoapScreen extends Component<{}> {
         });
       })
       .catch(err => {
-        this.setState({ error: err, loading: false });
+        this.setState({ error: err.message, loading: false });
       });
   }
 

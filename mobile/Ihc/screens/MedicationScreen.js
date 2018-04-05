@@ -100,7 +100,7 @@ export default class MedicationScreen extends Component<{}> {
           drugNames: drugNames, loading: false});
       })
       .catch(err => {
-        this.setState({ error: err, loading: false });
+        this.setState({ error: err.message, loading: false });
       });
   }
 
@@ -146,15 +146,21 @@ export default class MedicationScreen extends Component<{}> {
 
     return (
       <View style={styles.container}>
-        <Text style={styles.title}>
-          {this.props.name}'s Medications
-        </Text>
+        <View style={styles.headerContainer}>
+          <Text style={styles.title}>
+            {this.props.name}'s Medications
+          </Text>
 
-        <Text>R: Refill, C: Change, D: Discontinue</Text>
+          <Text>R: Refill, C: Change, D: Discontinue</Text>
 
-        <Text style={styles.error}>
-          {this.state.error}
-        </Text>
+          <Text style={styles.success}>
+            {this.state.successMsg}
+          </Text>
+
+          <Text style={styles.error}>
+            {this.state.error}
+          </Text>
+        </View>
 
         <View style={styles.tableContainer}>
           <MedicationTable style={styles.table}
@@ -168,16 +174,6 @@ export default class MedicationScreen extends Component<{}> {
         </View>
 
         <View style={styles.footerContainer}>
-          <View style={styles.footer}>
-            <Text style={styles.error}>
-              {this.state.error}
-            </Text>
-
-            <Text style={styles.success}>
-              {this.state.successMsg}
-            </Text>
-          </View>
-
           <View style={styles.footer}>
             <TouchableOpacity
                 style={styles.buttonContainer}
@@ -204,10 +200,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
   },
+  headerContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   title: {
     fontSize: 20,
     textAlign: 'center',
     margin: 4,
+    top: 10, // I don't like this but otherwise title doesn't show
   },
   tableContainer: {
     maxHeight: '70%',
@@ -221,6 +223,7 @@ const styles = StyleSheet.create({
     elevation: 4,
     borderRadius: 2,
     backgroundColor: '#2196F3',
+    height: 40,
   },
   button: {
     fontWeight: '500',
@@ -234,16 +237,16 @@ const styles = StyleSheet.create({
   },
   footerContainer: {
     margin: 0,
-    maxHeight: 80,
+    height: 60,
   },
   success: {
     textAlign: 'center',
     color: 'green',
-    margin: 10,
+    margin: 0,
   },
   error: {
     textAlign: 'center',
     color: 'red',
-    margin: 10,
+    margin: 0,
   },
 });

@@ -66,7 +66,7 @@ export default class TriageScreen extends Component<{}> {
         });
       })
       .catch(err => {
-        this.setState({ error: err, loading: false });
+        this.setState({ error: err.message, loading: false });
       });
   }
 
@@ -87,7 +87,7 @@ export default class TriageScreen extends Component<{}> {
         });
       })
       .catch(err => {
-        this.setState({ error: err, loading: false });
+        this.setState({ error: err.message, loading: false });
       });
   }
 

@@ -398,8 +398,6 @@ React Native
   - Locally store updates with AsyncStorage
   - Disable "Sync" if updates exist
 
-PLAN OUT LOCAL STORAGE PLAN
-
 -- Begin N/A --
 
 "Upload Updates" PATCH /groups/:group/all -> Express API:

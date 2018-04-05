@@ -25,6 +25,7 @@ export default class MedicationTable extends Component<{}> {
   // TODO start with empty column for current date
   constructor(props) {
     super(props);
+    this.state = { todayDate: stringDate(new Date()) };
   }
 
   // Returns the update with that name, or null if not found
@@ -59,6 +60,16 @@ export default class MedicationTable extends Component<{}> {
 
   // Row order should follow names array
   renderColumn(date, updates, names, i) {
+    // Empty column
+    if (!updates) {
+      return (
+        <Col style={styles.fullCol} key={`emptycol`}>
+          <Row style={styles.headerRow}><Text>{this.state.todayDate}</Text></Row>
+          <Row style={styles.row}><Text>No medications for today</Text></Row>
+        </Col>
+      );
+    }
+
     const rows = names.map( (name, rowIndex) => {
       return this.renderRow(updates, name, i, rowIndex);
     });
@@ -78,7 +89,7 @@ export default class MedicationTable extends Component<{}> {
     const rows = names.map( (name, i) => {
       const update = this.updateWithName(updates, name);
       const exists = Boolean(update);
-      const disableButton = !exists || update.date === stringDate(new Date());
+      const disableButton = !exists || update.date === this.state.todayDate;
       return (
         <Row style={styles.row} key={`buttonRow${i}`}>
           <TouchableOpacity
@@ -118,7 +129,7 @@ export default class MedicationTable extends Component<{}> {
    * the date though, so use the next value.
    */
   mostRecentDate(dates) {
-    if (dates[0] !== stringDate(new Date()) || !dates[1]) {
+    if (dates[0] !== this.state.todayDate || !dates[1]) {
       return dates[0];
     }
     return dates[1];
@@ -141,6 +152,13 @@ export default class MedicationTable extends Component<{}> {
       });
 
     const dates = Object.keys(this.props.dateToUpdates).sort().reverse();
+    // Insert empty column for todays date if it doesn't exist
+    // Empty column should be less confusing for pharmacists
+    // i.e. they can just refill the leftmost medications without having to
+    // check the date
+    if (dates[0] !== this.state.todayDate) {
+      dates.splice(0, 0, this.state.todayDate); 
+    }
 
     const updateColumns = dates.map( (date, i) => {
         return this.renderColumn(date, this.props.dateToUpdates[date], names, i);

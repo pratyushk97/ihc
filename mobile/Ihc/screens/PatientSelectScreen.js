@@ -31,7 +31,7 @@ export default class PatientSelectScreen extends Component<{}> {
         this.setState({ rows: data, loading: false });
       })
       .catch(err => {
-        this.setState({ error: err, loading: false });
+        this.setState({ error: err.message, loading: false });
       });
   }
 
