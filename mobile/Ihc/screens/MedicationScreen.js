@@ -152,14 +152,6 @@ export default class MedicationScreen extends Component<{}> {
           </Text>
 
           <Text>R: Refill, C: Change, D: Discontinue</Text>
-
-          <Text style={styles.success}>
-            {this.state.successMsg}
-          </Text>
-
-          <Text style={styles.error}>
-            {this.state.error}
-          </Text>
         </View>
 
         <View style={styles.tableContainer}>
@@ -175,6 +167,12 @@ export default class MedicationScreen extends Component<{}> {
 
         <View style={styles.footerContainer}>
           <View style={styles.footer}>
+            <Text style={styles.success}>
+              {this.state.successMsg}
+            </Text>
+            <Text style={styles.error}>
+              {this.state.error}
+            </Text>
             <TouchableOpacity
                 style={styles.buttonContainer}
                 onPress={this.createNewMedication}>
