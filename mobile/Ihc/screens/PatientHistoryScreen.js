@@ -5,10 +5,14 @@ import {
   TouchableOpacity,
   Text,
   View,
+  ScrollView,
+  Alert
 } from 'react-native';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import data from '../services/DataService';
 import Patient from '../models/Patient';
+import {formatDate} from '../util/Date';
+import {shortDate} from '../util/Date';
 
 export default class PatientHistoryScreen extends Component<{}> {
   /*
@@ -21,76 +25,58 @@ export default class PatientHistoryScreen extends Component<{}> {
   constructor(props) {
     super(props);
     this.state = {
-      patient: {},
-      //rows: [],
-      soaps: [],
-      triages: [],
+      patient: null,
       loading: false,
       error: null
     };
   }
 
-  loadPreviousVisits = () => {
+  loadPatient = () => {
     this.setState({ loading: true });
     data.getPatient(this.props.patientKey)
       .then( data => {
-        this.setState({ patient: data, soaps: data.soaps, triages: data.triages, loading: false });
-        //for (i = 0; i < data.soaps.length; i ++) {
-          //this.state.rows[i] = data.soaps[i].date;
-        //}
+        this.setState({ patient: data, loading: false });
       })
       .catch( err => {
         this.setState({ error: err, loading: false });
       });
   }
-/*
-  loadPreviousVisits = () => {
-    this.setState({ loading: true });
-    data.getSoap(patientKey, ) 
-      .then( data => {
-        this.setState({ rows: data, loading: false });
-      })
-      .catch( err => {
-        this.setState({ error: err, loading: false });
-      });
-  }
-*/
-  loadAll() {
-    this.loadPreviousVisits();
+
+  componentDidMount() {
+    this.loadPatient();
   }
 
-  goToSoap = () => {
+  goToSoap(date) {
+  
     this.props.navigator.push({
-      screen: 'Ihc.PatientHistoryScreen',
+      screen: 'Ihc.SoapScreen',
       title: 'Back to patient',
-      passProps: { name: this.props.name, patientKey: this.props.patientKey }
+      passProps: { name: this.props.name, patientKey: this.props.patientKey, todayDate: date }
     });
   }
 
-  goToTriage = () => { 
+  goToTriage(date) { 
     this.props.navigator.push({
-      screen: 'Ihc.PatientHistoryScreen',
+      screen: 'Ihc.TriageScreen',
       title: 'Back to patient',
-      passProps: { name: this.props.name, patientKey: this.props.patientKey }
+      passProps: { patientKey: this.props.patientKey, todayDate: date }
     });
   }
-/*
-  renderRow = (data, keyFn) => {
-    const cols = data.map( (e,i) => (
-      <View style={styles.col} key={keyFn(i)}>
-        {( () => {
-          switch(i) {
-            case 1: //date
-              return <Text>{e.
-            case 2: //soap
-            case 3: //traige
-          }
-        })() }
-      </View>
-    ) );
-  }
-*/
+
   render() {
+    if (this.state.loading) {
+      return (
+        <View style={styles.container}>
+          <Text style={styles.title}>
+            Previous Visits
+          </Text>
+          <Text>Loading...</Text>
+        </View>
+      )
+    }
+    if (this.state.patient == null) {
+      return null;
+    }
     return (
       <View style={styles.container}>
         <Text style={styles.title}>
@@ -100,23 +86,24 @@ export default class PatientHistoryScreen extends Component<{}> {
         <View style={styles.gridContainer}>
           <Grid>
             <Col style={styles.col}>
-              <Text>
-                {this.state.patient.name}
-              </Text>
+              {this.state.patient.soaps.map( (soap, i) => 
+                <Text key={i} style={styles.dateContainer}>{formatDate(new Date(shortDate(soap.date)))}</Text> )}
             </Col>
 
             <Col style={styles.col}>
-              <TouchableOpacity style={styles.buttonContainer}
-                  onPress={this.goToSoap}>
-                <Text style={styles.button}>SOAP</Text>
-              </TouchableOpacity>
+              {this.state.patient.soaps.map( (soap, i) => 
+                <TouchableOpacity key={i} style={styles.buttonContainer}
+                    onPress={() => this.goToSoap(soap.date)}>
+                  <Text style={styles.button}>SOAP</Text>
+                </TouchableOpacity> ) }
             </Col>
 
             <Col style={styles.col}>
-              <TouchableOpacity style={styles.buttonContainer}
-                  onPress={this.goToTriage}>
-                <Text style={styles.button}>Triage</Text>
-              </TouchableOpacity>
+              {this.state.patient.soaps.map( (soap, i) => 
+                <TouchableOpacity key={i} style={styles.buttonContainer}
+                    onPress={() => this.goToTriage(soap.date)}>
+                  <Text style={styles.button}>Triage</Text>
+                </TouchableOpacity> ) }
             </Col>
           </Grid>
         </View>
@@ -124,7 +111,6 @@ export default class PatientHistoryScreen extends Component<{}> {
     );
   }
 }
-
 const styles = StyleSheet.create({
   gridContainer: {
     flex: 1,
@@ -151,6 +137,12 @@ const styles = StyleSheet.create({
     elevation: 4,
     borderRadius: 2,
     backgroundColor: '#2196F3',
+  },
+  dateContainer: {
+    width: 150,
+    margin: 10,
+    padding: 8,
+    elevation: 4,
   },
   button: {
     fontWeight: '500',
