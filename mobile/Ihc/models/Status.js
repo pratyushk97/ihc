@@ -14,6 +14,7 @@ export default class Status {
       date: stringDate(new Date()),
       active: true,
       checkinTime: new Date().getTime(),
+      last_updated: new Date().getTime(),
     }
     return obj;
   }
@@ -31,6 +32,7 @@ Status.schema = {
     triageCompleted: 'int?', // timestamp for when completed
     doctorCompleted: 'int?',
     pharmacyCompleted: 'int?',
-    notes: 'string?'
+    notes: 'string?',
+    last_updated: 'int',
   }
 };

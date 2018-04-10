@@ -39,6 +39,7 @@ export default class Triage {
   static extractFromForm(form, patientKey) {
     const triage = Object.assign({}, form);
     triage.patientKey = patientKey;
+    triage.last_updated = new Date().getTime();
     return triage;
   }
 }
@@ -100,6 +101,7 @@ Triage.schema = {
     ph: 'string?',
     glucose: 'string?',
     //---END IF---
+    last_updated: 'int',
   }
 };
 

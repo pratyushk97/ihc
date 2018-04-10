@@ -19,6 +19,10 @@ export function shortDate(date) {
 }
 
 // Given a Date object, returns string in format yyyymmdd
+// We use strings as dates to make equality checks easier
+// i.e. if the date is 20180301
+// Otherwise the normal date object equality check includes hours and minutes
+// etc. I think
 export function stringDate(dateObj) {
   const month = dateObj.getMonth()+1 < 10 ? '0' + (dateObj.getMonth()+1) : dateObj.getMonth()+1;
   const date = dateObj.getDate()+1 < 10 ? '0' + (dateObj.getDate()+1) : dateObj.getDate()+1;

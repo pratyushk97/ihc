@@ -12,6 +12,7 @@ DrugUpdate.schema = {
     dose: 'string',
     frequency: 'string',
     duration: 'string',
-    notes: 'string?'
+    notes: 'string?',
+    last_updated: 'int',
   }
 };

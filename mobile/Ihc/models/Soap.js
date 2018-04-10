@@ -6,6 +6,7 @@ export default class Soap {
   static extractFromForm(form, patientKey) {
     const soap = Object.assign({}, form);
     soap.patientKey = patientKey;
+    soap.last_updated = new Date().getTime();
     return soap;
   }
 }
@@ -20,6 +21,7 @@ Soap.schema = {
     assessment: 'string?',
     plan: 'string?',
     wishlist: 'string?',
-    provider: 'string' // Doctor's name
+    provider: 'string', // Doctor's name
+    last_updated: 'int',
   }
 };

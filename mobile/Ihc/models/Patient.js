@@ -91,7 +91,6 @@ Patient.schema = {
     soaps: 'Soap[]',
     triages: 'Triage[]',
     statuses: 'Status[]',
-    growthchart: 'GrowthChartUpdate[]',
     lastUpdated: 'int' // timestamp
   }
 };
