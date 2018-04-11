@@ -70,7 +70,7 @@ export default class TriageScreen extends Component<{}> {
       });
   }
 
-  // Load existing SOAP info if it exists
+  // Load existing Triage info if it exists
   loadFormValues = () => {
     this.setState({ loading: true });
     data.getTriage(this.props.patientKey, this.state.todayDate)

@@ -211,21 +211,6 @@ export function getPatients() {
   return realm.objects('Patient');
 }
 
-export function getPatient(patientKey) {
-  try {
-    const patientObjs = realm.objects('Patient').filtered('key = "' + patientKey + '"');
-    const patient = patientObjs['0'];
-
-    if(!patient) {
-      throw new Error("Patient doesn't exist");
-    }
-    
-    return Promise.resolve(patient);
-  } catch (e) {
-    return Promise.reject(e);
-  }
-}
-
 export function getUpdates(param) {
   return []; // Return whatever sample data you want
 }
