@@ -55,6 +55,9 @@ https://app.moqups.com/mattchinn/ix0mjskH6z/view
 
 2. Run ```react-native run-android``` inside IHC/mobile/Ihc directory
 
+##### Run react native tests:
+1. Run ```npm test``` inside IHC/mobile/Ihc
+
 ##### Run Express server:
 
 *Inside IHC/server directory
@@ -151,7 +154,7 @@ Other options are available: https://wix.github.io/react-native-navigation/#/scr
   3. Update the README API Section for that route with the body and return
      object information (if necessary)
         
-##### 4. test the API
+##### 4. test the server API
   * Make sure the database server is running (```mongod```)
 
   1. Run a CURL command like this:
@@ -187,6 +190,25 @@ Other options are available: https://wix.github.io/react-native-navigation/#/scr
 
   4. Update config file for variable SERVER_URL to equal <ip address>:<port>
      i.e. '192.168.1.100:8000' // TODO make config file
+
+##### 6. test React Native code
+
+  1. Use Jest test framework: https://medium.com/react-native-training/learning-to-test-react-native-with-jest-part-1-f782c4e30101
+     - 1a. Currently need to alter some code because of dependency annoyances. Go
+       to mobile/Ihc/node_modules/realm/lib/extensions.js:260 and ensure the code
+       is:
+
+    ```javascript
+        if (!realmConstructor.Permissions) {
+          Object.defineProperty(realmConstructor, 'Permissions', {
+              value: permissionsSchema,
+              configurable: false
+          });
+        }
+    ``` 
+
+  2. Use Enzyme to test changing state within components (example included in above link)
+  3. Stub methods (such as database calls) with Sinon: http://sinonjs.org/
 
 ==========================================
 
@@ -397,8 +419,6 @@ React Native
 - "Sync" button
   - Locally store updates with AsyncStorage
   - Disable "Sync" if updates exist
-
-PLAN OUT LOCAL STORAGE PLAN
 
 -- Begin N/A --
 

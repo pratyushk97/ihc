@@ -39,7 +39,68 @@ export default class Triage {
   static extractFromForm(form, patientKey) {
     const triage = Object.assign({}, form);
     triage.patientKey = patientKey;
+    triage.lastUpdated = new Date().getTime();
     return triage;
+  }
+
+  // Can pass in parameters to override defaults, mostly useful for tests
+  static getInstance(patientKey = 'firstname&father&mother&20000101',
+      date = stringDate(new Date()), age = 18, weight = 75, height = 100,
+      lastUpdated = new Date().getTime()) {
+    return {
+      patientKey: patientKey,
+      date: date,
+      age: age,
+      weight: weight,
+      height: height,
+      lastUpdated: lastUpdated,
+      hasInsurance: true,
+      location: 'TJP',
+      timeIn: '12:00',
+      timeOut: '3:00 pm',
+      triager: 'person',
+      status: 'other',
+      statusClarification: 'doc',
+      temp: 98,
+      rr: 10,
+      o2: 10,
+      bp: 'string',
+      hr: 10,
+      history: 'string',
+      allergies: 'string',
+      medications: 'string',
+      surgeries: 'string',
+      immunizations: 'string',
+      chiefComplaint: 'string',
+      pharmacySection: 'string',
+      //---IF FEMALE---
+      LMP: 'string?',
+      regular: 'bool?',
+      pregnancies: 'string?',
+      liveBirths: 'string?',
+      abortions: 'string?',
+      miscarriages: 'string?',
+      //---END IF---
+      //---IF LABS DONE---
+      labsDone: 'bool',
+      bgl: 'string?',
+      a1c: 'string?',
+      fasting: 'bool?',
+      pregnancyTest: 'bool?',
+      //--END IF---
+      //---IF URINE TEST---
+      urineTestDone: 'bool',
+      leukocytes: 'string?',
+      blood: 'string?',
+      nitrites: 'string?',
+      specificGravity: 'string?',
+      urobilirubin: 'string?',
+      ketone: 'string?',
+      protein: 'string?',
+      bilirubin: 'string?',
+      ph: 'string?',
+      glucose: 'string?',
+    };
   }
 }
 
@@ -100,6 +161,7 @@ Triage.schema = {
     ph: 'string?',
     glucose: 'string?',
     //---END IF---
+    lastUpdated: 'int',
   }
 };
 

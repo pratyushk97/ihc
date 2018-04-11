@@ -3,7 +3,6 @@
 // TODO: Keep realm in sync with mongo
 import Patient from '../models/Patient';
 import Status from '../models/Status';
-import GrowthChartUpdate from '../models/GrowthChartUpdate';
 import Soap from '../models/Soap';
 import Triage from '../models/Triage';
 import DrugUpdate from '../models/DrugUpdate';
@@ -12,7 +11,7 @@ import Realm from 'realm';
 import {stringDate} from '../util/Date';
 
 const realm = new Realm({
-  schema: [Patient, Status, GrowthChartUpdate, Soap, Triage, DrugUpdate],
+  schema: [Patient, Status, Soap, Triage, DrugUpdate],
   deleteRealmIfMigrationNeeded: true, // TODO: delete when done with dev
 });
 
@@ -81,6 +80,7 @@ export function updateStatus(patientKey, strDate, field, value) {
 
     realm.write(() => {
       statusObj[field] = value;
+      statusObj.last_updated = new Date().getTime();
     });
     return Promise.resolve(true);
   } catch (e) {
@@ -105,6 +105,7 @@ export function createDrugUpdate(update) {
           old.frequency = update.frequency;
           old.duration = update.duration;
           old.notes = update.notes;
+          old.last_updated = update.last_updated;
           return Promise.resolve(true);
         }
       }
@@ -138,6 +139,7 @@ export function updateSoap(update) {
         properties.forEach( p => {
           soap[p] = update[p];
         });
+        soap.last_updated = new Date().getTime();
         return Promise.resolve(true);
       }
 
@@ -177,6 +179,7 @@ export function updateTriage(update) {
         properties.forEach( p => {
           triage[p] = update[p];
         });
+        triage.last_updated = new Date().getTime();
         return Promise.resolve(true);
       }
 

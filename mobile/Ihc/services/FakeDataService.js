@@ -1,4 +1,17 @@
-// This file should hold all the fetch() calls to the Express server
+// This file should hold skeletons for the function calls from RealDataService.
+// Implementation is not required because they should be stubbed out during
+// tests
+export function getPatient(patientKey) {
+  return {};
+}
+
+export function getTriage(patientKey, date) {
+  return {};
+}
+
+export function getSoap(patientKey, date) {
+  return {};
+}
 
 export function getPatients(param) {
   return []; // Return whatever sample data you want

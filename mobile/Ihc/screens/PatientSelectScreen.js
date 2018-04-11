@@ -22,6 +22,7 @@ export default class PatientSelectScreen extends Component<{}> {
       rows: [],
       error: null
     };
+    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
   }
 
   loadPatients = () => {
@@ -31,12 +32,11 @@ export default class PatientSelectScreen extends Component<{}> {
         this.setState({ rows: data, loading: false });
       })
       .catch(err => {
-        this.setState({ error: err, loading: false });
+        this.setState({ error: err.message, loading: false });
       });
   }
 
   // Reload table after moving back to table
-  // TODO: Not triggering correctly after hitting back button
   onNavigatorEvent(event) {
     if (event.id === 'willAppear') {
       this.loadPatients();

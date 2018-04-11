@@ -55,6 +55,7 @@ export default class MedicationUpdateScreen extends Component<{}> {
     // Add patientKey to form and date to form
     form.patientKey = this.props.patientKey;
     form.date = stringDate(new Date());
+    form.last_updated = new Date().getTime();
 
     data.createDrugUpdate(form)
         .then( () => {

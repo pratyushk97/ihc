@@ -1,0 +1,216 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<View
+  style={
+    Object {
+      "alignItems": "center",
+      "backgroundColor": "#F5FCFF",
+      "flex": 1,
+      "justifyContent": "center",
+    }
+  }
+>
+  <View
+    style={
+      Object {
+        "alignItems": "center",
+        "flex": 1,
+        "justifyContent": "center",
+      }
+    }
+  >
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      ellipsizeMode="tail"
+      style={
+        Object {
+          "fontSize": 20,
+          "margin": 4,
+          "textAlign": "center",
+          "top": 10,
+        }
+      }
+    >
+      's Medications
+    </Text>
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      ellipsizeMode="tail"
+    >
+      R: Refill, C: Change, D: Discontinue
+    </Text>
+  </View>
+  <View
+    style={
+      Object {
+        "maxHeight": "70%",
+        "maxWidth": "95%",
+        "padding": 0,
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "minHeight": "50%",
+          "minWidth": 700,
+        }
+      }
+    >
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        ellipsizeMode="tail"
+        style={
+          Object {
+            "left": -64,
+            "textAlign": "center",
+          }
+        }
+      >
+        No data to show
+      </Text>
+    </View>
+  </View>
+  <View
+    style={
+      Object {
+        "height": 60,
+        "margin": 0,
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "flex": 1,
+          "flexDirection": "row",
+          "margin": 0,
+        }
+      }
+    >
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        ellipsizeMode="tail"
+        style={
+          Object {
+            "color": "green",
+            "margin": 0,
+            "textAlign": "center",
+          }
+        }
+      />
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        ellipsizeMode="tail"
+        style={
+          Object {
+            "color": "red",
+            "margin": 0,
+            "textAlign": "center",
+          }
+        }
+      />
+      <View
+        accessibilityComponentType={undefined}
+        accessibilityLabel={undefined}
+        accessibilityTraits={undefined}
+        accessible={true}
+        collapsable={undefined}
+        hasTVPreferredFocus={undefined}
+        hitSlop={undefined}
+        isTVSelectable={true}
+        nativeID={undefined}
+        onLayout={undefined}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "backgroundColor": "#2196F3",
+            "borderRadius": 2,
+            "elevation": 4,
+            "height": 40,
+            "margin": 4,
+            "opacity": 1,
+            "padding": 8,
+            "width": 120,
+          }
+        }
+        testID={undefined}
+        tvParallaxProperties={undefined}
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+          style={
+            Object {
+              "color": "#fefefe",
+              "fontWeight": "500",
+              "textAlign": "center",
+            }
+          }
+        >
+          New Medication
+        </Text>
+      </View>
+      <View
+        accessibilityComponentType={undefined}
+        accessibilityLabel={undefined}
+        accessibilityTraits={undefined}
+        accessible={true}
+        collapsable={undefined}
+        hasTVPreferredFocus={undefined}
+        hitSlop={undefined}
+        isTVSelectable={true}
+        nativeID={undefined}
+        onLayout={undefined}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "backgroundColor": "#2196F3",
+            "borderRadius": 2,
+            "elevation": 4,
+            "height": 40,
+            "margin": 4,
+            "opacity": 1,
+            "padding": 8,
+            "width": 120,
+          }
+        }
+        testID={undefined}
+        tvParallaxProperties={undefined}
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+          style={
+            Object {
+              "color": "#fefefe",
+              "fontWeight": "500",
+              "textAlign": "center",
+            }
+          }
+        >
+          Completed
+        </Text>
+      </View>
+    </View>
+  </View>
+</View>
+`;

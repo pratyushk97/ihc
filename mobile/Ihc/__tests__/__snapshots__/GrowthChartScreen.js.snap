@@ -1,0 +1,944 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<RCTScrollView
+  contentContainerStyle={
+    Object {
+      "alignItems": "center",
+      "backgroundColor": "#F5FCFF",
+      "flex": 0,
+      "justifyContent": "center",
+      "minHeight": 950,
+    }
+  }
+>
+  <View>
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      ellipsizeMode="tail"
+      style={
+        Object {
+          "fontSize": 20,
+          "margin": 10,
+          "position": "absolute",
+          "textAlign": "center",
+          "top": 4,
+        }
+      }
+    >
+      Growth Chart
+    </Text>
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      ellipsizeMode="tail"
+      style={
+        Object {
+          "color": "red",
+          "margin": 10,
+          "textAlign": "center",
+        }
+      }
+    />
+    <View
+      style={
+        Object {
+          "flex": 1,
+          "margin": 8,
+          "top": 50,
+        }
+      }
+    >
+      <View
+        style={
+          Object {
+            "backgroundColor": "#ededed",
+            "height": 420,
+            "margin": 4,
+            "padding": 8,
+          }
+        }
+      >
+        <View
+          style={
+            Object {
+              "backgroundColor": "white",
+              "height": 400,
+              "width": 400,
+            }
+          }
+        >
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            style={
+              Object {
+                "margin": 4,
+              }
+            }
+          >
+            Weight Growth Chart
+          </Text>
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            style={
+              Object {
+                "bottom": 100,
+                "left": -8,
+                "position": "absolute",
+                "transform": Array [
+                  Object {
+                    "rotate": "90deg",
+                  },
+                ],
+              }
+            }
+          >
+            Weight
+          </Text>
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            style={
+              Object {
+                "bottom": 0,
+                "left": 85,
+                "position": "absolute",
+              }
+            }
+          >
+            Age
+          </Text>
+          <View
+            style={
+              Object {
+                "alignContent": "center",
+                "flexDirection": "row",
+                "height": 20,
+                "marginLeft": 4,
+                "paddingTop": 4,
+                "width": 50,
+              }
+            }
+          >
+            <View
+              style={
+                Object {
+                  "backgroundColor": "red",
+                  "borderRadius": 5,
+                  "bottom": undefined,
+                  "height": 5,
+                  "left": undefined,
+                  "margin": 0,
+                  "opacity": 0.3,
+                  "position": "relative",
+                  "width": 5,
+                }
+              }
+            />
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              ellipsizeMode="tail"
+              style={
+                Object {
+                  "bottom": 8,
+                  "marginLeft": 4,
+                  "maxHeight": 20,
+                }
+              }
+            >
+              P95
+            </Text>
+          </View>
+          <View
+            style={
+              Object {
+                "alignContent": "center",
+                "flexDirection": "row",
+                "height": 20,
+                "marginLeft": 4,
+                "paddingTop": 4,
+                "width": 50,
+              }
+            }
+          >
+            <View
+              style={
+                Object {
+                  "backgroundColor": "orange",
+                  "borderRadius": 5,
+                  "bottom": undefined,
+                  "height": 5,
+                  "left": undefined,
+                  "margin": 0,
+                  "opacity": 0.3,
+                  "position": "relative",
+                  "width": 5,
+                }
+              }
+            />
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              ellipsizeMode="tail"
+              style={
+                Object {
+                  "bottom": 8,
+                  "marginLeft": 4,
+                  "maxHeight": 20,
+                }
+              }
+            >
+              P90
+            </Text>
+          </View>
+          <View
+            style={
+              Object {
+                "alignContent": "center",
+                "flexDirection": "row",
+                "height": 20,
+                "marginLeft": 4,
+                "paddingTop": 4,
+                "width": 50,
+              }
+            }
+          >
+            <View
+              style={
+                Object {
+                  "backgroundColor": "purple",
+                  "borderRadius": 5,
+                  "bottom": undefined,
+                  "height": 5,
+                  "left": undefined,
+                  "margin": 0,
+                  "opacity": 0.3,
+                  "position": "relative",
+                  "width": 5,
+                }
+              }
+            />
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              ellipsizeMode="tail"
+              style={
+                Object {
+                  "bottom": 8,
+                  "marginLeft": 4,
+                  "maxHeight": 20,
+                }
+              }
+            >
+              P75
+            </Text>
+          </View>
+          <View
+            style={
+              Object {
+                "alignContent": "center",
+                "flexDirection": "row",
+                "height": 20,
+                "marginLeft": 4,
+                "paddingTop": 4,
+                "width": 50,
+              }
+            }
+          >
+            <View
+              style={
+                Object {
+                  "backgroundColor": "blue",
+                  "borderRadius": 5,
+                  "bottom": undefined,
+                  "height": 5,
+                  "left": undefined,
+                  "margin": 0,
+                  "opacity": 0.3,
+                  "position": "relative",
+                  "width": 5,
+                }
+              }
+            />
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              ellipsizeMode="tail"
+              style={
+                Object {
+                  "bottom": 8,
+                  "marginLeft": 4,
+                  "maxHeight": 20,
+                }
+              }
+            >
+              P50
+            </Text>
+          </View>
+          <View
+            style={
+              Object {
+                "alignContent": "center",
+                "flexDirection": "row",
+                "height": 20,
+                "marginLeft": 4,
+                "paddingTop": 4,
+                "width": 50,
+              }
+            }
+          >
+            <View
+              style={
+                Object {
+                  "backgroundColor": "green",
+                  "borderRadius": 5,
+                  "bottom": undefined,
+                  "height": 5,
+                  "left": undefined,
+                  "margin": 0,
+                  "opacity": 0.3,
+                  "position": "relative",
+                  "width": 5,
+                }
+              }
+            />
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              ellipsizeMode="tail"
+              style={
+                Object {
+                  "bottom": 8,
+                  "marginLeft": 4,
+                  "maxHeight": 20,
+                }
+              }
+            >
+              P25
+            </Text>
+          </View>
+          <View
+            style={
+              Object {
+                "alignContent": "center",
+                "flexDirection": "row",
+                "height": 20,
+                "marginLeft": 4,
+                "paddingTop": 4,
+                "width": 50,
+              }
+            }
+          >
+            <View
+              style={
+                Object {
+                  "backgroundColor": "purple",
+                  "borderRadius": 5,
+                  "bottom": undefined,
+                  "height": 5,
+                  "left": undefined,
+                  "margin": 0,
+                  "opacity": 0.3,
+                  "position": "relative",
+                  "width": 5,
+                }
+              }
+            />
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              ellipsizeMode="tail"
+              style={
+                Object {
+                  "bottom": 8,
+                  "marginLeft": 4,
+                  "maxHeight": 20,
+                }
+              }
+            >
+              P10
+            </Text>
+          </View>
+          <View
+            style={
+              Object {
+                "alignContent": "center",
+                "flexDirection": "row",
+                "height": 20,
+                "marginLeft": 4,
+                "paddingTop": 4,
+                "width": 50,
+              }
+            }
+          >
+            <View
+              style={
+                Object {
+                  "backgroundColor": "orange",
+                  "borderRadius": 5,
+                  "bottom": undefined,
+                  "height": 5,
+                  "left": undefined,
+                  "margin": 0,
+                  "opacity": 0.3,
+                  "position": "relative",
+                  "width": 5,
+                }
+              }
+            />
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              ellipsizeMode="tail"
+              style={
+                Object {
+                  "bottom": 8,
+                  "marginLeft": 4,
+                  "maxHeight": 20,
+                }
+              }
+            >
+              P5
+            </Text>
+          </View>
+          <View
+            style={
+              Object {
+                "alignContent": "center",
+                "flexDirection": "row",
+                "height": 20,
+                "marginLeft": 4,
+                "paddingTop": 4,
+                "width": 50,
+              }
+            }
+          >
+            <View
+              style={
+                Object {
+                  "backgroundColor": "red",
+                  "borderRadius": 5,
+                  "bottom": undefined,
+                  "height": 5,
+                  "left": undefined,
+                  "margin": 0,
+                  "opacity": 0.3,
+                  "position": "relative",
+                  "width": 5,
+                }
+              }
+            />
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              ellipsizeMode="tail"
+              style={
+                Object {
+                  "bottom": 8,
+                  "marginLeft": 4,
+                  "maxHeight": 20,
+                }
+              }
+            >
+              P3
+            </Text>
+          </View>
+          <View
+            style={
+              Object {
+                "alignContent": "center",
+                "flexDirection": "row",
+                "height": 20,
+                "marginLeft": 4,
+                "paddingTop": 4,
+                "width": 50,
+              }
+            }
+          >
+            <View
+              style={
+                Object {
+                  "backgroundColor": "black",
+                  "borderRadius": 5,
+                  "bottom": undefined,
+                  "height": 5,
+                  "left": undefined,
+                  "margin": 0,
+                  "opacity": 0.3,
+                  "position": "relative",
+                  "width": 5,
+                }
+              }
+            />
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              ellipsizeMode="tail"
+              style={
+                Object {
+                  "bottom": 8,
+                  "marginLeft": 4,
+                  "maxHeight": 20,
+                }
+              }
+            >
+              Patient
+            </Text>
+          </View>
+        </View>
+      </View>
+      <View
+        style={
+          Object {
+            "backgroundColor": "#ededed",
+            "height": 420,
+            "margin": 4,
+            "padding": 8,
+          }
+        }
+      >
+        <View
+          style={
+            Object {
+              "backgroundColor": "white",
+              "height": 400,
+              "width": 400,
+            }
+          }
+        >
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            style={
+              Object {
+                "margin": 4,
+              }
+            }
+          >
+            Height Growth Chart
+          </Text>
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            style={
+              Object {
+                "bottom": 100,
+                "left": -8,
+                "position": "absolute",
+                "transform": Array [
+                  Object {
+                    "rotate": "90deg",
+                  },
+                ],
+              }
+            }
+          >
+            Height
+          </Text>
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            style={
+              Object {
+                "bottom": 0,
+                "left": 85,
+                "position": "absolute",
+              }
+            }
+          >
+            Age
+          </Text>
+          <View
+            style={
+              Object {
+                "alignContent": "center",
+                "flexDirection": "row",
+                "height": 20,
+                "marginLeft": 4,
+                "paddingTop": 4,
+                "width": 50,
+              }
+            }
+          >
+            <View
+              style={
+                Object {
+                  "backgroundColor": "red",
+                  "borderRadius": 5,
+                  "bottom": undefined,
+                  "height": 5,
+                  "left": undefined,
+                  "margin": 0,
+                  "opacity": 0.3,
+                  "position": "relative",
+                  "width": 5,
+                }
+              }
+            />
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              ellipsizeMode="tail"
+              style={
+                Object {
+                  "bottom": 8,
+                  "marginLeft": 4,
+                  "maxHeight": 20,
+                }
+              }
+            >
+              P95
+            </Text>
+          </View>
+          <View
+            style={
+              Object {
+                "alignContent": "center",
+                "flexDirection": "row",
+                "height": 20,
+                "marginLeft": 4,
+                "paddingTop": 4,
+                "width": 50,
+              }
+            }
+          >
+            <View
+              style={
+                Object {
+                  "backgroundColor": "orange",
+                  "borderRadius": 5,
+                  "bottom": undefined,
+                  "height": 5,
+                  "left": undefined,
+                  "margin": 0,
+                  "opacity": 0.3,
+                  "position": "relative",
+                  "width": 5,
+                }
+              }
+            />
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              ellipsizeMode="tail"
+              style={
+                Object {
+                  "bottom": 8,
+                  "marginLeft": 4,
+                  "maxHeight": 20,
+                }
+              }
+            >
+              P90
+            </Text>
+          </View>
+          <View
+            style={
+              Object {
+                "alignContent": "center",
+                "flexDirection": "row",
+                "height": 20,
+                "marginLeft": 4,
+                "paddingTop": 4,
+                "width": 50,
+              }
+            }
+          >
+            <View
+              style={
+                Object {
+                  "backgroundColor": "purple",
+                  "borderRadius": 5,
+                  "bottom": undefined,
+                  "height": 5,
+                  "left": undefined,
+                  "margin": 0,
+                  "opacity": 0.3,
+                  "position": "relative",
+                  "width": 5,
+                }
+              }
+            />
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              ellipsizeMode="tail"
+              style={
+                Object {
+                  "bottom": 8,
+                  "marginLeft": 4,
+                  "maxHeight": 20,
+                }
+              }
+            >
+              P75
+            </Text>
+          </View>
+          <View
+            style={
+              Object {
+                "alignContent": "center",
+                "flexDirection": "row",
+                "height": 20,
+                "marginLeft": 4,
+                "paddingTop": 4,
+                "width": 50,
+              }
+            }
+          >
+            <View
+              style={
+                Object {
+                  "backgroundColor": "blue",
+                  "borderRadius": 5,
+                  "bottom": undefined,
+                  "height": 5,
+                  "left": undefined,
+                  "margin": 0,
+                  "opacity": 0.3,
+                  "position": "relative",
+                  "width": 5,
+                }
+              }
+            />
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              ellipsizeMode="tail"
+              style={
+                Object {
+                  "bottom": 8,
+                  "marginLeft": 4,
+                  "maxHeight": 20,
+                }
+              }
+            >
+              P50
+            </Text>
+          </View>
+          <View
+            style={
+              Object {
+                "alignContent": "center",
+                "flexDirection": "row",
+                "height": 20,
+                "marginLeft": 4,
+                "paddingTop": 4,
+                "width": 50,
+              }
+            }
+          >
+            <View
+              style={
+                Object {
+                  "backgroundColor": "green",
+                  "borderRadius": 5,
+                  "bottom": undefined,
+                  "height": 5,
+                  "left": undefined,
+                  "margin": 0,
+                  "opacity": 0.3,
+                  "position": "relative",
+                  "width": 5,
+                }
+              }
+            />
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              ellipsizeMode="tail"
+              style={
+                Object {
+                  "bottom": 8,
+                  "marginLeft": 4,
+                  "maxHeight": 20,
+                }
+              }
+            >
+              P25
+            </Text>
+          </View>
+          <View
+            style={
+              Object {
+                "alignContent": "center",
+                "flexDirection": "row",
+                "height": 20,
+                "marginLeft": 4,
+                "paddingTop": 4,
+                "width": 50,
+              }
+            }
+          >
+            <View
+              style={
+                Object {
+                  "backgroundColor": "purple",
+                  "borderRadius": 5,
+                  "bottom": undefined,
+                  "height": 5,
+                  "left": undefined,
+                  "margin": 0,
+                  "opacity": 0.3,
+                  "position": "relative",
+                  "width": 5,
+                }
+              }
+            />
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              ellipsizeMode="tail"
+              style={
+                Object {
+                  "bottom": 8,
+                  "marginLeft": 4,
+                  "maxHeight": 20,
+                }
+              }
+            >
+              P10
+            </Text>
+          </View>
+          <View
+            style={
+              Object {
+                "alignContent": "center",
+                "flexDirection": "row",
+                "height": 20,
+                "marginLeft": 4,
+                "paddingTop": 4,
+                "width": 50,
+              }
+            }
+          >
+            <View
+              style={
+                Object {
+                  "backgroundColor": "orange",
+                  "borderRadius": 5,
+                  "bottom": undefined,
+                  "height": 5,
+                  "left": undefined,
+                  "margin": 0,
+                  "opacity": 0.3,
+                  "position": "relative",
+                  "width": 5,
+                }
+              }
+            />
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              ellipsizeMode="tail"
+              style={
+                Object {
+                  "bottom": 8,
+                  "marginLeft": 4,
+                  "maxHeight": 20,
+                }
+              }
+            >
+              P5
+            </Text>
+          </View>
+          <View
+            style={
+              Object {
+                "alignContent": "center",
+                "flexDirection": "row",
+                "height": 20,
+                "marginLeft": 4,
+                "paddingTop": 4,
+                "width": 50,
+              }
+            }
+          >
+            <View
+              style={
+                Object {
+                  "backgroundColor": "red",
+                  "borderRadius": 5,
+                  "bottom": undefined,
+                  "height": 5,
+                  "left": undefined,
+                  "margin": 0,
+                  "opacity": 0.3,
+                  "position": "relative",
+                  "width": 5,
+                }
+              }
+            />
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              ellipsizeMode="tail"
+              style={
+                Object {
+                  "bottom": 8,
+                  "marginLeft": 4,
+                  "maxHeight": 20,
+                }
+              }
+            >
+              P3
+            </Text>
+          </View>
+          <View
+            style={
+              Object {
+                "alignContent": "center",
+                "flexDirection": "row",
+                "height": 20,
+                "marginLeft": 4,
+                "paddingTop": 4,
+                "width": 50,
+              }
+            }
+          >
+            <View
+              style={
+                Object {
+                  "backgroundColor": "black",
+                  "borderRadius": 5,
+                  "bottom": undefined,
+                  "height": 5,
+                  "left": undefined,
+                  "margin": 0,
+                  "opacity": 0.3,
+                  "position": "relative",
+                  "width": 5,
+                }
+              }
+            />
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              ellipsizeMode="tail"
+              style={
+                Object {
+                  "bottom": 8,
+                  "marginLeft": 4,
+                  "maxHeight": 20,
+                }
+              }
+            >
+              Patient
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>
+</RCTScrollView>
+`;
