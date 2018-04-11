@@ -75,12 +75,14 @@ export default class PatientHistoryScreen extends Component<{}> {
       )
     }
     if (this.state.patient == null) {
-      <View style={styles.container}>
-        <Text style={styles.title}>
-          Previous Visits
-        </Text>
-        <Text>Patient doesnt exist...</Text>
-      </View>
+      return (
+        <View style={styles.container}>
+          <Text style={styles.title}>
+            Previous Visits
+          </Text>
+          <Text>Patient doesnt exist...</Text>
+        </View>
+      )
     }
     return (
       <View style={styles.container}>
