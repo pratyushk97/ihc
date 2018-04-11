@@ -14,6 +14,8 @@ export default class PatientHomeScreen extends Component<{}> {
    *  {
    *    name: string, patient's name (for convenience)
    *    patientKey: string
+   *    todayDateString: optional, (new Date().toDateString()), helpful for
+   *    tests
    *  }
    */
   constructor(props) {
@@ -63,7 +65,7 @@ export default class PatientHomeScreen extends Component<{}> {
   render() {
     const date = new Date();
     //const dateString = `${date.getMonth()} ${date.getDate()}, ${date.getYear()}`;
-    const dateString = date.toDateString();
+    const dateString = this.props.todayDateString || date.toDateString();
     return (
       <View style={styles.container}>
         <Text style={styles.title}>

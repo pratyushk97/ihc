@@ -7,7 +7,7 @@ import renderer from 'react-test-renderer';
 
 it('renders correctly', () => {
   const json = renderer.create(
-    <PatientHomeScreen />
+    <PatientHomeScreen todayDateString={'Tue Apr 10 2018'} />
   ).toJSON();
   expect(json).toMatchSnapshot();
 });

@@ -4,7 +4,9 @@ exports[`renders correctly 1`] = `
 ShallowWrapper {
   "length": 1,
   Symbol(enzyme.__root__): [Circular],
-  Symbol(enzyme.__unrendered__): <TriageScreen />,
+  Symbol(enzyme.__unrendered__): <TriageScreen
+    todayDate="20180101"
+  />,
   Symbol(enzyme.__renderer__): Object {
     "batchedUpdates": [Function],
     "getNode": [Function],
@@ -267,7 +269,7 @@ ShallowWrapper {
             type={[Function]}
             value={
               Object {
-                "date": "20180411",
+                "date": "20180101",
                 "labsDone": false,
                 "urineTestDone": false,
               }
@@ -582,7 +584,7 @@ ShallowWrapper {
               type={[Function]}
               value={
                 Object {
-                  "date": "20180411",
+                  "date": "20180101",
                   "labsDone": false,
                   "urineTestDone": false,
                 }
@@ -862,7 +864,7 @@ ShallowWrapper {
               },
               "type": [Function],
               "value": Object {
-                "date": "20180411",
+                "date": "20180101",
                 "labsDone": false,
                 "urineTestDone": false,
               },
@@ -1201,7 +1203,7 @@ ShallowWrapper {
               type={[Function]}
               value={
                 Object {
-                  "date": "20180411",
+                  "date": "20180101",
                   "labsDone": false,
                   "urineTestDone": false,
                 }
@@ -1516,7 +1518,7 @@ ShallowWrapper {
                 type={[Function]}
                 value={
                   Object {
-                    "date": "20180411",
+                    "date": "20180101",
                     "labsDone": false,
                     "urineTestDone": false,
                   }
@@ -1796,7 +1798,7 @@ ShallowWrapper {
                 },
                 "type": [Function],
                 "value": Object {
-                  "date": "20180411",
+                  "date": "20180101",
                   "labsDone": false,
                   "urineTestDone": false,
                 },

@@ -15,6 +15,6 @@ it('renders correctly', () => {
   sinon.stub(data, 'getPatient').returns(Promise.resolve(Patient.getInstance()));
   sinon.stub(data, 'getTriage').returns(Promise.resolve(Triage.getInstance()));
 
-  const component = shallow(<TriageScreen />);
+  const component = shallow(<TriageScreen todayDate='20180101'/>);
   expect(component).toMatchSnapshot();
 });

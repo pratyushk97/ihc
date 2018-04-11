@@ -110,7 +110,7 @@ exports[`renders correctly 1`] = `
                 }
               }
               underlineColorAndroid="transparent"
-              value="20180411"
+              value="20180101"
             />
           </View>
         </View>
