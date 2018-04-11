@@ -6,7 +6,6 @@ import {
   Text,
   View,
   ScrollView,
-  Alert
 } from 'react-native';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import data from '../services/DataService';
@@ -40,10 +39,15 @@ export default class PatientHistoryScreen extends Component<{}> {
     this.setState({ loading: true });
     data.getPatient(this.props.patientKey)
       .then( data => {
+        if (!data) {
+          this.setState({ loading: false });
+          return;
+        }
+
         this.setState({ patient: data, loading: false });
       })
       .catch( err => {
-        this.setState({ error: err, loading: false });
+        this.setState({ error: err.message, loading: false });
       });
   }
 
