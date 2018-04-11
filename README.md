@@ -55,6 +55,9 @@ https://app.moqups.com/mattchinn/ix0mjskH6z/view
 
 2. Run ```react-native run-android``` inside IHC/mobile/Ihc directory
 
+##### Run react native tests:
+1. Run ```npm test``` inside IHC/mobile/Ihc
+
 ##### Run Express server:
 
 *Inside IHC/server directory
