@@ -13,6 +13,6 @@ DrugUpdate.schema = {
     frequency: 'string',
     duration: 'string',
     notes: 'string?',
-    last_updated: 'int',
+    lastUpdated: 'int',
   }
 };

@@ -1,0 +1,1891 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+ShallowWrapper {
+  "length": 1,
+  Symbol(enzyme.__root__): [Circular],
+  Symbol(enzyme.__unrendered__): <TriageScreen />,
+  Symbol(enzyme.__renderer__): Object {
+    "batchedUpdates": [Function],
+    "getNode": [Function],
+    "render": [Function],
+    "simulateEvent": [Function],
+    "unmount": [Function],
+  },
+  Symbol(enzyme.__node__): Object {
+    "instance": null,
+    "key": undefined,
+    "nodeType": "class",
+    "props": Object {
+      "children": Array [
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+          style={
+            Object {
+              "fontSize": 20,
+              "margin": 10,
+              "textAlign": "center",
+            }
+          }
+        >
+          Triage
+        </Text>,
+        <View
+          style={
+            Object {
+              "width": "80%",
+            }
+          }
+        >
+          <Form
+            i18n={
+              Object {
+                "add": "Add",
+                "down": "↓",
+                "optional": " (optional)",
+                "remove": "✘",
+                "required": "",
+                "up": "↑",
+              }
+            }
+            onChange={[Function]}
+            options={
+              Object {
+                "fields": Object {
+                  "date": Object {
+                    "editable": false,
+                  },
+                  "fasting": Object {
+                    "label": "Did this patient fast?",
+                  },
+                  "labsDone": Object {
+                    "label": "Did they get labs done?",
+                  },
+                  "pregnancyTest": Object {
+                    "label": "Pregnancy test positive?",
+                  },
+                  "statusClarification": Object {
+                    "label": "Status clarification (if picked Other)",
+                  },
+                  "urineTestDone": Object {
+                    "label": "Did they take a urine test?",
+                  },
+                },
+              }
+            }
+            stylesheet={
+              Object {
+                "button": Object {
+                  "alignSelf": "stretch",
+                  "backgroundColor": "#48BBEC",
+                  "borderColor": "#48BBEC",
+                  "borderRadius": 8,
+                  "borderWidth": 1,
+                  "height": 36,
+                  "justifyContent": "center",
+                  "marginBottom": 10,
+                },
+                "buttonText": Object {
+                  "alignSelf": "center",
+                  "color": "white",
+                  "fontSize": 18,
+                },
+                "checkbox": Object {
+                  "error": Object {
+                    "marginBottom": 4,
+                  },
+                  "normal": Object {
+                    "marginBottom": 4,
+                  },
+                },
+                "controlLabel": Object {
+                  "error": Object {
+                    "color": "#a94442",
+                    "fontSize": 17,
+                    "fontWeight": "500",
+                    "marginBottom": 7,
+                  },
+                  "normal": Object {
+                    "color": "#000000",
+                    "fontSize": 17,
+                    "fontWeight": "500",
+                    "marginBottom": 7,
+                  },
+                },
+                "dateTouchable": Object {
+                  "error": Object {},
+                  "normal": Object {},
+                },
+                "dateValue": Object {
+                  "error": Object {
+                    "color": "#a94442",
+                    "fontSize": 17,
+                    "marginBottom": 5,
+                    "padding": 7,
+                  },
+                  "normal": Object {
+                    "color": "#000000",
+                    "fontSize": 17,
+                    "marginBottom": 5,
+                    "padding": 7,
+                  },
+                },
+                "datepicker": Object {
+                  "error": Object {
+                    "marginBottom": 4,
+                  },
+                  "normal": Object {
+                    "marginBottom": 4,
+                  },
+                },
+                "errorBlock": Object {
+                  "color": "#a94442",
+                  "fontSize": 17,
+                  "marginBottom": 2,
+                },
+                "fieldset": Object {},
+                "formGroup": Object {
+                  "error": Object {
+                    "marginBottom": 10,
+                  },
+                  "normal": Object {
+                    "marginBottom": 10,
+                  },
+                },
+                "helpBlock": Object {
+                  "error": Object {
+                    "color": "#999999",
+                    "fontSize": 17,
+                    "marginBottom": 2,
+                  },
+                  "normal": Object {
+                    "color": "#999999",
+                    "fontSize": 17,
+                    "marginBottom": 2,
+                  },
+                },
+                "pickerContainer": Object {
+                  "error": Object {
+                    "borderColor": "#a94442",
+                    "borderRadius": 4,
+                    "borderWidth": 1,
+                    "marginBottom": 4,
+                  },
+                  "normal": Object {
+                    "borderColor": "#cccccc",
+                    "borderRadius": 4,
+                    "borderWidth": 1,
+                    "marginBottom": 4,
+                  },
+                  "open": Object {},
+                },
+                "pickerTouchable": Object {
+                  "active": Object {
+                    "borderBottomWidth": 1,
+                    "borderColor": "#cccccc",
+                  },
+                  "error": Object {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "height": 44,
+                  },
+                  "normal": Object {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "height": 44,
+                  },
+                },
+                "pickerValue": Object {
+                  "error": Object {
+                    "fontSize": 17,
+                    "paddingLeft": 7,
+                  },
+                  "normal": Object {
+                    "fontSize": 17,
+                    "paddingLeft": 7,
+                  },
+                },
+                "select": Object {
+                  "error": Object {},
+                  "normal": Object {},
+                },
+                "textbox": Object {
+                  "error": Object {
+                    "borderColor": "#a94442",
+                    "borderRadius": 4,
+                    "borderWidth": 1,
+                    "color": "#000000",
+                    "fontSize": 17,
+                    "height": 36,
+                    "marginBottom": 5,
+                    "paddingHorizontal": 7,
+                    "paddingVertical": 7,
+                  },
+                  "normal": Object {
+                    "borderColor": "#cccccc",
+                    "borderRadius": 4,
+                    "borderWidth": 1,
+                    "color": "#000000",
+                    "fontSize": 17,
+                    "height": 36,
+                    "marginBottom": 5,
+                    "paddingHorizontal": 7,
+                    "paddingVertical": 7,
+                  },
+                  "notEditable": Object {
+                    "backgroundColor": "#eeeeee",
+                    "borderColor": "#cccccc",
+                    "borderRadius": 4,
+                    "borderWidth": 1,
+                    "color": "#777777",
+                    "fontSize": 17,
+                    "height": 36,
+                    "marginBottom": 5,
+                    "paddingHorizontal": 7,
+                    "paddingVertical": 7,
+                  },
+                },
+                "textboxView": Object {
+                  "error": Object {},
+                  "normal": Object {},
+                  "notEditable": Object {},
+                },
+              }
+            }
+            templates={
+              Object {
+                "checkbox": [Function],
+                "datepicker": [Function],
+                "list": [Function],
+                "select": [Function],
+                "struct": [Function],
+                "textbox": [Function],
+              }
+            }
+            type={[Function]}
+            value={
+              Object {
+                "date": "20180411",
+                "labsDone": false,
+                "urineTestDone": false,
+              }
+            }
+          />
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            style={
+              Object {
+                "color": "red",
+                "margin": 10,
+                "textAlign": "center",
+              }
+            }
+          >
+            
+          </Text>
+          <Button
+            onPress={[Function]}
+            styles={
+              Object {
+                "margin": 4,
+              }
+            }
+            title="Triage completed"
+          />
+          <Button
+            onPress={[Function]}
+            styles={
+              Object {
+                "margin": 4,
+              }
+            }
+            title="Update"
+          />
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            style={
+              Object {
+                "color": "green",
+                "margin": 10,
+                "textAlign": "center",
+              }
+            }
+          />
+        </View>,
+      ],
+      "contentContainerStyle": Object {
+        "alignItems": "center",
+        "backgroundColor": "#F5FCFF",
+        "flex": 0,
+        "justifyContent": "center",
+        "padding": 20,
+      },
+    },
+    "ref": null,
+    "rendered": Array [
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "class",
+        "props": Object {
+          "accessible": true,
+          "allowFontScaling": true,
+          "children": "Triage",
+          "ellipsizeMode": "tail",
+          "style": Object {
+            "fontSize": 20,
+            "margin": 10,
+            "textAlign": "center",
+          },
+        },
+        "ref": null,
+        "rendered": "Triage",
+        "type": [Function],
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "class",
+        "props": Object {
+          "children": Array [
+            <Form
+              i18n={
+                Object {
+                  "add": "Add",
+                  "down": "↓",
+                  "optional": " (optional)",
+                  "remove": "✘",
+                  "required": "",
+                  "up": "↑",
+                }
+              }
+              onChange={[Function]}
+              options={
+                Object {
+                  "fields": Object {
+                    "date": Object {
+                      "editable": false,
+                    },
+                    "fasting": Object {
+                      "label": "Did this patient fast?",
+                    },
+                    "labsDone": Object {
+                      "label": "Did they get labs done?",
+                    },
+                    "pregnancyTest": Object {
+                      "label": "Pregnancy test positive?",
+                    },
+                    "statusClarification": Object {
+                      "label": "Status clarification (if picked Other)",
+                    },
+                    "urineTestDone": Object {
+                      "label": "Did they take a urine test?",
+                    },
+                  },
+                }
+              }
+              stylesheet={
+                Object {
+                  "button": Object {
+                    "alignSelf": "stretch",
+                    "backgroundColor": "#48BBEC",
+                    "borderColor": "#48BBEC",
+                    "borderRadius": 8,
+                    "borderWidth": 1,
+                    "height": 36,
+                    "justifyContent": "center",
+                    "marginBottom": 10,
+                  },
+                  "buttonText": Object {
+                    "alignSelf": "center",
+                    "color": "white",
+                    "fontSize": 18,
+                  },
+                  "checkbox": Object {
+                    "error": Object {
+                      "marginBottom": 4,
+                    },
+                    "normal": Object {
+                      "marginBottom": 4,
+                    },
+                  },
+                  "controlLabel": Object {
+                    "error": Object {
+                      "color": "#a94442",
+                      "fontSize": 17,
+                      "fontWeight": "500",
+                      "marginBottom": 7,
+                    },
+                    "normal": Object {
+                      "color": "#000000",
+                      "fontSize": 17,
+                      "fontWeight": "500",
+                      "marginBottom": 7,
+                    },
+                  },
+                  "dateTouchable": Object {
+                    "error": Object {},
+                    "normal": Object {},
+                  },
+                  "dateValue": Object {
+                    "error": Object {
+                      "color": "#a94442",
+                      "fontSize": 17,
+                      "marginBottom": 5,
+                      "padding": 7,
+                    },
+                    "normal": Object {
+                      "color": "#000000",
+                      "fontSize": 17,
+                      "marginBottom": 5,
+                      "padding": 7,
+                    },
+                  },
+                  "datepicker": Object {
+                    "error": Object {
+                      "marginBottom": 4,
+                    },
+                    "normal": Object {
+                      "marginBottom": 4,
+                    },
+                  },
+                  "errorBlock": Object {
+                    "color": "#a94442",
+                    "fontSize": 17,
+                    "marginBottom": 2,
+                  },
+                  "fieldset": Object {},
+                  "formGroup": Object {
+                    "error": Object {
+                      "marginBottom": 10,
+                    },
+                    "normal": Object {
+                      "marginBottom": 10,
+                    },
+                  },
+                  "helpBlock": Object {
+                    "error": Object {
+                      "color": "#999999",
+                      "fontSize": 17,
+                      "marginBottom": 2,
+                    },
+                    "normal": Object {
+                      "color": "#999999",
+                      "fontSize": 17,
+                      "marginBottom": 2,
+                    },
+                  },
+                  "pickerContainer": Object {
+                    "error": Object {
+                      "borderColor": "#a94442",
+                      "borderRadius": 4,
+                      "borderWidth": 1,
+                      "marginBottom": 4,
+                    },
+                    "normal": Object {
+                      "borderColor": "#cccccc",
+                      "borderRadius": 4,
+                      "borderWidth": 1,
+                      "marginBottom": 4,
+                    },
+                    "open": Object {},
+                  },
+                  "pickerTouchable": Object {
+                    "active": Object {
+                      "borderBottomWidth": 1,
+                      "borderColor": "#cccccc",
+                    },
+                    "error": Object {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                      "height": 44,
+                    },
+                    "normal": Object {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                      "height": 44,
+                    },
+                  },
+                  "pickerValue": Object {
+                    "error": Object {
+                      "fontSize": 17,
+                      "paddingLeft": 7,
+                    },
+                    "normal": Object {
+                      "fontSize": 17,
+                      "paddingLeft": 7,
+                    },
+                  },
+                  "select": Object {
+                    "error": Object {},
+                    "normal": Object {},
+                  },
+                  "textbox": Object {
+                    "error": Object {
+                      "borderColor": "#a94442",
+                      "borderRadius": 4,
+                      "borderWidth": 1,
+                      "color": "#000000",
+                      "fontSize": 17,
+                      "height": 36,
+                      "marginBottom": 5,
+                      "paddingHorizontal": 7,
+                      "paddingVertical": 7,
+                    },
+                    "normal": Object {
+                      "borderColor": "#cccccc",
+                      "borderRadius": 4,
+                      "borderWidth": 1,
+                      "color": "#000000",
+                      "fontSize": 17,
+                      "height": 36,
+                      "marginBottom": 5,
+                      "paddingHorizontal": 7,
+                      "paddingVertical": 7,
+                    },
+                    "notEditable": Object {
+                      "backgroundColor": "#eeeeee",
+                      "borderColor": "#cccccc",
+                      "borderRadius": 4,
+                      "borderWidth": 1,
+                      "color": "#777777",
+                      "fontSize": 17,
+                      "height": 36,
+                      "marginBottom": 5,
+                      "paddingHorizontal": 7,
+                      "paddingVertical": 7,
+                    },
+                  },
+                  "textboxView": Object {
+                    "error": Object {},
+                    "normal": Object {},
+                    "notEditable": Object {},
+                  },
+                }
+              }
+              templates={
+                Object {
+                  "checkbox": [Function],
+                  "datepicker": [Function],
+                  "list": [Function],
+                  "select": [Function],
+                  "struct": [Function],
+                  "textbox": [Function],
+                }
+              }
+              type={[Function]}
+              value={
+                Object {
+                  "date": "20180411",
+                  "labsDone": false,
+                  "urineTestDone": false,
+                }
+              }
+            />,
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              ellipsizeMode="tail"
+              style={
+                Object {
+                  "color": "red",
+                  "margin": 10,
+                  "textAlign": "center",
+                }
+              }
+            >
+              
+            </Text>,
+            <Button
+              onPress={[Function]}
+              styles={
+                Object {
+                  "margin": 4,
+                }
+              }
+              title="Triage completed"
+            />,
+            <Button
+              onPress={[Function]}
+              styles={
+                Object {
+                  "margin": 4,
+                }
+              }
+              title="Update"
+            />,
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              ellipsizeMode="tail"
+              style={
+                Object {
+                  "color": "green",
+                  "margin": 10,
+                  "textAlign": "center",
+                }
+              }
+            />,
+          ],
+          "style": Object {
+            "width": "80%",
+          },
+        },
+        "ref": null,
+        "rendered": Array [
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "i18n": Object {
+                "add": "Add",
+                "down": "↓",
+                "optional": " (optional)",
+                "remove": "✘",
+                "required": "",
+                "up": "↑",
+              },
+              "onChange": [Function],
+              "options": Object {
+                "fields": Object {
+                  "date": Object {
+                    "editable": false,
+                  },
+                  "fasting": Object {
+                    "label": "Did this patient fast?",
+                  },
+                  "labsDone": Object {
+                    "label": "Did they get labs done?",
+                  },
+                  "pregnancyTest": Object {
+                    "label": "Pregnancy test positive?",
+                  },
+                  "statusClarification": Object {
+                    "label": "Status clarification (if picked Other)",
+                  },
+                  "urineTestDone": Object {
+                    "label": "Did they take a urine test?",
+                  },
+                },
+              },
+              "stylesheet": Object {
+                "button": Object {
+                  "alignSelf": "stretch",
+                  "backgroundColor": "#48BBEC",
+                  "borderColor": "#48BBEC",
+                  "borderRadius": 8,
+                  "borderWidth": 1,
+                  "height": 36,
+                  "justifyContent": "center",
+                  "marginBottom": 10,
+                },
+                "buttonText": Object {
+                  "alignSelf": "center",
+                  "color": "white",
+                  "fontSize": 18,
+                },
+                "checkbox": Object {
+                  "error": Object {
+                    "marginBottom": 4,
+                  },
+                  "normal": Object {
+                    "marginBottom": 4,
+                  },
+                },
+                "controlLabel": Object {
+                  "error": Object {
+                    "color": "#a94442",
+                    "fontSize": 17,
+                    "fontWeight": "500",
+                    "marginBottom": 7,
+                  },
+                  "normal": Object {
+                    "color": "#000000",
+                    "fontSize": 17,
+                    "fontWeight": "500",
+                    "marginBottom": 7,
+                  },
+                },
+                "dateTouchable": Object {
+                  "error": Object {},
+                  "normal": Object {},
+                },
+                "dateValue": Object {
+                  "error": Object {
+                    "color": "#a94442",
+                    "fontSize": 17,
+                    "marginBottom": 5,
+                    "padding": 7,
+                  },
+                  "normal": Object {
+                    "color": "#000000",
+                    "fontSize": 17,
+                    "marginBottom": 5,
+                    "padding": 7,
+                  },
+                },
+                "datepicker": Object {
+                  "error": Object {
+                    "marginBottom": 4,
+                  },
+                  "normal": Object {
+                    "marginBottom": 4,
+                  },
+                },
+                "errorBlock": Object {
+                  "color": "#a94442",
+                  "fontSize": 17,
+                  "marginBottom": 2,
+                },
+                "fieldset": Object {},
+                "formGroup": Object {
+                  "error": Object {
+                    "marginBottom": 10,
+                  },
+                  "normal": Object {
+                    "marginBottom": 10,
+                  },
+                },
+                "helpBlock": Object {
+                  "error": Object {
+                    "color": "#999999",
+                    "fontSize": 17,
+                    "marginBottom": 2,
+                  },
+                  "normal": Object {
+                    "color": "#999999",
+                    "fontSize": 17,
+                    "marginBottom": 2,
+                  },
+                },
+                "pickerContainer": Object {
+                  "error": Object {
+                    "borderColor": "#a94442",
+                    "borderRadius": 4,
+                    "borderWidth": 1,
+                    "marginBottom": 4,
+                  },
+                  "normal": Object {
+                    "borderColor": "#cccccc",
+                    "borderRadius": 4,
+                    "borderWidth": 1,
+                    "marginBottom": 4,
+                  },
+                  "open": Object {},
+                },
+                "pickerTouchable": Object {
+                  "active": Object {
+                    "borderBottomWidth": 1,
+                    "borderColor": "#cccccc",
+                  },
+                  "error": Object {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "height": 44,
+                  },
+                  "normal": Object {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "height": 44,
+                  },
+                },
+                "pickerValue": Object {
+                  "error": Object {
+                    "fontSize": 17,
+                    "paddingLeft": 7,
+                  },
+                  "normal": Object {
+                    "fontSize": 17,
+                    "paddingLeft": 7,
+                  },
+                },
+                "select": Object {
+                  "error": Object {},
+                  "normal": Object {},
+                },
+                "textbox": Object {
+                  "error": Object {
+                    "borderColor": "#a94442",
+                    "borderRadius": 4,
+                    "borderWidth": 1,
+                    "color": "#000000",
+                    "fontSize": 17,
+                    "height": 36,
+                    "marginBottom": 5,
+                    "paddingHorizontal": 7,
+                    "paddingVertical": 7,
+                  },
+                  "normal": Object {
+                    "borderColor": "#cccccc",
+                    "borderRadius": 4,
+                    "borderWidth": 1,
+                    "color": "#000000",
+                    "fontSize": 17,
+                    "height": 36,
+                    "marginBottom": 5,
+                    "paddingHorizontal": 7,
+                    "paddingVertical": 7,
+                  },
+                  "notEditable": Object {
+                    "backgroundColor": "#eeeeee",
+                    "borderColor": "#cccccc",
+                    "borderRadius": 4,
+                    "borderWidth": 1,
+                    "color": "#777777",
+                    "fontSize": 17,
+                    "height": 36,
+                    "marginBottom": 5,
+                    "paddingHorizontal": 7,
+                    "paddingVertical": 7,
+                  },
+                },
+                "textboxView": Object {
+                  "error": Object {},
+                  "normal": Object {},
+                  "notEditable": Object {},
+                },
+              },
+              "templates": Object {
+                "checkbox": [Function],
+                "datepicker": [Function],
+                "list": [Function],
+                "select": [Function],
+                "struct": [Function],
+                "textbox": [Function],
+              },
+              "type": [Function],
+              "value": Object {
+                "date": "20180411",
+                "labsDone": false,
+                "urineTestDone": false,
+              },
+            },
+            "ref": "form",
+            "rendered": null,
+            "type": [Function],
+          },
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "accessible": true,
+              "allowFontScaling": true,
+              "children": "",
+              "ellipsizeMode": "tail",
+              "style": Object {
+                "color": "red",
+                "margin": 10,
+                "textAlign": "center",
+              },
+            },
+            "ref": null,
+            "rendered": "",
+            "type": [Function],
+          },
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "onPress": [Function],
+              "styles": Object {
+                "margin": 4,
+              },
+              "title": "Triage completed",
+            },
+            "ref": null,
+            "rendered": null,
+            "type": [Function],
+          },
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "onPress": [Function],
+              "styles": Object {
+                "margin": 4,
+              },
+              "title": "Update",
+            },
+            "ref": null,
+            "rendered": null,
+            "type": [Function],
+          },
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "accessible": true,
+              "allowFontScaling": true,
+              "children": undefined,
+              "ellipsizeMode": "tail",
+              "style": Object {
+                "color": "green",
+                "margin": 10,
+                "textAlign": "center",
+              },
+            },
+            "ref": null,
+            "rendered": null,
+            "type": [Function],
+          },
+        ],
+        "type": [Function],
+      },
+    ],
+    "type": [Function],
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "class",
+      "props": Object {
+        "children": Array [
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            style={
+              Object {
+                "fontSize": 20,
+                "margin": 10,
+                "textAlign": "center",
+              }
+            }
+          >
+            Triage
+          </Text>,
+          <View
+            style={
+              Object {
+                "width": "80%",
+              }
+            }
+          >
+            <Form
+              i18n={
+                Object {
+                  "add": "Add",
+                  "down": "↓",
+                  "optional": " (optional)",
+                  "remove": "✘",
+                  "required": "",
+                  "up": "↑",
+                }
+              }
+              onChange={[Function]}
+              options={
+                Object {
+                  "fields": Object {
+                    "date": Object {
+                      "editable": false,
+                    },
+                    "fasting": Object {
+                      "label": "Did this patient fast?",
+                    },
+                    "labsDone": Object {
+                      "label": "Did they get labs done?",
+                    },
+                    "pregnancyTest": Object {
+                      "label": "Pregnancy test positive?",
+                    },
+                    "statusClarification": Object {
+                      "label": "Status clarification (if picked Other)",
+                    },
+                    "urineTestDone": Object {
+                      "label": "Did they take a urine test?",
+                    },
+                  },
+                }
+              }
+              stylesheet={
+                Object {
+                  "button": Object {
+                    "alignSelf": "stretch",
+                    "backgroundColor": "#48BBEC",
+                    "borderColor": "#48BBEC",
+                    "borderRadius": 8,
+                    "borderWidth": 1,
+                    "height": 36,
+                    "justifyContent": "center",
+                    "marginBottom": 10,
+                  },
+                  "buttonText": Object {
+                    "alignSelf": "center",
+                    "color": "white",
+                    "fontSize": 18,
+                  },
+                  "checkbox": Object {
+                    "error": Object {
+                      "marginBottom": 4,
+                    },
+                    "normal": Object {
+                      "marginBottom": 4,
+                    },
+                  },
+                  "controlLabel": Object {
+                    "error": Object {
+                      "color": "#a94442",
+                      "fontSize": 17,
+                      "fontWeight": "500",
+                      "marginBottom": 7,
+                    },
+                    "normal": Object {
+                      "color": "#000000",
+                      "fontSize": 17,
+                      "fontWeight": "500",
+                      "marginBottom": 7,
+                    },
+                  },
+                  "dateTouchable": Object {
+                    "error": Object {},
+                    "normal": Object {},
+                  },
+                  "dateValue": Object {
+                    "error": Object {
+                      "color": "#a94442",
+                      "fontSize": 17,
+                      "marginBottom": 5,
+                      "padding": 7,
+                    },
+                    "normal": Object {
+                      "color": "#000000",
+                      "fontSize": 17,
+                      "marginBottom": 5,
+                      "padding": 7,
+                    },
+                  },
+                  "datepicker": Object {
+                    "error": Object {
+                      "marginBottom": 4,
+                    },
+                    "normal": Object {
+                      "marginBottom": 4,
+                    },
+                  },
+                  "errorBlock": Object {
+                    "color": "#a94442",
+                    "fontSize": 17,
+                    "marginBottom": 2,
+                  },
+                  "fieldset": Object {},
+                  "formGroup": Object {
+                    "error": Object {
+                      "marginBottom": 10,
+                    },
+                    "normal": Object {
+                      "marginBottom": 10,
+                    },
+                  },
+                  "helpBlock": Object {
+                    "error": Object {
+                      "color": "#999999",
+                      "fontSize": 17,
+                      "marginBottom": 2,
+                    },
+                    "normal": Object {
+                      "color": "#999999",
+                      "fontSize": 17,
+                      "marginBottom": 2,
+                    },
+                  },
+                  "pickerContainer": Object {
+                    "error": Object {
+                      "borderColor": "#a94442",
+                      "borderRadius": 4,
+                      "borderWidth": 1,
+                      "marginBottom": 4,
+                    },
+                    "normal": Object {
+                      "borderColor": "#cccccc",
+                      "borderRadius": 4,
+                      "borderWidth": 1,
+                      "marginBottom": 4,
+                    },
+                    "open": Object {},
+                  },
+                  "pickerTouchable": Object {
+                    "active": Object {
+                      "borderBottomWidth": 1,
+                      "borderColor": "#cccccc",
+                    },
+                    "error": Object {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                      "height": 44,
+                    },
+                    "normal": Object {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                      "height": 44,
+                    },
+                  },
+                  "pickerValue": Object {
+                    "error": Object {
+                      "fontSize": 17,
+                      "paddingLeft": 7,
+                    },
+                    "normal": Object {
+                      "fontSize": 17,
+                      "paddingLeft": 7,
+                    },
+                  },
+                  "select": Object {
+                    "error": Object {},
+                    "normal": Object {},
+                  },
+                  "textbox": Object {
+                    "error": Object {
+                      "borderColor": "#a94442",
+                      "borderRadius": 4,
+                      "borderWidth": 1,
+                      "color": "#000000",
+                      "fontSize": 17,
+                      "height": 36,
+                      "marginBottom": 5,
+                      "paddingHorizontal": 7,
+                      "paddingVertical": 7,
+                    },
+                    "normal": Object {
+                      "borderColor": "#cccccc",
+                      "borderRadius": 4,
+                      "borderWidth": 1,
+                      "color": "#000000",
+                      "fontSize": 17,
+                      "height": 36,
+                      "marginBottom": 5,
+                      "paddingHorizontal": 7,
+                      "paddingVertical": 7,
+                    },
+                    "notEditable": Object {
+                      "backgroundColor": "#eeeeee",
+                      "borderColor": "#cccccc",
+                      "borderRadius": 4,
+                      "borderWidth": 1,
+                      "color": "#777777",
+                      "fontSize": 17,
+                      "height": 36,
+                      "marginBottom": 5,
+                      "paddingHorizontal": 7,
+                      "paddingVertical": 7,
+                    },
+                  },
+                  "textboxView": Object {
+                    "error": Object {},
+                    "normal": Object {},
+                    "notEditable": Object {},
+                  },
+                }
+              }
+              templates={
+                Object {
+                  "checkbox": [Function],
+                  "datepicker": [Function],
+                  "list": [Function],
+                  "select": [Function],
+                  "struct": [Function],
+                  "textbox": [Function],
+                }
+              }
+              type={[Function]}
+              value={
+                Object {
+                  "date": "20180411",
+                  "labsDone": false,
+                  "urineTestDone": false,
+                }
+              }
+            />
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              ellipsizeMode="tail"
+              style={
+                Object {
+                  "color": "red",
+                  "margin": 10,
+                  "textAlign": "center",
+                }
+              }
+            >
+              
+            </Text>
+            <Button
+              onPress={[Function]}
+              styles={
+                Object {
+                  "margin": 4,
+                }
+              }
+              title="Triage completed"
+            />
+            <Button
+              onPress={[Function]}
+              styles={
+                Object {
+                  "margin": 4,
+                }
+              }
+              title="Update"
+            />
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              ellipsizeMode="tail"
+              style={
+                Object {
+                  "color": "green",
+                  "margin": 10,
+                  "textAlign": "center",
+                }
+              }
+            />
+          </View>,
+        ],
+        "contentContainerStyle": Object {
+          "alignItems": "center",
+          "backgroundColor": "#F5FCFF",
+          "flex": 0,
+          "justifyContent": "center",
+          "padding": 20,
+        },
+      },
+      "ref": null,
+      "rendered": Array [
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "accessible": true,
+            "allowFontScaling": true,
+            "children": "Triage",
+            "ellipsizeMode": "tail",
+            "style": Object {
+              "fontSize": 20,
+              "margin": 10,
+              "textAlign": "center",
+            },
+          },
+          "ref": null,
+          "rendered": "Triage",
+          "type": [Function],
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "children": Array [
+              <Form
+                i18n={
+                  Object {
+                    "add": "Add",
+                    "down": "↓",
+                    "optional": " (optional)",
+                    "remove": "✘",
+                    "required": "",
+                    "up": "↑",
+                  }
+                }
+                onChange={[Function]}
+                options={
+                  Object {
+                    "fields": Object {
+                      "date": Object {
+                        "editable": false,
+                      },
+                      "fasting": Object {
+                        "label": "Did this patient fast?",
+                      },
+                      "labsDone": Object {
+                        "label": "Did they get labs done?",
+                      },
+                      "pregnancyTest": Object {
+                        "label": "Pregnancy test positive?",
+                      },
+                      "statusClarification": Object {
+                        "label": "Status clarification (if picked Other)",
+                      },
+                      "urineTestDone": Object {
+                        "label": "Did they take a urine test?",
+                      },
+                    },
+                  }
+                }
+                stylesheet={
+                  Object {
+                    "button": Object {
+                      "alignSelf": "stretch",
+                      "backgroundColor": "#48BBEC",
+                      "borderColor": "#48BBEC",
+                      "borderRadius": 8,
+                      "borderWidth": 1,
+                      "height": 36,
+                      "justifyContent": "center",
+                      "marginBottom": 10,
+                    },
+                    "buttonText": Object {
+                      "alignSelf": "center",
+                      "color": "white",
+                      "fontSize": 18,
+                    },
+                    "checkbox": Object {
+                      "error": Object {
+                        "marginBottom": 4,
+                      },
+                      "normal": Object {
+                        "marginBottom": 4,
+                      },
+                    },
+                    "controlLabel": Object {
+                      "error": Object {
+                        "color": "#a94442",
+                        "fontSize": 17,
+                        "fontWeight": "500",
+                        "marginBottom": 7,
+                      },
+                      "normal": Object {
+                        "color": "#000000",
+                        "fontSize": 17,
+                        "fontWeight": "500",
+                        "marginBottom": 7,
+                      },
+                    },
+                    "dateTouchable": Object {
+                      "error": Object {},
+                      "normal": Object {},
+                    },
+                    "dateValue": Object {
+                      "error": Object {
+                        "color": "#a94442",
+                        "fontSize": 17,
+                        "marginBottom": 5,
+                        "padding": 7,
+                      },
+                      "normal": Object {
+                        "color": "#000000",
+                        "fontSize": 17,
+                        "marginBottom": 5,
+                        "padding": 7,
+                      },
+                    },
+                    "datepicker": Object {
+                      "error": Object {
+                        "marginBottom": 4,
+                      },
+                      "normal": Object {
+                        "marginBottom": 4,
+                      },
+                    },
+                    "errorBlock": Object {
+                      "color": "#a94442",
+                      "fontSize": 17,
+                      "marginBottom": 2,
+                    },
+                    "fieldset": Object {},
+                    "formGroup": Object {
+                      "error": Object {
+                        "marginBottom": 10,
+                      },
+                      "normal": Object {
+                        "marginBottom": 10,
+                      },
+                    },
+                    "helpBlock": Object {
+                      "error": Object {
+                        "color": "#999999",
+                        "fontSize": 17,
+                        "marginBottom": 2,
+                      },
+                      "normal": Object {
+                        "color": "#999999",
+                        "fontSize": 17,
+                        "marginBottom": 2,
+                      },
+                    },
+                    "pickerContainer": Object {
+                      "error": Object {
+                        "borderColor": "#a94442",
+                        "borderRadius": 4,
+                        "borderWidth": 1,
+                        "marginBottom": 4,
+                      },
+                      "normal": Object {
+                        "borderColor": "#cccccc",
+                        "borderRadius": 4,
+                        "borderWidth": 1,
+                        "marginBottom": 4,
+                      },
+                      "open": Object {},
+                    },
+                    "pickerTouchable": Object {
+                      "active": Object {
+                        "borderBottomWidth": 1,
+                        "borderColor": "#cccccc",
+                      },
+                      "error": Object {
+                        "alignItems": "center",
+                        "flexDirection": "row",
+                        "height": 44,
+                      },
+                      "normal": Object {
+                        "alignItems": "center",
+                        "flexDirection": "row",
+                        "height": 44,
+                      },
+                    },
+                    "pickerValue": Object {
+                      "error": Object {
+                        "fontSize": 17,
+                        "paddingLeft": 7,
+                      },
+                      "normal": Object {
+                        "fontSize": 17,
+                        "paddingLeft": 7,
+                      },
+                    },
+                    "select": Object {
+                      "error": Object {},
+                      "normal": Object {},
+                    },
+                    "textbox": Object {
+                      "error": Object {
+                        "borderColor": "#a94442",
+                        "borderRadius": 4,
+                        "borderWidth": 1,
+                        "color": "#000000",
+                        "fontSize": 17,
+                        "height": 36,
+                        "marginBottom": 5,
+                        "paddingHorizontal": 7,
+                        "paddingVertical": 7,
+                      },
+                      "normal": Object {
+                        "borderColor": "#cccccc",
+                        "borderRadius": 4,
+                        "borderWidth": 1,
+                        "color": "#000000",
+                        "fontSize": 17,
+                        "height": 36,
+                        "marginBottom": 5,
+                        "paddingHorizontal": 7,
+                        "paddingVertical": 7,
+                      },
+                      "notEditable": Object {
+                        "backgroundColor": "#eeeeee",
+                        "borderColor": "#cccccc",
+                        "borderRadius": 4,
+                        "borderWidth": 1,
+                        "color": "#777777",
+                        "fontSize": 17,
+                        "height": 36,
+                        "marginBottom": 5,
+                        "paddingHorizontal": 7,
+                        "paddingVertical": 7,
+                      },
+                    },
+                    "textboxView": Object {
+                      "error": Object {},
+                      "normal": Object {},
+                      "notEditable": Object {},
+                    },
+                  }
+                }
+                templates={
+                  Object {
+                    "checkbox": [Function],
+                    "datepicker": [Function],
+                    "list": [Function],
+                    "select": [Function],
+                    "struct": [Function],
+                    "textbox": [Function],
+                  }
+                }
+                type={[Function]}
+                value={
+                  Object {
+                    "date": "20180411",
+                    "labsDone": false,
+                    "urineTestDone": false,
+                  }
+                }
+              />,
+              <Text
+                accessible={true}
+                allowFontScaling={true}
+                ellipsizeMode="tail"
+                style={
+                  Object {
+                    "color": "red",
+                    "margin": 10,
+                    "textAlign": "center",
+                  }
+                }
+              >
+                
+              </Text>,
+              <Button
+                onPress={[Function]}
+                styles={
+                  Object {
+                    "margin": 4,
+                  }
+                }
+                title="Triage completed"
+              />,
+              <Button
+                onPress={[Function]}
+                styles={
+                  Object {
+                    "margin": 4,
+                  }
+                }
+                title="Update"
+              />,
+              <Text
+                accessible={true}
+                allowFontScaling={true}
+                ellipsizeMode="tail"
+                style={
+                  Object {
+                    "color": "green",
+                    "margin": 10,
+                    "textAlign": "center",
+                  }
+                }
+              />,
+            ],
+            "style": Object {
+              "width": "80%",
+            },
+          },
+          "ref": null,
+          "rendered": Array [
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "i18n": Object {
+                  "add": "Add",
+                  "down": "↓",
+                  "optional": " (optional)",
+                  "remove": "✘",
+                  "required": "",
+                  "up": "↑",
+                },
+                "onChange": [Function],
+                "options": Object {
+                  "fields": Object {
+                    "date": Object {
+                      "editable": false,
+                    },
+                    "fasting": Object {
+                      "label": "Did this patient fast?",
+                    },
+                    "labsDone": Object {
+                      "label": "Did they get labs done?",
+                    },
+                    "pregnancyTest": Object {
+                      "label": "Pregnancy test positive?",
+                    },
+                    "statusClarification": Object {
+                      "label": "Status clarification (if picked Other)",
+                    },
+                    "urineTestDone": Object {
+                      "label": "Did they take a urine test?",
+                    },
+                  },
+                },
+                "stylesheet": Object {
+                  "button": Object {
+                    "alignSelf": "stretch",
+                    "backgroundColor": "#48BBEC",
+                    "borderColor": "#48BBEC",
+                    "borderRadius": 8,
+                    "borderWidth": 1,
+                    "height": 36,
+                    "justifyContent": "center",
+                    "marginBottom": 10,
+                  },
+                  "buttonText": Object {
+                    "alignSelf": "center",
+                    "color": "white",
+                    "fontSize": 18,
+                  },
+                  "checkbox": Object {
+                    "error": Object {
+                      "marginBottom": 4,
+                    },
+                    "normal": Object {
+                      "marginBottom": 4,
+                    },
+                  },
+                  "controlLabel": Object {
+                    "error": Object {
+                      "color": "#a94442",
+                      "fontSize": 17,
+                      "fontWeight": "500",
+                      "marginBottom": 7,
+                    },
+                    "normal": Object {
+                      "color": "#000000",
+                      "fontSize": 17,
+                      "fontWeight": "500",
+                      "marginBottom": 7,
+                    },
+                  },
+                  "dateTouchable": Object {
+                    "error": Object {},
+                    "normal": Object {},
+                  },
+                  "dateValue": Object {
+                    "error": Object {
+                      "color": "#a94442",
+                      "fontSize": 17,
+                      "marginBottom": 5,
+                      "padding": 7,
+                    },
+                    "normal": Object {
+                      "color": "#000000",
+                      "fontSize": 17,
+                      "marginBottom": 5,
+                      "padding": 7,
+                    },
+                  },
+                  "datepicker": Object {
+                    "error": Object {
+                      "marginBottom": 4,
+                    },
+                    "normal": Object {
+                      "marginBottom": 4,
+                    },
+                  },
+                  "errorBlock": Object {
+                    "color": "#a94442",
+                    "fontSize": 17,
+                    "marginBottom": 2,
+                  },
+                  "fieldset": Object {},
+                  "formGroup": Object {
+                    "error": Object {
+                      "marginBottom": 10,
+                    },
+                    "normal": Object {
+                      "marginBottom": 10,
+                    },
+                  },
+                  "helpBlock": Object {
+                    "error": Object {
+                      "color": "#999999",
+                      "fontSize": 17,
+                      "marginBottom": 2,
+                    },
+                    "normal": Object {
+                      "color": "#999999",
+                      "fontSize": 17,
+                      "marginBottom": 2,
+                    },
+                  },
+                  "pickerContainer": Object {
+                    "error": Object {
+                      "borderColor": "#a94442",
+                      "borderRadius": 4,
+                      "borderWidth": 1,
+                      "marginBottom": 4,
+                    },
+                    "normal": Object {
+                      "borderColor": "#cccccc",
+                      "borderRadius": 4,
+                      "borderWidth": 1,
+                      "marginBottom": 4,
+                    },
+                    "open": Object {},
+                  },
+                  "pickerTouchable": Object {
+                    "active": Object {
+                      "borderBottomWidth": 1,
+                      "borderColor": "#cccccc",
+                    },
+                    "error": Object {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                      "height": 44,
+                    },
+                    "normal": Object {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                      "height": 44,
+                    },
+                  },
+                  "pickerValue": Object {
+                    "error": Object {
+                      "fontSize": 17,
+                      "paddingLeft": 7,
+                    },
+                    "normal": Object {
+                      "fontSize": 17,
+                      "paddingLeft": 7,
+                    },
+                  },
+                  "select": Object {
+                    "error": Object {},
+                    "normal": Object {},
+                  },
+                  "textbox": Object {
+                    "error": Object {
+                      "borderColor": "#a94442",
+                      "borderRadius": 4,
+                      "borderWidth": 1,
+                      "color": "#000000",
+                      "fontSize": 17,
+                      "height": 36,
+                      "marginBottom": 5,
+                      "paddingHorizontal": 7,
+                      "paddingVertical": 7,
+                    },
+                    "normal": Object {
+                      "borderColor": "#cccccc",
+                      "borderRadius": 4,
+                      "borderWidth": 1,
+                      "color": "#000000",
+                      "fontSize": 17,
+                      "height": 36,
+                      "marginBottom": 5,
+                      "paddingHorizontal": 7,
+                      "paddingVertical": 7,
+                    },
+                    "notEditable": Object {
+                      "backgroundColor": "#eeeeee",
+                      "borderColor": "#cccccc",
+                      "borderRadius": 4,
+                      "borderWidth": 1,
+                      "color": "#777777",
+                      "fontSize": 17,
+                      "height": 36,
+                      "marginBottom": 5,
+                      "paddingHorizontal": 7,
+                      "paddingVertical": 7,
+                    },
+                  },
+                  "textboxView": Object {
+                    "error": Object {},
+                    "normal": Object {},
+                    "notEditable": Object {},
+                  },
+                },
+                "templates": Object {
+                  "checkbox": [Function],
+                  "datepicker": [Function],
+                  "list": [Function],
+                  "select": [Function],
+                  "struct": [Function],
+                  "textbox": [Function],
+                },
+                "type": [Function],
+                "value": Object {
+                  "date": "20180411",
+                  "labsDone": false,
+                  "urineTestDone": false,
+                },
+              },
+              "ref": "form",
+              "rendered": null,
+              "type": [Function],
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "accessible": true,
+                "allowFontScaling": true,
+                "children": "",
+                "ellipsizeMode": "tail",
+                "style": Object {
+                  "color": "red",
+                  "margin": 10,
+                  "textAlign": "center",
+                },
+              },
+              "ref": null,
+              "rendered": "",
+              "type": [Function],
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "onPress": [Function],
+                "styles": Object {
+                  "margin": 4,
+                },
+                "title": "Triage completed",
+              },
+              "ref": null,
+              "rendered": null,
+              "type": [Function],
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "onPress": [Function],
+                "styles": Object {
+                  "margin": 4,
+                },
+                "title": "Update",
+              },
+              "ref": null,
+              "rendered": null,
+              "type": [Function],
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "accessible": true,
+                "allowFontScaling": true,
+                "children": undefined,
+                "ellipsizeMode": "tail",
+                "style": Object {
+                  "color": "green",
+                  "margin": 10,
+                  "textAlign": "center",
+                },
+              },
+              "ref": null,
+              "rendered": null,
+              "type": [Function],
+            },
+          ],
+          "type": [Function],
+        },
+      ],
+      "type": [Function],
+    },
+  ],
+  Symbol(enzyme.__options__): Object {
+    "adapter": ReactSixteenAdapter {
+      "options": Object {
+        "enableComponentDidUpdateOnSetState": true,
+      },
+    },
+  },
+}
+`;

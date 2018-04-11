@@ -13,19 +13,32 @@
     "react-native": "^0.51.0",
     "react-native-easy-grid": "^0.1.17",
     "react-native-navigation": "^1.1.302",
-    "realm": "^2.2.10",
+    "realm": "^2.3.3",
     "tcomb-form-native": "^0.6.11"
   },
   "devDependencies": {
-    "babel-jest": "21.2.0",
+    "babel-jest": "^21.2.0",
     "babel-preset-react-native": "4.0.0",
-    "jest": "21.2.1",
-    "react-test-renderer": "16.0.0"
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
+    "jest": "^21.2.1",
+    "jest-serializer-enzyme": "^1.0.0",
+    "react-addons-test-utils": "^15.6.2",
+    "react-dom": "^16.3.1",
+    "react-native-mock": "^0.3.1",
+    "react-test-renderer": "16.0.0",
+    "sinon": "^4.5.0"
   },
   "jest": {
     "preset": "react-native",
     "transformIgnorePatterns": [
       "node_modules/(?!react-native|tcomb-form-native)"
+    ],
+    "globals": {
+      "__TEST__": true
+    },
+    "setupFiles": [
+      "./jest-setup.js"
     ]
   }
 }

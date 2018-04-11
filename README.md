@@ -190,7 +190,22 @@ Other options are available: https://wix.github.io/react-native-navigation/#/scr
 
 ##### 6. test React Native code
 
-  1. Use Jest: https://medium.com/react-native-training/learning-to-test-react-native-with-jest-part-1-f782c4e30101
+  1. Use Jest test framework: https://medium.com/react-native-training/learning-to-test-react-native-with-jest-part-1-f782c4e30101
+     1a. Currently need to alter some code because of dependency annoyances. Go
+     to mobile/Ihc/node_modules/realm/lib/extensions.js:260 and ensure the code
+     is:
+
+    ```
+        if (!realmConstructor.Permissions) {
+          Object.defineProperty(realmConstructor, 'Permissions', {
+              value: permissionsSchema,
+              configurable: false
+          });
+        }
+    ``` 
+
+  2. Use Enzyme to test changing state within components (example included in above link)
+  3. Stub methods (such as database calls) with Sinon: http://sinonjs.org/
 
 ==========================================
 
