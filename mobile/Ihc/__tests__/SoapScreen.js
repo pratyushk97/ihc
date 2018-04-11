@@ -11,7 +11,7 @@ import Soap from '../models/Soap';
 it('renders correctly', () => {
   sinon.stub(data, 'getSoap').returns(Promise.resolve(Soap.getInstance()));
   const json = renderer.create(
-    <SoapScreen />
+    <SoapScreen todayDate='20180101' />
   ).toJSON();
   expect(json).toMatchSnapshot();
 });
