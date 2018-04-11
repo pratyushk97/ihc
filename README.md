@@ -151,7 +151,7 @@ Other options are available: https://wix.github.io/react-native-navigation/#/scr
   3. Update the README API Section for that route with the body and return
      object information (if necessary)
         
-##### 4. test the API
+##### 4. test the server API
   * Make sure the database server is running (```mongod```)
 
   1. Run a CURL command like this:
@@ -187,6 +187,10 @@ Other options are available: https://wix.github.io/react-native-navigation/#/scr
 
   4. Update config file for variable SERVER_URL to equal <ip address>:<port>
      i.e. '192.168.1.100:8000' // TODO make config file
+
+##### 6. test React Native code
+
+  1. Use Jest: https://medium.com/react-native-training/learning-to-test-react-native-with-jest-part-1-f782c4e30101
 
 ==========================================
 

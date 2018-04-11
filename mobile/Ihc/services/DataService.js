@@ -5,5 +5,8 @@ import * as fakeData from '../services/FakeDataService';
 import * as realData from '../services/RealDataService';
 import config from '../config.json';
 
-let dataService = config.dataService === "FakeDataService" ? fakeData : realData;
+// Tests should use the FakeDataService to avoid complexity with Realm in the
+// tests. Probably better to stub out FakeDataService method calls instead of
+// rely on the FakeDataService though.
+let dataService = (config.dataService === "FakeDataService" || global.__TEST__) ? fakeData : realData;
 export default dataService;
