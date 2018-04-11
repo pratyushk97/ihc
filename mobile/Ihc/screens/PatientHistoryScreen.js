@@ -14,6 +14,11 @@ import Patient from '../models/Patient';
 import {formatDate} from '../util/Date';
 import {shortDate} from '../util/Date';
 
+/* TODO: 
+ * Make changes in behavior for the cases that a soap form is submitted, 
+ * but not a triage form and vice versa
+*/
+
 export default class PatientHistoryScreen extends Component<{}> {
   /*
    * Expects:
@@ -75,12 +80,14 @@ export default class PatientHistoryScreen extends Component<{}> {
       )
     }
     if (this.state.patient == null) {
-      <View style={styles.container}>
-        <Text style={styles.title}>
-          Previous Visits
-        </Text>
-        <Text>Patient doesnt exist...</Text>
-      </View>
+      return (
+        <View style={styles.container}>
+          <Text style={styles.title}>
+            Previous Visits
+          </Text>
+          <Text>Patient doesnt exist...</Text>
+        </View>
+      )
     }
     return (
       <View style={styles.container}>
