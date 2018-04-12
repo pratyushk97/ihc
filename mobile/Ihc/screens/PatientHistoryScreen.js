@@ -39,11 +39,6 @@ export default class PatientHistoryScreen extends Component<{}> {
     this.setState({ loading: true });
     data.getPatient(this.props.patientKey)
       .then( data => {
-        if (!data) {
-          this.setState({ loading: false });
-          return;
-        }
-
         this.setState({ patient: data, loading: false });
       })
       .catch( err => {
