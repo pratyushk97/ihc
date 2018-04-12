@@ -2,6 +2,9 @@
   "name": "Ihc",
   "version": "0.0.1",
   "private": true,
+  "babel": {
+      "presets": ["react-native"]
+  },
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest"
@@ -30,7 +33,7 @@
     "sinon": "^4.5.0"
   },
   "jest": {
-    "preset": "react-native",
+    "preset": "./react-native",
     "transformIgnorePatterns": [
       "node_modules/(?!react-native|tcomb-form-native)"
     ],
