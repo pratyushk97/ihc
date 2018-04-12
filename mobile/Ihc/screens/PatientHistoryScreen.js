@@ -6,13 +6,17 @@ import {
   Text,
   View,
   ScrollView,
-  Alert
 } from 'react-native';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import data from '../services/DataService';
 import Patient from '../models/Patient';
 import {formatDate} from '../util/Date';
 import {shortDate} from '../util/Date';
+
+/* TODO: 
+ * Make changes in behavior for the cases that a soap form is submitted, 
+ * but not a triage form and vice versa
+*/
 
 export default class PatientHistoryScreen extends Component<{}> {
   /*
@@ -38,7 +42,7 @@ export default class PatientHistoryScreen extends Component<{}> {
         this.setState({ patient: data, loading: false });
       })
       .catch( err => {
-        this.setState({ error: err, loading: false });
+        this.setState({ error: err.message, loading: false });
       });
   }
 
