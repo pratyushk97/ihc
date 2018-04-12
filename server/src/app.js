@@ -31,12 +31,15 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(methodOverride());
 
-mongoose.connect(config.db);
+// Don't connect to DB if testing
+if(!global.__TEST__) {
+  mongoose.connect(config.db);
 
-//This callback will be triggered once the connection is successfully established to MongoDB
-mongoose.connection.on('connected', function () {
-  console.log('Mongoose default connection open to ' + config.db);
-});
+  //This callback will be triggered once the connection is successfully established to MongoDB
+  mongoose.connection.on('connected', function () {
+    console.log('Mongoose default connection open to ' + config.db);
+  });
+}
 
 import routes from './routes';
 app.use('/', routes);

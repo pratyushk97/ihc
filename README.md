@@ -1,5 +1,10 @@
 # IHC EMR Overview
 
+Mobile: React Native, Jest tests (Sinon for stubbing), Realm database
+
+Server: ExpressJS, MongoDB database with Mongoose, Jest tests (Sinon for
+stubbing)
+
 Shortcuts:
 
 * [Command line](#command-line)
@@ -155,6 +160,27 @@ Other options are available: https://wix.github.io/react-native-navigation/#/scr
   * Helpful resources:      
   * http://www.albertgao.xyz/2017/05/24/how-to-test-expressjs-with-jest-and-supertest/
   * https://semaphoreci.com/community/tutorials/a-tdd-approach-to-building-a-todo-api-using-node-js-and-mongodb
+  1. Example:
+  ```javascript
+    test('/patient/:key should return patient if they exist', () => {
+      const model = { firstName: "Test" };
+
+      // Mocking prevents us from having to use the real database. We can
+      // simulate the database and return fake, but relatively realistic, values
+      // Here, the PatientModel.findOne() method normally passes (error, data)
+      // to a callback function, so in this case we pass null for error, and our
+      // fake model as the data.
+      mock = sinon.mock(PatientModel)
+        .expects('findOne').withArgs({key: 'keythatexists'})
+        .yields(null, model);
+
+      // Test the API route with the correct route, and expect whatever object
+      // should be returned
+      return request(app).get('/patient/keythatexists')
+        .expect({status: true, patient: model});
+    });
+  ```
+
 
 ##### 5. manually test the server API
   * Make sure the database server is running (```mongod```)
