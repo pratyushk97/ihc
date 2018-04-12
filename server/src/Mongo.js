@@ -1,3 +1,6 @@
+// UNDER NEW SETUP, THIS FILE ISN'T USED
+// BUT MAY BE USEFUL TO HAVE TO SEE HOW PREVIOUS SETUP WAS DONE.
+// DELETE WHEN DONE
 /* Wrapper class to handle all mongo db calls */
 const MongoClient = require('mongodb').MongoClient;
 const assert = require('assert');

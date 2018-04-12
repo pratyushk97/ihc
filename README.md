@@ -65,7 +65,7 @@ https://app.moqups.com/mattchinn/ix0mjskH6z/view
 1. After making changes, must build the code (transpile from ES6 to JS). Run
    ```npm run make```
 2. Run server by calling ```npm run server```
-3. To both make and run server, call ```npm start```
+3. OR to both make and run server, call ```npm start```
 
 4. Start database server with ```npm run db```
 5. // TODO: Create a command that spawns a new shell that runs the db (if it
@@ -124,37 +124,39 @@ Other options are available: https://wix.github.io/react-native-navigation/#/scr
 
 ##### 3. make a new Express API route
 
-  1. Go to server/src/routes.js and add the route
+  1. Go to server/src/routes.js and add the route:
+     ```javascript
+     router.get('/patient/:key', PatientController.GetPatient);
+     ```
 
-  2. Add any database interactions to src/Mongo.js
-      - Generally functions should follow format of
-      ```javascript
-        export function patientExists(param, callback, next)
-          db.collection('patients').find({patientInfo: patientInfo})
-            .next( (err,doc) => {
-              callback(doc);
-            });
-        }
+  2. Add implementation and database interaction in the appropriate
+     server/src/controllers file:
+     ```javascript
+     GetPatient: function(req, res){
+       PatientModel.findOne({key: req.params.key}, function(err, patient) {
+       if(!patient) {
+         err = new Error("Patient with key " + req.params.key + " doesn't exist");
+       }
+       if(err) {
+         res.json({status: false, error: err.message});
+         return;
+       }
+       res.json({status: true, patient: patient});
+       });
+     }
       ```
-      callback(o) is where the caller handles the return object.
-      next() is the Express argument that we are using as part of error handling
 
-      Example route:
-      ```javascript
-        app.post("/signin/newpatient", (req,res,next) => {
-          db.patientExists(req.body.patientInfo, (exists) => {
-            if(!exists) {
-              db.createPatient(req.body.patientInfo, () => res.send(true));
-            } else {
-              res.send(false);
-            }
-          }, next); 
-        });
-      ```
-  3. Update the README API Section for that route with the body and return
+  3. Update the README API Section for that route with the expected body and return
      object information (if necessary)
+
+  4. Add tests as explained below
         
-##### 4. test the server API
+##### 4. create automated tests for the server API
+  * Helpful resources:      
+  * http://www.albertgao.xyz/2017/05/24/how-to-test-expressjs-with-jest-and-supertest/
+  * https://semaphoreci.com/community/tutorials/a-tdd-approach-to-building-a-todo-api-using-node-js-and-mongodb
+
+##### 5. manually test the server API
   * Make sure the database server is running (```mongod```)
 
   1. Run a CURL command like this:
@@ -179,7 +181,7 @@ Other options are available: https://wix.github.io/react-native-navigation/#/scr
      ```db.patients.find(<filter>)``` to view patients that meet the specified
      filter. Look up MongoDB documentation for details
 
-##### 5. start the router setup for tablets
+##### 6. start the router setup for tablets
   
   1. Connect computer to router with ethernet cable
 
@@ -191,7 +193,7 @@ Other options are available: https://wix.github.io/react-native-navigation/#/scr
   4. Update config file for variable SERVER_URL to equal <ip address>:<port>
      i.e. '192.168.1.100:8000' // TODO make config file
 
-##### 6. test React Native code
+##### 7. test React Native code
 
   1. Use Jest test framework: https://medium.com/react-native-training/learning-to-test-react-native-with-jest-part-1-f782c4e30101
      - 1a. Currently need to alter some code because of dependency annoyances. Go
