@@ -1,3 +1,36 @@
+import express from 'express';
+
+import PatientModel from './models/Patient';
+import SoapModel from './models/Soap';
+import StatusModel from './models/Status';
+import TriageModel from './models/Triage';
+import DrugUpdateModel from './models/DrugUpdate';
+
+import PatientController from './controllers/Patient';
+
+const router = express.Router();
+
+router.get('/patient/:key', PatientController.GetPatient);
+router.get('/patients', PatientController.GetPatients);
+router.post('/patient', PatientController.CreatePatient);
+// router.delete('/patient/:key', PatientController.DeletePatient);
+router.patch('/patient/:key', PatientController.UpdatePatient);
+
+router.get('/updates/:timestamp', PatientController.GetUpdates);
+
+router.get('/patient/:key/soap/:date', PatientController.GetSoap);
+router.get('/patient/:key/status/:date', PatientController.GetStatus);
+router.get('/patient/:key/triage/:date', PatientController.GetTriage);
+router.get('/patient/:key/medications', PatientController.GetDrugUpdates);
+
+router.patch('/patient/:key/soap/:date', PatientController.UpdateSoap);
+router.patch('/patient/:key/status/:date', PatientController.UpdateStatus);
+router.patch('/patient/:key/triage/:date', PatientController.UpdateTriage);
+router.patch('/patient/:key/medications', PatientController.UpdateDrugUpdates);
+
+module.exports = router;
+
+/*
 module.exports = function(app, db) {
   app.get("/patients", (req,res,next) => {
     const onlyCheckedInPatients = req.query.checkedin === 'true';
@@ -17,11 +50,11 @@ module.exports = function(app, db) {
       res.send(result);
     }, next);
   });
-
+*/
   /* =========================================================================
    * All routes below this line expect a patientInfo object in the req.body
    */
-
+/*
   // Assert that the param for req.body.patient info exists
   const expectPatientInfoParam = function(req, res, next) {
     if(!req.body.patientInfo) {
@@ -86,7 +119,7 @@ module.exports = function(app, db) {
     }, next);
   });
 }
-
+*/
 
 
 
