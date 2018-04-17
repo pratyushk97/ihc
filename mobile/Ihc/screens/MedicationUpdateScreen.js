@@ -10,6 +10,7 @@ var t = require('tcomb-form-native');
 var Form = t.form.Form;
 import data from '../services/DataService';
 import {stringDate} from '../util/Date';
+import DrugUpdate from '../models/DrugUpdate';
 
 export default class MedicationUpdateScreen extends Component<{}> {
   /*
@@ -52,12 +53,9 @@ export default class MedicationUpdateScreen extends Component<{}> {
     }
     const form = Object.assign({}, this.refs.form.getValue());
 
-    // Add patientKey to form and date to form
-    form.patientKey = this.props.patientKey;
-    form.date = stringDate(new Date());
-    form.last_updated = new Date().getTime();
+    update = DrugUpdate.extractFromForm(form, this.props.patientKey);
 
-    data.createDrugUpdate(form)
+    data.createDrugUpdate(update)
         .then( () => {
           // Go back to previous page
           this.props.navigator.pop();

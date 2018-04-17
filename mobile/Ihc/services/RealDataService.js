@@ -80,7 +80,7 @@ export function updateStatus(patientKey, strDate, field, value) {
 
     realm.write(() => {
       statusObj[field] = value;
-      statusObj.last_updated = new Date().getTime();
+      statusObj.lastUpdated = new Date().getTime();
     });
     return Promise.resolve(true);
   } catch (e) {
@@ -105,7 +105,7 @@ export function createDrugUpdate(update) {
           old.frequency = update.frequency;
           old.duration = update.duration;
           old.notes = update.notes;
-          old.last_updated = update.last_updated;
+          old.lastUpdated = update.lastUpdated;
           return Promise.resolve(true);
         }
       }
@@ -139,7 +139,7 @@ export function updateSoap(update) {
         properties.forEach( p => {
           soap[p] = update[p];
         });
-        soap.last_updated = new Date().getTime();
+        soap.lastUpdated = new Date().getTime();
         return Promise.resolve(true);
       }
 
@@ -179,7 +179,7 @@ export function updateTriage(update) {
         properties.forEach( p => {
           triage[p] = update[p];
         });
-        triage.last_updated = new Date().getTime();
+        triage.lastUpdated = new Date().getTime();
         return Promise.resolve(true);
       }
 
