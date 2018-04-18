@@ -5,6 +5,8 @@ Mobile: React Native, Jest tests (Sinon for stubbing), Realm database
 Server: ExpressJS, MongoDB database with Mongoose, Jest tests (Sinon for
 stubbing)
 
+Keystore password: ihcapp
+
 Shortcuts:
 
 * [Command line](#command-line)
@@ -237,6 +239,20 @@ Other options are available: https://wix.github.io/react-native-navigation/#/scr
 
   2. Use Enzyme to test changing state within components (example included in above link)
   3. Stub methods (such as database calls) with Sinon: http://sinonjs.org/
+
+##### 8. install the app on an emulator/device
+
+  0. If on an emulator, first go to Settings->Apps->Browser->Permissions, and
+     enable Storage
+
+  1. Download the .apk file from the Google Drive from your device (i.e. through the
+     browser).
+
+  2. Go to Settings->Security->Unknown Sources, and enable installation of apps
+     from unknown sources. (Probably want to turn this back off after
+     installation is successful).
+
+  3. Go to the Downloads file on the device and click on the .apk file
 
 ==========================================
 
