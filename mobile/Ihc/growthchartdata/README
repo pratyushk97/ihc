@@ -1,2 +1,7 @@
 Weights in Kg
 Height in cm
+
+Data received from https://www.cdc.gov/growthcharts/percentile_data_files.htm
+
+boys_height/weight and girls_height/weight are data for 2-20 year olds.
+

@@ -1,6 +1,14 @@
+import {stringDate} from '../util/Date';
 export default class DrugUpdate {
   // Insert any class methods here
 
+  static extractFromForm(form, patientKey) {
+    const update = Object.assign({}, form);
+    update.patientKey = patientKey;
+    update.date = stringDate(new Date());
+    update.lastUpdated = new Date().getTime();
+    return update;
+  }
 }
 
 DrugUpdate.schema = {
