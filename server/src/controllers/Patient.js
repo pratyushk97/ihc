@@ -42,6 +42,29 @@ const PatientController = {
     })
   },
   UpdatePatient: function(req, res){
+    PatientModel.findOne({key: req.params.key}, function(err, oldPatient) {
+      if(!oldPatient) {
+        err = new Error("Patient with key " + req.params.key + " doesn't exist");
+      }
+      // For updates, make sure the incoming object is up to date
+      if(oldPatient.lastUpdated > req.body.patient.lastUpdated) {
+        err = new Error("Patient sent is not up-to-date. Sync required.");
+      }
+      if(err) {
+        res.json({status: false, error: err.message});
+        return;
+      }
+
+      oldPatient.set(req.body.patient);
+      oldPatient.save(function(e, p) {
+        if(e) {
+          res.json({status: false, error: e.message});
+          return;
+        }
+        res.json({status: true});
+        return;
+      });
+    })
   },
   GetUpdates: function(req, res){
   },
