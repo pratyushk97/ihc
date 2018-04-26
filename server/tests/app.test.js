@@ -260,9 +260,12 @@ describe('Test UpdateSoap routes', () => {
     mocks.push(mock3);
 
     return request(app)
-      .patch('/patient/' + oldPatient.key + '/soap/' + oldSoap.date)
+      .patch('/patient/' + oldPatient.key + '/soap/' + newSoap.date)
       .send({soap: newSoap})
-      .expect({status: true});
+      .then(response => {
+        expect(JSON.parse(response.text)).toEqual({status: true});
+        expect(oldPatient.soaps).toEqual([newSoap]);
+      });
   });
 
   test('should return success if successfully adds new Soap', () => {
@@ -342,6 +345,6 @@ describe('Test UpdateSoap routes', () => {
     return request(app)
       .patch('/patient/' + oldPatient.key + '/soap/' + oldSoap.date)
       .send({soap: newSoap})
-      .expect({status: false, error: "Soap sent is not up-to-date. Sync required"});
+      .expect({status: false, error: "Soap sent is not up-to-date. Sync required."});
   });
 });

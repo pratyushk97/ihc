@@ -82,11 +82,15 @@ const PatientController = {
         err = new Error("Patient with key " + req.params.key + " doesn't exist");
       }
 
-      for(let [i,soap] in patient.soaps.entries()) {
+      for(let [i,soap] of patient.soaps.entries()) {
         // If an existing soap for that date exists, then update it
         if(soap.date == req.body.soap.date) {
           if(soap.lastUpdated > req.body.soap.lastUpdated) {
-            err = new Error("Soap sent is not up-to-date. Sync required.");
+            res.json({
+              status: false,
+              error: "Soap sent is not up-to-date. Sync required."
+            });
+            return;
           }
 
           patient.soaps[i] = req.body.soap;
@@ -98,6 +102,7 @@ const PatientController = {
             res.json({status: true});
             return;
           });
+          return;
         }
       }
 
