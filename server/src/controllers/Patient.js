@@ -18,6 +18,16 @@ const PatientController = {
     });
   },
   GetPatients: function(req, res){
+    PatientModel.find({},function(err, patientList){
+      if(!patientList){
+        err = new Error("No Patients Exist");
+      }
+      if(err){
+        res.json({status:false, error:err.message});
+        return;
+      }
+      res.json({status: true, patients: patientList});
+    });
   },
   CreatePatient: function(req, res){
     // Check that no patient with that key exists
