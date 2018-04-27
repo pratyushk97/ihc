@@ -12,6 +12,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "npm": "^6.0.0",
     "prop-types": "^15.6.0",
     "react": "16.0.0",
     "react-devtools": "^3.2.1",
@@ -42,8 +43,6 @@
     "globals": {
       "__TEST__": true
     },
-    "setupFiles": [
-      "./jest-setup.js"
-    ]
+    "setupTestFrameworkScriptFile": "<rootDir>/jest-setup.js"
   }
 }
