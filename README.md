@@ -5,6 +5,8 @@ Mobile: React Native, Jest tests (Sinon for stubbing), Realm database
 Server: ExpressJS, MongoDB database with Mongoose, Jest tests (Sinon for
 stubbing)
 
+Keystore password: ihcapp
+
 Shortcuts:
 
 * [Command line](#command-line)
@@ -238,6 +240,20 @@ Other options are available: https://wix.github.io/react-native-navigation/#/scr
   2. Use Enzyme to test changing state within components (example included in above link)
   3. Stub methods (such as database calls) with Sinon: http://sinonjs.org/
 
+##### 8. install the app on an emulator/device
+
+  0. If on an emulator, first go to Settings->Apps->Browser->Permissions, and
+     enable Storage
+
+  1. Download the .apk file from the Google Drive from your device (i.e. through the
+     browser).
+
+  2. Go to Settings->Security->Unknown Sources, and enable installation of apps
+     from unknown sources. (Probably want to turn this back off after
+     installation is successful).
+
+  3. Go to the Downloads file on the device and click on the .apk file
+
 ==========================================
 
 ### Overview Use Cases:
@@ -284,118 +300,107 @@ Laptop:
 
 ### Local server API:
 
-All of the routes should include a PatientIdentification object in the
-body, just in case we change up the id mechanism later. 
-i.e. should look like this
+Any :date field should be represented as a string in the form yyyymmdd
+When saying _Model, such as PatientModel, it means that the object should
+have the same properties as the schema for that Model. It shouldn't be an actual Mongoose
+Model object because we will construct that on the backen. If we run into issues
+with this level of vagueness, we can specify which properties exactly should be
+passed.
 
-```
-body: { patientInfo: PatientIdentification }
-```
-
-Any :date field should be represented as yyyymmdd
-
-
-POST /signin/newpatient :white_check_mark:
-  - Create record for that patient if didn't already exist
+router.get('/patient/:key', PatientController.GetPatient);
   ```
-  body: { patientInfo: PatientIdentification}
-  ```
-  
-POST /signin/ :white_check_mark:
-  - Pass patient's signin info in body
-  - Ensure name and DOB exists, patient's records exist
-  - Add patient to queue (including checkin time)
-  - Return true if all goes well
-  ```
-  body: { patientInfo: PatientIdentification }
-  ```
-  
-PATCH /status/ :white_check_mark:
-  - Pass patient's new status, such as if they completed a station
-  ```
-  body: { status: StatusObject,
-          patientInfo: Patient object }
+  returns: {
+    patient: PatientModel
+  }
   ```
 
-GET /patients?checkedin=true/false&forms=true/false :white_check_mark:
-  - Return all patients, or just patients checked in 
+router.get('/patients', PatientController.GetPatients);
   ```
-  returns:
-    If forms = false: [ {info: PatientInfo object, status: Status object} ]
-    If forms = true: [{
-      info: PatientInfo object,
-      status: Status object,
-      forms: { medications: ...,
-               soaps: ...,
-               triages: ...,
-               growthchart: ... }
-    }]
+  returns: {
+    patients: [PatientModel]
+  }
   ```
 
-PATCH /patients/soap/ :white_check_mark:
-  - Update patient's soap form
+router.post('/patient', PatientController.CreatePatient); :white_check_mark:
   ```
   body: {
-    patientInfo: PatientInfo object,
-    soap: Soap object
+    patient: PatientModel
   }
-
-  returns: true if successful
   ```
-  
-PATCH /patients/triage/ :white_check_mark:
-  - Update patient's triage form
+
+router.patch('/patient/:key', PatientController.UpdatePatient);
   ```
   body: {
-    patientInfo: PatientInfo object,
-    triage: Triage object
+    patient: PatientModel
   }
-
-  returns: true if successful
   ```
-  
-POST /patients/growthchartupdate :white_check_mark:
-  - Add update to patient's overall records
+
+router.get('/updates/:timestamp', PatientController.GetUpdates);
+  ```
+  returns: {
+    patients: [PatientModel],
+    triages: [TriageModel],
+    soaps: [SoapModel],
+    status: [StatusModel],
+    drugUpdates: [DrugUpdateModel],
+  }
+  ```
+
+router.get('/patient/:key/soap/:date', PatientController.GetSoap);
+  ```
+  returns: {
+    soap: SoapModel
+  }
+  ```
+
+router.get('/patient/:key/status/:date', PatientController.GetStatus);
+  ```
+  returns: {
+    status: StatusModel
+  }
+  ```
+
+router.get('/patient/:key/triage/:date', PatientController.GetTriage);
+  ```
+  returns: {
+    triage: TriageModel
+  }
+  ```
+
+router.get('/patient/:key/drugUpdates', PatientController.GetDrugUpdates);
+  ```
+  returns: {
+    drugUpdates: [DrugUpdateModel]
+  }
+  ```
+
+router.patch('/patient/:key/soap/:date', PatientController.UpdateSoap);
   ```
   body: {
-    patientInfo: PatientInfo object,
-    update: GrowthChartRow object
+    soap: SoapModel
   }
-
-  returns: true if successful
   ```
-PATCH /patients/growthchart
-  - Add info for GrowthChart object that is not a GrowthChartRow
-  - For now, includes father and mother's heights
 
-POST /patients/medicationsupdate
-  - Add update to patient's overall records
-  - ```
-    Update: {
-      type: 'N'/'R'/'C'/'D',
-      drugname: "tylenol",
-      date: _,
-      dose: "30mg",
-      frequency: "1/day",
-      duration: "1 month"
-    }
-    ```
-GET /patients/forms
-  - Return all forms for that patient
+router.patch('/patient/:key/status/:date', PatientController.UpdateStatus);
+  ```
+  body: {
+    status: StatusModel
+  }
+  ```
 
-GET /patients/medications
+router.patch('/patient/:key/triage/:date', PatientController.UpdateTriage);
+  ```
+  body: {
+    triage: TriageModel
+  }
+  ```
 
-GET /patients/growthchart
-
-GET /patients/triage/:date
-
-GET /patients/soap/:date
-
-GET /patients/history
-  - Return list of triages and soaps dates, not the actual forms
-
-POST /signout :white_check_mark:
-  - Signout everyone that is currently marked as "active"
+router.patch('/patient/:key/drugUpdates', PatientController.UpdateDrugUpdates);
+  ```
+  body: {
+    drugUpdates: [DrugUpdateModel] 
+  }
+  ```
 
 ==========================================
 
@@ -517,164 +522,5 @@ The schema for the local storage Realm database is defined in mobile/Ihc/models.
 
 ### Mongo Database design:
 
-/
-        
-* patients/
-    * [Patient object]
+The schema for the server's Mongo database is defined in server/src/models.
 
-# Classes:
-
-Patient
-
-    * info/
-      * PatientInfo object
-    * status/
-        * [Status object]
-    * forms/
-        * medications/
-          * :drugName/
-            * [DrugUpdate object, DrugUpdate object, ...]
-        * soaps/
-          * :date/
-            * Soap object
-        * triages/
-          * :date/
-            * Triage object
-        * growthchart/
-            * GrowthChart object 
-    * lastUpdated/
-      * timestamp (ms since epoch)
-        
-PatientIdentification (Everything needed for signin/identification)
-```
-{
-  firstName: string,
-  fatherName: string,
-  motherName: string,
-  birthday: date,
-  sex: int?,
-}
-```
-
-PatientInfo (Full patient information)
-```
-{
-  firstName: string,
-  fatherName: string,
-  motherName: string,
-  birthday: date,
-  sex: int?,
-  phone: string
-}
-```
-
-DrugUpdate
-```
-{
-    name: string,
-    date: date,
-    dose: string,
-    frequency: string,
-    duration: string,
-    notes: string
-}
-```
-
-Soap
-```
-{
-    date: date,
-    subjective: string,
-    objective: string,
-    assessment: string,
-    plan: string,
-    wishlist: string,
-    provider: string (Provider's name)
-}
-```
-
-Triage
-```
-{
-    date: date,
-    hasInsurance: boolean,
-    location: string (Girasoles/TJP),
-    arrivalTime: date/string,
-    timeIn: date/string,
-    timeOut: date/string,
-    triager: string (Triager's name),
-    status: int? (EMT/Student/Nurse/Other),
-    statusClarification: string (If Other),
-    weight: double,
-    height: double,
-    temp: double,
-    rr: double,
-    o2: double,
-    bp: string,
-    hr: double,
-    ---IF FEMALE---
-    LMP: string,
-    Regular: boolean,
-    pregnancies: string,
-    liveBirths: string,
-    abortions: string,
-    miscarriages: string,
-    ---END IF---
-    history: string (past medical history),
-    ---IF LABS DONE---
-    bgl: string,
-    a1c: string,
-    fasting: boolean,
-    pregnancyTest: boolean,
-    --END IF---
-    allergies: string,
-    meications: string,
-    surgeries: string,
-    immunizations: string,
-    chiefComplaint: string,
-    ---IF URINE TEST---
-    leukocytes: string,
-    blood: string,
-    nitrites: string,
-    specificGravity: string,
-    urobilirubin: string,
-    ketone: string,
-    protein: string,
-    bilirubin: string,
-    ph: string,
-    glucose: string,
-    pharmacySection: string (For pharmacy use only section)
-}
-```
-
-GrowthChart
-```
-{
-    motherHeight: double,
-    fatherHeight: double,
-    rows: [GrowthChartRow object, ...]
-}
-```
-
-GrowthChartRow
-```
-{
-    date: date,
-    age: int,
-    weight: double,
-    height: double,
-    bmi: double (Or don't store if we can calculate)
-}
-```
-
-Status
-```
-{
-    active: boolean (if they came to clinic today),
-    checkinTime: datetime,
-    triageCompleted: boolean, timestamp?
-    doctorCompleted: boolean, timestamp?
-    pharmacyCompleted: boolean, timestamp?
-    notes: string
-}
-```
