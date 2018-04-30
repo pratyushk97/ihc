@@ -24,6 +24,7 @@ router.post('/patient', PatientController.CreatePatient);
 router.patch('/patient/:key', PatientController.UpdatePatient);
 
 // Return the updates that occurred since a given timestamp
+//ASK MATTHEW
 router.get('/updates/:timestamp', PatientController.GetUpdates);
 
 //Kenny
@@ -31,6 +32,7 @@ router.get('/updates/:timestamp', PatientController.GetUpdates);
 router.get('/patient/:key/soap/:date', PatientController.GetSoap);
 
 //get status info
+//KENNY
 router.get('/patient/:key/status/:date', PatientController.GetStatus);
 
 //Brent
