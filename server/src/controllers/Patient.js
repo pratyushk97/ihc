@@ -94,6 +94,7 @@ const PatientController = {
           }
 
           patient.soaps[i] = req.body.soap;
+          patient.lastUpdated = req.body.soap.lastUpdated;
           patient.save(function(err) {
             if(err) {
               res.json({status: false, error: err.message});
@@ -108,6 +109,7 @@ const PatientController = {
 
       // No soap exists yet, so add a new one
       patient.soaps.push(req.body.soap);
+      patient.lastUpdated = req.body.soap.lastUpdated;
       patient.save(function(err) {
         if(err) {
           res.json({status: false, error: err.message});

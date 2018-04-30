@@ -265,6 +265,7 @@ describe('Test UpdateSoap routes', () => {
       .then(response => {
         expect(JSON.parse(response.text)).toEqual({status: true});
         expect(oldPatient.soaps).toEqual([newSoap]);
+        expect(oldPatient.lastUpdated).toEqual(newSoap.lastUpdated);
       });
   });
 
@@ -307,6 +308,7 @@ describe('Test UpdateSoap routes', () => {
       .then(response => {
         expect(JSON.parse(response.text)).toEqual({status: true});
         expect(oldPatient.soaps).toEqual([newSoap]);
+        expect(oldPatient.lastUpdated).toEqual(newSoap.lastUpdated);
       });
   });
 
