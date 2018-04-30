@@ -1,6 +1,8 @@
 // This file should hold all the fetch() calls to the Express server
 // and the local database calls to the Realm DB
 // TODO: Keep realm in sync with mongo
+// All lastUpdated fields on mobile-side should be handled within this file.
+
 import Patient from '../models/Patient';
 import Status from '../models/Status';
 import Soap from '../models/Soap';
@@ -17,6 +19,7 @@ const realm = new Realm({
 
 export function createPatient(patient) {
   try {
+    const timestamp = new Date().getTime();
     const patientObjs = realm.objects('Patient').filtered('key = "' + patient.key + '"');
     const existingPatient = patientObjs['0'];
 
@@ -26,6 +29,9 @@ export function createPatient(patient) {
 
     // Also sign them in
     const statusObj = Status.newStatus(patient);
+
+    statusObj.lastUpdated = timestamp;
+    patient.lastUpdated = timestamp;
 
     realm.write(() => {
       patient.statuses = [statusObj];
@@ -50,7 +56,9 @@ export function signinPatient(patientForm) {
       throw new Error("More than one patient with key" + patientForm.key);
     }
 
+    const timestamp = new Date().getTime();
     const statusObj = Status.newStatus(patientForm);
+    statusObj.lastUpdated = timestamp;
 
     for ( var k in patient.statuses ){
       if(patient.statuses[k].date === statusObj.date) {
@@ -78,9 +86,17 @@ export function updateStatus(patientKey, strDate, field, value) {
       throw new Error("Status doesn't exist");
     }
 
+    const patient = realm.objects('Patient').filtered('key = "' + patientKey + '"');
+    if(!patient) {
+      return Promise.reject(new Error('Patient does not exist'));
+    }
+
+    const timestamp = new Date().getTime();
+
     realm.write(() => {
       statusObj[field] = value;
-      statusObj.lastUpdated = new Date().getTime();
+      statusObj.lastUpdated = timestamp;
+      patient.lastUpdated = timestamp;
     });
     return Promise.resolve(true);
   } catch (e) {
@@ -96,7 +112,11 @@ export function createDrugUpdate(update) {
       throw new Error("Patient doesn't exist");
     }
 
+    const timestamp = new Date().getTime();
+    update.lastUpdated = timestamp;
+
     realm.write(() => {
+      patient.lastUpdated = timestamp;
       // If an object for that drug and date already exists, update it
       for (var m in patient.medications) {
         const old = patient.medications[m];
@@ -128,11 +148,15 @@ export function updateSoap(update) {
       throw new Error("Patient doesn't exist");
     }
 
+    const timestamp = new Date().getTime();
+    update.lastUpdated = timestamp;
+
     const soap = realm.objects('Soap').filtered('date = "' +
         stringDate(new Date) + '" AND patientKey = "' + update.patientKey +
         '"')['0'];
 
     realm.write(() => {
+      patient.lastUpdated = timestamp;
       // If an object for that date already exists, update it
       if(soap) {
         const properties = Object.keys(Soap.schema.properties);
@@ -172,7 +196,11 @@ export function updateTriage(update) {
         stringDate(new Date) + '" AND patientKey = "' + update.patientKey +
         '"')['0'];
 
+    const timestamp = new Date().getTime();
+    update.lastUpdated = timestamp;
+
     realm.write(() => {
+      patient.lastUpdated = timestamp;
       // If an object for that date already exists, update it
       if(triage) {
         const properties = Object.keys(Triage.schema.properties);
@@ -209,10 +237,6 @@ export function getPatient(patientKey) {
 
 export function getPatients() {
   return realm.objects('Patient');
-}
-
-export function getUpdates(param) {
-  return []; // Return whatever sample data you want
 }
 
 /*

@@ -68,7 +68,6 @@ export default class Patient {
     if(form.newPatient) {
       // 1 is male, 2 is female
       patient.gender = form.gender === 'Male' ? 1 : 2;
-      patient.lastUpdated = new Date().getTime();
     }
     return patient;
   }
