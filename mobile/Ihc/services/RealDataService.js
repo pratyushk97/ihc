@@ -8,12 +8,13 @@ import Status from '../models/Status';
 import Soap from '../models/Soap';
 import Triage from '../models/Triage';
 import DrugUpdate from '../models/DrugUpdate';
+import Settings from '../models/Settings';
 
 import Realm from 'realm';
 import {stringDate} from '../util/Date';
 
 const realm = new Realm({
-  schema: [Patient, Status, Soap, Triage, DrugUpdate],
+  schema: [Patient, Status, Soap, Triage, DrugUpdate, Settings],
   deleteRealmIfMigrationNeeded: true, // TODO: delete when done with dev
 });
 
@@ -86,7 +87,7 @@ export function updateStatus(patientKey, strDate, field, value) {
       throw new Error("Status doesn't exist");
     }
 
-    const patient = realm.objects('Patient').filtered('key = "' + patientKey + '"');
+    const patient = realm.objects('Patient').filtered('key = "' + patientKey + '"')['0'];
     if(!patient) {
       return Promise.reject(new Error('Patient does not exist'));
     }
@@ -257,6 +258,89 @@ export function getMedicationUpdates(patientKey) {
   const updates = Object.values(realm.objects('DrugUpdate').filtered('patientKey = "' +
       patientKey + '"'));
   return Promise.resolve(updates);
+}
+
+export function uploadUpdates() {
+  // const patients = Object.values(realm.objects('Patient').filtered('needToUpload = true'));
+  const patients = Object.values(realm.objects('Patient'));
+  // TODO: Fetch call to server
+  fetch('route/', {
+    method: 'PATCH',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      patients: patients
+    }),
+  }).then(response => {
+    return Promise.resolve(true);
+  }).catch(err => {
+    return Promise.reject(err);
+  });
+}
+
+export function downloadUpdates() {
+    const settings = realm.objects('Settings')['0'];
+    const lastSynced = settings ? settings.lastUpdated : 0;
+
+    // TODO: Fetch call to server, passing in lastSynced value
+    return fetch('route/' + lastSynced)
+      .then(response => {
+        return handleDownloadedPatients(response.patients);
+      }).catch(err => {
+        return Promise.reject(e);
+      });
+
+}
+
+// TODO: complete this to sync mobile and server
+function handleDownloadedPatients(patients) {
+  const patients = response.patients;
+  const timestamp = new Date().getTime();
+
+  try {
+    patients.forEach( incomingPatient => {
+      const existingPatient = realm.objects('Patient')
+        .filtered('key = "' + incomingPatient.key + '"')['0'];
+      if(!existingPatient) {
+        throw new Error("Patient with key " + incomingPatient.key
+          + " doesnt exist. This shouldnt have happened...");
+      }
+      if (incomingPatient.lastUpdated <= existingPatient.lastUpdated) {
+        // Don't need to update
+        return;
+      }
+
+      // TODO update existing Patient object itself in case changes were made
+      // there
+
+      // TODO fill out these, update form if existing one is less recent
+      incomingPatient.soaps.forEach(incomingSoap => {
+      });
+      incomingPatient.triages.forEach(incomingTriage => {
+      });
+      incomingPatient.medications.forEach(incomingDrugUpdate => {
+      });
+      incomingPatient.statuses.forEach(incomingStatus => {
+      });
+    });
+  } catch (e) {
+    return Promise.reject(e);
+  }
+  
+  try {
+    realm.write(() => {
+      if(!settings) {
+        realm.create('Settings', {lastSynced: timestamp})
+        return;
+      }
+      settings.lastSynced = timestamp;
+    });
+    return Promise.resolve(true);
+  } catch (e) {
+    return Promise.reject(e);
+  }
 }
 
 function createMatrix(data, columnOrder) {

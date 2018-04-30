@@ -102,6 +102,7 @@ Patient.schema = {
     soaps: 'Soap[]',
     triages: 'Triage[]',
     statuses: 'Status[]',
-    lastUpdated: 'int' // timestamp
+    lastUpdated: 'int', // timestamp
+    needToUpload: 'bool'
   }
 };
