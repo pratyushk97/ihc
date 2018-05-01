@@ -65,6 +65,7 @@ export default class Patient {
     const patient = Object.assign({}, form);
     patient.birthday = stringDate(form.birthday);
     patient.key = Patient.makeKey(patient);
+    patient.needToUpload = false;
     if(form.newPatient) {
       // 1 is male, 2 is female
       patient.gender = form.gender === 'Male' ? 1 : 2;

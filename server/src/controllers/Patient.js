@@ -1,11 +1,20 @@
+//treat these imports as 'containers'
+//to access/modify these containers, look up mongodb functions
 import PatientModel from '../models/Patient';
 import SoapModel from '../models/Soap';
 import StatusModel from '../models/Status';
 import TriageModel from '../models/Triage';
 import DrugUpdateModel from '../models/DrugUpdate';
 
+//function params for all calls are generally the same function(req,res)
 const PatientController = {
+  //GET API CALL
+  //treat 'req' as info being passed in from the front end and 'res' as a tool to send things back to the front end
   GetPatient: function(req, res){
+    //this function finds ONE document in the patientModel container
+    //first parameter is an object with the attribute(s) that the function is trying to match to a document with in the container
+    //second parameter is a callback function once the function finds the document, or an error occurs
+      //params for this function is err (in case an error occur) and patient (the returned object)
     PatientModel.findOne({key: req.params.key}, function(err, patient) {
       if(!patient) {
         err = new Error("Patient with key " + req.params.key + " doesn't exist");
@@ -14,10 +23,23 @@ const PatientController = {
         res.json({status: false, error: err.message});
         return;
       }
+      //res.json sends back info to the front end
+      //we're sending back an object with a status and patient attribute
+      //status for if an error occured or not, and patient for the patients info
       res.json({status: true, patient: patient});
     });
   },
   GetPatients: function(req, res){
+    PatientModel.find({},function(err, patientList){
+      if(!patientList || patientList.length == 0){
+        err = new Error("No Patients Exist");
+      }
+      if(err){
+        res.json({status:false, error:err.message});
+        return;
+      }
+      res.json({status: true, patients: patientList});
+    });
   },
   CreatePatient: function(req, res){
     // Check that no patient with that key exists
@@ -55,7 +77,9 @@ const PatientController = {
         return;
       }
 
+      //update function, replaces old pation object with passed in 'new patient' info boject
       oldPatient.set(req.body.patient);
+      //saves it, callback function to handle error 
       oldPatient.save(function(e, p) {
         if(e) {
           res.json({status: false, error: e.message});

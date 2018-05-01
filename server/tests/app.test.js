@@ -43,6 +43,34 @@ describe('Test GetPatient routes', () => {
   });
 });
 
+//Alex
+//testing getPatients
+describe('Test GetPatients routes', ()=>{
+  let mocks = [];
+  afterEach(() => {
+    // Within this describe() block, we have multiple tests that mock the same
+    // method, so we must restore() them to avoid conflicts
+    for(let i in mocks) {
+      mocks[i].restore();
+    }
+  });
+
+  test('should return success if get Patient List is successful', ()=>{
+    //create fake patient
+    const patient1 = {key: "THISISAFAKEKEY1", firstName: "Test1", lastName: "Test1", birthday: "20050621"};
+    const patient2 = {key: "THISISAFAKEKEY2", firstName: "Test2", lastName: "Test2", birthday: "20050622"};
+    const patient3 = {key: "THISISAFAKEKEY3", firstName: "Test3", lastName: "Test3", birthday: "20050623"};
+    var patientList = [patient1, patient2, patient3];
+    const mock1 = sinon.mock(PatientModel)
+      .expects('find').withArgs({})
+      .yields(null, patientList);
+
+    return request(app).get('/patients')
+      .expect({status: true, patients: patientList});
+  });
+
+});
+
 describe('Test CreatePatient routes', () => {
   let mocks = [];
   afterEach(() => {
