@@ -66,7 +66,7 @@ describe('Test GetPatients routes', ()=>{
       .yields(null, patientList);
 
     return request(app).get('/patients')
-      .expect({status: true});
+      .expect({status: true, patients: patientList});
   });
 
 });
