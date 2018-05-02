@@ -31,7 +31,6 @@ const PatientController = {
   },
   GetPatients: function(req, res){
     PatientModel.find({},function(err, patientList){
-      console.log("hello");
       if(!patientList || patientList.length == 0){
         err = new Error("No Patients Exist");
       }
