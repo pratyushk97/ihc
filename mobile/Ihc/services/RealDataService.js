@@ -287,26 +287,28 @@ export function downloadUpdates() {
     // TODO: Fetch call to server, passing in lastSynced value
     return fetch('route/' + lastSynced)
       .then(response => {
-        return handleDownloadedPatients(response.patients);
+        const patients = response.body.patients;
+        return handleDownloadedPatients(patients, settings);
       }).catch(err => {
-        return Promise.reject(e);
+        return Promise.reject(err);
       });
 
 }
 
-// TODO: complete this to sync mobile and server
-function handleDownloadedPatients(patients) {
-  const patients = response.patients;
+function handleDownloadedPatients(patients, settings) {
   const timestamp = new Date().getTime();
+  const promises = [];
 
   try {
     patients.forEach( incomingPatient => {
       const existingPatient = realm.objects('Patient')
         .filtered('key = "' + incomingPatient.key + '"')['0'];
+
       if(!existingPatient) {
         throw new Error("Patient with key " + incomingPatient.key
           + " doesnt exist. This shouldnt have happened...");
       }
+
       if (incomingPatient.lastUpdated <= existingPatient.lastUpdated) {
         // Don't need to update
         return;
@@ -315,29 +317,33 @@ function handleDownloadedPatients(patients) {
       // TODO update existing Patient object itself in case changes were made
       // there
 
-      // TODO fill out these, update form if existing one is less recent
       incomingPatient.soaps.forEach(incomingSoap => {
+        promises.push(updateObject(existingPatient, 'soaps', incomingSoap));
       });
       incomingPatient.triages.forEach(incomingTriage => {
+        promises.push(updateObject(existingPatient, 'triages', incomingTriage));
       });
       incomingPatient.medications.forEach(incomingDrugUpdate => {
+        promises.push(updateObject(existingPatient, 'medications',
+            incomingDrugUpdate));
       });
       incomingPatient.statuses.forEach(incomingStatus => {
+        promises.push(updateObject(existingPatient, 'statuses', incomingStatus));
       });
     });
-  } catch (e) {
-    return Promise.reject(e);
-  }
-  
-  try {
+
     realm.write(() => {
       if(!settings) {
-        realm.create('Settings', {lastSynced: timestamp})
+        realm.create('Settings', {lastSynced: new Date().getTime()})
         return;
       }
-      settings.lastSynced = timestamp;
+      settings.lastSynced = new Date().getTime();
     });
-    return Promise.resolve(true);
+
+    // Give array at least one promise to resolve
+    promises.push(Promise.resolve(true));
+    return Promise.all(promises);
+
   } catch (e) {
     return Promise.reject(e);
   }
@@ -345,4 +351,41 @@ function handleDownloadedPatients(patients) {
 
 function createMatrix(data, columnOrder) {
   return data.map((obj) => columnOrder.map( (key) => obj[key] ));
+}
+
+/**
+ * Type: string of either 'soaps', 'triages', 'medications', or 'statuses'
+ */
+function updateObject(existingPatient, type, incomingObject) {
+  // Find existing form/object that corresponds to the incoming one
+  let existingObject = {};
+  if (type === 'medications') {
+    existingObject = existingPatient.medications.find( med => {
+      incomingObject.date === med.date && incomingObject.name === med.name;
+    });
+  } else {
+    existingObject = existingPatient[type].find( obj => {
+      incomingObject.date === obj.date;
+    });
+  }
+  if(!existingObject) {
+    return Promise.reject(new Error('Object with type ' + type + ' for date '
+      + incomingObject.date + ' doesnt exist'));
+  }
+
+  try {
+    if(incomingObject.lastUpdated > existingObject.lastUpdated) {
+      realm.write(() => {
+        const properties = Object.keys(incomingObject);
+        properties.forEach( p => {
+          existingObject[p] = incomingObject[p];
+        });
+      });
+      return Promise.resolve(true);
+    } else {
+      return Promise.resolve(false);
+    }
+  } catch (e) {
+    return Promise.reject(e);
+  }
 }
