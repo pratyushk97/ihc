@@ -106,8 +106,8 @@ const PatientController = {
     });
   },
   GetStatus: function(req, res){
-    StatusModel.findOne({patientKey: req.params.key, date: req.params.date}, function(err, statusPatient) {
-      if (!statusPatient) {
+    StatusModel.findOne({patientKey: req.params.key, date: req.params.date}, function(err, patientStatus) {
+      if (!patientStatus) {
         err = new Error("Status of patient with key " + req.params.key + " for the date " + req.params.date + " does not exist");
       }
   
@@ -115,7 +115,7 @@ const PatientController = {
         res.json({status: false, error: err.message});
         return
       }
-      res.json({status: true, statusPatient: statusPatient});
+      res.json({status: true, patientStatus: patientStatus});
     });
   },
   GetTriage: function(req, res){
