@@ -28,7 +28,7 @@ export default class WelcomeScreen extends Component<{}> {
     });
   }
 
-  // TODO: Grab all patients marked with needToUpload: true, send to server
+  // TODO: When updates fail, mark the patient's needToUpload: true
   upload = () => {
     this.setState({loading: true});
     data.uploadUpdates()
@@ -40,7 +40,6 @@ export default class WelcomeScreen extends Component<{}> {
       });
   }
 
-  // TODO: Download updates from server and add them to local storage
   download = () => {
     this.setState({loading: true});
     data.downloadUpdates()
