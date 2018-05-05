@@ -281,22 +281,22 @@ export function uploadUpdates() {
 }
 
 export function downloadUpdates() {
-    const settings = realm.objects('Settings')['0'];
-    const lastSynced = settings ? settings.lastUpdated : 0;
+  let settings = realm.objects('Settings');
+  settings = settings ? settings['0'] : undefined;
 
-    // TODO: Fetch call to server, passing in lastSynced value
-    return fetch('route/' + lastSynced)
-      .then(response => {
-        const patients = response.body.patients;
-        return handleDownloadedPatients(patients, settings);
-      }).catch(err => {
-        return Promise.reject(err);
-      });
+  const lastSynced = settings ? settings.lastSynced : 0;
 
+  // TODO: Fetch call to server, passing in lastSynced value
+  return fetch('route/' + lastSynced)
+    .then(response => {
+      const patients = response.body.patients;
+      return handleDownloadedPatients(patients, settings);
+    }).catch(err => {
+      return Promise.reject(err);
+    });
 }
 
 function handleDownloadedPatients(patients, settings) {
-  const timestamp = new Date().getTime();
   const promises = [];
 
   try {
