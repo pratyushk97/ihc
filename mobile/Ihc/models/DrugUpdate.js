@@ -8,6 +8,18 @@ export default class DrugUpdate {
     update.date = stringDate(new Date());
     return update;
   }
+
+  static getInstance() {
+    return {
+      patientKey: 'firstname&father&mother&20000101',
+      name: 'tylenol',
+      date: '20180101',
+      dose: '1',
+      frequency: '1',
+      duration: '1',
+      lastUpdated: new Date().getTime()
+    }
+  }
 }
 
 DrugUpdate.schema = {

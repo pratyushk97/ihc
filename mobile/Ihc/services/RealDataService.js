@@ -296,11 +296,20 @@ export function downloadUpdates() {
     });
 }
 
+/**
+ * Returns array of Promises. Should be one promise for each updated object that
+ * resolves to true, plus one additional promise that is there by default to
+ * avoid an error in case no objects were updated. 
+ * No promise is added if incomingPatient is ignored because it is older
+ * than existingPatient
+ */
 function handleDownloadedPatients(patients, settings) {
-  const promises = [];
+  // Give array at least one promise to resolve
+  const promises = [Promise.resolve(true)];
 
   try {
     patients.forEach( incomingPatient => {
+
       const existingPatient = realm.objects('Patient')
         .filtered('key = "' + incomingPatient.key + '"')['0'];
 
@@ -311,6 +320,9 @@ function handleDownloadedPatients(patients, settings) {
 
       if (incomingPatient.lastUpdated <= existingPatient.lastUpdated) {
         // Don't need to update
+        // TODO: If incomingPatient.lastUpdated < existingPatient.lastUpdated, then
+        // probably means this tablet didn't send their updates to the server...
+        // Send some kind of message?
         return;
       }
 
@@ -330,6 +342,11 @@ function handleDownloadedPatients(patients, settings) {
       incomingPatient.statuses.forEach(incomingStatus => {
         promises.push(updateObject(existingPatient, 'statuses', incomingStatus));
       });
+
+      // Update that patient's updated timestamp
+      realm.write(() => {
+        existingPatient.lastUpdated = incomingPatient.lastUpdated;
+      });
     });
 
     realm.write(() => {
@@ -340,8 +357,6 @@ function handleDownloadedPatients(patients, settings) {
       settings.lastSynced = new Date().getTime();
     });
 
-    // Give array at least one promise to resolve
-    promises.push(Promise.resolve(true));
     return Promise.all(promises);
 
   } catch (e) {
@@ -355,25 +370,29 @@ function createMatrix(data, columnOrder) {
 
 /**
  * Type: string of either 'soaps', 'triages', 'medications', or 'statuses'
+ * Returns true Promise if updated successfully, false if wasn't updated
  */
 function updateObject(existingPatient, type, incomingObject) {
   // Find existing form/object that corresponds to the incoming one
   let existingObject = {};
   if (type === 'medications') {
     existingObject = existingPatient.medications.find( med => {
-      incomingObject.date === med.date && incomingObject.name === med.name;
+      return incomingObject.date === med.date && incomingObject.name === med.name;
     });
   } else {
     existingObject = existingPatient[type].find( obj => {
-      incomingObject.date === obj.date;
+      return incomingObject.date === obj.date;
     });
   }
-  if(!existingObject) {
-    return Promise.reject(new Error('Object with type ' + type + ' for date '
-      + incomingObject.date + ' doesnt exist'));
-  }
-
   try {
+    // If old object doesn't exist, then just add the new object to the patient
+    if(!existingObject) {
+      realm.write(() => {
+        existingPatient[type].push(incomingObject);
+      });
+      return Promise.resolve(true);
+    }
+
     if(incomingObject.lastUpdated > existingObject.lastUpdated) {
       realm.write(() => {
         const properties = Object.keys(incomingObject);
@@ -382,9 +401,9 @@ function updateObject(existingPatient, type, incomingObject) {
         });
       });
       return Promise.resolve(true);
-    } else {
-      return Promise.resolve(false);
     }
+
+    return Promise.resolve(false);
   } catch (e) {
     return Promise.reject(e);
   }
