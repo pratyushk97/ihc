@@ -419,3 +419,143 @@ describe('Test UpdateSoap routes', () => {
       .expect({status: false, error: "Soap sent is not up-to-date. Sync required."});
   });
 });
+
+describe('Test UpdateStatus routes', () => {
+  let mocks = [];
+  afterEach(() => {
+    for(let i in mocks) {
+      mocks[i].restore();
+    }
+  });
+
+  test('should return success if successfully updates existing status', () => {
+    const oldStatus = {
+      patientKey: "First&Last&20110101",
+      name: "First Last",
+      birthday: "20110101",
+      date: "20180507",
+      active: true,
+      checkinTime: 12,
+      triageCompleted: 0,
+      doctorCompleted: 0,
+      pharmacyCompleted: 0,
+      notes: 'old',
+      lastUpdated: 100
+    };
+
+    const newStatus = Object.assign({}, oldStatus);
+    newStatus.lastUpdated = oldStatus.lastUpdated + 1;
+    newStatus.notes = 'new';
+
+    const oldPatient = {
+      key: "First&Last&20110101",
+      firstName: "First",
+      lastName: "Last",
+      birthday: "20110101",
+      statuses: [oldStatus],
+      save: () => {},
+      lastUpdated: new Date().getTime()
+    };
+
+    const mock1 = sinon.mock(PatientModel)
+      .expects('findOne').withArgs({key: oldPatient.key})
+      .yields(null, oldPatient);
+    mocks.push(mock1);
+
+    const mock2 = sinon.mock(oldPatient)
+      .expects('save')
+      .yields(null);
+    mocks.push(mock2);
+
+    return request(app)
+      .patch('/patient/' + oldPatient.key + '/status/' + newStatus.date)
+      .send({status: newStatus})
+      .then(response => {
+        expect(JSON.parse(response.text)).toEqual({status: true});
+        expect(oldPatient.statuses).toEqual([newStatus]);
+      });
+  });
+
+  test('should return success if successfully adds new status', () => {
+    const newStatus = {
+      patientKey: "First&Last&20110101",
+      name: "First Last",
+      birthday: "20110101",
+      date: "20180507",
+      active: true,
+      checkinTime: 12,
+      triageCompleted: 0,
+      doctorCompleted: 0,
+      pharmacyCompleted: 0,
+      notes: 'new',
+      lastUpdated: 100
+    };
+
+    const oldPatient = {
+      key: "First&Last&20110101",
+      firstName: "First",
+      lastName: "Last",
+      birthday: "20110101",
+      statuses: [],
+      save: () => {},
+      lastUpdated: new Date().getTime()
+    };
+
+    const mock1 = sinon.mock(PatientModel)
+      .expects('findOne').withArgs({key: oldPatient.key})
+      .yields(null, oldPatient);
+    mocks.push(mock1);
+
+    const mock2 = sinon.mock(oldPatient)
+      .expects('save')
+      .yields(null);
+    mocks.push(mock2);
+
+    return request(app)
+      .patch('/patient/' + oldPatient.key + '/status/' + newStatus.date)
+      .send({status: newStatus})
+      .then(response => {
+        expect(JSON.parse(response.text)).toEqual({status: true});
+        expect(oldPatient.statuses).toEqual([newStatus]);
+      });
+  });
+  test('should return error if new status is not up to date', () => {
+    const oldStatus = {
+      patientKey: "First&Last&20110101",
+      name: "First Last",
+      birthday: "20110101",
+      date: "20180507",
+      active: true,
+      checkinTime: 0,
+      triageCompleted: 0,
+      doctorCompleted: 0,
+      pharmacyCompleted: 0,
+      notes: 'old',
+      lastUpdated: 100
+    };
+
+    const newStatus = Object.assign({}, oldStatus);
+    newStatus.lastUpdated = oldStatus.lastUpdated - 1;
+    oldStatus.notes = 'new'; 
+
+    const oldPatient = {
+      key: "First&Last&20110101",
+      firstName: "First",
+      lastName: "Last",
+      birthday: "20110101",
+      statuses: [oldStatus],
+      save: () => {},
+      lastUpdated: new Date().getTime()
+    };
+
+    const mock1 = sinon.mock(PatientModel)
+      .expects('findOne').withArgs({key: oldPatient.key})
+      .yields(null, oldPatient);
+    mocks.push(mock1);
+
+    return request(app)
+      .patch('/patient/' + oldPatient.key + '/status/' + newStatus.date)
+      .send({status: newStatus})
+      .expect({status: false, error: "Status sent is not up-to-date. Sync required."});
+  });
+});
