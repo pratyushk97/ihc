@@ -167,41 +167,41 @@ const PatientController = {
     });
   },
   UpdateStatus: function(req, res){
-  	PatientModel.findOne({key: req.params.key}, function(err, patient) {
+    PatientModel.findOne({key: req.params.key}, function(err, patient) {
       if(!patient) {
         err = new Error("Patient with key " + req.params.key + " doesn't exist");
       }
 
       for (let [i,status] of patient.statuses.entries()) {
-      	if (status.date = req.params.date) {
-      		//status is not updated
-      		if (status.lastUpdated > req.body.status.lastUpdated) {
-      			res.json({
-      				status: false,
-      				error: "Status sent is not up-to-date. Sync required."
-      			})
-      			return;
-      		}
+        if (status.date = req.params.date) {
+      	  //status is not updated
+          if (status.lastUpdated > req.body.status.lastUpdated) {
+      		  res.json({
+      			  status: false,
+      			  error: "Status sent is not up-to-date. Sync required."
+            })
+            return;
+          }
 
-      		patient.statuses[i] = req.body.status;
-          	patient.save(function(err) {
-          		if(err) {
-              		res.json({status: false, error: err.message});
-              		return;
-            	}
-            	res.json({status: true});
-            	return;
-          	});
-          	return;
-      	}
+          patient.statuses[i] = req.body.status;
+          patient.save(function(err) {
+            if(err) {
+              res.json({status: false, error: err.message});
+              return;
+            }
+            res.json({status: true});
+            return;
+          });
+          return;
+        }
       }
 
       //status does not exist yet
       patient.statuses.push(req.body.status);
       patient.save(function(err) {
-      	if (err) {
-      		res.json({status: false, error: err.message});
-            return;
+        if (err) {
+          res.json({status: false, error: err.message});
+          return;
         }
         res.json({status: true});
         return;
