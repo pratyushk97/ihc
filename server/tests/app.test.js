@@ -107,9 +107,20 @@ describe('Test GetPatients routes', ()=>{
     const mock1 = sinon.mock(PatientModel)
       .expects('find').withArgs({})
       .yields(null, patientList);
+    mocks.push(mock1);
 
     return request(app).get('/patients')
-      .expect({status: true});
+      .expect({status: true, patients: patientList});
+  });
+
+  test('should return error message if Patient List does not exist', () => {
+    const mock1 = sinon.mock(PatientModel)
+      .expects('find').withArgs({})
+      .yields(new Error("No Patients Exist"), null);
+    mocks.push(mock1);
+
+    return request(app).get('/patients')
+      .expect({status: false, error: "No Patients Exist"});
   });
 
 });
@@ -336,6 +347,7 @@ describe('Test UpdateSoap routes', () => {
       .then(response => {
         expect(JSON.parse(response.text)).toEqual({status: true});
         expect(oldPatient.soaps).toEqual([newSoap]);
+        expect(oldPatient.lastUpdated).toEqual(newSoap.lastUpdated);
       });
   });
 
@@ -378,6 +390,7 @@ describe('Test UpdateSoap routes', () => {
       .then(response => {
         expect(JSON.parse(response.text)).toEqual({status: true});
         expect(oldPatient.soaps).toEqual([newSoap]);
+        expect(oldPatient.lastUpdated).toEqual(newSoap.lastUpdated);
       });
   });
 
