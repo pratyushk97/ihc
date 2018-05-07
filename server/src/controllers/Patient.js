@@ -174,11 +174,11 @@ const PatientController = {
 
       for (let [i,status] of patient.statuses.entries()) {
         if (status.date = req.params.date) {
-      	  //status is not updated
+        //status is not updated
           if (status.lastUpdated > req.body.status.lastUpdated) {
-      		  res.json({
-      			  status: false,
-      			  error: "Status sent is not up-to-date. Sync required."
+            res.json({
+              status: false,
+              error: "Status sent is not up-to-date. Sync required."
             })
             return;
           }
@@ -206,7 +206,7 @@ const PatientController = {
         res.json({status: true});
         return;
       });
-  	});
+  });
   },
   UpdateTriage: function(req, res){
   },
