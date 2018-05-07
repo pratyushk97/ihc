@@ -12,6 +12,10 @@ import Settings from '../models/Settings';
 
 import Realm from 'realm';
 import {stringDate} from '../util/Date';
+import config from '../config.json';
+
+// Must set the fetchUrl to the server's IP Address and Port
+const fetchUrl = config.fetchUrl;
 
 const realm = new Realm({
   schema: [Patient, Status, Soap, Triage, DrugUpdate, Settings],
@@ -19,14 +23,9 @@ const realm = new Realm({
 });
 
 export function createPatient(patient) {
-  try {
     const timestamp = new Date().getTime();
     const patientObjs = realm.objects('Patient').filtered('key = "' + patient.key + '"');
     const existingPatient = patientObjs['0'];
-
-    if(existingPatient) {
-      throw new Error("Patient already exists");
-    }
 
     // Also sign them in
     const statusObj = Status.newStatus(patient);
@@ -34,14 +33,51 @@ export function createPatient(patient) {
     statusObj.lastUpdated = timestamp;
     patient.lastUpdated = timestamp;
 
+  try {
+    if(existingPatient) {
+      throw new Error("Patient already exists");
+    }
+
+    // Write results locally
     realm.write(() => {
       patient.statuses = [statusObj];
       realm.create('Patient', patient);
     });
-    return Promise.resolve(true);
   } catch (e) {
+    realm.write(() => {
+      patient.needToUpload = true;
+    });
     return Promise.reject(e);
   }
+
+  // Send results to server
+  return fetch(fetchUrl + '/patient', {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      patient: patient
+    })
+  }).then(response => response.json())
+    .then(json => {
+    // status is false if the Network connection went through but there was
+    // some kind of error when processing the request. Throwing an error here
+    // will lead to patient.needToUpload being marked as true
+    if (!json.status) {
+      throw new Error(json.error);
+    }
+
+    return Promise.resolve(true);
+  }).catch(err => {
+    // If there was an error updating, then mark this patient as needing to
+    // upload again later
+    realm.write(() => {
+      patient.needToUpload = true;
+    });
+    return Promise.reject(err);
+  });
 }
 
 // Check that patient exists, and if so then create a status object for them
@@ -281,15 +317,15 @@ export function uploadUpdates() {
 }
 
 export function downloadUpdates() {
-  let settings = realm.objects('Settings');
-  settings = settings ? settings['0'] : undefined;
+  let settings = realm.objects('Settings')['0'];
 
   const lastSynced = settings ? settings.lastSynced : 0;
 
   // TODO: Fetch call to server, passing in lastSynced value
   return fetch('route/' + lastSynced)
-    .then(response => {
-      const patients = response.body.patients;
+    .then(response => response.json())
+    .then(json => {
+      const patients = json.patients;
       return handleDownloadedPatients(patients, settings);
     }).catch(err => {
       return Promise.reject(err);
