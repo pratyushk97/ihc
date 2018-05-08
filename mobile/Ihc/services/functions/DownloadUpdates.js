@@ -4,11 +4,11 @@ export function downloadUpdatesHelper(realm, fetchUrl) {
   const lastSynced = settings ? settings.lastSynced : 0;
 
   // TODO: Fetch call to server, passing in lastSynced value
-  return fetch('route/' + lastSynced)
+  return fetch(fetchUrl + '/route/' + lastSynced)
     .then(response => response.json())
     .then(json => {
       const patients = json.patients;
-      return handleDownloadedPatients(patients, settings);
+      return handleDownloadedPatients(patients, settings, realm);
     }).catch(err => {
       return Promise.reject(err);
     });
@@ -21,7 +21,7 @@ export function downloadUpdatesHelper(realm, fetchUrl) {
  * No promise is added if incomingPatient is ignored because it is older
  * than existingPatient
  */
-function handleDownloadedPatients(patients, settings) {
+function handleDownloadedPatients(patients, settings, realm) {
   // Give array at least one promise to resolve
   const promises = [Promise.resolve(true)];
 
@@ -48,17 +48,17 @@ function handleDownloadedPatients(patients, settings) {
       // there
 
       incomingPatient.soaps.forEach(incomingSoap => {
-        promises.push(updateObject(existingPatient, 'soaps', incomingSoap));
+        promises.push(updateObject(existingPatient, 'soaps', incomingSoap, realm));
       });
       incomingPatient.triages.forEach(incomingTriage => {
-        promises.push(updateObject(existingPatient, 'triages', incomingTriage));
+        promises.push(updateObject(existingPatient, 'triages', incomingTriage, realm));
       });
       incomingPatient.medications.forEach(incomingDrugUpdate => {
         promises.push(updateObject(existingPatient, 'medications',
-            incomingDrugUpdate));
+            incomingDrugUpdate, realm));
       });
       incomingPatient.statuses.forEach(incomingStatus => {
-        promises.push(updateObject(existingPatient, 'statuses', incomingStatus));
+        promises.push(updateObject(existingPatient, 'statuses', incomingStatus, realm));
       });
 
       // Update that patient's updated timestamp
@@ -86,7 +86,7 @@ function handleDownloadedPatients(patients, settings) {
  * Type: string of either 'soaps', 'triages', 'medications', or 'statuses'
  * Returns true Promise if updated successfully, false if wasn't updated
  */
-function updateObject(existingPatient, type, incomingObject) {
+function updateObject(existingPatient, type, incomingObject, realm) {
   // Find existing form/object that corresponds to the incoming one
   let existingObject = {};
   if (type === 'medications') {
