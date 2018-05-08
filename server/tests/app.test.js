@@ -376,3 +376,21 @@ describe('Test UpdateSoap routes', () => {
       .expect({status: false, error: "Soap sent is not up-to-date. Sync required."});
   });
 });
+
+describe('Test GetTriage Routes', () => {
+  let mock = null;
+  afterEach(()=>{
+    if(mock){
+      mock.restore();
+    }
+  });
+  test('Should return triage if exists', ()=>{
+    const triage = {name: 'Triage'};
+    mock = sinon.mock(TriageModel)
+      .expects('findOne').withArgs({patientKey: 'keythatexists', date: 'datethatexists'})
+      .yields(null, triage);
+
+    return request(app).get('/patient/keythatexists/triage/datethatexists')
+      .expect({status: true, triage: triage});
+  });
+});
