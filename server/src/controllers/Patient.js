@@ -155,6 +155,46 @@ const PatientController = {
   UpdateStatus: function(req, res){
   },
   UpdateTriage: function(req, res){
+    PatientModel.findOne({key: req.params.key}, function(err, patient) {
+      if(!patient) {
+        err = new Error("Patient with key " + req.params.key + " doesn't exist");
+      }
+
+      for(let [i,triage] of patient.triages.entries()) {
+        // If an existing triage for that date exists, then update it
+        if(triage.date == req.body.triage.date) {
+          if(triage.lastUpdated > req.body.triage.lastUpdated) {
+            res.json({
+              status: false,
+              error: "Triage sent is not up-to-date. Sync required."
+            });
+            return;
+          }
+
+          patient.triages[i] = req.body.triage;
+          patient.save(function(err) {
+            if(err) {
+              res.json({status: false, error: err.message});
+              return;
+            }
+            res.json({status: true});
+            return;
+          });
+          return;
+        }
+      }
+
+      // No soap exists yet, so add a new one
+      patient.soaps.push(req.body.soap);
+      patient.save(function(err) {
+        if(err) {
+          res.json({status: false, error: err.message});
+          return;
+        }
+        res.json({status: true});
+        return;
+      });
+    });
   },
   UpdateDrugUpdates: function(req, res){
   }
