@@ -7,6 +7,7 @@ import TriageModel from './models/Triage';
 import DrugUpdateModel from './models/DrugUpdate';
 
 import PatientController from './controllers/Patient';
+import SyncController from './controllers/Sync';
 
 const router = express.Router();
 
@@ -53,6 +54,11 @@ router.patch('/patient/:key/triage/:date', PatientController.UpdateTriage);
 
 //updates the Medicine of the patient
 router.patch('/patient/:key/drugUpdates', PatientController.UpdateDrugUpdates);
+
+// TODO Add these
+router.get('/patients/statuses', PatientController.GetStatuses);
+router.post('/updates', SyncController.PostUpdates);
+router.get('/updates/:timestamp', SyncController.GetUpdates);
 
 module.exports = router;
 

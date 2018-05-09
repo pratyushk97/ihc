@@ -118,6 +118,8 @@ const PatientController = {
       res.json({status: true, patientStatus: patientStatus});
     });
   },
+  GetStatuses: function(req, res){
+  },
   GetTriage: function(req, res){
   },
   GetDrugUpdates: function(req, res){
