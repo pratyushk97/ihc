@@ -93,8 +93,30 @@ const PatientController = {
   GetUpdates: function(req, res){
   },
   GetSoap: function(req, res){
+    SoapModel.findOne({patientKey: req.params.key, date: req.params.date}, function(err, soap) {
+      if(!soap) {
+        err = new Error("Patient with key " + req.params.key + " does not have a soap for the date " + req.params.date);
+      }
+
+      if (err) {
+        res.json({status: false, error: err.message});
+        return;
+      }
+      res.json({status: true, soap: soap});
+    });
   },
   GetStatus: function(req, res){
+    StatusModel.findOne({patientKey: req.params.key, date: req.params.date}, function(err, patientStatus) {
+      if (!patientStatus) {
+        err = new Error("Status of patient with key " + req.params.key + " for the date " + req.params.date + " does not exist");
+      }
+  
+      if (err) {
+        res.json({status: false, error: err.message});
+        return
+      }
+      res.json({status: true, patientStatus: patientStatus});
+    });
   },
   GetTriage: function(req, res){
     TriageModel.findOne({patientKey: req.params.key, date: req.params.date}, function(err, triage) {
@@ -128,6 +150,7 @@ const PatientController = {
           }
 
           patient.soaps[i] = req.body.soap;
+          patient.lastUpdated = req.body.soap.lastUpdated;
           patient.save(function(err) {
             if(err) {
               res.json({status: false, error: err.message});
@@ -142,6 +165,7 @@ const PatientController = {
 
       // No soap exists yet, so add a new one
       patient.soaps.push(req.body.soap);
+      patient.lastUpdated = req.body.soap.lastUpdated;
       patient.save(function(err) {
         if(err) {
           res.json({status: false, error: err.message});
@@ -153,6 +177,46 @@ const PatientController = {
     });
   },
   UpdateStatus: function(req, res){
+    PatientModel.findOne({key: req.params.key}, function(err, patient) {
+      if(!patient) {
+        err = new Error("Patient with key " + req.params.key + " doesn't exist");
+      }
+
+      for (let [i,status] of patient.statuses.entries()) {
+        if (status.date = req.params.date) {
+        //status is not updated
+          if (status.lastUpdated > req.body.status.lastUpdated) {
+            res.json({
+              status: false,
+              error: "Status sent is not up-to-date. Sync required."
+            })
+            return;
+          }
+
+          patient.statuses[i] = req.body.status;
+          patient.save(function(err) {
+            if(err) {
+              res.json({status: false, error: err.message});
+              return;
+            }
+            res.json({status: true});
+            return;
+          });
+          return;
+        }
+      }
+
+      //status does not exist yet
+      patient.statuses.push(req.body.status);
+      patient.save(function(err) {
+        if (err) {
+          res.json({status: false, error: err.message});
+          return;
+        }
+        res.json({status: true});
+        return;
+      });
+  });
   },
   UpdateTriage: function(req, res){
   },
