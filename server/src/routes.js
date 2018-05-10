@@ -22,7 +22,7 @@ router.post('/patient', PatientController.CreatePatient);
 
 //updates patient's personal info
 //everything except doctors assessment, ie: name, phone number, age
-router.patch('/patient/:key', PatientController.UpdatePatient);
+router.put('/patient/:key', PatientController.UpdatePatient);
 
 //Kenny
 //get soap info
@@ -41,15 +41,16 @@ router.get('/patient/:key/triage/:date', PatientController.GetTriage);
 router.get('/patient/:key/drugUpdates', PatientController.GetDrugUpdates);
 
 //updates the soap of the patient
-router.patch('/patient/:key/soap/:date', PatientController.UpdateSoap);
-//whats status
-router.patch('/patient/:key/status/:date', PatientController.UpdateStatus);
+router.put('/patient/:key/soap/:date', PatientController.UpdateSoap);
+
+//updates the status of the patient
+router.put('/patient/:key/status/:date', PatientController.UpdateStatus);
 
 //updates the triage of the patient
-router.patch('/patient/:key/triage/:date', PatientController.UpdateTriage);
+router.put('/patient/:key/triage/:date', PatientController.UpdateTriage);
 
 //updates the Medicine of the patient
-router.patch('/patient/:key/drugUpdates', PatientController.UpdateDrugUpdates);
+router.put('/patient/:key/drugUpdates', PatientController.UpdateDrugUpdates);
 
 // return all the statuses for the given date
 router.get('/patients/statuses/:date', PatientController.GetStatuses);
