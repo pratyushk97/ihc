@@ -143,8 +143,6 @@ const PatientController = {
       });
     })
   },
-  GetUpdates: function(req, res){
-  },
   GetSoap: function(req, res){
     SoapModel.findOne({patientKey: req.params.key, date: req.params.date}, function(err, soap) {
       if(!soap) {
