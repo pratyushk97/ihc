@@ -335,21 +335,10 @@ router.patch('/patient/:key', PatientController.UpdatePatient);
   }
   ```
 
-router.get('/updates/:timestamp', PatientController.GetUpdates);
+router.post('/updates/', SyncController.PostUpdates);
   ```
-  returns: {
-    patients: [PatientModel],
-    triages: [TriageModel],
-    soaps: [SoapModel],
-    status: [StatusModel],
-    drugUpdates: [DrugUpdateModel],
-  }
-  ```
-
-router.get('/patient/:key/soap/:date', PatientController.GetSoap);
-  ```
-  returns: {
-    soap: SoapModel
+  body: {
+    patients: [PatientModel]
   }
   ```
 
@@ -357,6 +346,13 @@ router.get('/patient/:key/status/:date', PatientController.GetStatus);
   ```
   returns: {
     patientStatus: StatusModel
+  }
+  ```
+
+router.get('/patients/statuses', PatientController.GetStatuses);
+  ```
+  returns: {
+    patientStatuses: [StatusModel]
   }
   ```
 
@@ -399,6 +395,20 @@ router.patch('/patient/:key/drugUpdates', PatientController.UpdateDrugUpdates);
   ```
   body: {
     drugUpdates: [DrugUpdateModel] 
+  }
+  ```
+
+router.get('/updates/:timestamp', SyncController.GetUpdates);
+  ```
+  returns: {
+    patients: [PatientModel]
+  }
+  ```
+
+router.get('/patient/:key/soap/:date', PatientController.GetSoap);
+  ```
+  returns: {
+    soap: SoapModel
   }
   ```
 
