@@ -16,16 +16,17 @@ router.get('/patient/:key', PatientController.GetPatient);
 //timestamp. If all patients are wanted, then pass a timestamp of 0
 router.get('/patients/:lastUpdated', PatientController.GetPatients);
 
-// receive patients from the tablet and save them to the server, or update the
-// existing server-side objects if they already exist
-router.put('/patients', PatientController.UpdatePatients);
-
 router.post('/patient', PatientController.CreatePatient);
 // router.delete('/patient/:key', PatientController.DeletePatient);
 
 //updates patient's personal info
 //everything except doctors assessment, ie: name, phone number, age
 router.put('/patient/:key', PatientController.UpdatePatient);
+
+// receive patients from the tablet and save them to the server, or update the
+// existing server-side objects if they already exist
+// Differently than UpdatePatient, this route DOES modify doctors assessments
+router.put('/patients', PatientController.UpdatePatients);
 
 //Kenny
 //get soap info

@@ -46,6 +46,48 @@ const PatientController = {
     });
   },
   UpdatePatients: function(req, res){
+    const patients = req.body.patients;
+    const errors = [];
+    let addedCount = 0;
+    let updatedCount = 0;
+
+    patients.forEach(patient => {
+      PatientModel.findOne({key: patient.key}, function(err, oldPatient) {
+        if(err) {
+          errors.push(err.message);
+          return;
+        }
+
+        // If no patient exists on the server, add them
+        if(!oldPatient) {
+          PatientModel.create(patient, function(err) {
+            if(err)
+              errors.push(err);
+            else
+              addedCount++;
+          });
+          return;
+        }
+
+        // For updates, make sure the incoming object is up to date
+        if(oldPatient.lastUpdated > patient.lastUpdated) {
+          errors.push("Patient sent is not up-to-date. Sync required.");
+        }
+
+        // TODO: Iterate through forms and update individually if lastUpdated
+        // works out, instead of a blanket set() call
+        oldPatient.set(patient);
+        //saves it, callback function to handle error
+        oldPatient.save(function(e, p) {
+          if(e) {
+            errors.push(e);
+          } else {
+            updatedCount++;
+          }
+        });
+      });
+    });
+    res.json({errors: errors, addedCount: addedCount, updatedCount: updatedCount});
   },
   CreatePatient: function(req, res){
     // Check that no patient with that key exists
@@ -83,8 +125,13 @@ const PatientController = {
         return;
       }
 
-      //update function, replaces old patient object with passed in 'new patient' info boject
-      oldPatient.set(req.body.patient);
+      // Only update the given properties
+      const properties = ['birthday', 'gender', 'phone', 'motherHeight', 'fatherHeight', 'lastUpdated']
+      properties.forEach( p => {
+        if(req.body.patient[p])
+          oldPatient[p] = req.body.patient[p];
+      });
+
       //saves it, callback function to handle error 
       oldPatient.save(function(e, p) {
         if(e) {

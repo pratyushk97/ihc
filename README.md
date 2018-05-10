@@ -340,6 +340,11 @@ router.put('/patients', PatientController.UpdatePatients);
   body: {
     patients: [PatientModel]
   }
+  returns: {
+    errors: [Error],
+    addedCount: int,
+    updatedCount: int
+  }
   ```
 
 router.get('/patient/:key/status/:date', PatientController.GetStatus);
