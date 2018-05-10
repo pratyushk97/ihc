@@ -24,10 +24,6 @@ router.post('/patient', PatientController.CreatePatient);
 //everything except doctors assessment, ie: name, phone number, age
 router.patch('/patient/:key', PatientController.UpdatePatient);
 
-// Return the updates that occurred since a given timestamp
-//ASK MATTHEW
-router.get('/updates/:timestamp', PatientController.GetUpdates);
-
 //Kenny
 //get soap info
 router.get('/patient/:key/soap/:date', PatientController.GetSoap);
@@ -55,9 +51,15 @@ router.patch('/patient/:key/triage/:date', PatientController.UpdateTriage);
 //updates the Medicine of the patient
 router.patch('/patient/:key/drugUpdates', PatientController.UpdateDrugUpdates);
 
-// TODO Add these
-router.get('/patients/statuses', PatientController.GetStatuses);
+// return all the statuses for the given date
+router.get('/patients/statuses/:date', PatientController.GetStatuses);
+
+// receive patients from the tablet and save them to the server, or update the
+// existing server-side objects if they already exist
 router.post('/updates', SyncController.PostUpdates);
+
+// Send patients back to the tablet that have been updated since the given
+// timestamp
 router.get('/updates/:timestamp', SyncController.GetUpdates);
 
 module.exports = router;

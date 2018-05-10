@@ -48,6 +48,25 @@ describe('Test GetStatus routes', () => {
   });
 });
 
+describe('Test GetStatuses route', () => {
+  let mock = null;
+  afterEach(() => {
+    if(mock) {
+      mock.restore();
+    }
+  });
+
+  test('should return statuses for the given date', () => {
+    const status1 = { patientKey: 'patientKey', date: 'datetahtexists' };
+    mock = sinon.mock(StatusModel) 
+      .expects('find').withArgs({date: 'datethatexists'})
+      .yields(null, [status1]);
+
+    return request(app).get('/patients/statuses/datethatexists')
+      .expect({status: true, patientStatuses: [status1]})
+  });
+});
+
 describe('Test GetPatient routes', () => {
   let mock = null;
   afterEach(() => {

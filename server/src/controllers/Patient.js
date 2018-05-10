@@ -119,6 +119,13 @@ const PatientController = {
     });
   },
   GetStatuses: function(req, res){
+    StatusModel.find({date: req.params.date}, function(err, statuses) {
+      if (err) {
+        res.json({status: false, error: err.message});
+        return
+      }
+      res.json({status: true, patientStatuses: statuses});
+    });
   },
   GetTriage: function(req, res){
   },
