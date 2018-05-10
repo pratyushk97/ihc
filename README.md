@@ -314,7 +314,7 @@ router.get('/patient/:key', PatientController.GetPatient);
   }
   ```
 
-router.get('/patients', PatientController.GetPatients);
+router.get('/patients/:lastUpdated', PatientController.GetPatients);
   ```
   returns: {
     patients: [PatientModel]
@@ -328,14 +328,14 @@ router.post('/patient', PatientController.CreatePatient); :white_check_mark:
   }
   ```
 
-router.patch('/patient/:key', PatientController.UpdatePatient);
+router.put('/patient/:key', PatientController.UpdatePatient);
   ```
   body: {
     patient: PatientModel
   }
   ```
 
-router.post('/updates/', SyncController.PostUpdates);
+router.put('/patients', PatientController.UpdatePatients);
   ```
   body: {
     patients: [PatientModel]
@@ -370,38 +370,31 @@ router.get('/patient/:key/drugUpdates', PatientController.GetDrugUpdates);
   }
   ```
 
-router.patch('/patient/:key/soap/:date', PatientController.UpdateSoap);
+router.put('/patient/:key/soap/:date', PatientController.UpdateSoap);
   ```
   body: {
     soap: SoapModel
   }
   ```
 
-router.patch('/patient/:key/status/:date', PatientController.UpdateStatus);
+router.put('/patient/:key/status/:date', PatientController.UpdateStatus);
   ```
   body: {
     status: StatusModel
   }
   ```
 
-router.patch('/patient/:key/triage/:date', PatientController.UpdateTriage);
+router.put('/patient/:key/triage/:date', PatientController.UpdateTriage);
   ```
   body: {
     triage: TriageModel
   }
   ```
 
-router.patch('/patient/:key/drugUpdates', PatientController.UpdateDrugUpdates);
+router.put('/patient/:key/drugUpdates', PatientController.UpdateDrugUpdates);
   ```
   body: {
     drugUpdates: [DrugUpdateModel] 
-  }
-  ```
-
-router.get('/updates/:timestamp', SyncController.GetUpdates);
-  ```
-  returns: {
-    patients: [PatientModel]
   }
   ```
 
@@ -465,7 +458,7 @@ React Native
 
 -- Begin N/A --
 
-"Upload Updates" PATCH /groups/:group/all -> Express API:
+"Upload Updates" put /groups/:group/all -> Express API:
 Send list of local updates
 Locally save list of timestamps when "Upload Updates" was clicked
 Body:
@@ -510,7 +503,7 @@ Routes:
       - Ignore timestamps passed in to exclude param 
       - Get list of updates from groups/:timestamp and consolidate into one list
 
-  PATCH /groups/:group/all   => Update information for all people
+  put /groups/:group/all   => Update information for all people
     - Body contains 
     {
       timestamp: send_update_timestamps,
@@ -520,7 +513,7 @@ Routes:
   NONESSENTIAL:
   GET   /groups/:group/:id   => Return information for that person
   POST  /groups/:group      => Add information for new person
-  PATCH /groups/:group/:id   => Update information for person
+  put /groups/:group/:id   => Update information for person
 
 -- End N/A --
 

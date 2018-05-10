@@ -30,16 +30,22 @@ const PatientController = {
     });
   },
   GetPatients: function(req, res){
-    PatientModel.find({},function(err, patientList){
-      if(!patientList || patientList.length == 0){
-        err = new Error("No Patients Exist");
-      }
+    const timestamp = parseInt(req.params.lastUpdated);
+    // couldn't convert properly
+    if(isNaN(timestamp)) {
+      res.json({status:false, error: "Error converting lastUpdated to int"});
+      return;
+    }
+
+    PatientModel.find({ lastUpdated: {$gt: timestamp} },function(err, patientList){
       if(err){
-        res.json({status:false, error:err.message});
+        res.json({status:false, error: err.message});
         return;
       }
       res.json({status: true, patients: patientList});
     });
+  },
+  UpdatePatients: function(req, res){
   },
   CreatePatient: function(req, res){
     // Check that no patient with that key exists
@@ -77,7 +83,7 @@ const PatientController = {
         return;
       }
 
-      //update function, replaces old pation object with passed in 'new patient' info boject
+      //update function, replaces old patient object with passed in 'new patient' info boject
       oldPatient.set(req.body.patient);
       //saves it, callback function to handle error 
       oldPatient.save(function(e, p) {

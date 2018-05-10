@@ -97,12 +97,12 @@ export function getPatientSelectRows() {
   return getPatientSelectRowsHelper(realm, fetchUrl);
 }
 
-// Server endpoint: post /updates
+// Server endpoint: post /patients
 export function uploadUpdates() {
   return uploadUpdatesHelper(realm, fetchUrl);
 }
 
-// Server endpoint: get /updates/:timestamp
+// Server endpoint: get /patients/:timestamp
 export function downloadUpdates() {
   return downloadUpdatesHelper(realm, fetchUrl);
 }
