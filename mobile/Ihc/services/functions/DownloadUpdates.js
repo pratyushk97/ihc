@@ -3,8 +3,7 @@ export function downloadUpdatesHelper(realm, fetchUrl) {
 
   const lastSynced = settings ? settings.lastSynced : 0;
 
-  // TODO: Fetch call to server, passing in lastSynced value
-  return fetch(fetchUrl + '/route/' + lastSynced)
+  return fetch(fetchUrl + '/patients/' + lastSynced)
     .then(response => response.json())
     .then(json => {
       const patients = json.patients;
