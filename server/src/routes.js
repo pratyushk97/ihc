@@ -1,11 +1,5 @@
 import express from 'express';
 
-import PatientModel from './models/Patient';
-import SoapModel from './models/Soap';
-import StatusModel from './models/Status';
-import TriageModel from './models/Triage';
-import DrugUpdateModel from './models/DrugUpdate';
-
 import PatientController from './controllers/Patient';
 
 const router = express.Router();
