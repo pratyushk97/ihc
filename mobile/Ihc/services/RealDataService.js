@@ -41,25 +41,25 @@ export function createPatient(patient) {
   return createPatientHelper(patient, realm, fetchUrl);
 }
 
-// Server endpoint: patch /patient/:key/status/:date
+// Server endpoint: put /patient/:key/status/:date
 // Check that patient exists locally, and if so then create a status object for them
 export function signinPatient(patientForm) {
   return signinPatientHelper(patientForm, realm, fetchUrl);
 }
 
-// Server endpoint: patch /patient/:key/status/:date
+// Server endpoint: put /patient/:key/status/:date
 // field: Any of fields from Status.schema
 // value: should match the type that the Status.schema says
 export function updateStatus(patientKey, strDate, field, value) {
   return updateStatusHelper(patientKey, strDate, field, value, realm, fetchUrl);
 }
 
-// Server endpoint: patch /patient/:key/drugUpdate
+// Server endpoint: put /patient/:key/drugUpdate
 export function createDrugUpdate(update) {
   return createDrugUpdateHelper(update, realm, fetchUrl);
 }
 
-// Server endpoint: patch /patient/:key/soap/:date
+// Server endpoint: put /patient/:key/soap/:date
 export function updateSoap(update) {
   return updateSoapHelper(update, realm, fetchUrl);
 }
@@ -70,7 +70,7 @@ export function getSoap(patientKey, strDate) {
   return getSoapHelper(patientKey, strDate, realm, fetchUrl);
 }
 
-// Server endpoint: patch /patient/:key/triage/:date
+// Server endpoint: put /patient/:key/triage/:date
 export function updateTriage(update) {
   return updateTriageHelper(update, realm, fetchUrl);
 }
