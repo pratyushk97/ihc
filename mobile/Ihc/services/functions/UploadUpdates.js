@@ -10,7 +10,7 @@ export function uploadUpdatesHelper(realm, fetchUrl) {
     body: JSON.stringify({
       patients: patients
     }),
-  }).then(response => {
+  }).then(() => {
     return Promise.resolve(true);
   }).catch(err => {
     return Promise.reject(err);

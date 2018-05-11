@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import {
-  Platform,
   StyleSheet,
   Button,
   Text,
@@ -56,7 +55,7 @@ export default class WelcomeScreen extends Component<{}> {
         <View style={styles.container}>
           <Text>Loading...</Text>
         </View>
-      )
+      );
     }
 
     return (
@@ -92,10 +91,5 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: 'center',
     margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
+  }
 });

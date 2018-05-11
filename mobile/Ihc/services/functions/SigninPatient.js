@@ -7,11 +7,11 @@ export function signinPatientHelper(patientForm, realm, fetchUrl) {
   const patient = patientObjs['0'];
 
   if(!patient) {
-    return Promise.reject(new Error("Patient doesn't exist"));
+    return Promise.reject(new Error('Patient doesn\'t exist'));
   }
 
   if(Object.keys(patientObjs).length > 1) {
-    return Promise.reject(new Error("More than one patient with key" + patientForm.key));
+    return Promise.reject(new Error('More than one patient with key' + patientForm.key));
   }
 
   const timestamp = new Date().getTime();
@@ -20,7 +20,7 @@ export function signinPatientHelper(patientForm, realm, fetchUrl) {
 
   for ( var k in patient.statuses ){
     if(patient.statuses[k].date === statusObj.date) {
-      return Promise.reject(new Error("This patient already checked in"));
+      return Promise.reject(new Error('This patient already checked in'));
     }
   }
 
@@ -46,17 +46,17 @@ export function signinPatientHelper(patientForm, realm, fetchUrl) {
     // status is false if the Network connection went through but there was
     // some kind of error when processing the request. Throwing an error here
     // will lead to patient.needToUpload being marked as true
-    if (!json.status) {
-      throw new Error(json.error);
-    }
+      if (!json.status) {
+        throw new Error(json.error);
+      }
 
-    return Promise.resolve(true);
-  }).catch(err => {
+      return Promise.resolve(true);
+    }).catch(err => {
     // If there was an error updating, then mark this patient as needing to
     // upload again later
-    realm.write(() => {
-      patient.needToUpload = true;
+      realm.write(() => {
+        patient.needToUpload = true;
+      });
+      return Promise.reject(err);
     });
-    return Promise.reject(err);
-  });
 }
