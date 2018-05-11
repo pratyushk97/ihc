@@ -25,7 +25,6 @@ import {uploadUpdatesHelper} from './functions/UploadUpdates';
 import {downloadUpdatesHelper} from './functions/DownloadUpdates';
 
 import Realm from 'realm';
-import {stringDate} from '../util/Date';
 import config from '../config.json';
 
 // Must set the fetchUrl to the server's IP Address and Port

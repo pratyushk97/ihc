@@ -28,7 +28,6 @@ export default class WelcomeScreen extends Component<{}> {
     });
   }
 
-  // TODO: When updates fail, mark the patient's needToUpload: true
   upload = () => {
     this.setState({loading: true});
     data.uploadUpdates()

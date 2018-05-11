@@ -1,7 +1,7 @@
 export function uploadUpdatesHelper(realm, fetchUrl) {
   // const patients = Object.values(realm.objects('Patient').filtered('needToUpload = true'));
   const patients = Object.values(realm.objects('Patient'));
-  fetch('patients/', {
+  return fetch(fetchUrl + '/patients/', {
     method: 'PUT',
     headers: {
       Accept: 'application/json',

@@ -102,6 +102,7 @@ export default class SigninScreen extends Component<{}> {
               formValues: {newPatient: false},
               formType: this.Signin,
               successMsg: `${patient.firstName} signed in successfully`,
+              error: null
             });
           })
           .catch( (e) => {
