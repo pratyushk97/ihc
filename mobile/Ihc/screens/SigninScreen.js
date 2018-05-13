@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {
+  ActivityIndicator,
   StyleSheet,
   Button,
   Text,
@@ -18,7 +19,9 @@ export default class SigninScreen extends Component<{}> {
     this.state = {
       formValues: {newPatient: false},
       formType: this.Signin,
-      error: '',
+      successMsg: null,
+      error: null,
+      loading: false
     };
   }
 
@@ -76,6 +79,7 @@ export default class SigninScreen extends Component<{}> {
     if(!this.refs.form.validate().isValid()) {
       return;
     }
+    this.setState({loading: true});
     const form = this.refs.form.getValue();
 
     if(form.newPatient) {
@@ -87,11 +91,12 @@ export default class SigninScreen extends Component<{}> {
             formValues: {newPatient: false},
             formType: this.Signin,
             successMsg: `${patient.firstName} added successfully`,
-            error: null
+            error: null,
+            loading: false
           });
         })
         .catch( (e) => {
-          this.setState({error: e.message, successMsg: null});
+          this.setState({error: e.message, successMsg: null, loading: false});
         });
     } else {
       const patient = Patient.extractFromForm(form);
@@ -102,16 +107,31 @@ export default class SigninScreen extends Component<{}> {
             formValues: {newPatient: false},
             formType: this.Signin,
             successMsg: `${patient.firstName} signed in successfully`,
-            error: null
+            error: null,
+            loading: false
           });
         })
         .catch( (e) => {
-          this.setState({formValues: form, error: e.message, successMsg: null});
+          this.setState({formValues: form, error: e.message, successMsg: null,
+            loading: false});
         });
     }
   }
 
   render() {
+    if(this.state.loading) {
+      return (
+        <ScrollView contentContainerStyle={styles.container}>
+          <Text style={styles.title}>
+            Signin
+          </Text>
+          <Text>Loading...</Text>
+          <ActivityIndicator size="large" />
+          <Text>Dont leave this screen until loading has completed.</Text>
+        </ScrollView>
+      );
+    }
+
     return (
       <ScrollView contentContainerStyle={styles.container}>
         <Text style={styles.title}>
