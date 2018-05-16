@@ -39,7 +39,7 @@ describe('Test GetStatus routes', () => {
   test('should return status of patient if exists', () => {
     const patientStatus = { patientStatus: "status" };
 
-    mock = sinon.mock(StatusModel) 
+    mock = sinon.mock(StatusModel)
       .expects('findOne').withArgs({patientKey: 'keythatexists', date: 'datethatexists'})
       .yields(null, patientStatus);
 
@@ -320,6 +320,216 @@ describe('Test UpdateSoap routes', () => {
     const newSoap = Object.assign({}, oldSoap);
     newSoap.lastUpdated = oldSoap.lastUpdated + 1;
     newSoap.subjective = 'new';
+
+    const oldPatient = {
+      key: "Test&Last&20110101",
+      firstName: "Test",
+      lastName: "Last",
+      birthday: "20110101",
+      soaps: [oldSoap],
+      save: () => {},
+      lastUpdated: new Date().getTime()
+    };
+
+    const mock1 = sinon.mock(PatientModel)
+      .expects('findOne').withArgs({key: oldPatient.key})
+      .yields(null, oldPatient);
+    mocks.push(mock1);
+
+    const mock3 = sinon.mock(oldPatient)
+      .expects('save')
+      .yields(null);
+    mocks.push(mock3);
+
+    return request(app)
+      .patch('/patient/' + oldPatient.key + '/soap/' + newSoap.date)
+      .send({soap: newSoap})
+      .then(response => {
+        expect(JSON.parse(response.text)).toEqual({status: true});
+        expect(oldPatient.soaps).toEqual([newSoap]);
+        expect(oldPatient.lastUpdated).toEqual(newSoap.lastUpdated);
+      });
+  });
+
+  test('should return success if successfully adds new Soap', () => {
+    const newSoap = {
+      patientKey: "Test&Last&20110101",
+      date: "20180101",
+      subjective: 'new',
+      objective: 'new',
+      assessment: 'new',
+      plan: 'new',
+      wishlist: 'nothing',
+      provider: 'doc',
+      lastUpdated: 100
+    };
+
+    const oldPatient = {
+      key: "Test&Last&20110101",
+      firstName: "Test",
+      lastName: "Last",
+      birthday: "20110101",
+      soaps: [],
+      save: () => {},
+      lastUpdated: new Date().getTime()
+    };
+
+    const mock1 = sinon.mock(PatientModel)
+      .expects('findOne').withArgs({key: oldPatient.key})
+      .yields(null, oldPatient);
+    mocks.push(mock1);
+
+    const mock3 = sinon.mock(oldPatient)
+      .expects('save')
+      .yields(null);
+    mocks.push(mock3);
+
+    return request(app)
+      .patch('/patient/' + oldPatient.key + '/soap/' + newSoap.date)
+      .send({soap: newSoap})
+      .then(response => {
+        expect(JSON.parse(response.text)).toEqual({status: true});
+        expect(oldPatient.soaps).toEqual([newSoap]);
+        expect(oldPatient.lastUpdated).toEqual(newSoap.lastUpdated);
+      });
+  });
+
+  test('should return error if new soap is not up to date', () => {
+    const oldSoap = {
+      patientKey: "Test&Last&20110101",
+      date: "20180101",
+      subjective: 'old',
+      objective: 'old',
+      assessment: 'old',
+      plan: 'old',
+      wishlist: 'nothing',
+      provider: 'doc',
+      lastUpdated: 100
+    };
+
+    const newSoap = Object.assign({}, oldSoap);
+    newSoap.lastUpdated = oldSoap.lastUpdated - 1;
+    newSoap.subjective = 'new';
+
+    const oldPatient = {
+      key: "Test&Last&20110101",
+      firstName: "Test",
+      lastName: "Last",
+      birthday: "20110101",
+      soaps: [oldSoap],
+      save: () => {},
+      lastUpdated: new Date().getTime()
+    };
+
+    const mock1 = sinon.mock(PatientModel)
+      .expects('findOne').withArgs({key: oldPatient.key})
+      .yields(null, oldPatient);
+    mocks.push(mock1);
+
+    return request(app)
+      .patch('/patient/' + oldPatient.key + '/soap/' + oldSoap.date)
+      .send({soap: newSoap})
+      .expect({status: false, error: "Soap sent is not up-to-date. Sync required."});
+  });
+});
+
+describe('Test GetTriage Routes', () => {
+  let mock = null;
+  afterEach(()=>{
+    if(mock){
+      mock.restore();
+    }
+  });
+  test('Should return triage if exists', ()=>{
+    const triage = {name: 'Triage'};
+    mock = sinon.mock(TriageModel)
+      .expects('findOne').withArgs({patientKey: 'keythatexists', date: 'datethatexists'})
+      .yields(null, triage);
+
+    return request(app).get('/patient/keythatexists/triage/datethatexists')
+      .expect({status: true, triage: triage});
+  });
+
+  test('should return error if no triage exists', () => {
+    mock = sinon.mock(TriageModel)
+      .expects('findOne').withArgs({patientKey: 'keythatdoesntexist', date: 'datethatexists'})
+      .yields(new Error("Patient with key keythatdoesntexist doesn't exist or patient didn't come in on datethatexists"), null);
+
+    return request(app).get('/patient/keythatdoesntexist/triage/datethatexists')
+      .expect({status: false, error: "Patient with key keythatdoesntexist doesn't exist or patient didn't come in on datethatexists"});
+  });
+});
+
+describe('Test UpdateSoap routes', () => {
+  let mocks = [];
+  afterEach(() => {
+    for(let i in mocks) {
+      mocks[i].restore();
+    }
+  });
+
+  test('should return success if successfully updates existing Triage', () => {
+    const oldTriage = {
+      patientKey: "OldKey",
+      date: "OldDate",
+      age: 00,
+      hasInsurance: false,
+      location: 'old', // Girasoles or TJP or somewhere else
+      arrivalTime: 0, // should match checkin time from Status
+          //make optional so don't have to deal with it for now
+      timeIn: '0',
+      timeOut: '1',
+      triager: 'old', // Name of triager
+      status: 'old', // EMT, Student, Nurse, Other
+      statusClarification: 'old', // If Other status, explain
+      weight: 0,
+      height: 0,
+      temp: 0,
+      rr: 0,
+      o2: 0,
+      bp: 'old',
+      hr: 0,
+      history: 'old',
+      allergies: 'old',
+      medications: 'old',
+      surgeries: 'old',
+      immunizations: 'old',
+      chiefComplaint: 'old',
+      pharmacySection: 'old',
+      //---IF FEMALE---
+      LMP: 'old',
+      regular: false,
+      pregnancies: 'old',
+      liveBirths: 'old',
+      abortions: 'old',
+      miscarriages: 'old',
+      //---END IF---
+      //---IF LABS DONE---
+      labsDone: false,
+      bgl: 'old',
+      a1c: 'old',
+      fasting: false,
+      pregnancyTest: false,
+      //--END IF---
+      //---IF URINE TEST---
+      urineTestDone: false,
+      leukocytes: 'old',
+      blood: 'old',
+      nitrites: 'old',
+      specificGravity: 'old',
+      urobilirubin: 'old',
+      ketone: 'old',
+      protein: 'old',
+      bilirubin: 'old',
+      ph: 'old',
+      glucose: 'old',
+      //---END IF---
+      lastUpdated: 0 // timestamp
+    };
+
+    const newTriage = Object.assign({}, oldTraige);
+    newTriage.lastUpdated = oldTriage.lastUpdated + 1;
+    newTriage.subjective = 'new';
 
     const oldPatient = {
       key: "Test&Last&20110101",

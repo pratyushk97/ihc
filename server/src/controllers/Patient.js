@@ -110,7 +110,7 @@ const PatientController = {
       if (!patientStatus) {
         err = new Error("Status of patient with key " + req.params.key + " for the date " + req.params.date + " does not exist");
       }
-  
+
       if (err) {
         res.json({status: false, error: err.message});
         return
@@ -249,7 +249,7 @@ const PatientController = {
       }
 
       // No soap exists yet, so add a new one
-      patient.soaps.push(req.body.soap);
+      patient.triage.push(req.body.triage);
       patient.save(function(err) {
         if(err) {
           res.json({status: false, error: err.message});
