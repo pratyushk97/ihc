@@ -1,12 +1,7 @@
 // This file should handle all the fetch() calls to the Express server
+// Requires Promises because dealing with server requests
 
-import Patient from '../models/Patient';
-import Status from '../models/Status';
-import Soap from '../models/Soap';
-import Triage from '../models/Triage';
-import DrugUpdate from '../models/DrugUpdate';
-import Settings from '../models/Settings';
-
+import config from '../config.json';
 // Must set the fetchUrl to the server's IP Address and Port
 const fetchUrl = config.fetchUrl;
 
@@ -120,7 +115,7 @@ export function getUpdatedPatients(lastSynced) {
     .then(response => response.json())
     .then(json => {
       const patients = json.patients;
-      return handleDownloadedPatients(patients, settings, realm);
+      return Promise.resolve(patients);
     }).catch(err => {
       return Promise.reject(err);
     });
