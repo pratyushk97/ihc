@@ -6,7 +6,7 @@ import {
   View,
 } from 'react-native';
 import { Col, Grid } from 'react-native-easy-grid';
-import data from '../services/DataService';
+import {localData} from '../services/DataService';
 import {formatDate} from '../util/Date';
 import {shortDate} from '../util/Date';
 
@@ -34,7 +34,7 @@ export default class PatientHistoryScreen extends Component<{}> {
 
   loadPatient = () => {
     this.setState({ loading: true });
-    data.getPatient(this.props.patientKey)
+    localData.getPatient(this.props.patientKey)
       .then( data => {
         this.setState({ patient: data, loading: false });
       })

@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   View
 } from 'react-native';
-import data from '../services/DataService';
+import {localData} from '../services/DataService';
 import MedicationTable  from '../components/MedicationTable';
 import {stringDate} from '../util/Date';
 
@@ -40,7 +40,7 @@ export default class MedicationScreen extends Component<{}> {
     const newUpdate = Object.assign({}, prevDrugUpdate);
     newUpdate.date = date;
 
-    data.createDrugUpdate(newUpdate)
+    localData.createDrugUpdate(newUpdate)
       .then( () => {
         this.loadMedications();
         this.setState({error: null});
@@ -81,7 +81,7 @@ export default class MedicationScreen extends Component<{}> {
 
   loadMedications = () => {
     this.setState({ loading: true });
-    data.getMedicationUpdates(this.props.patientKey)
+    localData.getMedicationUpdates(this.props.patientKey)
       .then( updates => {
         const dateToUpdates = {};
         const drugNames = new Set();
@@ -109,7 +109,7 @@ export default class MedicationScreen extends Component<{}> {
   }
 
   completed = () => {
-    data.updateStatus(this.props.patientKey, stringDate(new Date()),
+    localData.updateStatus(this.props.patientKey, stringDate(new Date()),
       'pharmacyCompleted', new Date().getTime())
       .then( () => {
         this.setState({

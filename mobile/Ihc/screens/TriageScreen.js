@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 var t = require('tcomb-form-native');
 var Form = t.form.Form;
-import data from '../services/DataService';
+import {localData} from '../services/DataService';
 import Triage from '../models/Triage';
 import {stringDate} from '../util/Date';
 
@@ -56,7 +56,7 @@ export default class TriageScreen extends Component<{}> {
   // to set the triage form correctly depending on gender
   loadPatient = () => {
     this.setState({ loading: true });
-    data.getPatient(this.props.patientKey)
+    localData.getPatient(this.props.patientKey)
       .then( data => {
         this.setState({
           gender: data.gender,
@@ -71,7 +71,7 @@ export default class TriageScreen extends Component<{}> {
   // Load existing Triage info if it exists
   loadFormValues = () => {
     this.setState({ loading: true });
-    data.getTriage(this.props.patientKey, this.state.todayDate)
+    localData.getTriage(this.props.patientKey, this.state.todayDate)
       .then( triage => {
         if (!triage) {
           this.setState({loading: false});
@@ -102,7 +102,7 @@ export default class TriageScreen extends Component<{}> {
   }
 
   completed = () => {
-    data.updateStatus(this.props.patientKey, this.state.todayDate,
+    localData.updateStatus(this.props.patientKey, this.state.todayDate,
       'triageCompleted', new Date().getTime())
       .then( () => {
         this.setState({
@@ -123,7 +123,7 @@ export default class TriageScreen extends Component<{}> {
     const form = this.refs.form.getValue();
     const triage = Triage.extractFromForm(form, this.props.patientKey);
 
-    data.updateTriage(triage)
+    localData.updateTriage(triage)
       .then( () => {
         this.setState({
           successMsg: 'Triage updated successfully',

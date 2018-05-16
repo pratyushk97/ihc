@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   View
 } from 'react-native';
-import data from '../services/DataService';
+import {localData} from '../services/DataService';
 import PatientTable, {tableStyles} from '../components/PatientTable';
 import {shortDate} from '../util/Date';
 
@@ -26,7 +26,7 @@ export default class PatientSelectScreen extends Component<{}> {
 
   loadPatients = () => {
     this.setState({ loading: true });
-    data.getPatientSelectRows()
+    localData.getPatientSelectRows()
       .then( data => {
         this.setState({ rows: data, loading: false });
       })

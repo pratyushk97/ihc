@@ -10,8 +10,10 @@ import {
 import {formatDate} from '../util/Date';
 var t = require('tcomb-form-native');
 var Form = t.form.Form;
-import data from '../services/DataService';
+
+import {localData} from '../services/DataService';
 import Patient from '../models/Patient';
+import Loading from '../components/Loading';
 
 export default class SigninScreen extends Component<{}> {
   constructor(props) {
@@ -84,7 +86,7 @@ export default class SigninScreen extends Component<{}> {
 
     if(form.newPatient) {
       const patient = Patient.extractFromForm(form);
-      data.createPatient(patient)
+      localData.createPatient(patient)
         .then( () => {
           this.setState({
             // Clear form, reset to Signin form
@@ -100,7 +102,7 @@ export default class SigninScreen extends Component<{}> {
         });
     } else {
       const patient = Patient.extractFromForm(form);
-      data.signinPatient(patient)
+      localData.signinPatient(patient)
         .then( () => {
           this.setState({
             // Clear form, reset to Signin form
@@ -125,9 +127,7 @@ export default class SigninScreen extends Component<{}> {
           <Text style={styles.title}>
             Signin
           </Text>
-          <Text>Loading...</Text>
-          <ActivityIndicator size="large" />
-          <Text>Dont leave this screen until loading has completed.</Text>
+          <Loading />
         </ScrollView>
       );
     }

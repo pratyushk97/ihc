@@ -5,7 +5,8 @@ import {
   Text,
   View
 } from 'react-native';
-import data from '../services/DataService';
+import {localData, serverData} from '../services/DataService';
+import Loading from '../components/Loading';
 
 export default class WelcomeScreen extends Component<{}> {
   constructor(props) {
@@ -29,7 +30,8 @@ export default class WelcomeScreen extends Component<{}> {
 
   upload = () => {
     this.setState({loading: true});
-    data.uploadUpdates()
+    const patients = localData.getPatientsToUpload();
+    serverData.updatePatients(patients)
       .then(() => {
         this.setState({loading: false});
       })
@@ -40,8 +42,10 @@ export default class WelcomeScreen extends Component<{}> {
 
   download = () => {
     this.setState({loading: true});
-    data.downloadUpdates()
-      .then(() => {
+    const lastSynced = localData.lastSynced();
+    serverData.getUpdatedPatients(lastSynced)
+      .then((patients) => {
+        localData.handleDownloadedPatients(patients);
         this.setState({loading: false});
       })
       .catch(err => {
@@ -52,9 +56,7 @@ export default class WelcomeScreen extends Component<{}> {
   render() {
     if(this.state.loading) {
       return (
-        <View style={styles.container}>
-          <Text>Loading...</Text>
-        </View>
+        <Loading />
       );
     }
 
@@ -75,6 +77,10 @@ export default class WelcomeScreen extends Component<{}> {
         <Button onPress={this.download}
           title="Download updates"
         />
+
+        <Text style={styles.error}>
+          {this.state.error}
+        </Text>
       </View>
     );
   }
@@ -91,5 +97,10 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: 'center',
     margin: 10,
-  }
+  },
+  error: {
+    textAlign: 'center',
+    color: 'red',
+    margin: 10,
+  },
 });

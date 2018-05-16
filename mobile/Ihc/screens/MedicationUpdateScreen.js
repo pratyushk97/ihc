@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 var t = require('tcomb-form-native');
 var Form = t.form.Form;
-import data from '../services/DataService';
+import {localData} from '../services/DataService';
 import DrugUpdate from '../models/DrugUpdate';
 
 export default class MedicationUpdateScreen extends Component<{}> {
@@ -54,7 +54,7 @@ export default class MedicationUpdateScreen extends Component<{}> {
 
     const update = DrugUpdate.extractFromForm(form, this.props.patientKey);
 
-    data.createDrugUpdate(update)
+    localData.createDrugUpdate(update)
       .then( () => {
         // Go back to previous page
         this.props.navigator.pop();

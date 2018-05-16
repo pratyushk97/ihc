@@ -9,7 +9,7 @@ import {
 var t = require('tcomb-form-native');
 var Form = t.form.Form;
 
-import data from '../services/DataService';
+import {localData} from '../services/DataService';
 import Soap from '../models/Soap';
 import {stringDate} from '../util/Date';
 
@@ -68,7 +68,7 @@ export default class SoapScreen extends Component<{}> {
   // Load existing SOAP info if it exists
   loadFormValues = () => {
     this.setState({ loading: true });
-    data.getSoap(this.props.patientKey, this.state.todayDate)
+    localData.getSoap(this.props.patientKey, this.state.todayDate)
       .then( soap => {
         if (!soap) {
           this.setState({loading: false});
@@ -90,7 +90,7 @@ export default class SoapScreen extends Component<{}> {
   }
 
   completed = () => {
-    data.updateStatus(this.props.patientKey, this.state.todayDate,
+    localData.updateStatus(this.props.patientKey, this.state.todayDate,
       'doctorCompleted', new Date().getTime())
       .then( () => {
         this.setState({
@@ -111,7 +111,7 @@ export default class SoapScreen extends Component<{}> {
     const form = this.refs.form.getValue();
     const soap = Soap.extractFromForm(form, this.props.patientKey);
 
-    data.updateSoap(soap)
+    localData.updateSoap(soap)
       .then( () => {
         this.setState({
           successMsg: 'SOAP updated successfully',
