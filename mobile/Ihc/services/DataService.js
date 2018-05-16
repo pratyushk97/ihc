@@ -10,8 +10,12 @@ import * as serverDataService from '../services/ServerDataService';
 
 import config from '../config.json';
 
-// Use the Fakes in tests, but should probably use stubs for the tests instead
-// anyway
+// Dont use the Fakes in tests, so that we can test the LocalDataService itself,
+// but should stub out its methods for the other tests
+let localData = (config.fakeDataServices === 'true') ? fakeLocalData : localDataService;
+let serverData = (config.fakeDataServices === 'true') ? fakeServerData : serverDataService;
+/*
 let localData = (config.fakeDataServices === 'true' || global.__TEST__) ? fakeLocalData : localDataService;
 let serverData = (config.fakeDataServices === 'true' || global.__TEST__) ? fakeServerData : serverDataService;
+*/
 export {localData, serverData}

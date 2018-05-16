@@ -233,6 +233,13 @@ export function lastSynced() {
   return settings ? settings.lastSynced : 0;
 }
 
+// TODO UPDATE RETURN VAL maybe be object? 
+/* {
+    ignoredPatientKeys: [],
+    <something else to be returned for failed individual forms?>: []
+   }
+ */
+
 /**
  * Returns array of patientKeys that failed to download.
  * No key is added if incomingPatient is ignored because it is older
