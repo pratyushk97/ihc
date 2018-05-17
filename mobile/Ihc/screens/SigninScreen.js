@@ -10,7 +10,7 @@ import {formatDate} from '../util/Date';
 var t = require('tcomb-form-native');
 var Form = t.form.Form;
 
-import {localData} from '../services/DataService';
+import {localData, serverData} from '../services/DataService';
 import Patient from '../models/Patient';
 import Loading from '../components/Loading';
 
@@ -21,7 +21,7 @@ export default class SigninScreen extends Component<{}> {
       formValues: {newPatient: false},
       formType: this.Signin,
       successMsg: null,
-      error: null,
+      errorMsg: null,
       loading: false
     };
   }
@@ -70,10 +70,8 @@ export default class SigninScreen extends Component<{}> {
 
   // If new patient button is clicked, then show extra fields
   onFormChange = (value) => {
-    if(value.newPatient !== this.state.formValues.newPatient) {
-      const type = value.newPatient ? this.NewPatient : this.Signin;
-      this.setState({ formValues: value, formType: type });
-    }
+    const type = value.newPatient ? this.NewPatient : this.Signin;
+    this.setState({ formValues: value, formType: type });
   }
 
   submit = () => {
@@ -82,44 +80,75 @@ export default class SigninScreen extends Component<{}> {
     }
     this.setState({loading: true});
     const form = this.refs.form.getValue();
+    const patient = Patient.extractFromForm(form);
 
     if(form.newPatient) {
-      const patient = Patient.extractFromForm(form);
       try {
+        // Create patient should also add a new status object to the patient
+        // that should propogate to the server call
         localData.createPatient(patient);
       } catch(e) {
-        this.setState({error: e.message, successMsg: null, loading: false});
+        this.setState({errorMsg: e.message, successMsg: null, loading: false});
         return;
       }
 
-      this.setState({
-        // Clear form, reset to Signin form
-        formValues: {newPatient: false},
-        formType: this.Signin,
-        successMsg: `${patient.firstName} added successfully`,
-        error: null,
-        loading: false
-      });
+      serverData.createPatient(patient)
+        .then( () => {
+          this.setState({
+            // Clear form, reset to Signin form
+            formValues: {newPatient: false},
+            formType: this.Signin,
+            successMsg: `${patient.firstName} added successfully`,
+            errorMsg: null,
+            loading: false
+          });
+        })
+        .catch( (e) => {
+          // If server update fails, mark the patient as need to upload
+          // and give a message to syncronize with UploadUpdates
+          this.setState({
+            errorMsg: `${e.message}. Try to UploadUpdates`,
+            successMsg: null,
+            loading: false
+          });
 
-    } else {
-      const patient = Patient.extractFromForm(form);
-      try {
-        localData.signinPatient(patient);
-      } catch(e) {
-        this.setState({formValues: form, error: e.message, successMsg: null,
-          loading: false});
-        return;
-      }
+          localData.markPatientNeedToUpload(patient.key);
+        });
 
-      this.setState({
-        // Clear form, reset to Signin form
-        formValues: {newPatient: false},
-        formType: this.Signin,
-        successMsg: `${patient.firstName} signed in successfully`,
-        error: null,
-        loading: false
-      });
+      return;
     }
+
+    // If not a new patient
+    let statusObj = {};
+    try {
+      statusObj = localData.signinPatient(patient);
+    } catch(e) {
+      this.setState({errorMsg: e.message, successMsg: null, loading: false});
+      return;
+    }
+
+    serverData.updateStatus(statusObj)
+      .then( () => {
+        this.setState({
+          // Clear form, reset to Signin form
+          formValues: {newPatient: false},
+          formType: this.Signin,
+          successMsg: `${patient.firstName} signed in successfully`,
+          errorMsg: null,
+          loading: false
+        });
+      })
+      .catch( (e) => {
+        // If server update fails, mark the patient as need to upload
+        // and give a message to syncronize with UploadUpdates
+        this.setState({
+          errorMsg: `${e.message}. Try to UploadUpdates`,
+          successMsg: null,
+          loading: false
+        });
+
+        localData.markPatientNeedToUpload(patient.key);
+      });
   }
 
   render() {
@@ -148,7 +177,7 @@ export default class SigninScreen extends Component<{}> {
           />
 
           <Text style={styles.error}>
-            {this.state.error}
+            {this.state.errorMsg}
           </Text>
 
           <Button onPress={this.submit}

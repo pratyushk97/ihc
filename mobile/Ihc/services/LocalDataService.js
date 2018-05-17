@@ -43,6 +43,7 @@ export function createPatient(patient) {
 }
 
 // Check that patient exists locally, and if so then create a status object for them
+// Returns the new StatusObj created
 export function signinPatient(patientForm) {
   const key = Patient.makeKey(patientForm);
   const patientObjs = realm.objects('Patient').filtered('key = "' + key + '"');
@@ -69,6 +70,8 @@ export function signinPatient(patientForm) {
   realm.write(() => {
     patient.statuses.push(statusObj);
   });
+
+  return statusObj;
 }
 
 // Update a single field for a Status object, particularly the _Completed fields

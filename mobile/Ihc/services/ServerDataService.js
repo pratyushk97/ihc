@@ -31,8 +31,8 @@ export function createPatient(patient) {
 }
 
 // Server endpoint: put /patient/:key/status/:date
-export function updateStatus(statusObj, patientKey) {
-  return fetch(fetchUrl + `/patient/${patientKey}/status/${statusObj.date}`, {
+export function updateStatus(statusObj) {
+  return fetch(fetchUrl + `/patient/${statusObj.patientKey}/status/${statusObj.date}`, {
     method: 'PUT',
     headers: {
       Accept: 'application/json',
