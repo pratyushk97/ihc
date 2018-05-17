@@ -54,14 +54,12 @@ export default class MedicationUpdateScreen extends Component<{}> {
 
     const update = DrugUpdate.extractFromForm(form, this.props.patientKey);
 
-    localData.createDrugUpdate(update)
-      .then( () => {
-        // Go back to previous page
-        this.props.navigator.pop();
-      })
-      .catch( (e) => {
-        this.setState({error: e.message});
-      });
+    try {
+      localData.createDrugUpdate(update);
+      this.props.navigator.pop();
+    } catch(e) {
+      this.setState({error: e.message});
+    }
   }
 
   render() {

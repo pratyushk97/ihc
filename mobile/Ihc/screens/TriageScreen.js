@@ -56,37 +56,32 @@ export default class TriageScreen extends Component<{}> {
   // to set the triage form correctly depending on gender
   loadPatient = () => {
     this.setState({ loading: true });
-    localData.getPatient(this.props.patientKey)
-      .then( data => {
-        this.setState({
-          gender: data.gender,
-          loading: false
-        });
-      })
-      .catch(err => {
-        this.setState({ error: err.message, loading: false });
+    try {
+      const patient = localData.getPatient(this.props.patientKey);
+      this.setState({
+        gender: patient.gender,
+        loading: false
       });
+    } catch(err) {
+      this.setState({ error: err.message, loading: false });
+      return;
+    }
   }
 
   // Load existing Triage info if it exists
   loadFormValues = () => {
     this.setState({ loading: true });
-    localData.getTriage(this.props.patientKey, this.state.todayDate)
-      .then( triage => {
-        if (!triage) {
-          this.setState({loading: false});
-          return;
-        }
+    const triage = localData.getTriage(this.props.patientKey, this.state.todayDate);
+    if (!triage) {
+      this.setState({loading: false});
+      return;
+    }
 
-        this.setState({
-          formType: Triage.getFormType(triage, this.state.gender),
-          formValues: triage,
-          loading: false,
-        });
-      })
-      .catch(err => {
-        this.setState({ error: err.message, loading: false });
-      });
+    this.setState({
+      formType: Triage.getFormType(triage, this.state.gender),
+      formValues: triage,
+      loading: false,
+    });
   }
 
   componentDidMount() {
@@ -102,17 +97,18 @@ export default class TriageScreen extends Component<{}> {
   }
 
   completed = () => {
-    localData.updateStatus(this.props.patientKey, this.state.todayDate,
-      'triageCompleted', new Date().getTime())
-      .then( () => {
-        this.setState({
-          successMsg: 'Triage marked as completed, but not yet submitted',
-          error: null
-        });
-      })
-      .catch( (e) => {
-        this.setState({error: e.message, successMsg: null});
-      });
+    try {
+      localData.updateStatus(this.props.patientKey, this.state.todayDate,
+        'triageCompleted', new Date().getTime());
+    } catch(e) {
+      this.setState({error: e.message, successMsg: null});
+      return;
+    }
+
+    this.setState({
+      successMsg: 'Triage marked as completed, but not yet submitted',
+      error: null
+    });
   }
 
   submit = () => {
@@ -123,16 +119,17 @@ export default class TriageScreen extends Component<{}> {
     const form = this.refs.form.getValue();
     const triage = Triage.extractFromForm(form, this.props.patientKey);
 
-    localData.updateTriage(triage)
-      .then( () => {
-        this.setState({
-          successMsg: 'Triage updated successfully',
-          error: null
-        });
-      })
-      .catch( (e) => {
-        this.setState({error: e.message, successMsg: null});
-      });
+    try {
+      localData.updateTriage(triage);
+    } catch(e) {
+      this.setState({error: e.message, successMsg: null});
+      return;
+    }
+
+    this.setState({
+      successMsg: 'Triage updated successfully',
+      error: null
+    });
   }
 
   render() {

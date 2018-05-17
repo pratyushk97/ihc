@@ -1,4 +1,4 @@
-import data from '../services/DataService';
+import {localData} from '../services/DataService';
 import React, { Component } from 'react';
 import {
   StyleSheet,
@@ -44,26 +44,28 @@ export default class GrowthChartScreen extends Component<{}> {
 
   loadPatient = () => {
     this.setState({ loading: true });
-    data.getPatient(this.props.patientKey)
-      .then( patient => {
-        let weightData, heightData;
-        if (patient.isMale) {
-          weightData = this.extractData(boysWeightData);
-          heightData = this.extractData(boysHeightData);
-        } else {
-          weightData = this.extractData(girlsWeightData);
-          heightData = this.extractData(girlsHeightData);
-        }
-        
-        const growthChartData = patient.growthChartData;
-        weightData.push({ color: 'black', unit: '%', values: growthChartData.weights});
-        heightData.push({ color: 'black', unit: '%', values: growthChartData.heights});
-        this.setState({patient: patient, weightData: weightData, heightData: heightData,
-          error: null, loading: false});
-      })
-      .catch(err => {
-        this.setState({ error: err.message, loading: false });
-      });
+    let patient = {};
+    try {
+      patient = localData.getPatient(this.props.patientKey);
+    } catch(err) {
+      this.setState({ error: err.message, loading: false });
+      return;
+    }
+
+    let weightData, heightData;
+    if (patient.isMale) {
+      weightData = this.extractData(boysWeightData);
+      heightData = this.extractData(boysHeightData);
+    } else {
+      weightData = this.extractData(girlsWeightData);
+      heightData = this.extractData(girlsHeightData);
+    }
+    
+    const growthChartData = patient.growthChartData;
+    weightData.push({ color: 'black', unit: '%', values: growthChartData.weights});
+    heightData.push({ color: 'black', unit: '%', values: growthChartData.heights});
+    this.setState({patient: patient, weightData: weightData, heightData: heightData,
+      error: null, loading: false});
   }
 
   componentDidMount() {

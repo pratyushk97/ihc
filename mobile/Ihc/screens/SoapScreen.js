@@ -68,21 +68,16 @@ export default class SoapScreen extends Component<{}> {
   // Load existing SOAP info if it exists
   loadFormValues = () => {
     this.setState({ loading: true });
-    localData.getSoap(this.props.patientKey, this.state.todayDate)
-      .then( soap => {
-        if (!soap) {
-          this.setState({loading: false});
-          return;
-        }
+    const soap = localData.getSoap(this.props.patientKey, this.state.todayDate);
+    if (!soap) {
+      this.setState({loading: false});
+      return;
+    }
 
-        this.setState({
-          formValues: soap,
-          loading: false
-        });
-      })
-      .catch(err => {
-        this.setState({ error: err.message, loading: false });
-      });
+    this.setState({
+      formValues: soap,
+      loading: false
+    });
   }
 
   componentDidMount() {
@@ -90,17 +85,18 @@ export default class SoapScreen extends Component<{}> {
   }
 
   completed = () => {
-    localData.updateStatus(this.props.patientKey, this.state.todayDate,
-      'doctorCompleted', new Date().getTime())
-      .then( () => {
-        this.setState({
-          successMsg: 'Soap marked as completed, but not yet submitted',
-          error: null
-        });
-      })
-      .catch( (e) => {
-        this.setState({error: e.message, successMsg: null});
-      });
+    try {
+      localData.updateStatus(this.props.patientKey, this.state.todayDate,
+        'doctorCompleted', new Date().getTime());
+    } catch(e) {
+      this.setState({error: e.message, successMsg: null});
+      return;
+    }
+
+    this.setState({
+      successMsg: 'Soap marked as completed, but not yet submitted',
+      error: null
+    });
   }
 
   submit = () => {
@@ -111,16 +107,17 @@ export default class SoapScreen extends Component<{}> {
     const form = this.refs.form.getValue();
     const soap = Soap.extractFromForm(form, this.props.patientKey);
 
-    localData.updateSoap(soap)
-      .then( () => {
-        this.setState({
-          successMsg: 'SOAP updated successfully',
-          error: null
-        });
-      })
-      .catch( (e) => {
-        this.setState({error: e.message, successMsg: null});
-      });
+    try {
+      localData.updateSoap(soap);
+    } catch(e) {
+      this.setState({error: e.message, successMsg: null});
+      return;
+    }
+
+    this.setState({
+      successMsg: 'SOAP updated successfully',
+      error: null
+    });
   }
 
   // Need this to update formValues so that after clicking completed button,

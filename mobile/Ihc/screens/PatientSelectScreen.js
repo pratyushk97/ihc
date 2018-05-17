@@ -26,13 +26,8 @@ export default class PatientSelectScreen extends Component<{}> {
 
   loadPatients = () => {
     this.setState({ loading: true });
-    localData.getPatientSelectRows()
-      .then( data => {
-        this.setState({ rows: data, loading: false });
-      })
-      .catch(err => {
-        this.setState({ error: err.message, loading: false });
-      });
+    const data = localData.getPatientSelectRows();
+    this.setState({ rows: data, loading: false });
   }
 
   // Reload table after moving back to table

@@ -34,13 +34,12 @@ export default class PatientHistoryScreen extends Component<{}> {
 
   loadPatient = () => {
     this.setState({ loading: true });
-    localData.getPatient(this.props.patientKey)
-      .then( data => {
-        this.setState({ patient: data, loading: false });
-      })
-      .catch( err => {
-        this.setState({ error: err.message, loading: false });
-      });
+    try {
+      const patient = localData.getPatient(this.props.patientKey);
+      this.setState({ patient: patient, loading: false });
+    } catch(err) {
+      this.setState({ error: err.message, loading: false });
+    }
   }
 
   componentDidMount() {

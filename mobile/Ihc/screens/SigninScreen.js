@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import {
-  ActivityIndicator,
   StyleSheet,
   Button,
   Text,
@@ -86,37 +85,40 @@ export default class SigninScreen extends Component<{}> {
 
     if(form.newPatient) {
       const patient = Patient.extractFromForm(form);
-      localData.createPatient(patient)
-        .then( () => {
-          this.setState({
-            // Clear form, reset to Signin form
-            formValues: {newPatient: false},
-            formType: this.Signin,
-            successMsg: `${patient.firstName} added successfully`,
-            error: null,
-            loading: false
-          });
-        })
-        .catch( (e) => {
-          this.setState({error: e.message, successMsg: null, loading: false});
-        });
+      try {
+        localData.createPatient(patient);
+      } catch(e) {
+        this.setState({error: e.message, successMsg: null, loading: false});
+        return;
+      }
+
+      this.setState({
+        // Clear form, reset to Signin form
+        formValues: {newPatient: false},
+        formType: this.Signin,
+        successMsg: `${patient.firstName} added successfully`,
+        error: null,
+        loading: false
+      });
+
     } else {
       const patient = Patient.extractFromForm(form);
-      localData.signinPatient(patient)
-        .then( () => {
-          this.setState({
-            // Clear form, reset to Signin form
-            formValues: {newPatient: false},
-            formType: this.Signin,
-            successMsg: `${patient.firstName} signed in successfully`,
-            error: null,
-            loading: false
-          });
-        })
-        .catch( (e) => {
-          this.setState({formValues: form, error: e.message, successMsg: null,
-            loading: false});
-        });
+      try {
+        localData.signinPatient(patient);
+      } catch(e) {
+        this.setState({formValues: form, error: e.message, successMsg: null,
+          loading: false});
+        return;
+      }
+
+      this.setState({
+        // Clear form, reset to Signin form
+        formValues: {newPatient: false},
+        formType: this.Signin,
+        successMsg: `${patient.firstName} signed in successfully`,
+        error: null,
+        loading: false
+      });
     }
   }
 

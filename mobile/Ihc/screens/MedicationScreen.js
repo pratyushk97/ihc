@@ -40,14 +40,13 @@ export default class MedicationScreen extends Component<{}> {
     const newUpdate = Object.assign({}, prevDrugUpdate);
     newUpdate.date = date;
 
-    localData.createDrugUpdate(newUpdate)
-      .then( () => {
-        this.loadMedications();
-        this.setState({error: null});
-      })
-      .catch( (e) => {
-        this.setState({error: e.message});
-      });
+    try {
+      localData.createDrugUpdate(newUpdate);
+      this.loadMedications();
+      this.setState({error: null});
+    } catch(e) {
+      this.setState({error: e.message});
+    }
   }
 
   changeMedication = (prevDrugUpdate) => {
@@ -81,27 +80,22 @@ export default class MedicationScreen extends Component<{}> {
 
   loadMedications = () => {
     this.setState({ loading: true });
-    localData.getMedicationUpdates(this.props.patientKey)
-      .then( updates => {
-        const dateToUpdates = {};
-        const drugNames = new Set();
+    const updates = localData.getMedicationUpdates(this.props.patientKey);
+    const dateToUpdates = {};
+    const drugNames = new Set();
 
-        updates.forEach( (update) => {
-          if(update.date in dateToUpdates) {
-            dateToUpdates[update.date].push(update);
-          } else{
-            dateToUpdates[update.date] = [update];
-          }
+    updates.forEach( (update) => {
+      if(update.date in dateToUpdates) {
+        dateToUpdates[update.date].push(update);
+      } else{
+        dateToUpdates[update.date] = [update];
+      }
 
-          drugNames.add(update.name);
-        });
+      drugNames.add(update.name);
+    });
 
-        this.setState({updates: updates, dateToUpdates: dateToUpdates,
-          drugNames: drugNames, loading: false});
-      })
-      .catch(err => {
-        this.setState({ error: err.message, loading: false });
-      });
+    this.setState({updates: updates, dateToUpdates: dateToUpdates,
+      drugNames: drugNames, loading: false});
   }
 
   componentDidMount() {
@@ -109,18 +103,16 @@ export default class MedicationScreen extends Component<{}> {
   }
 
   completed = () => {
-    localData.updateStatus(this.props.patientKey, stringDate(new Date()),
-      'pharmacyCompleted', new Date().getTime())
-      .then( () => {
-        this.setState({
-          successMsg: 'Pharmacy marked as completed',
-          error: null
-        });
-      })
-      .catch( () => {
-        this.setState({error: 'No status exists for today. Should not need to' +
-          'mark as completed.', successMsg: null});
+    try {
+      localData.updateStatus(this.props.patientKey, stringDate(new Date()),
+        'pharmacyCompleted', new Date().getTime());
+      this.setState({
+        successMsg: 'Pharmacy marked as completed',
+        error: null
       });
+    } catch(e) {
+      this.setState({error: e.message, successMsg: null});
+    }
   }
 
   render() {
