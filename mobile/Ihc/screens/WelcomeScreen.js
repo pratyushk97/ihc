@@ -33,6 +33,7 @@ export default class WelcomeScreen extends Component<{}> {
     const patients = localData.getPatientsToUpload();
     serverData.updatePatients(patients)
       .then(() => {
+        localData.markPatientsUploaded();
         this.setState({loading: false});
       })
       .catch(err => {
@@ -43,6 +44,7 @@ export default class WelcomeScreen extends Component<{}> {
   download = () => {
     this.setState({loading: true});
     const lastSynced = localData.lastSynced();
+
     serverData.getUpdatedPatients(lastSynced)
       .then((patients) => {
         localData.handleDownloadedPatients(patients);

@@ -237,10 +237,35 @@ export function lastSynced() {
   return settings ? settings.lastSynced : 0;
 }
 
+// When updates or creates fail to propogate to the server-side, then mark the
+// patient so they can be uploaded in the future
+export function markPatientNeedToUpload(patientKey) {
+  const patient = realm.objects('Patient').filtered(`key=${patientKey}`);
+  if(!patient) {
+    throw new Error('Patient does not exist with key ' + patientKey);
+  }
+
+  realm.write(() => {
+    patient.needToUpload = true;
+  });
+}
+
+// After uploading, then these patients don't have to be marked as needing to
+// upload
+export function markPatientsUploaded() {
+  const patients = realm.objects('Patient').filtered('needToUpload = true');
+  realm.write(() => {
+    patients.forEach(patient => {
+      patient.needToUpload = false;
+    });
+  });
+}
+
 // TODO UPDATE RETURN VAL maybe be object? 
 /* {
     ignoredPatientKeys: [],
     <something else to be returned for failed individual forms?>: []
+    countSuccessfullPatients: int
    }
  */
 
@@ -248,6 +273,7 @@ export function lastSynced() {
  * Returns array of patientKeys that failed to download.
  * No key is added if incomingPatient is ignored because it is older
  * than existingPatient
+ * Also updates the Settings.lastSynced object field
  */
 export function handleDownloadedPatients(patients) {
   const fails = new Set();
@@ -262,11 +288,7 @@ export function handleDownloadedPatients(patients) {
     }
 
     if (incomingPatient.lastUpdated <= existingPatient.lastUpdated) {
-      // Don't need to update
-      // TODO: If incomingPatient.lastUpdated < existingPatient.lastUpdated, then
-      // probably means this tablet didn't send their updates to the server...
-      // Send some kind of message?
-      return;
+      throw new Error('Received a patient that is out-of-date. Did you upload updates yet?');
     }
 
     // TODO update existing Patient object itself in case changes were made
