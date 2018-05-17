@@ -24,12 +24,51 @@ exports[`renders correctly 1`] = `
   >
     Previous Visits
   </Text>
-  <Text
-    accessible={true}
-    allowFontScaling={true}
-    ellipsizeMode="tail"
+  <View
+    style={
+      Object {
+        "alignItems": "center",
+        "flex": 1,
+        "maxWidth": "80%",
+      }
+    }
   >
-    Loading...
-  </Text>
+    <View
+      style={
+        Object {
+          "flex": 1,
+          "flexDirection": "row",
+        }
+      }
+    >
+      <View
+        style={
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "flexDirection": "column",
+          }
+        }
+      />
+      <View
+        style={
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "flexDirection": "column",
+          }
+        }
+      />
+      <View
+        style={
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "flexDirection": "column",
+          }
+        }
+      />
+    </View>
+  </View>
 </View>
 `;

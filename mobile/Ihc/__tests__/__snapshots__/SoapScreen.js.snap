@@ -186,7 +186,7 @@ exports[`renders correctly 1`] = `
                 }
               }
               underlineColorAndroid="transparent"
-              value=""
+              value="subjective"
             />
           </View>
         </View>
@@ -262,7 +262,7 @@ exports[`renders correctly 1`] = `
                 }
               }
               underlineColorAndroid="transparent"
-              value=""
+              value="objective"
             />
           </View>
         </View>
@@ -338,7 +338,7 @@ exports[`renders correctly 1`] = `
                 }
               }
               underlineColorAndroid="transparent"
-              value=""
+              value="assessment"
             />
           </View>
         </View>
@@ -414,7 +414,7 @@ exports[`renders correctly 1`] = `
                 }
               }
               underlineColorAndroid="transparent"
-              value=""
+              value="plan"
             />
           </View>
         </View>
@@ -490,7 +490,7 @@ exports[`renders correctly 1`] = `
                 }
               }
               underlineColorAndroid="transparent"
-              value=""
+              value="wishlist"
             />
           </View>
         </View>
@@ -566,7 +566,7 @@ exports[`renders correctly 1`] = `
                 }
               }
               underlineColorAndroid="transparent"
-              value=""
+              value="doc"
             />
           </View>
         </View>
