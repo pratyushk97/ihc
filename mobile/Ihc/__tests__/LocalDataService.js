@@ -219,9 +219,11 @@ describe('Download updates', () => {
 
     const fails = localData.handleDownloadedPatients([incomingPatient]);
     expect(mockWrite).toHaveBeenCalled();
-    expect(mockCreate).toHaveBeenCalledWith('Settings', {lastSynced: now});
     expect(existingPatient).not.toEqual(incomingPatient);
     expect(fails).toEqual([incomingPatient.key]);
+    // If didn't successfully update everything, then shouldn't update
+    // lastSynced
+    expect(mockCreate).not.toHaveBeenCalledWith('Settings', {lastSynced: now});
   });
 
   it('should not update 1 older patient with outdated SOAP when no prior settings exists', () => {
@@ -253,19 +255,27 @@ describe('Download updates', () => {
 
     sinon.useFakeTimers(now);
 
-    const fails = localData.handleDownloadedPatients([incomingPatient]);
-    expect(fails).toEqual([]);
-    expect(mockWrite).toHaveBeenCalled();
-    expect(mockCreate).toHaveBeenCalledWith('Settings', {lastSynced: now});
-    expect(existingPatient).not.toEqual(incomingPatient);
+    try {
+      localData.handleDownloadedPatients([incomingPatient]);
+      expect(true).toEqual(false); // Should throw exception when getting an older patient
+    } catch (e) {
+      expect(existingPatient).not.toEqual(incomingPatient);
+    }
   });
 
-  it('handles 3 newer patients and 2 older patient with multiple new DrugUpdates when a prior settings exists', () => {
+  it('handles 5 patients with multiple DrugUpdates when a prior settings exists, but 2 of the patients receive an outdated drug update', () => {
     const now = 1000;
+    sinon.useFakeTimers(now);
+
     // 500 and 800 should not be updated because it is not more recent than 800
-    const existingPatients = [850, 900, 950, 500, 800].map( timestamp => { 
+    const existingPatients = [850, 900, 950, 500, 600].map( timestamp => {
       const p = Patient.getInstance();
       p.key = "key&" + timestamp;
+
+      const d = DrugUpdate.getInstance();
+      d.frequency = "Updated freq";
+      d.lastUpdated = 800;
+      p.medications = [d];
 
       // Incoming patients should be updated if they have been updated more
       // recently than 800
@@ -273,10 +283,9 @@ describe('Download updates', () => {
       return p;
     });
 
-    const incomingPatients = [850, 900, 950, 500, 800].map( timestamp => { 
+    const incomingPatients = [850, 900, 950, 500, 600].map( timestamp => {
       const p = Patient.getInstance();
       p.key = "key&" + timestamp;
-      p.lastUpdated = timestamp;
 
       const d = DrugUpdate.getInstance();
       d.frequency = "Updated freq";
@@ -314,13 +323,12 @@ describe('Download updates', () => {
       }
     });
 
-    sinon.useFakeTimers(now);
-
     const fails = localData.handleDownloadedPatients(incomingPatients);
-    expect(fails).toEqual([]);
+    expect(fails).toEqual(['key&500', 'key&600']);
     expect(mockWrite).toHaveBeenCalled();
     expect(mockCreate).not.toHaveBeenCalledWith('Settings', {lastSynced: now});
-    expect(settings.lastSynced).toEqual(now);
     expect(existingPatients).toEqual(expectedPatients);
+    // lastSynced should not update because there are fails
+    expect(settings.lastSynced).toEqual(100);
   });
 });

@@ -149,11 +149,13 @@ export function updateSoap(update) {
       properties.forEach( p => {
         soap[p] = update[p];
       });
-      soap.lastUpdated = new Date().getTime();
+      patient.lastUpdated = timestamp;
+      return;
     }
 
     // If doesn't exist, then add it
     patient.soaps.push(update);
+    patient.lastUpdated = timestamp;
   });
 }
 
@@ -187,11 +189,13 @@ export function updateTriage(update) {
       properties.forEach( p => {
         triage[p] = update[p];
       });
-      triage.lastUpdated = new Date().getTime();
+      patient.lastUpdated = timestamp;
+      return;
     }
 
     // If doesn't exist, then add it
     patient.triages.push(update);
+    patient.lastUpdated = timestamp;
   });
 }
 
@@ -313,10 +317,19 @@ export function handleDownloadedPatients(patients) {
 
     // Update that patient's updated timestamp
     realm.write(() => {
-      existingPatient.lastUpdated = incomingPatient.lastUpdated;
+      // If patient finished updating successfully
+      if(!fails.has(incomingPatient.key)) {
+        existingPatient.lastUpdated = incomingPatient.lastUpdated;
+      }
     });
   });
 
+  // TODO: Maybe throw an error asking if they upladed updates yet?
+  if(fails.size) {
+    return Array.from(fails);
+  }
+
+  // If finished updating everything successfully, then update synced info
   const settings = realm.objects('Settings')['0'];
   realm.write(() => {
     if(!settings) {
@@ -325,8 +338,7 @@ export function handleDownloadedPatients(patients) {
     }
     settings.lastSynced = new Date().getTime();
   });
-
-  return Array.from(fails);
+  return [];
 }
 
 /**
@@ -345,27 +357,24 @@ function updateObject(existingPatient, type, incomingObject) {
       return incomingObject.date === obj.date;
     });
   }
-  try {
-    // If old object doesn't exist, then just add the new object to the patient
-    if(!existingObject) {
-      realm.write(() => {
-        existingPatient[type].push(incomingObject);
-      });
-      return true;
-    }
 
-    if(incomingObject.lastUpdated > existingObject.lastUpdated) {
-      realm.write(() => {
-        const properties = Object.keys(incomingObject);
-        properties.forEach( p => {
-          existingObject[p] = incomingObject[p];
-        });
-      });
-      return true;
-    }
-
-    return false;
-  } catch (e) {
-    return false;
+  // If old object doesn't exist, then just add the new object to the patient
+  if(!existingObject) {
+    realm.write(() => {
+      existingPatient[type].push(incomingObject);
+    });
+    return true;
   }
+
+  if(incomingObject.lastUpdated > existingObject.lastUpdated) {
+    realm.write(() => {
+      const properties = Object.keys(incomingObject);
+      properties.forEach( p => {
+        existingObject[p] = incomingObject[p];
+      });
+    });
+    return true;
+  }
+
+  return false;
 }

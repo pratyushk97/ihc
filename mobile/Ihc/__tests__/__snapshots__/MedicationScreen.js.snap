@@ -337,7 +337,7 @@ exports[`renders correctly 1`] = `
                     allowFontScaling={true}
                     ellipsizeMode="tail"
                   >
-                    20180517
+                    19691232
                   </Text>
                 </View>
                 <View

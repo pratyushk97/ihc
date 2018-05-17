@@ -11,6 +11,7 @@ import sinon from 'sinon';
 import renderer from 'react-test-renderer';
 
 it('renders correctly', () => {
+  sinon.useFakeTimers(100);
   const patient = Patient.getInstance();
   const patient2 = Patient.getInstance();
   const statuses = [Status.newStatus(patient), Status.newStatus(patient2)];

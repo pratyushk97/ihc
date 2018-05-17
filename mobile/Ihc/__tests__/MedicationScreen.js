@@ -10,6 +10,7 @@ import {localData} from '../services/DataService';
 import renderer from 'react-test-renderer';
 
 it('renders correctly', () => {
+  sinon.useFakeTimers(100);
   const drug1 = DrugUpdate.getInstance();
   const drug2 = DrugUpdate.getInstance();
   sinon.stub(localData, 'getMedicationUpdates').returns([drug1, drug2]);

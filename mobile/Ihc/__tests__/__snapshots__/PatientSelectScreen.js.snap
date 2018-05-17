@@ -252,7 +252,7 @@ exports[`renders correctly 1`] = `
               allowFontScaling={true}
               ellipsizeMode="tail"
             >
-              18:39
+              16:0
             </Text>
           </View>
           <View
@@ -413,7 +413,7 @@ exports[`renders correctly 1`] = `
               allowFontScaling={true}
               ellipsizeMode="tail"
             >
-              18:39
+              16:0
             </Text>
           </View>
           <View

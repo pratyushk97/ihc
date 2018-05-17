@@ -12,6 +12,7 @@ import Patient from '../models/Patient';
 import Triage from '../models/Triage';
 
 it('renders correctly', () => {
+  sinon.useFakeTimers(100);
   sinon.stub(localData, 'getPatient').returns(Patient.getInstance());
   sinon.stub(localData, 'getTriage').returns(Triage.getInstance());
 
