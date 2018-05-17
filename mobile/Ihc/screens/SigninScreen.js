@@ -75,6 +75,8 @@ export default class SigninScreen extends Component<{}> {
   }
 
   submit = () => {
+    // TODO: The Birthday field seems to return a value that is a day later than
+    // the one entered
     if(!this.refs.form.validate().isValid()) {
       return;
     }
