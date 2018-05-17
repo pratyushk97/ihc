@@ -1,4 +1,4 @@
-/* global global */
+/* global */
 // Returns either fakeLocalData or RealData depending on config file
 // Config file:
 // "FakeDataServices": "true" or "false"
@@ -18,4 +18,4 @@ let serverData = (config.fakeDataServices === 'true') ? fakeServerData : serverD
 let localData = (config.fakeDataServices === 'true' || global.__TEST__) ? fakeLocalData : localDataService;
 let serverData = (config.fakeDataServices === 'true' || global.__TEST__) ? fakeServerData : serverDataService;
 */
-export {localData, serverData}
+export {localData, serverData};

@@ -1,6 +1,10 @@
 // This file should handle all the local database calls to the Realm DB
 // Handles things syncronously, so no need for Promises
 
+// IMPORTANT:
+// If the function throws Errors, then the calling code should wrap the function
+// in try/catch blocks
+
 import Patient from '../models/Patient';
 import Status from '../models/Status';
 import Soap from '../models/Soap';
