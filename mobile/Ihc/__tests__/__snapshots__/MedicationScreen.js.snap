@@ -40,7 +40,7 @@ exports[`renders correctly 1`] = `
       allowFontScaling={true}
       ellipsizeMode="tail"
     >
-      R: Refill, C: Change, D: Discontinue
+      R: Refill, C: Change
     </Text>
   </View>
   <View
@@ -260,52 +260,6 @@ exports[`renders correctly 1`] = `
                       }
                     >
                       C
-                    </Text>
-                  </View>
-                  <View
-                    accessibilityComponentType={undefined}
-                    accessibilityLabel={undefined}
-                    accessibilityTraits={undefined}
-                    accessible={true}
-                    collapsable={undefined}
-                    hasTVPreferredFocus={undefined}
-                    hitSlop={undefined}
-                    isTVSelectable={true}
-                    nativeID={undefined}
-                    onLayout={undefined}
-                    onResponderGrant={[Function]}
-                    onResponderMove={[Function]}
-                    onResponderRelease={[Function]}
-                    onResponderTerminate={[Function]}
-                    onResponderTerminationRequest={[Function]}
-                    onStartShouldSetResponder={[Function]}
-                    style={
-                      Object {
-                        "backgroundColor": "#2196F3",
-                        "borderRadius": 2,
-                        "elevation": 4,
-                        "flex": 1,
-                        "margin": 2,
-                        "opacity": 1,
-                        "padding": 4,
-                      }
-                    }
-                    testID={undefined}
-                    tvParallaxProperties={undefined}
-                  >
-                    <Text
-                      accessible={true}
-                      allowFontScaling={true}
-                      ellipsizeMode="tail"
-                      style={
-                        Object {
-                          "color": "#fefefe",
-                          "fontWeight": "500",
-                          "textAlign": "center",
-                        }
-                      }
-                    >
-                      D
                     </Text>
                   </View>
                 </View>

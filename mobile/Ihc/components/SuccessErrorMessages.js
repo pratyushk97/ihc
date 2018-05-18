@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import {
   StyleSheet,
   Text,
-  ScrollView,
   View
 } from 'react-native';
 
@@ -25,7 +24,7 @@ export default class SuccessErrorMessages extends Component<{}> {
           {this.props.successMsg}
         </Text>
       </View>
-    )
+    );
   }
 }
 

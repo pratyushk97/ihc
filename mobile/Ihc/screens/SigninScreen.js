@@ -3,7 +3,6 @@ import {
   StyleSheet,
   Button,
   Text,
-  ScrollView,
   View
 } from 'react-native';
 import {formatDate} from '../util/Date';
@@ -12,8 +11,7 @@ var Form = t.form.Form;
 
 import {localData, serverData} from '../services/DataService';
 import Patient from '../models/Patient';
-import Loading from '../components/Loading';
-import SuccessErrorMessages from '../components/SuccessErrorMessages';
+import Container from '../components/Container';
 
 export default class SigninScreen extends Component<{}> {
   constructor(props) {
@@ -155,56 +153,33 @@ export default class SigninScreen extends Component<{}> {
   }
 
   render() {
-    if(this.state.loading) {
-      return (
-        <ScrollView contentContainerStyle={styles.container}>
-          <Text style={styles.title}>
-            Signin
-          </Text>
-          <Loading />
-        </ScrollView>
-      );
-    }
-
     return (
-      <View style={styles.outside}>
-        <ScrollView contentContainerStyle={styles.container}>
-          <Text style={styles.title}>
-            Signin
-          </Text>
+      <Container loading={this.state.loading}
+        errorMsg={this.state.errorMsg}
+        successMsg={this.state.successMsg} >
 
-          <View style={styles.form}>
-            <Form ref='form' type={this.state.formType}
-              value={this.state.formValues}
-              options={this.options}
-              onChange={this.onFormChange}
-            />
+        <Text style={styles.title}>
+          Signin
+        </Text>
 
-            <Button onPress={this.submit}
-              title='Submit' />
-          </View>
-        </ScrollView>
+        <View style={styles.form}>
+          <Form ref='form' type={this.state.formType}
+            value={this.state.formValues}
+            options={this.options}
+            onChange={this.onFormChange}
+          />
 
-        <SuccessErrorMessages errorMsg={this.state.errorMsg}
-          successMsg={this.state.successMsg} />
-      </View>
+          <Button onPress={this.submit}
+            title='Submit' />
+        </View>
+      </Container>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  outside: {
-    flex: 1,
-  },
   form: {
     width: '80%',
-  },
-  container: {
-    flex: 0,
-    padding: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
   },
   title: {
     fontSize: 20,
