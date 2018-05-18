@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import {
   StyleSheet,
   Text,
-  ScrollView,
   View
 } from 'react-native';
 import ScatterPlot from '../components/ScatterPlot';
@@ -15,7 +14,6 @@ const girlsHeightData = require('../growthchartdata/girls_heights.json');
 
 const PLOT_HEIGHT = 400;
 const PLOT_WIDTH = 400;
-const PLOTS_HEIGHT = PLOT_HEIGHT * 2 + 150;
 
 export default class GrowthChartScreen extends Component<{}> {
   /*

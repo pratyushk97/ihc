@@ -4,6 +4,7 @@ exports[`renders correctly for default (existing patient) 1`] = `
 <View
   style={
     Object {
+      "backgroundColor": "#F5FCFF",
       "flex": 1,
     }
   }
@@ -12,7 +13,6 @@ exports[`renders correctly for default (existing patient) 1`] = `
     contentContainerStyle={
       Object {
         "alignItems": "center",
-        "backgroundColor": "#F5FCFF",
         "flex": 0,
         "justifyContent": "center",
         "padding": 20,

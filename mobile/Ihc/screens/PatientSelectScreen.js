@@ -7,6 +7,7 @@ import {
 } from 'react-native';
 import {localData} from '../services/DataService';
 import PatientTable, {tableStyles} from '../components/PatientTable';
+import Container from '../components/Container';
 import {shortDate} from '../util/Date';
 
 export default class PatientSelectScreen extends Component<{}> {
@@ -19,7 +20,6 @@ export default class PatientSelectScreen extends Component<{}> {
     this.state = {
       loading: false,
       rows: [],
-      error: null
     };
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
   }
@@ -41,8 +41,6 @@ export default class PatientSelectScreen extends Component<{}> {
     this.loadPatients();
   }
 
-  // TODO: Currently hardcoding in patientInfo, update that
-  // Also need to modify service call to include identifying information
   goToPatient = (patient) => {
     this.props.navigator.push({
       screen: 'Ihc.PatientHomeScreen',
@@ -89,18 +87,8 @@ export default class PatientSelectScreen extends Component<{}> {
   }
 
   render() {
-    if(this.state.loading) {
-      return (
-        <View style={styles.container}>
-          <Text style={styles.title}>
-            Select a Patient
-          </Text>
-          <Text>Loading...</Text>
-        </View>
-      );
-    }
     return (
-      <View style={styles.container}>
+      <Container loading={this.state.loading}>
         <Text style={styles.title}>
           Select a Patient
         </Text>
@@ -111,18 +99,12 @@ export default class PatientSelectScreen extends Component<{}> {
           loading={this.state.loading}
           renderRow={this.renderRow}
         />
-      </View>
+      </Container>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
   title: {
     fontSize: 20,
     textAlign: 'center',

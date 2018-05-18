@@ -4,7 +4,6 @@ import {
   TouchableOpacity,
   Text,
   View,
-  ScrollView
 } from 'react-native';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import {stringDate} from '../util/Date';
@@ -165,18 +164,14 @@ export default class MedicationTable extends Component<{}> {
 
     // Render row for header, then render all the rows
     return (
-      <ScrollView contentContainerStyle={styles.verticalScroller}>
-        <ScrollView horizontal contentContainerStyle={styles.horizontalScroller}>
-          <Grid>
-            <Col style={styles.nameColumn}>
-              <Row style={styles.headerRow}><Text>Drug name</Text></Row>
-              {nameColumn}
-            </Col>
-            {buttonColumn}
-            {updateColumns}
-          </Grid>
-        </ScrollView>
-      </ScrollView>
+      <Grid>
+        <Col style={styles.nameColumn}>
+          <Row style={styles.headerRow}><Text>Drug name</Text></Row>
+          {nameColumn}
+        </Col>
+        {buttonColumn}
+        {updateColumns}
+      </Grid>
     );
   }
 }
@@ -185,21 +180,14 @@ export default class MedicationTable extends Component<{}> {
  * Files that create a renderRow() function should use these styles for
  * consistency
  */
-const WIDTH = 700, HEIGHT = '50%';
 export const styles = StyleSheet.create({
   container: {
-    minWidth: WIDTH,
-    minHeight: HEIGHT,
-  },
-  horizontalScroller: {
-    minWidth: WIDTH,
-  },
-  verticalScroller: {
-    minHeight: HEIGHT,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   emptyText: {
     textAlign: 'center',
-    left: -64,
   },
   headerRow: {
     maxHeight: 20,

@@ -319,20 +319,6 @@ ShallowWrapper {
               }
             }
           />
-          <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
-            style={
-              Object {
-                "color": "red",
-                "margin": 10,
-                "textAlign": "center",
-              }
-            }
-          >
-            
-          </Text>
           <Button
             onPress={[Function]}
             styles={
@@ -351,27 +337,11 @@ ShallowWrapper {
             }
             title="Update"
           />
-          <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
-            style={
-              Object {
-                "color": "green",
-                "margin": 10,
-                "textAlign": "center",
-              }
-            }
-          />
         </View>,
       ],
-      "contentContainerStyle": Object {
-        "alignItems": "center",
-        "backgroundColor": "#F5FCFF",
-        "flex": 0,
-        "justifyContent": "center",
-        "padding": 20,
-      },
+      "errorMsg": null,
+      "loading": false,
+      "successMsg": null,
     },
     "ref": null,
     "rendered": Array [
@@ -678,20 +648,6 @@ ShallowWrapper {
                 }
               }
             />,
-            <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
-              style={
-                Object {
-                  "color": "red",
-                  "margin": 10,
-                  "textAlign": "center",
-                }
-              }
-            >
-              
-            </Text>,
             <Button
               onPress={[Function]}
               styles={
@@ -709,18 +665,6 @@ ShallowWrapper {
                 }
               }
               title="Update"
-            />,
-            <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
-              style={
-                Object {
-                  "color": "green",
-                  "margin": 10,
-                  "textAlign": "center",
-                }
-              }
             />,
           ],
           "style": Object {
@@ -1010,25 +954,6 @@ ShallowWrapper {
             "key": undefined,
             "nodeType": "class",
             "props": Object {
-              "accessible": true,
-              "allowFontScaling": true,
-              "children": "",
-              "ellipsizeMode": "tail",
-              "style": Object {
-                "color": "red",
-                "margin": 10,
-                "textAlign": "center",
-              },
-            },
-            "ref": null,
-            "rendered": "",
-            "type": [Function],
-          },
-          Object {
-            "instance": null,
-            "key": undefined,
-            "nodeType": "class",
-            "props": Object {
               "onPress": [Function],
               "styles": Object {
                 "margin": 4,
@@ -1049,25 +974,6 @@ ShallowWrapper {
                 "margin": 4,
               },
               "title": "Update",
-            },
-            "ref": null,
-            "rendered": null,
-            "type": [Function],
-          },
-          Object {
-            "instance": null,
-            "key": undefined,
-            "nodeType": "class",
-            "props": Object {
-              "accessible": true,
-              "allowFontScaling": true,
-              "children": undefined,
-              "ellipsizeMode": "tail",
-              "style": Object {
-                "color": "green",
-                "margin": 10,
-                "textAlign": "center",
-              },
             },
             "ref": null,
             "rendered": null,
@@ -1385,20 +1291,6 @@ ShallowWrapper {
                 }
               }
             />
-            <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
-              style={
-                Object {
-                  "color": "red",
-                  "margin": 10,
-                  "textAlign": "center",
-                }
-              }
-            >
-              
-            </Text>
             <Button
               onPress={[Function]}
               styles={
@@ -1417,27 +1309,11 @@ ShallowWrapper {
               }
               title="Update"
             />
-            <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
-              style={
-                Object {
-                  "color": "green",
-                  "margin": 10,
-                  "textAlign": "center",
-                }
-              }
-            />
           </View>,
         ],
-        "contentContainerStyle": Object {
-          "alignItems": "center",
-          "backgroundColor": "#F5FCFF",
-          "flex": 0,
-          "justifyContent": "center",
-          "padding": 20,
-        },
+        "errorMsg": null,
+        "loading": false,
+        "successMsg": null,
       },
       "ref": null,
       "rendered": Array [
@@ -1744,20 +1620,6 @@ ShallowWrapper {
                   }
                 }
               />,
-              <Text
-                accessible={true}
-                allowFontScaling={true}
-                ellipsizeMode="tail"
-                style={
-                  Object {
-                    "color": "red",
-                    "margin": 10,
-                    "textAlign": "center",
-                  }
-                }
-              >
-                
-              </Text>,
               <Button
                 onPress={[Function]}
                 styles={
@@ -1775,18 +1637,6 @@ ShallowWrapper {
                   }
                 }
                 title="Update"
-              />,
-              <Text
-                accessible={true}
-                allowFontScaling={true}
-                ellipsizeMode="tail"
-                style={
-                  Object {
-                    "color": "green",
-                    "margin": 10,
-                    "textAlign": "center",
-                  }
-                }
               />,
             ],
             "style": Object {
@@ -2076,25 +1926,6 @@ ShallowWrapper {
               "key": undefined,
               "nodeType": "class",
               "props": Object {
-                "accessible": true,
-                "allowFontScaling": true,
-                "children": "",
-                "ellipsizeMode": "tail",
-                "style": Object {
-                  "color": "red",
-                  "margin": 10,
-                  "textAlign": "center",
-                },
-              },
-              "ref": null,
-              "rendered": "",
-              "type": [Function],
-            },
-            Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "class",
-              "props": Object {
                 "onPress": [Function],
                 "styles": Object {
                   "margin": 4,
@@ -2115,25 +1946,6 @@ ShallowWrapper {
                   "margin": 4,
                 },
                 "title": "Update",
-              },
-              "ref": null,
-              "rendered": null,
-              "type": [Function],
-            },
-            Object {
-              "instance": null,
-              "key": undefined,
-              "nodeType": "class",
-              "props": Object {
-                "accessible": true,
-                "allowFontScaling": true,
-                "children": undefined,
-                "ellipsizeMode": "tail",
-                "style": Object {
-                  "color": "green",
-                  "margin": 10,
-                  "textAlign": "center",
-                },
               },
               "ref": null,
               "rendered": null,

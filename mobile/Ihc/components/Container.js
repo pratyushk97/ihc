@@ -51,13 +51,13 @@ export default class Container extends Component<{}> {
 
 const styles = StyleSheet.create({
   outside: {
-    flex: 1
+    flex: 1,
+    backgroundColor: '#F5FCFF',
   },
   container: {
     flex: 0,
     padding: 20,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
   },
 });

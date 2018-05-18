@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {
+  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -126,7 +127,7 @@ export default class MedicationScreen extends Component<{}> {
           <Text>R: Refill, C: Change</Text>
         </View>
 
-        <View style={styles.tableContainer}>
+        <ScrollView contentContainerStyle={styles.tableContainer} horizontal>
           <MedicationTable style={styles.table}
             refill={this.refillMedication}
             change={this.changeMedication}
@@ -135,28 +136,20 @@ export default class MedicationScreen extends Component<{}> {
             dateToUpdates={this.state.dateToUpdates}
             drugNames={this.state.drugNames}
           />
-        </View>
+        </ScrollView>
 
         <View style={styles.footerContainer}>
-          <View style={styles.footer}>
-            <Text style={styles.success}>
-              {this.state.successMsg}
-            </Text>
-            <Text style={styles.error}>
-              {this.state.error}
-            </Text>
-            <TouchableOpacity
-              style={styles.buttonContainer}
-              onPress={this.createNewMedication}>
-              <Text style={styles.button}>New Medication</Text>
-            </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.buttonContainer}
+            onPress={this.createNewMedication}>
+            <Text style={styles.button}>New Medication</Text>
+          </TouchableOpacity>
 
-            <TouchableOpacity
-              style={styles.buttonContainer}
-              onPress={this.completed}>
-              <Text style={styles.button}>Completed</Text>
-            </TouchableOpacity>
-          </View>
+          <TouchableOpacity
+            style={styles.buttonContainer}
+            onPress={this.completed}>
+            <Text style={styles.button}>Completed</Text>
+          </TouchableOpacity>
         </View>
       </Container>
     );
@@ -171,12 +164,9 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     textAlign: 'center',
-    margin: 4,
   },
   tableContainer: {
-    maxHeight: '70%',
-    maxWidth: '95%',
-    padding: 0,
+    flex: 0,
   },
   buttonContainer: {
     width: 120,
@@ -192,13 +182,10 @@ const styles = StyleSheet.create({
     color: '#fefefe',
     textAlign: 'center',
   },
-  footer: {
+  footerContainer: {
     flex: 1,
     flexDirection: 'row',
-    margin: 0
-  },
-  footerContainer: {
-    margin: 0,
-    height: 60,
+    height: 40,
+    margin: 4,
   },
 });
