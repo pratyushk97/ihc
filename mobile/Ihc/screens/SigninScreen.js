@@ -13,6 +13,7 @@ var Form = t.form.Form;
 import {localData, serverData} from '../services/DataService';
 import Patient from '../models/Patient';
 import Loading from '../components/Loading';
+import SuccessErrorMessages from '../components/SuccessErrorMessages';
 
 export default class SigninScreen extends Component<{}> {
   constructor(props) {
@@ -166,35 +167,35 @@ export default class SigninScreen extends Component<{}> {
     }
 
     return (
-      <ScrollView contentContainerStyle={styles.container}>
-        <Text style={styles.title}>
-          Signin
-        </Text>
-
-        <View style={styles.form}>
-          <Form ref='form' type={this.state.formType}
-            value={this.state.formValues}
-            options={this.options}
-            onChange={this.onFormChange}
-          />
-
-          <Text style={styles.error}>
-            {this.state.errorMsg}
+      <View style={styles.outside}>
+        <ScrollView contentContainerStyle={styles.container}>
+          <Text style={styles.title}>
+            Signin
           </Text>
 
-          <Button onPress={this.submit}
-            title='Submit' />
+          <View style={styles.form}>
+            <Form ref='form' type={this.state.formType}
+              value={this.state.formValues}
+              options={this.options}
+              onChange={this.onFormChange}
+            />
 
-          <Text style={styles.success}>
-            {this.state.successMsg}
-          </Text>
-        </View>
-      </ScrollView>
+            <Button onPress={this.submit}
+              title='Submit' />
+          </View>
+        </ScrollView>
+
+        <SuccessErrorMessages errorMsg={this.state.errorMsg}
+          successMsg={this.state.successMsg} />
+      </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  outside: {
+    flex: 1,
+  },
   form: {
     width: '80%',
   },
@@ -204,16 +205,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
-  },
-  success: {
-    textAlign: 'center',
-    color: 'green',
-    margin: 10,
-  },
-  error: {
-    textAlign: 'center',
-    color: 'red',
-    margin: 10,
   },
   title: {
     fontSize: 20,
