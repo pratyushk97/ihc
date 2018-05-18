@@ -13,7 +13,7 @@ export default class MedicationTable extends Component<{}> {
   /*
    * Expects in props:
    *  {
-   *    refill, discontinue, change functions
+   *    refill, change functions
    *    updates: [DrugUpdate obj, ...]
    *    dateToUpdates: {date: [DrugUpdate objs with that date]}
    *    drugNames: [drugNames]
@@ -102,12 +102,6 @@ export default class MedicationTable extends Component<{}> {
             style={styles.buttonContainer}
             onPress={() => this.props.change(update)}>
             <Text style={styles.button}>C</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.buttonContainer, disableButton && {opacity: 0.5}]}
-            onPress={() => this.props.discontinue(update)}
-            disabled={disableButton}>
-            <Text style={styles.button}>D</Text>
           </TouchableOpacity>
         </Row>
       );

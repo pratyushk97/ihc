@@ -62,10 +62,6 @@ export default class MedicationScreen extends Component<{}> {
     });
   }
 
-  // TODO
-  discontinueMedication = () => {
-  }
-
   createNewMedication = () => {
     this.props.navigator.push({
       screen: 'Ihc.MedicationUpdateScreen',
@@ -143,7 +139,7 @@ export default class MedicationScreen extends Component<{}> {
             {this.props.name}'s Medications
           </Text>
 
-          <Text>R: Refill, C: Change, D: Discontinue</Text>
+          <Text>R: Refill, C: Change</Text>
         </View>
 
         <View style={styles.tableContainer}>
