@@ -7,6 +7,7 @@ import {
   View
 } from 'react-native';
 import ScatterPlot from '../components/ScatterPlot';
+import Container from '../components/Container';
 const boysWeightData = require('../growthchartdata/boys_weights.json');
 const girlsWeightData = require('../growthchartdata/girls_weights.json');
 const boysHeightData = require('../growthchartdata/boys_heights.json');
@@ -75,11 +76,10 @@ export default class GrowthChartScreen extends Component<{}> {
   render() {
     if (!this.state.patient) {
       return (
-        <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <Container errorMsg={this.state.error} >
           <Text style={styles.title}>Growth Chart</Text>
           <Text>No patient exists</Text>
-          <Text style={styles.error}>{this.state.error}</Text>
-        </ScrollView>
+        </Container>
       );
     }
 
@@ -92,9 +92,8 @@ export default class GrowthChartScreen extends Component<{}> {
 
     return (
       // TODO: Label the grid lines
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
+      <Container errorMsg={this.state.error} >
         <Text style={styles.title}>Growth Chart</Text>
-        <Text style={styles.error}>{this.state.error}</Text>
 
         <View style={styles.plotsContainer}>
           <View style={styles.plotContainer}>
@@ -130,7 +129,7 @@ export default class GrowthChartScreen extends Component<{}> {
           </View>
 
         </View>
-      </ScrollView>
+      </Container>
     );
   }
 }
@@ -138,7 +137,6 @@ export default class GrowthChartScreen extends Component<{}> {
 const styles = StyleSheet.create({
   plotsContainer: {
     flex: 1,
-    top: 50,
     margin: 8,
   },
   plotContainer: {
@@ -147,23 +145,9 @@ const styles = StyleSheet.create({
     padding: 8,
     backgroundColor: '#ededed'
   },
-  scrollContainer: {
-    minHeight: PLOTS_HEIGHT,
-    flex: 0,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
   title: {
     fontSize: 20,
     textAlign: 'center',
-    margin: 10,
-    position: 'absolute',
-    top: 4
-  },
-  error: {
-    textAlign: 'center',
-    color: 'red',
     margin: 10,
   },
 });

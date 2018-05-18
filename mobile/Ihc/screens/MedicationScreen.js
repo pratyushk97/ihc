@@ -7,6 +7,7 @@ import {
 } from 'react-native';
 import {localData} from '../services/DataService';
 import MedicationTable  from '../components/MedicationTable';
+import Container from '../components/Container';
 import {stringDate} from '../util/Date';
 
 export default class MedicationScreen extends Component<{}> {
@@ -23,7 +24,7 @@ export default class MedicationScreen extends Component<{}> {
       updates: [],
       dateToUpdates: {},
       drugNames: new Set(),
-      error: null
+      errorMsg: null
     };
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
   }
@@ -43,9 +44,9 @@ export default class MedicationScreen extends Component<{}> {
     try {
       localData.createDrugUpdate(newUpdate);
       this.loadMedications();
-      this.setState({error: null});
+      this.setState({errorMsg: null});
     } catch(e) {
-      this.setState({error: e.message});
+      this.setState({errorMsg: e.message});
     }
   }
 
@@ -104,36 +105,19 @@ export default class MedicationScreen extends Component<{}> {
         'pharmacyCompleted', new Date().getTime());
       this.setState({
         successMsg: 'Pharmacy marked as completed',
-        error: null
+        errorMsg: null
       });
     } catch(e) {
-      this.setState({error: e.message, successMsg: null});
+      this.setState({errorMsg: e.message, successMsg: null});
     }
   }
 
   render() {
-    if(this.props.loading) {
-      return (
-        <View style={styles.container}>
-          <Text style={styles.title}>
-            {this.props.name}'s Medications
-          </Text>
-
-          <Text>Loading</Text>
-
-          <View style={styles.footer}>
-            <TouchableOpacity
-              style={styles.buttonContainer}
-              onPress={this.createNewMedication}>
-              <Text style={styles.button}>New Medication</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      );
-    }
-
     return (
-      <View style={styles.container}>
+      <Container loading={this.state.loading}
+        errorMsg={this.state.errorMsg}
+        successMsg={this.state.successMsg} >
+
         <View style={styles.headerContainer}>
           <Text style={styles.title}>
             {this.props.name}'s Medications
@@ -174,20 +158,13 @@ export default class MedicationScreen extends Component<{}> {
             </TouchableOpacity>
           </View>
         </View>
-      </View>
+      </Container>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
   headerContainer: {
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -195,7 +172,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: 'center',
     margin: 4,
-    top: 10, // I don't like this but otherwise title doesn't show
   },
   tableContainer: {
     maxHeight: '70%',
@@ -224,15 +200,5 @@ const styles = StyleSheet.create({
   footerContainer: {
     margin: 0,
     height: 60,
-  },
-  success: {
-    textAlign: 'center',
-    color: 'green',
-    margin: 0,
-  },
-  error: {
-    textAlign: 'center',
-    color: 'red',
-    margin: 0,
   },
 });

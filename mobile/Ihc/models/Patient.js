@@ -106,6 +106,6 @@ Patient.schema = {
     triages: 'Triage[]',
     statuses: 'Status[]',
     lastUpdated: 'int', // timestamp
-    needToUpload: 'bool'
+    needToUpload: 'bool?'
   }
 };

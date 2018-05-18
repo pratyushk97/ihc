@@ -290,11 +290,13 @@ export function handleDownloadedPatients(patients) {
       .filtered('key = "' + incomingPatient.key + '"')['0'];
 
     if(!existingPatient) {
-      throw new Error('Patient with key ' + incomingPatient.key
-        + ' doesnt exist. This shouldnt have happened...');
+      realm.write(() => {
+        realm.create('Patient', incomingPatient);
+      });
+      return;
     }
 
-    if (incomingPatient.lastUpdated <= existingPatient.lastUpdated) {
+    if (incomingPatient.lastUpdated < existingPatient.lastUpdated) {
       throw new Error('Received a patient that is out-of-date. Did you upload updates yet?');
     }
 
