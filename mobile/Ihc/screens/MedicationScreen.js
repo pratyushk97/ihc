@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   View
 } from 'react-native';
-import {localData} from '../services/DataService';
+import {localData, serverData} from '../services/DataService';
 import MedicationTable  from '../components/MedicationTable';
 import Container from '../components/Container';
 import {stringDate} from '../util/Date';
@@ -101,16 +101,36 @@ export default class MedicationScreen extends Component<{}> {
   }
 
   completed = () => {
+    this.setState({loading: true});
+    let statusObj = {}
     try {
-      localData.updateStatus(this.props.patientKey, stringDate(new Date()),
+      statusObj = localData.updateStatus(this.props.patientKey, stringDate(new Date()),
         'pharmacyCompleted', new Date().getTime());
       this.setState({
         successMsg: 'Pharmacy marked as completed',
         errorMsg: null
       });
     } catch(e) {
-      this.setState({errorMsg: e.message, successMsg: null});
+      this.setState({errorMsg: e.message, successMsg: null, loading: false});
+      return;
     }
+
+    serverData.updateStatus(statusObj)
+      .then( () => {
+        this.setState({
+          successMsg: 'Pharmacy marked as completed, but not yet submitted',
+          errorMsg: null,
+          loading: false
+        });
+      })
+      .catch( (e) => {
+        localData.markPatientNeedToUpload(this.props.patientKey);
+        this.setState({
+          successMsg: null,
+          errorMsg: `${e.message}. Try to UploadUpdates`,
+          loading: false
+        });
+      });
   }
 
   render() {

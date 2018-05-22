@@ -98,6 +98,7 @@ export function updateStatus(patientKey, strDate, field, value) {
     statusObj.lastUpdated = timestamp;
     patient.lastUpdated = timestamp;
   });
+  return statusObj;
 }
 
 export function createDrugUpdate(update) {
@@ -247,7 +248,7 @@ export function lastSynced() {
 // When updates or creates fail to propogate to the server-side, then mark the
 // patient so they can be uploaded in the future
 export function markPatientNeedToUpload(patientKey) {
-  const patient = realm.objects('Patient').filtered(`key=${patientKey}`);
+  const patient = realm.objects('Patient').filtered(`key="${patientKey}"`);
   if(!patient) {
     throw new Error('Patient does not exist with key ' + patientKey);
   }

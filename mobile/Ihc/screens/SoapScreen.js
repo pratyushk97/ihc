@@ -8,7 +8,7 @@ import {
 var t = require('tcomb-form-native');
 var Form = t.form.Form;
 
-import {localData} from '../services/DataService';
+import {localData,serverData} from '../services/DataService';
 import Soap from '../models/Soap';
 import {stringDate} from '../util/Date';
 import Container from '../components/Container';
@@ -28,6 +28,8 @@ export default class SoapScreen extends Component<{}> {
       formValues: {date: todayDate},
       errorMsg: null,
       todayDate: todayDate,
+      successMsg: null,
+      loading: false
     };
   }
 
@@ -85,25 +87,39 @@ export default class SoapScreen extends Component<{}> {
   }
 
   completed = () => {
+    this.setState({loading: true});
+    let statusObj = {}
     try {
-      localData.updateStatus(this.props.patientKey, this.state.todayDate,
+      statusObj = localData.updateStatus(this.props.patientKey, this.state.todayDate,
         'doctorCompleted', new Date().getTime());
     } catch(e) {
       this.setState({errorMsg: e.message, successMsg: null});
       return;
     }
 
-    this.setState({
-      successMsg: 'Soap marked as completed, but not yet submitted',
-      errorMsg: null
-    });
+    serverData.updateStatus(statusObj)
+      .then( () => {
+        this.setState({
+          successMsg: 'Soap marked as completed, but not yet submitted',
+          errorMsg: null,
+          loading: false
+        });
+      })
+      .catch( (e) => {
+        localData.markPatientNeedToUpload(this.props.patientKey);
+        this.setState({
+          successMsg: null,
+          errorMsg: `${e.message}. Try to UploadUpdates`,
+          loading: false
+        });
+      });
   }
 
   submit = () => {
     if(!this.refs.form.validate().isValid()) {
       return;
     }
-    this.setState({successMsg: 'Loading...'});
+    this.setState({loading: true});
     const form = this.refs.form.getValue();
     const soap = Soap.extractFromForm(form, this.props.patientKey);
 
@@ -114,9 +130,12 @@ export default class SoapScreen extends Component<{}> {
       return;
     }
 
+    // TODO: Submit on server too
+
     this.setState({
       successMsg: 'SOAP updated successfully',
-      errorMsg: null
+      errorMsg: null,
+      loading: false
     });
   }
 
