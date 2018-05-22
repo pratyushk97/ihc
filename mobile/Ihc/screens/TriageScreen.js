@@ -99,7 +99,7 @@ export default class TriageScreen extends Component<{}> {
 
   completed = () => {
     this.setState({loading: true});
-    let statusObj = {}
+    let statusObj = {};
     try {
       statusObj = localData.updateStatus(this.props.patientKey, this.state.todayDate,
         'triageCompleted', new Date().getTime());

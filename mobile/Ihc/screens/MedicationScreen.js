@@ -102,7 +102,7 @@ export default class MedicationScreen extends Component<{}> {
 
   completed = () => {
     this.setState({loading: true});
-    let statusObj = {}
+    let statusObj = {};
     try {
       statusObj = localData.updateStatus(this.props.patientKey, stringDate(new Date()),
         'pharmacyCompleted', new Date().getTime());

@@ -88,7 +88,7 @@ export default class SoapScreen extends Component<{}> {
 
   completed = () => {
     this.setState({loading: true});
-    let statusObj = {}
+    let statusObj = {};
     try {
       statusObj = localData.updateStatus(this.props.patientKey, this.state.todayDate,
         'doctorCompleted', new Date().getTime());
