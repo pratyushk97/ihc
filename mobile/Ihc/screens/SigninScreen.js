@@ -3,14 +3,15 @@ import {
   StyleSheet,
   Button,
   Text,
-  ScrollView,
   View
 } from 'react-native';
 import {formatDate} from '../util/Date';
 var t = require('tcomb-form-native');
 var Form = t.form.Form;
-import data from '../services/DataService';
+
+import {localData, serverData} from '../services/DataService';
 import Patient from '../models/Patient';
+import Container from '../components/Container';
 
 export default class SigninScreen extends Component<{}> {
   constructor(props) {
@@ -18,8 +19,10 @@ export default class SigninScreen extends Component<{}> {
     this.state = {
       formValues: {newPatient: false},
       formType: this.Signin,
-      error: '',
-    }
+      successMsg: null,
+      errorMsg: null,
+      loading: false
+    };
   }
 
   Signin = t.struct({
@@ -50,92 +53,126 @@ export default class SigninScreen extends Component<{}> {
 
   options = {
     fields: {
-      motherName: {label: "Mother's last name"},
-      fatherName: {label: "Father's last name"},
+      motherName: {label: 'Mother\'s last name'},
+      fatherName: {label: 'Father\'s last name'},
       birthday: {
-        label: "Birthday",
+        label: 'Birthday',
         mode: 'date',
         config: {
           format: formatDate,
           dialogMode: 'spinner'
         }
       },
-      newPatient: {label: "New patient?"},
+      newPatient: {label: 'New patient?'},
     }
   }
 
   // If new patient button is clicked, then show extra fields
   onFormChange = (value) => {
-    if(value.newPatient !== this.state.formValues.newPatient) {
-      const type = value.newPatient ? this.NewPatient : this.Signin;
-      this.setState({ formValues: value, formType: type });
-    }
+    const type = value.newPatient ? this.NewPatient : this.Signin;
+    this.setState({ formValues: value, formType: type });
   }
 
   submit = () => {
+    // TODO: The Birthday field seems to return a value that is a day later than
+    // the one entered
     if(!this.refs.form.validate().isValid()) {
       return;
     }
+    this.setState({loading: true});
     const form = this.refs.form.getValue();
+    const patient = Patient.extractFromForm(form);
 
     if(form.newPatient) {
-      const patient = Patient.extractFromForm(form);
-      data.createPatient(patient)
-          .then( () => {
-            this.setState({
-              // Clear form, reset to Signin form
-              formValues: {newPatient: false},
-              formType: this.Signin,
-              successMsg: `${patient.firstName} added successfully`,
-              error: null
-            });
-          })
-          .catch( (e) => {
-            this.setState({error: e.message, successMsg: null});
+      try {
+        // Create patient should also add a new status object to the patient
+        // that should propogate to the server call
+        localData.createPatient(patient);
+      } catch(e) {
+        this.setState({errorMsg: e.message, successMsg: null, loading: false});
+        return;
+      }
+
+      serverData.createPatient(patient)
+        .then( () => {
+          this.setState({
+            // Clear form, reset to Signin form
+            formValues: {newPatient: false},
+            formType: this.Signin,
+            successMsg: `${patient.firstName} added successfully`,
+            errorMsg: null,
+            loading: false
           });
-    } else {
-      const patient = Patient.extractFromForm(form);
-      data.signinPatient(patient)
-          .then( () => {
-            this.setState({
-              // Clear form, reset to Signin form
-              formValues: {newPatient: false},
-              formType: this.Signin,
-              successMsg: `${patient.firstName} signed in successfully`,
-            });
-          })
-          .catch( (e) => {
-            this.setState({formValues: form, error: e.message, successMsg: null});
+        })
+        .catch( (e) => {
+          // If server update fails, mark the patient as need to upload
+          // and give a message to syncronize with UploadUpdates
+          this.setState({
+            errorMsg: `${e.message}. Try to UploadUpdates`,
+            successMsg: null,
+            loading: false
           });
+
+          localData.markPatientNeedToUpload(patient.key);
+        });
+
+      return;
     }
+
+    // If not a new patient
+    let statusObj = {};
+    try {
+      statusObj = localData.signinPatient(patient);
+    } catch(e) {
+      this.setState({errorMsg: e.message, successMsg: null, loading: false});
+      return;
+    }
+
+    serverData.updateStatus(statusObj)
+      .then( () => {
+        this.setState({
+          // Clear form, reset to Signin form
+          formValues: {newPatient: false},
+          formType: this.Signin,
+          successMsg: `${patient.firstName} signed in successfully`,
+          errorMsg: null,
+          loading: false
+        });
+      })
+      .catch( (e) => {
+        // If server update fails, mark the patient as need to upload
+        // and give a message to syncronize with UploadUpdates
+        this.setState({
+          errorMsg: `${e.message}. Try to UploadUpdates`,
+          successMsg: null,
+          loading: false
+        });
+
+        localData.markPatientNeedToUpload(patient.key);
+      });
   }
 
   render() {
     return (
-      <ScrollView contentContainerStyle={styles.container}>
+      <Container loading={this.state.loading}
+        errorMsg={this.state.errorMsg}
+        successMsg={this.state.successMsg} >
+
         <Text style={styles.title}>
           Signin
         </Text>
 
         <View style={styles.form}>
-          <Form ref="form" type={this.state.formType}
+          <Form ref='form' type={this.state.formType}
             value={this.state.formValues}
             options={this.options}
             onChange={this.onFormChange}
           />
 
-          <Text style={styles.error}>
-            {this.state.error}
-          </Text>
-
           <Button onPress={this.submit}
-            title="Submit" />
-
-          <Text style={styles.success}>
-            {this.state.successMsg}
-          </Text>
+            title='Submit' />
         </View>
-      </ScrollView>
+      </Container>
     );
   }
 }
@@ -143,23 +180,6 @@ export default class SigninScreen extends Component<{}> {
 const styles = StyleSheet.create({
   form: {
     width: '80%',
-  },
-  container: {
-    flex: 0,
-    padding: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  success: {
-    textAlign: 'center',
-    color: 'green',
-    margin: 10,
-  },
-  error: {
-    textAlign: 'center',
-    color: 'red',
-    margin: 10,
   },
   title: {
     fontSize: 20,

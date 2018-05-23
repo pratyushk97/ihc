@@ -314,7 +314,7 @@ router.get('/patient/:key', PatientController.GetPatient);
   }
   ```
 
-router.get('/patients', PatientController.GetPatients);
+router.get('/patients/:lastUpdated', PatientController.GetPatients);
   ```
   returns: {
     patients: [PatientModel]
@@ -328,28 +328,22 @@ router.post('/patient', PatientController.CreatePatient); :white_check_mark:
   }
   ```
 
-router.patch('/patient/:key', PatientController.UpdatePatient);
+router.put('/patient/:key', PatientController.UpdatePatient);
   ```
   body: {
     patient: PatientModel
   }
   ```
 
-router.get('/updates/:timestamp', PatientController.GetUpdates);
+router.put('/patients', PatientController.UpdatePatients);
   ```
-  returns: {
-    patients: [PatientModel],
-    triages: [TriageModel],
-    soaps: [SoapModel],
-    status: [StatusModel],
-    drugUpdates: [DrugUpdateModel],
+  body: {
+    patients: [PatientModel]
   }
-  ```
-
-router.get('/patient/:key/soap/:date', PatientController.GetSoap);
-  ```
   returns: {
-    soap: SoapModel
+    errors: [Error],
+    addedCount: int,
+    updatedCount: int
   }
   ```
 
@@ -357,6 +351,13 @@ router.get('/patient/:key/status/:date', PatientController.GetStatus);
   ```
   returns: {
     patientStatus: StatusModel
+  }
+  ```
+
+router.get('/patients/statuses', PatientController.GetStatuses);
+  ```
+  returns: {
+    patientStatuses: [StatusModel]
   }
   ```
 
@@ -374,31 +375,38 @@ router.get('/patient/:key/drugUpdates', PatientController.GetDrugUpdates);
   }
   ```
 
-router.patch('/patient/:key/soap/:date', PatientController.UpdateSoap);
+router.put('/patient/:key/soap/:date', PatientController.UpdateSoap);
   ```
   body: {
     soap: SoapModel
   }
   ```
 
-router.patch('/patient/:key/status/:date', PatientController.UpdateStatus);
+router.put('/patient/:key/status/:date', PatientController.UpdateStatus);
   ```
   body: {
     status: StatusModel
   }
   ```
 
-router.patch('/patient/:key/triage/:date', PatientController.UpdateTriage);
+router.put('/patient/:key/triage/:date', PatientController.UpdateTriage);
   ```
   body: {
     triage: TriageModel
   }
   ```
 
-router.patch('/patient/:key/drugUpdates', PatientController.UpdateDrugUpdates);
+router.put('/patient/:key/drugUpdates', PatientController.UpdateDrugUpdates);
   ```
   body: {
     drugUpdates: [DrugUpdateModel] 
+  }
+  ```
+
+router.get('/patient/:key/soap/:date', PatientController.GetSoap);
+  ```
+  returns: {
+    soap: SoapModel
   }
   ```
 
@@ -407,6 +415,23 @@ router.patch('/patient/:key/drugUpdates', PatientController.UpdateDrugUpdates);
 ### Local Storage:
 
 Use Realm as the mobile database
+
+When Updating/Creating objects, we need to add changes to both the mobile and
+server sides.
+
+
+Possible situations:
+1. Mobile update fails:
+  Display error
+  Don't send to server so that we can fix error locally first
+
+2. Mobile update succeeds, Server update fails:
+  Mark patient as needToUpload (to the server)
+  Display error telling user to UploadUpdates
+
+3. Mobile update succeeds, Server update succeeds:
+  Display success message
+
 
 Handling LOCAL STORAGE as backup:
 If router goes out...
@@ -455,7 +480,7 @@ React Native
 
 -- Begin N/A --
 
-"Upload Updates" PATCH /groups/:group/all -> Express API:
+"Upload Updates" put /groups/:group/all -> Express API:
 Send list of local updates
 Locally save list of timestamps when "Upload Updates" was clicked
 Body:
@@ -500,7 +525,7 @@ Routes:
       - Ignore timestamps passed in to exclude param 
       - Get list of updates from groups/:timestamp and consolidate into one list
 
-  PATCH /groups/:group/all   => Update information for all people
+  put /groups/:group/all   => Update information for all people
     - Body contains 
     {
       timestamp: send_update_timestamps,
@@ -510,7 +535,7 @@ Routes:
   NONESSENTIAL:
   GET   /groups/:group/:id   => Return information for that person
   POST  /groups/:group      => Add information for new person
-  PATCH /groups/:group/:id   => Update information for person
+  put /groups/:group/:id   => Update information for person
 
 -- End N/A --
 

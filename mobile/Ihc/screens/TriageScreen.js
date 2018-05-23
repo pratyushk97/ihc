@@ -3,16 +3,14 @@ import {
   StyleSheet,
   Button,
   Text,
-  ScrollView,
   View
 } from 'react-native';
-import {formatDate} from '../util/Date';
 var t = require('tcomb-form-native');
 var Form = t.form.Form;
-import data from '../services/DataService';
-import Patient from '../models/Patient';
+import {localData} from '../services/DataService';
 import Triage from '../models/Triage';
 import {stringDate} from '../util/Date';
+import Container from '../components/Container';
 
 export default class TriageScreen extends Component<{}> {
   /**
@@ -34,21 +32,22 @@ export default class TriageScreen extends Component<{}> {
       formType: Triage.getFormType(startingFormValues, 2),
       gender: 2, // 1: male, 2: female
       loading: false,
-      error: '',
+      errorMsg: null,
+      successMsg: null,
       disableLabs: false,
       disableUrine: false,
       todayDate: startingFormValues.date,
-    }
+    };
   }
 
   // TODO: any other styling? multiline fields needed?
   options = {
     fields: {
-      statusClarification: {label: "Status clarification (if picked Other)"},
-      pregnancyTest: {label: "Pregnancy test positive?"},
-      fasting: {label: "Did this patient fast?"},
-      urineTestDone: {label: "Did they take a urine test?"},
-      labsDone: {label: "Did they get labs done?"},
+      statusClarification: {label: 'Status clarification (if picked Other)'},
+      pregnancyTest: {label: 'Pregnancy test positive?'},
+      fasting: {label: 'Did this patient fast?'},
+      urineTestDone: {label: 'Did they take a urine test?'},
+      labsDone: {label: 'Did they get labs done?'},
       date: {
         editable: false,
       }
@@ -58,37 +57,32 @@ export default class TriageScreen extends Component<{}> {
   // to set the triage form correctly depending on gender
   loadPatient = () => {
     this.setState({ loading: true });
-    data.getPatient(this.props.patientKey)
-      .then( data => {
-        this.setState({
-          gender: data.gender,
-          loading: false
-        });
-      })
-      .catch(err => {
-        this.setState({ error: err.message, loading: false });
+    try {
+      const patient = localData.getPatient(this.props.patientKey);
+      this.setState({
+        gender: patient.gender,
+        loading: false
       });
+    } catch(err) {
+      this.setState({ errorMsg: err.message, loading: false });
+      return;
+    }
   }
 
   // Load existing Triage info if it exists
   loadFormValues = () => {
     this.setState({ loading: true });
-    data.getTriage(this.props.patientKey, this.state.todayDate)
-      .then( triage => {
-        if (!triage) {
-          this.setState({loading: false});
-          return;
-        }
+    const triage = localData.getTriage(this.props.patientKey, this.state.todayDate);
+    if (!triage) {
+      this.setState({loading: false});
+      return;
+    }
 
-        this.setState({
-          formType: Triage.getFormType(triage, this.state.gender),
-          formValues: triage,
-          loading: false,
-        });
-      })
-      .catch(err => {
-        this.setState({ error: err.message, loading: false });
-      });
+    this.setState({
+      formType: Triage.getFormType(triage, this.state.gender),
+      formValues: triage,
+      loading: false,
+    });
   }
 
   componentDidMount() {
@@ -104,17 +98,18 @@ export default class TriageScreen extends Component<{}> {
   }
 
   completed = () => {
-    data.updateStatus(this.props.patientKey, this.state.todayDate,
-        'triageCompleted', new Date().getTime())
-        .then( () => {
-          this.setState({
-            successMsg: 'Triage marked as completed, but not yet submitted',
-            error: null
-          });
-        })
-        .catch( (e) => {
-          this.setState({error: e.message, successMsg: null});
-        });
+    try {
+      localData.updateStatus(this.props.patientKey, this.state.todayDate,
+        'triageCompleted', new Date().getTime());
+    } catch(e) {
+      this.setState({errorMsg: e.message, successMsg: null});
+      return;
+    }
+
+    this.setState({
+      successMsg: 'Triage marked as completed, but not yet submitted',
+      errorMsg: null
+    });
   }
 
   submit = () => {
@@ -125,50 +120,47 @@ export default class TriageScreen extends Component<{}> {
     const form = this.refs.form.getValue();
     const triage = Triage.extractFromForm(form, this.props.patientKey);
 
-    data.updateTriage(triage)
-        .then( () => {
-          this.setState({
-            successMsg: 'Triage updated successfully',
-            error: null
-          });
-        })
-        .catch( (e) => {
-          this.setState({error: e.message, successMsg: null});
-        });
+    try {
+      localData.updateTriage(triage);
+    } catch(e) {
+      this.setState({errorMsg: e.message, successMsg: null});
+      return;
+    }
+
+    this.setState({
+      successMsg: 'Triage updated successfully',
+      errorMsg: null
+    });
   }
 
   render() {
     return (
-      <ScrollView contentContainerStyle={styles.container}>
+      <Container loading={this.state.loading}
+        errorMsg={this.state.errorMsg}
+        successMsg={this.state.successMsg} >
+
         <Text style={styles.title}>
           Triage
         </Text>
 
         <View style={styles.form}>
-          <Form ref="form"
+          <Form ref='form'
             type={this.state.formType}
             value={this.state.formValues}
             options={this.options}
             onChange={this.onFormChange}
           />
 
-          <Text style={styles.error}>
-            {this.state.error}
-          </Text>
-
           <Button onPress={this.completed}
             styles={styles.button}
-            title="Triage completed" />
+            title='Triage completed' />
 
           <Button onPress={this.submit}
             styles={styles.button}
-            title="Update" />
+            title='Update' />
 
-          <Text style={styles.success}>
-            {this.state.successMsg}
-          </Text>
         </View>
-      </ScrollView>
+      </Container>
     );
   }
 }
@@ -176,23 +168,6 @@ export default class TriageScreen extends Component<{}> {
 const styles = StyleSheet.create({
   form: {
     width: '80%',
-  },
-  container: {
-    flex: 0,
-    padding: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  success: {
-    textAlign: 'center',
-    color: 'green',
-    margin: 10,
-  },
-  error: {
-    textAlign: 'center',
-    color: 'red',
-    margin: 10,
   },
   title: {
     fontSize: 20,

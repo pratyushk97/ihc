@@ -4,17 +4,15 @@ import {
   TouchableOpacity,
   Text,
   View,
-  ScrollView
 } from 'react-native';
-import { Col, Row, Grid } from "react-native-easy-grid";
-import * as data from '../services/FakeDataService';
+import { Col, Row, Grid } from 'react-native-easy-grid';
 import {stringDate} from '../util/Date';
 
 export default class MedicationTable extends Component<{}> {
   /*
    * Expects in props:
    *  {
-   *    refill, discontinue, change functions
+   *    refill, change functions
    *    updates: [DrugUpdate obj, ...]
    *    dateToUpdates: {date: [DrugUpdate objs with that date]}
    *    drugNames: [drugNames]
@@ -41,11 +39,11 @@ export default class MedicationTable extends Component<{}> {
     let update = this.updateWithName(updates, name);
     if(!update) {
       update = {
-        dose: "",
-        frequency: "",
-        duration: "",
-        notes: ""
-      }
+        dose: '',
+        frequency: '',
+        duration: '',
+        notes: ''
+      };
     }
 
     return (
@@ -55,7 +53,7 @@ export default class MedicationTable extends Component<{}> {
         <Col style={styles.smallCol}><Text style={styles.text}>{update.duration}</Text></Col>
         <Col style={styles.notesCol}><Text style={styles.text}>{update.notes}</Text></Col>
       </Row>
-    )
+    );
   }
 
   // Row order should follow names array
@@ -63,7 +61,7 @@ export default class MedicationTable extends Component<{}> {
     // Empty column
     if (!updates) {
       return (
-        <Col style={styles.fullCol} key={`emptycol`}>
+        <Col style={styles.fullCol} key={'emptycol'}>
           <Row style={styles.headerRow}><Text>{this.state.todayDate}</Text></Row>
           <Row style={styles.row}><Text>No medications for today</Text></Row>
         </Col>
@@ -85,6 +83,7 @@ export default class MedicationTable extends Component<{}> {
   /*
    * Take in updates for most recent date, and drug names
    */
+  /* eslint-disable react-native/no-inline-styles */
   renderButtonColumn(updates, names) {
     const rows = names.map( (name, i) => {
       const update = this.updateWithName(updates, name);
@@ -93,33 +92,28 @@ export default class MedicationTable extends Component<{}> {
       return (
         <Row style={styles.row} key={`buttonRow${i}`}>
           <TouchableOpacity
-              style={[styles.buttonContainer, disableButton && {opacity: 0.5}]}
-              onPress={() => this.props.refill(update)}
-              disabled={disableButton}>
+            style={[styles.buttonContainer, disableButton && {opacity: 0.5}]}
+            onPress={() => this.props.refill(update)}
+            disabled={disableButton}>
             <Text style={styles.button}>R</Text>
           </TouchableOpacity>
           <TouchableOpacity
-              style={styles.buttonContainer}
-              onPress={() => this.props.change(update)}>
+            style={styles.buttonContainer}
+            onPress={() => this.props.change(update)}>
             <Text style={styles.button}>C</Text>
           </TouchableOpacity>
-          <TouchableOpacity
-              style={[styles.buttonContainer, disableButton && {opacity: 0.5}]}
-              onPress={() => this.props.discontinue(update)}
-              disabled={disableButton}>
-            <Text style={styles.button}>D</Text>
-          </TouchableOpacity>
         </Row>
-      )
+      );
     });
 
     return (
-        <Col style={styles.nameColumn}>
-          <Row style={styles.headerRow}><Text>Actions</Text></Row>
-          {rows}
-        </Col>
-    )
+      <Col style={styles.nameColumn}>
+        <Row style={styles.headerRow}><Text>Actions</Text></Row>
+        {rows}
+      </Col>
+    );
   }
+  /* eslint-enablereact-native/no-inline-styles */
 
   /*
    * Input the leftmost date
@@ -141,15 +135,15 @@ export default class MedicationTable extends Component<{}> {
         <View style={styles.container}>
           <Text style={styles.emptyText}>No data to show</Text>
         </View>
-      )
+      );
     }
 
     const names = Array.from(this.props.drugNames).sort();
     const nameColumn = names.map( (name,i) => {
-        return (
-          <Row style={styles.row} key={`name${i}`}><Text>{name}</Text></Row>
-        )
-      });
+      return (
+        <Row style={styles.row} key={`name${i}`}><Text>{name}</Text></Row>
+      );
+    });
 
     const dates = Object.keys(this.props.dateToUpdates).sort().reverse();
     // Insert empty column for todays date if it doesn't exist
@@ -161,27 +155,23 @@ export default class MedicationTable extends Component<{}> {
     }
 
     const updateColumns = dates.map( (date, i) => {
-        return this.renderColumn(date, this.props.dateToUpdates[date], names, i);
-      });
+      return this.renderColumn(date, this.props.dateToUpdates[date], names, i);
+    });
 
     const mostRecentDate = this.mostRecentDate(dates);
     const buttonColumn = this.renderButtonColumn(this.props.dateToUpdates[mostRecentDate],
-        names);
+      names);
 
     // Render row for header, then render all the rows
     return (
-      <ScrollView contentContainerStyle={styles.verticalScroller}>
-        <ScrollView horizontal contentContainerStyle={styles.horizontalScroller}>
-          <Grid>
-            <Col style={styles.nameColumn}>
-              <Row style={styles.headerRow}><Text>Drug name</Text></Row>
-              {nameColumn}
-            </Col>
-            {buttonColumn}
-            {updateColumns}
-          </Grid>
-        </ScrollView>
-      </ScrollView>
+      <Grid>
+        <Col style={styles.nameColumn}>
+          <Row style={styles.headerRow}><Text>Drug name</Text></Row>
+          {nameColumn}
+        </Col>
+        {buttonColumn}
+        {updateColumns}
+      </Grid>
     );
   }
 }
@@ -190,26 +180,14 @@ export default class MedicationTable extends Component<{}> {
  * Files that create a renderRow() function should use these styles for
  * consistency
  */
-const WIDTH = 700, HEIGHT = '50%';
 export const styles = StyleSheet.create({
   container: {
-    minWidth: WIDTH,
-    minHeight: HEIGHT,
-  },
-  horizontalScroller: {
-    minWidth: WIDTH,
-  },
-  verticalScroller: {
-    minHeight: HEIGHT,
-  },
-  title: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   emptyText: {
     textAlign: 'center',
-    left: -64,
   },
   headerRow: {
     maxHeight: 20,

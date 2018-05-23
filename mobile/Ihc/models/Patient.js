@@ -66,6 +66,8 @@ export default class Patient {
     patient.birthday = stringDate(form.birthday);
     patient.key = Patient.makeKey(patient);
     patient.needToUpload = false;
+    patient.lastUpdated = new Date().getTime();
+
     if(form.newPatient) {
       // 1 is male, 2 is female
       patient.gender = form.gender === 'Male' ? 1 : 2;
@@ -75,8 +77,8 @@ export default class Patient {
 
   // Can pass in parameters to override defaults, mostly useful for tests
   static getInstance(lastUpdated = new Date().getTime(),
-    key = 'firstname&father&mother&20000101', firstName = "firstname",
-    fatherName = "father", motherName = "mother", birthday = "20000101",
+    key = 'firstname&father&mother&20000101', firstName = 'firstname',
+    fatherName = 'father', motherName = 'mother', birthday = '20000101',
     gender = 1, phone = null, motherHeight = 100, fatherHeight = 100,
     medications = [], soaps = [], triages = [], statuses = []) {
     return {
@@ -104,6 +106,6 @@ Patient.schema = {
     triages: 'Triage[]',
     statuses: 'Status[]',
     lastUpdated: 'int', // timestamp
-    needToUpload: 'bool'
+    needToUpload: 'bool?'
   }
 };

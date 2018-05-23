@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import {
-  Platform,
   StyleSheet,
   TouchableOpacity,
   Text,
   View,
 } from 'react-native';
-import { Col, Row, Grid } from "react-native-easy-grid";
+import { Col, Grid } from 'react-native-easy-grid';
+import Container from '../components/Container';
 
 export default class PatientHomeScreen extends Component<{}> {
   /*
@@ -67,7 +67,7 @@ export default class PatientHomeScreen extends Component<{}> {
     //const dateString = `${date.getMonth()} ${date.getDate()}, ${date.getYear()}`;
     const dateString = this.props.todayDateString || date.toDateString();
     return (
-      <View style={styles.container}>
+      <Container >
         <Text style={styles.title}>
           {this.props.name}
         </Text>
@@ -79,36 +79,31 @@ export default class PatientHomeScreen extends Component<{}> {
         <View style={styles.gridContainer}>
           <Grid>
             <Col style={styles.col}>
-              <TouchableOpacity style={styles.buttonContainer}
-                  onPress={this.goToTriage}>
+              <TouchableOpacity style={styles.buttonContainer} onPress={this.goToTriage}>
                 <Text style={styles.button}>Triage</Text>
               </TouchableOpacity>
 
-              <TouchableOpacity style={styles.buttonContainer}
-                  onPress={this.goToSoap}>
+              <TouchableOpacity style={styles.buttonContainer} onPress={this.goToSoap}>
                 <Text style={styles.button}>SOAP</Text>
               </TouchableOpacity>
 
-              <TouchableOpacity style={styles.buttonContainer}
-                  onPress={this.goToMedicationList}>
+              <TouchableOpacity style={styles.buttonContainer} onPress={this.goToMedicationList}>
                 <Text style={styles.button}>Medications</Text>
               </TouchableOpacity>
             </Col>
 
             <Col style={styles.col}>
-              <TouchableOpacity style={styles.buttonContainer}
-                  onPress={this.goToHistory}>
+              <TouchableOpacity style={styles.buttonContainer} onPress={this.goToHistory}>
                 <Text style={styles.button}>History</Text>
               </TouchableOpacity>
 
-              <TouchableOpacity style={styles.buttonContainer}
-                  onPress={this.goToGrowthChart}>
+              <TouchableOpacity style={styles.buttonContainer} onPress={this.goToGrowthChart}>
                 <Text style={styles.button}>Growth Chart</Text>
               </TouchableOpacity>
             </Col>
           </Grid>
         </View>
-      </View>
+      </Container>
     );
   }
 }
@@ -121,11 +116,6 @@ const styles = StyleSheet.create({
   },
   col: {
     alignItems: 'center',
-  },
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   title: {
     fontSize: 20,
