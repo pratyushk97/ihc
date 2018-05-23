@@ -100,7 +100,7 @@ export default class MedicationTable extends Component<{}> {
           <TouchableOpacity
             style={styles.buttonContainer}
             onPress={() => this.props.change(update)}>
-            <Text style={styles.button}>C</Text>
+            <Text style={styles.button}>D</Text>
           </TouchableOpacity>
         </Row>
       );

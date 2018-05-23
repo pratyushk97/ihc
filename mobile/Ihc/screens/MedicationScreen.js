@@ -100,16 +100,19 @@ export default class MedicationScreen extends Component<{}> {
     this.loadMedications();
   }
 
-  completed = () => {
+
+  // station: 'Doctor' or 'Pharmacy'
+  updateStatus(station) {
     this.setState({loading: true});
     let statusObj = {};
+    if(station != 'Doctor' && station != 'Pharmacy') {
+      throw new Error(`Received invalid station: ${station}`);
+    }
+
+    const fieldName = station === 'Doctor' ? 'doctorCompleted' : 'pharmacyCompleted';
     try {
       statusObj = localData.updateStatus(this.props.patientKey, stringDate(new Date()),
-        'pharmacyCompleted', new Date().getTime());
-      this.setState({
-        successMsg: 'Pharmacy marked as completed',
-        errorMsg: null
-      });
+        fieldName, new Date().getTime());
     } catch(e) {
       this.setState({errorMsg: e.message, successMsg: null, loading: false});
       return;
@@ -118,7 +121,7 @@ export default class MedicationScreen extends Component<{}> {
     serverData.updateStatus(statusObj)
       .then( () => {
         this.setState({
-          successMsg: 'Pharmacy marked as completed, but not yet submitted',
+          successMsg: `${station} marked as completed`,
           errorMsg: null,
           loading: false
         });
@@ -133,6 +136,14 @@ export default class MedicationScreen extends Component<{}> {
       });
   }
 
+  completed = () => {
+    this.updateStatus('Doctor');
+  }
+
+  filled = () => {
+    this.updateStatus('Pharmacy');
+  }
+
   render() {
     return (
       <Container loading={this.state.loading}
@@ -144,7 +155,7 @@ export default class MedicationScreen extends Component<{}> {
             {this.props.name}'s Medications
           </Text>
 
-          <Text>R: Refill, C: Change</Text>
+          <Text>R: Refill, D: Change Dose</Text>
         </View>
 
         <ScrollView contentContainerStyle={styles.tableContainer} horizontal>
@@ -168,7 +179,13 @@ export default class MedicationScreen extends Component<{}> {
           <TouchableOpacity
             style={styles.buttonContainer}
             onPress={this.completed}>
-            <Text style={styles.button}>Completed</Text>
+            <Text style={styles.button}>Completed Prescribing</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.buttonContainer}
+            onPress={this.filled}>
+            <Text style={styles.button}>Filled</Text>
           </TouchableOpacity>
         </View>
       </Container>
