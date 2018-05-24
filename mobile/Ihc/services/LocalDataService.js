@@ -236,7 +236,13 @@ export function getPatientSelectRows() {
   return toReturn;
 }
 
-export function getPatientsToUpload() {
+// Parameter 'all' should be true if want to upload all patients
+// i.e. if the server has been cleared somehow, and want to upload this tablet's
+// patients
+export function getPatientsToUpload(all = false) {
+  if(all) {
+    return Object.values(realm.objects('Patient'));
+  }
   return Object.values(realm.objects('Patient').filtered('needToUpload = true'));
 }
 
