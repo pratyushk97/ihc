@@ -3,7 +3,7 @@
 import PatientModel from '../models/Patient';
 import SoapModel from '../models/Soap';
 import StatusModel from '../models/Status';
-
+import TriageModel from '../models/Triage';
 //function params for all calls are generally the same function(req,res)
 const PatientController = {
   //GET API CALL
@@ -277,6 +277,7 @@ const PatientController = {
       });
     });
   },
+
   UpdateTriage: function(req, res){
     PatientModel.findOne({key: req.params.key}, function(err, patient) {
       if(!patient) {
@@ -295,6 +296,7 @@ const PatientController = {
           }
 
           patient.triages[i] = req.body.triage;
+          patient.lastUpdated = req.body.triage.lastUpdated;
           patient.save(function(err) {
             if(err) {
               res.json({status: false, error: err.message});
@@ -307,8 +309,9 @@ const PatientController = {
         }
       }
 
-      // No soap exists yet, so add a new one
-      patient.triage.push(req.body.triage);
+      // No triage exists yet, so add a new one
+      patient.triages.push(req.body.triage);
+      patient.lastUpdated = req.body.triage.lastUpdated;
       patient.save(function(err) {
         if(err) {
           res.json({status: false, error: err.message});
