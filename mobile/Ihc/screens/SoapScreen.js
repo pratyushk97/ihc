@@ -8,7 +8,7 @@ import {
 var t = require('tcomb-form-native');
 var Form = t.form.Form;
 
-import {localData,serverData} from '../services/DataService';
+import {localData} from '../services/DataService';
 import Soap from '../models/Soap';
 import {stringDate} from '../util/Date';
 import Container from '../components/Container';
