@@ -10,6 +10,7 @@ import {localData, serverData} from '../services/DataService';
 import MedicationTable  from '../components/MedicationTable';
 import Container from '../components/Container';
 import {stringDate} from '../util/Date';
+import DrugUpdate from '../models/DrugUpdate';
 
 export default class MedicationScreen extends Component<{}> {
   /*
@@ -23,9 +24,7 @@ export default class MedicationScreen extends Component<{}> {
     this.state = {
       loading: false,
       updates: [],
-      dateToUpdates: {},
-      drugNames: new Set(),
-      errorMsg: null
+      errorMsg: null,
     };
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
   }
@@ -64,6 +63,14 @@ export default class MedicationScreen extends Component<{}> {
     });
   }
 
+  discontinueMedication = (prevDrugUpdate) => {
+    // Add a dummy drug update to updates prop
+    const newUpdate = DrugUpdate.getDiscontinueDummy(prevDrugUpdate);
+    this.setState({
+      updates: this.state.updates.concat([newUpdate])
+    });
+  }
+
   createNewMedication = () => {
     this.props.navigator.push({
       screen: 'Ihc.MedicationUpdateScreen',
@@ -78,22 +85,8 @@ export default class MedicationScreen extends Component<{}> {
 
   loadMedications = () => {
     this.setState({ loading: true });
-    const updates = localData.getMedicationUpdates(this.props.patientKey);
-    const dateToUpdates = {};
-    const drugNames = new Set();
-
-    updates.forEach( (update) => {
-      if(update.date in dateToUpdates) {
-        dateToUpdates[update.date].push(update);
-      } else{
-        dateToUpdates[update.date] = [update];
-      }
-
-      drugNames.add(update.name);
-    });
-
-    this.setState({updates: updates, dateToUpdates: dateToUpdates,
-      drugNames: drugNames, loading: false});
+    let updates = localData.getMedicationUpdates(this.props.patientKey);
+    this.setState({updates: updates, loading: false});
   }
 
   componentDidMount() {
@@ -155,7 +148,7 @@ export default class MedicationScreen extends Component<{}> {
             {this.props.name}'s Medications
           </Text>
 
-          <Text>R: Refill, D: Change Dose</Text>
+          <Text>R: Refill, D: Change Dose, X: Cancel</Text>
         </View>
 
         <ScrollView contentContainerStyle={styles.tableContainer} horizontal>
@@ -164,8 +157,6 @@ export default class MedicationScreen extends Component<{}> {
             change={this.changeMedication}
             discontinue={this.discontinueMedication}
             updates={this.state.updates}
-            dateToUpdates={this.state.dateToUpdates}
-            drugNames={this.state.drugNames}
           />
         </ScrollView>
 
