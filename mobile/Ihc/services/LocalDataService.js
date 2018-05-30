@@ -362,6 +362,11 @@ export function handleDownloadedPatients(patients) {
   return [];
 }
 
+// Wrap realm's write
+export function write(fn) {
+  realm.write(fn);
+}
+
 /**
  * Type: string of either 'soaps', 'triages', 'medications', or 'statuses'
  * Returns true if updated successfully, false if wasn't updated

@@ -1,3 +1,4 @@
+import {stringDate} from '../util/Date';
 export default class MedicationCheckmarks {
   // Insert any class methods here
 
@@ -6,9 +7,9 @@ export default class MedicationCheckmarks {
       patientKey: patientKey,
       drugName: drugName,
       date: stringDate(new Date()),
-      taking: true,
+      taking: false,
       notTaking: false,
-      notAsInstructed: false,
+      incorrectly: false,
       lastUpdated: new Date().getTime(),
     };
     return obj;
@@ -23,7 +24,7 @@ MedicationCheckmarks.schema = {
     date: 'string',
     taking: 'bool?',
     notTaking: 'bool?',
-    notAsInstructed: 'bool?',
+    incorrectly: 'bool?',
     lastUpdated: 'int',
   }
 };
