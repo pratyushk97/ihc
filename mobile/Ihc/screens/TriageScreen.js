@@ -158,6 +158,14 @@ export default class TriageScreen extends Component<{}> {
     });
   }
 
+  gotoMedications = () => {
+    this.props.navigator.push({
+      screen: 'Ihc.MedicationScreen',
+      title: 'Back to triage',
+      passProps: { name: this.props.name, patientKey: this.props.patientKey }
+    });
+  }
+
   // If Loading was canceled, we want to show a retry button
   setLoading = (val, canceled) => {
     this.setState({loading: val, showRetryButton: canceled});
@@ -192,6 +200,10 @@ export default class TriageScreen extends Component<{}> {
             options={this.options}
             onChange={this.onFormChange}
           />
+
+          <Button onPress={this.gotoMedications}
+            styles={styles.button}
+            title='To Medications' />
 
           <Button onPress={this.completed}
             styles={styles.button}
