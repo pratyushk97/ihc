@@ -17,9 +17,9 @@ export default class Loading extends Component<{}> {
    * props:
    * patientKey: the patientKey to mark as upload in case loading is canceled,
    *   or null if not needed
-   * setErrorMsg: function to set error msg if cancel button is clicked
+   * setMsg: function to set error msg if cancel button is clicked
    *   or null if not needed
-   * cancelLoading: function to turn off loading
+   * setLoading: function to toggle loading, second param is true if user canceled
    */
   constructor(props) {
     super(props);
@@ -28,14 +28,13 @@ export default class Loading extends Component<{}> {
   cancel = () => {
     if(this.props.patientKey) {
       localData.markPatientNeedToUpload(this.props.patientKey);
-      // TODO: Display a Retry button? Basically same as UploadUpdates
     }
 
-    if(this.props.setErrorMsg) {
-      this.props.setErrorMsg('Cancelled. May need to retry.');
+    if(this.props.setMsg) {
+      this.props.setMsg('errorMsg', 'Cancelled. May need to retry.');
     }
 
-    this.props.cancelLoading();
+    this.props.setLoading(false, true);
   }
 
   render() {

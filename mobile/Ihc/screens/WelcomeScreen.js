@@ -27,9 +27,13 @@ export default class WelcomeScreen extends Component<{}> {
     });
   }
 
-  cancelLoading = () => {
-    this.setState({loading: false});
+  // Don't need to show a retry button because they could just click
+  // UploadUpdates again
+  /* eslint-disable no-unused-vars */
+  setLoading = (val, canceled = false) => {
+    this.setState({loading: val});
   }
+  /* eslint-enable no-unused-vars */
 
   upload = () => {
     this.setState({loading: true, errorMsg: null, successMsg: null});

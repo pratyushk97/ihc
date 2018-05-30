@@ -21,7 +21,8 @@ export default class SigninScreen extends Component<{}> {
       formType: this.Signin,
       successMsg: null,
       errorMsg: null,
-      loading: false
+      loading: false,
+      showRetryButton: false
     };
   }
 
@@ -108,7 +109,8 @@ export default class SigninScreen extends Component<{}> {
               formType: this.Signin,
               successMsg: `${patient.firstName} added successfully`,
               errorMsg: null,
-              loading: false
+              loading: false,
+              showRetryButton: false
             });
           }
         })
@@ -119,7 +121,8 @@ export default class SigninScreen extends Component<{}> {
             this.setState({
               errorMsg: `${e.message}. Try to UploadUpdates`,
               successMsg: null,
-              loading: false
+              loading: false,
+              showRetryButton: true
             });
 
             localData.markPatientNeedToUpload(patient.key);
@@ -147,7 +150,8 @@ export default class SigninScreen extends Component<{}> {
             formType: this.Signin,
             successMsg: `${patient.firstName} signed in successfully`,
             errorMsg: null,
-            loading: false
+            loading: false,
+            showRetryButton: false
           });
         }
       })
@@ -158,7 +162,8 @@ export default class SigninScreen extends Component<{}> {
           this.setState({
             errorMsg: `${e.message}. Try to UploadUpdates`,
             successMsg: null,
-            loading: false
+            loading: false,
+            showRetryButton: true
           });
 
           localData.markPatientNeedToUpload(patient.key);
@@ -166,12 +171,17 @@ export default class SigninScreen extends Component<{}> {
       });
   }
 
-  cancelLoading = () => {
-    this.setState({loading: false});
+  // If Loading was canceled, we want to show a retry button
+  setLoading = (val, canceled=false) => {
+    this.setState({loading: val, showRetryButton: canceled});
   }
 
-  setErrorMsg = (msg) => {
-    this.setState({errorMsg: msg});
+  setMsg = (type, msg) => {
+    const obj = {};
+    obj[type] = msg;
+    const other = type === 'successMsg' ? 'errorMsg' : 'successMsg';
+    obj[other] = null;
+    this.setState(obj);
   }
 
   render() {
@@ -179,9 +189,10 @@ export default class SigninScreen extends Component<{}> {
       <Container loading={this.state.loading}
         errorMsg={this.state.errorMsg}
         successMsg={this.state.successMsg}
-        cancelLoading={this.cancelLoading}
-        setErrorMsg={this.setErrorMsg}
+        setLoading={this.setLoading}
+        setMsg={this.setMsg}
         patientKey={this.state.patientKey}
+        showRetryButton={this.state.showRetryButton}
       >
 
         <Text style={styles.title}>

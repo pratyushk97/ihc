@@ -147,12 +147,17 @@ export default class MedicationScreen extends Component<{}> {
     this.updateStatus('Pharmacy');
   }
 
-  cancelLoading = () => {
-    this.setState({loading: false});
+  // If Loading was canceled, we want to show a retry button
+  setLoading = (val, canceled) => {
+    this.setState({loading: val, showRetryButton: canceled});
   }
 
-  setErrorMsg = (msg) => {
-    this.setState({errorMsg: msg});
+  setMsg = (type, msg) => {
+    const obj = {};
+    obj[type] = msg;
+    const other = type === 'successMsg' ? 'errorMsg' : 'successMsg';
+    obj[other] = null;
+    this.setState(obj);
   }
 
   render() {
@@ -160,8 +165,8 @@ export default class MedicationScreen extends Component<{}> {
       <Container loading={this.state.loading}
         errorMsg={this.state.errorMsg}
         successMsg={this.state.successMsg}
-        cancelLoading={this.cancelLoading}
-        setErrorMsg={this.setErrorMsg}
+        setLoading={this.setLoading}
+        setMsg={this.setMsg}
         patientKey={this.props.patientKey}
       >
 
