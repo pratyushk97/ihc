@@ -14,6 +14,7 @@ export default class MedicationTable extends Component<{}> {
    *  {
    *    refill, change, discontinue functions
    *    updates: [DrugUpdate obj, ...]
+   *    medicationCheckmarks: [MedicationCheckmarks obj, ...]
    *  }
    */
   constructor(props) {

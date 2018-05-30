@@ -87,7 +87,8 @@ export default class MedicationScreen extends Component<{}> {
   loadMedications = () => {
     this.setState({ loading: true });
     let updates = localData.getMedicationUpdates(this.props.patientKey);
-    this.setState({updates: updates, loading: false});
+    let statusObj = localData.getStatus(this.props.patientKey, stringDate(new Date()));
+    this.setState({updates: updates, loading: false, medicationCheckmarks: statusObj.medicationCheckmarks});
   }
 
   componentDidMount() {
