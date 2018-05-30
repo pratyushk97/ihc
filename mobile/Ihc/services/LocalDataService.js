@@ -254,7 +254,7 @@ export function lastSynced() {
 // When updates or creates fail to propogate to the server-side, then mark the
 // patient so they can be uploaded in the future
 export function markPatientNeedToUpload(patientKey) {
-  const patient = realm.objects('Patient').filtered(`key="${patientKey}"`);
+  const patient = realm.objects('Patient').filtered(`key="${patientKey}"`)[0];
   if(!patient) {
     throw new Error('Patient does not exist with key ' + patientKey);
   }
@@ -267,7 +267,7 @@ export function markPatientNeedToUpload(patientKey) {
 // After uploading, then these patients don't have to be marked as needing to
 // upload
 export function markPatientsUploaded() {
-  const patients = realm.objects('Patient').filtered('needToUpload = true');
+  const patients = Object.values(realm.objects('Patient').filtered('needToUpload = true'));
   realm.write(() => {
     patients.forEach(patient => {
       patient.needToUpload = false;
