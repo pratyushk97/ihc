@@ -25,6 +25,7 @@ export default class MedicationScreen extends Component<{}> {
       loading: false,
       updates: [],
       errorMsg: null,
+      successMsg: null,
     };
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
   }
@@ -96,7 +97,12 @@ export default class MedicationScreen extends Component<{}> {
 
   // station: 'Doctor' or 'Pharmacy'
   updateStatus(station) {
-    this.setState({loading: true});
+    this.setState({
+      loading: true,
+      errorMsg: null,
+      successMsg: null,
+    });
+
     let statusObj = {};
     if(station != 'Doctor' && station != 'Pharmacy') {
       throw new Error(`Received invalid station: ${station}`);
@@ -113,19 +119,23 @@ export default class MedicationScreen extends Component<{}> {
 
     serverData.updateStatus(statusObj)
       .then( () => {
-        this.setState({
-          successMsg: `${station} marked as completed`,
-          errorMsg: null,
-          loading: false
-        });
+        if(this.state.loading) {
+          this.setState({
+            successMsg: `${station} marked as completed`,
+            errorMsg: null,
+            loading: false
+          });
+        }
       })
       .catch( (e) => {
-        localData.markPatientNeedToUpload(this.props.patientKey);
-        this.setState({
-          successMsg: null,
-          errorMsg: `${e.message}. Try to UploadUpdates`,
-          loading: false
-        });
+        if(this.state.loading) {
+          localData.markPatientNeedToUpload(this.props.patientKey);
+          this.setState({
+            successMsg: null,
+            errorMsg: `${e.message}. Try to UploadUpdates`,
+            loading: false
+          });
+        }
       });
   }
 
@@ -137,11 +147,23 @@ export default class MedicationScreen extends Component<{}> {
     this.updateStatus('Pharmacy');
   }
 
+  cancelLoading = () => {
+    this.setState({loading: false});
+  }
+
+  setErrorMsg = (msg) => {
+    this.setState({errorMsg: msg});
+  }
+
   render() {
     return (
       <Container loading={this.state.loading}
         errorMsg={this.state.errorMsg}
-        successMsg={this.state.successMsg} >
+        successMsg={this.state.successMsg}
+        cancelLoading={this.cancelLoading}
+        setErrorMsg={this.setErrorMsg}
+        patientKey={this.props.patientKey}
+      >
 
         <View style={styles.headerContainer}>
           <Text style={styles.title}>

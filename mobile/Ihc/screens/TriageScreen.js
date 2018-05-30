@@ -110,19 +110,23 @@ export default class TriageScreen extends Component<{}> {
 
     serverData.updateStatus(statusObj)
       .then( () => {
-        this.setState({
-          successMsg: 'Triage marked as completed, but not yet submitted',
-          errorMsg: null,
-          loading: false
-        });
+        if(this.state.loading) {
+          this.setState({
+            successMsg: 'Triage marked as completed, but not yet submitted',
+            errorMsg: null,
+            loading: false
+          });
+        }
       })
       .catch( (e) => {
-        localData.markPatientNeedToUpload(this.props.patientKey);
-        this.setState({
-          successMsg: null,
-          errorMsg: `${e.message}. Try to UploadUpdates`,
-          loading: false
-        });
+        if(this.state.loading) {
+          localData.markPatientNeedToUpload(this.props.patientKey);
+          this.setState({
+            successMsg: null,
+            errorMsg: `${e.message}. Try to UploadUpdates`,
+            loading: false
+          });
+        }
       });
   }
 
@@ -130,7 +134,13 @@ export default class TriageScreen extends Component<{}> {
     if(!this.refs.form.validate().isValid()) {
       return;
     }
-    this.setState({successMsg: 'Loading...'});
+
+    this.setState({
+      loading: true,
+      errorMsg: null,
+      successMsg: null,
+    });
+
     const form = this.refs.form.getValue();
     const triage = Triage.extractFromForm(form, this.props.patientKey);
 
@@ -143,15 +153,28 @@ export default class TriageScreen extends Component<{}> {
 
     this.setState({
       successMsg: 'Triage updated successfully',
-      errorMsg: null
+      errorMsg: null,
+      loading: false
     });
+  }
+
+  cancelLoading = () => {
+    this.setState({loading: false});
+  }
+
+  setErrorMsg = (msg) => {
+    this.setState({errorMsg: msg});
   }
 
   render() {
     return (
       <Container loading={this.state.loading}
         errorMsg={this.state.errorMsg}
-        successMsg={this.state.successMsg} >
+        successMsg={this.state.successMsg}
+        cancelLoading={this.cancelLoading}
+        setErrorMsg={this.setErrorMsg}
+        patientKey={this.props.patientKey}
+      >
 
         <Text style={styles.title}>
           Triage
