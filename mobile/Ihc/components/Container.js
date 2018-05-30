@@ -18,6 +18,11 @@ export default class Container extends Component<{}> {
    * successMsg: null or string
    * errorMsg: null or string
    * children: the JSX that will be displayed within the container
+   * patientKey: the patientKey to mark as upload in case loading is canceled,
+   *   or null if not needed
+   * setErrorMsg: function to set error msg if cancel button is clicked
+   *   or null if not needed
+   * cancelLoading: function that turns off loading in parent
    *
    * use Container like
    * <Container loading={this.state.loading}>
@@ -32,10 +37,15 @@ export default class Container extends Component<{}> {
     if (this.props.loading) {
       return (
         <View style={styles.outside}>
-          <Loading />
+          <Loading
+            patientKey={this.props.patientKey}
+            setErrorMsg={this.props.setErrorMsg}
+            cancelLoading={this.props.cancelLoading}
+          />
         </View>
       );
     }
+
     return (
       <View style={styles.outside}>
         <ScrollView contentContainerStyle={styles.container}>
