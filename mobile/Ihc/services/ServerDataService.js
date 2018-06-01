@@ -2,7 +2,7 @@
 // Requires Promises because dealing with server requests
 
 import config from '../config.json';
-import {convertObjectsToArrays} from '../util/Patient';
+import {convertPatientForServer, convertStatusForServer} from '../util/Realm';
 // Must set the fetchUrl to the server's IP Address and Port
 const fetchUrl = config.fetchUrl;
 
@@ -33,6 +33,7 @@ export function createPatient(patient) {
 
 // Server endpoint: put /patient/:key/status/:date
 export function updateStatus(statusObj) {
+  const copy = convertStatusForServer(statusObj);
   return fetch(fetchUrl + `/patient/${statusObj.patientKey}/status/${statusObj.date}`, {
     method: 'PUT',
     headers: {
@@ -40,7 +41,7 @@ export function updateStatus(statusObj) {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      status: statusObj
+      status: copy
     })
   }).then(response => response.json())
     .then(json => {
@@ -94,7 +95,7 @@ export function getActiveStatuses() {
 
 // Server endpoint: post /patients
 export function updatePatients(patients) {
-  const patientsCopy = patients.map( patient => convertObjectsToArrays(patient) );
+  const patientsCopy = patients.map( patient => convertPatientForServer(patient) );
   return fetch(fetchUrl + '/patients/', {
     method: 'PUT',
     headers: {
