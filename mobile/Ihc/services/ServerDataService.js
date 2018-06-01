@@ -2,6 +2,7 @@
 // Requires Promises because dealing with server requests
 
 import config from '../config.json';
+import {convertObjectsToArrays} from '../util/Patient';
 // Must set the fetchUrl to the server's IP Address and Port
 const fetchUrl = config.fetchUrl;
 
@@ -93,6 +94,7 @@ export function getActiveStatuses() {
 
 // Server endpoint: post /patients
 export function updatePatients(patients) {
+  const patientsCopy = patients.map( patient => convertObjectsToArrays(patient) );
   return fetch(fetchUrl + '/patients/', {
     method: 'PUT',
     headers: {
@@ -100,7 +102,7 @@ export function updatePatients(patients) {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      patients: patients
+      patients: patientsCopy
     }),
   }).then(() => {
     return Promise.resolve(true);
