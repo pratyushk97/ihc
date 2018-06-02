@@ -103,7 +103,36 @@ export default class MedicationScreen extends Component<{}> {
 
   saveCheckmarks = () => {
     // Local checkmark saves are handled in MedicationTable directly.
-    // TODO: send to server
+    const statusObj = localData.getStatus(this.props.patientKey, this.state.todayDate);
+
+    this.setState({
+      loading: true,
+      errorMsg: null,
+      successMsg: null,
+    });
+
+    serverData.updateStatus(statusObj)
+      .then( () => {
+        if(this.state.loading) {
+          this.setState({
+            successMsg: 'Saved',
+            errorMsg: null,
+            loading: false,
+            showRetryButton: false
+          });
+        }
+      })
+      .catch( (e) => {
+        if(this.state.loading) {
+          localData.markPatientNeedToUpload(this.props.patientKey);
+          this.setState({
+            successMsg: null,
+            errorMsg: e.message,
+            loading: false,
+            showRetryButton: true
+          });
+        }
+      });
   }
 
   // station: 'Doctor' or 'Pharmacy'
@@ -134,7 +163,8 @@ export default class MedicationScreen extends Component<{}> {
           this.setState({
             successMsg: `${station} marked as completed`,
             errorMsg: null,
-            loading: false
+            loading: false,
+            showRetryButton: false
           });
         }
       })
@@ -143,8 +173,9 @@ export default class MedicationScreen extends Component<{}> {
           localData.markPatientNeedToUpload(this.props.patientKey);
           this.setState({
             successMsg: null,
-            errorMsg: `${e.message}. Try to UploadUpdates`,
-            loading: false
+            errorMsg: e.message,
+            loading: false,
+            showRetryButton: true
           });
         }
       });
@@ -179,6 +210,7 @@ export default class MedicationScreen extends Component<{}> {
         setLoading={this.setLoading}
         setMsg={this.setMsg}
         patientKey={this.props.patientKey}
+        showRetryButton={this.state.showRetryButton}
       >
 
         <View style={styles.headerContainer}>
