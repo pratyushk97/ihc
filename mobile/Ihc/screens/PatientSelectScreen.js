@@ -54,7 +54,7 @@ export default class PatientSelectScreen extends Component<{}> {
     const cols = data.map( (e,i) => (
       <View style={tableStyles.col} key={keyFn(i)}>
         {( () => {
-          // TODO: format birthday, add ability to add notes
+          // TODO: add ability to add notes
           switch(i) {
             case 1: // birthday
               return <Text>{shortDate(e)}</Text>;
