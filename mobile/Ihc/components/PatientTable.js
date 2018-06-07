@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 import {
   StyleSheet,
-  TextInput,
   TouchableOpacity,
   Text,
-  Modal,
   View
 } from 'react-native';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import {shortDate} from '../util/Date';
+import UpdateStatusNotesModal from '../components/UpdateStatusNotesModal';
 
 export default class PatientTable extends Component<{}> {
   /*
@@ -91,6 +90,10 @@ export default class PatientTable extends Component<{}> {
     this.setState({showModal: false, patientKey: null, currNotes: null, name: null});
   }
 
+  updateNotes = (newNotes) => {
+    this.setState({currNotes: newNotes});
+  }
+
   renderCol = (element, index, keyFn, name, patientKey) => {
     if (index === 6) {
       return (
@@ -145,36 +148,16 @@ export default class PatientTable extends Component<{}> {
 
   render() {
     // Render row for header, then render all the rows
-    // TODO: Refactor Modal into separate component
     return (
       <View style={styles.container}>
-        <Modal
-          animationType="fade"
-          transparent={true}
-          visible={this.state.showModal}
-          onRequestClose={this.closeModal} >
-          <View style={styles.modalContainer}>
-            <View style={styles.modal}>
-              <Text style={styles.title}>{this.state.name}</Text>
-              <Text>Notes:</Text>
-              <TextInput style={styles.notesInput}
-                multiline={true}
-                numberOfLines={4}
-                value={this.state.currNotes}
-                onChangeText={(text) => { this.setState({currNotes: text}); }} />
-              <View style={styles.modalFooter}>
-                <TouchableOpacity style={styles.buttonContainer} onPress={this.closeModal}>
-                  <Text style={styles.button}>Cancel</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.buttonContainer}
-                  onPress={() => this.props.saveModal(this.state.patientKey, this.state.currNotes)}>
-                  <Text style={styles.button}>Save</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-        </Modal>
+        <UpdateStatusNotesModal
+          showModal={this.state.showModal}
+          closeModal={this.closeModal}
+          saveModal={() => this.props.saveModal(this.state.patientKey, this.state.currNotes)}
+          name={this.state.name}
+          currNotes={this.state.currNotes}
+          updateNotes={this.updateNotes}
+        />
 
         <Grid>
           {this.renderHeader(this.tableHeaders, (i) => `header${i}`)}
@@ -222,51 +205,4 @@ export const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: '#bebebe',
   },
-  title: {
-    textAlign: 'center',
-    fontSize: 24
-  },
-  modalContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  modal: {
-    width: '80%',
-    height: '60%',
-    backgroundColor: '#f6fdff',
-    borderRadius: 8,
-    borderWidth: 2,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  modalFooter: {
-    height: 60,
-    flex: 1,
-    flexDirection: 'row',
-    margin: 4,
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  buttonContainer: {
-    width: 150,
-    height: 40,
-    margin: 10,
-    padding: 8,
-    elevation: 4,
-    borderRadius: 2,
-    backgroundColor: '#2196F3',
-  },
-  button: {
-    fontWeight: '500',
-    color: '#fefefe',
-    textAlign: 'center',
-  },
-  notesInput: {
-    backgroundColor: 'white',
-    borderRadius: 8,
-    width: '90%',
-    margin: 8,
-    borderWidth: 1
-  }
 });
