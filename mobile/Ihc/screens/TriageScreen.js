@@ -11,6 +11,7 @@ import {localData, serverData} from '../services/DataService';
 import Triage from '../models/Triage';
 import {stringDate} from '../util/Date';
 import Container from '../components/Container';
+import TriageLabsWheel from '../components/TriageLabsWheel';
 
 export default class TriageScreen extends Component<{}> {
   /**
@@ -27,6 +28,12 @@ export default class TriageScreen extends Component<{}> {
       date: this.props.todayDate || stringDate(new Date())
     };
 
+    // Hold objects including a test's name, options, and result
+    const labTestObjects = {
+      blood: TriageLabsWheel.createLabTestObject('blood', ['Good', 'Bad']),
+      nitrite: TriageLabsWheel.createLabTestObject('nitrite', ['Good', 'Bad']),
+    };
+
     this.state = {
       formValues: startingFormValues,
       formType: Triage.getFormType(startingFormValues, 2),
@@ -37,6 +44,7 @@ export default class TriageScreen extends Component<{}> {
       disableLabs: false,
       disableUrine: false,
       todayDate: startingFormValues.date,
+      labTestObjects: labTestObjects
     };
   }
 
@@ -212,6 +220,17 @@ export default class TriageScreen extends Component<{}> {
           <Button onPress={this.submit}
             styles={styles.button}
             title='Update' />
+
+      {
+          this.state.formValues.labsDone ?
+           (
+             <TriageLabsWheel
+              updateLabResult={(name, option) => {console.log(name,option);}}
+              tests = {Object.values(this.state.labTestObjects)}
+            />
+           ) : null
+      }
+
 
         </View>
       </Container>
