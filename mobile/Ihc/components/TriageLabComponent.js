@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {
-  StyleSheet,
+  View,
+  Text
 } from 'react-native';
 
 import Picker from 'react-native-wheel-picker';
@@ -23,15 +24,18 @@ export default class TriageLabComponent extends Component<{}> {
 
   render() {
     return (
-      <Picker style={styles.pickerStyle}
-        selectedValue={this.props.selectedIndex}
-        itemStyle={styles.itemStyle}
-        onValueChange={this.props.onValueChange}>
-        {this.props.options.map((value, i) => (
-          <PickerItem label={value} value={i} key={`${this.props.name}${value}`}/>
-        ))}
-      </Picker>
-    )
+      <View style={styles.container}>
+        <Text>{this.props.name}</Text>
+        <Picker style={styles.pickerStyle}
+          selectedValue={this.props.selectedIndex}
+          itemStyle={styles.itemStyle}
+          onValueChange={this.props.onValueChange}>
+          {this.props.options.map((value, i) => (
+            <PickerItem label={value} value={i} key={`${this.props.name}${value}`}/>
+          ))}
+        </Picker>
+      </View>
+    );
   }
 }
 
@@ -41,6 +45,10 @@ const styles = {
   },
   pickerStyle: {
     width: 100,
-    height: 100
+    height: 100,
+    marginBottom: 4
+  },
+  container: {
+    flex: 1
   }
 };

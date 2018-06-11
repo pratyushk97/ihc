@@ -26,14 +26,14 @@ export default class TriageLabsWheel extends Component<{}> {
               name={test.name}
               options={test.options}
               onValueChange={
-                (index) => {this.props.updateLabResult(test.name, index)}
+                (index) => {this.props.updateLabResult(test.name, index);}
               }
               key={`${test.name}lab`}
             />
-          )
+          );
         })}
       </View>
-    )
+    );
   }
 
   // Name of the test, options for the test results, result is the index of the
@@ -47,5 +47,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'row',
+    margin: 0,
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 });
