@@ -50,6 +50,10 @@ export default class Patient {
     return this.gender === 1;
   }
 
+  get isInfant() {
+    return this.age < 3;
+  }
+
   static fullName(patient) {
     return `${patient.firstName} ${patient.fatherName} ${patient.motherName}`;
   }
