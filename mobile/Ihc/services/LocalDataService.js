@@ -123,8 +123,8 @@ export function createDrugUpdate(update) {
   realm.write(() => {
     patient.lastUpdated = timestamp;
     // If an object for that drug and date already exists, update it
-    for (var m in patient.medications) {
-      const old = patient.medications[m];
+    for (var m in patient.drugUpdates) {
+      const old = patient.drugUpdates[m];
       if(old.date === update.date && old.name === update.name) {
         old.dose = update.dose;
         old.frequency = update.frequency;
@@ -135,7 +135,7 @@ export function createDrugUpdate(update) {
     }
 
     // If doesn't exist, then add it
-    patient.medications.push(update);
+    patient.drugUpdates.push(update);
   });
 }
 
@@ -327,8 +327,8 @@ export function handleDownloadedPatients(patients) {
       if(!updateObject(existingPatient, 'triages', incomingTriage))
         fails.add(existingPatient.key);
     });
-    incomingPatient.medications.forEach(incomingDrugUpdate => {
-      if(!updateObject(existingPatient, 'medications', incomingDrugUpdate))
+    incomingPatient.drugUpdates.forEach(incomingDrugUpdate => {
+      if(!updateObject(existingPatient, 'drugUpdates', incomingDrugUpdate))
         fails.add(existingPatient.key);
     });
     incomingPatient.statuses.forEach(incomingStatus => {
@@ -368,14 +368,14 @@ export function write(fn) {
 }
 
 /**
- * Type: string of either 'soaps', 'triages', 'medications', or 'statuses'
+ * Type: string of either 'soaps', 'triages', 'drugUpdates', or 'statuses'
  * Returns true if updated successfully, false if wasn't updated
  */
 function updateObject(existingPatient, type, incomingObject) {
   // Find existing form/object that corresponds to the incoming one
   let existingObject = {};
-  if (type === 'medications') {
-    existingObject = existingPatient.medications.find( med => {
+  if (type === 'drugUpdates') {
+    existingObject = existingPatient.drugUpdates.find( med => {
       return incomingObject.date === med.date && incomingObject.name === med.name;
     });
   } else {
