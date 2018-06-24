@@ -3,7 +3,7 @@
 import PatientModel from '../models/Patient';
 import SoapModel from '../models/Soap';
 import StatusModel from '../models/Status';
-
+import TriageModel from '../models/Triage';
 //function params for all calls are generally the same function(req,res)
 const PatientController = {
   //GET API CALL
@@ -123,6 +123,7 @@ const PatientController = {
         return;
       }
 
+
       // Only update the given properties
       const properties = ['birthday', 'gender', 'phone', 'motherHeight', 'fatherHeight', 'lastUpdated'];
       properties.forEach( p => {
@@ -130,7 +131,7 @@ const PatientController = {
           oldPatient[p] = req.body.patient[p];
       });
 
-      //saves it, callback function to handle error 
+      //saves it, callback function to handle error
       oldPatient.save(function(e) {
         if(e) {
           res.json({status: false, error: e.message});
@@ -159,7 +160,7 @@ const PatientController = {
       if (!patientStatus) {
         err = new Error('Status of patient with key ' + req.params.key + ' for the date ' + req.params.date + ' does not exist');
       }
-  
+
       if (err) {
         res.json({status: false, error: err.message});
         return;
@@ -177,8 +178,30 @@ const PatientController = {
     });
   },
   GetTriage: function(req, res){
+    TriageModel.findOne({patientKey: req.params.key, date: req.params.date}, function(err, triage) {
+      if(!triage) {
+        err = new Error('Patient with key ' + req.params.key + ' doesn\'t exist or patient didn\'t come in on ' + req.params.date);
+      }
+      if(err) {
+        res.json({status: false, error: err.message});
+        return;
+      }
+      res.json({status: true, triage: triage});
+    });
   },
   GetDrugUpdates: function(req, res){
+    PatientModel.findOne({key: req.params.key}, function(err, patient) {
+      if(!patient) {
+        err = new Error('Patient with key ' + req.params.key + ' doesn\'t exist');
+      }
+
+      if(err) {
+        res.json({status: false, error: err.message});
+        return;
+      }
+
+      res.json({status: true, drugUpdates: patient.drugUpdates});
+    });
   },
   UpdateSoap: function(req, res){
     PatientModel.findOne({key: req.params.key}, function(err, patient) {
@@ -266,9 +289,94 @@ const PatientController = {
       });
     });
   },
+
   UpdateTriage: function(req, res){
+    PatientModel.findOne({key: req.params.key}, function(err, patient) {
+      if(!patient) {
+        err = new Error('Patient with key ' + req.params.key + ' doesn\'t exist');
+      }
+
+      for(let [i,triage] of patient.triages.entries()) {
+        // If an existing triage for that date exists, then update it
+        if(triage.date == req.body.triage.date) {
+          if(triage.lastUpdated > req.body.triage.lastUpdated) {
+            res.json({
+              status: false,
+              error: 'Triage sent is not up-to-date. Sync required.'
+            });
+            return;
+          }
+
+          patient.triages[i] = req.body.triage;
+          patient.lastUpdated = req.body.triage.lastUpdated;
+          patient.save(function(err) {
+            if(err) {
+              res.json({status: false, error: err.message});
+              return;
+            }
+            res.json({status: true});
+            return;
+          });
+          return;
+        }
+      }
+
+      // No triage exists yet, so add a new one
+      patient.triages.push(req.body.triage);
+      patient.lastUpdated = req.body.triage.lastUpdated;
+      patient.save(function(err) {
+        if(err) {
+          res.json({status: false, error: err.message});
+          return;
+        }
+        res.json({status: true});
+        return;
+      });
+    });
   },
-  UpdateDrugUpdates: function(req, res){
+  UpdateDrugUpdate: function(req, res) {
+    PatientModel.findOne({key: req.params.key}, function(err, patient) {
+      if(!patient) {
+        err = new Error('Patient with key ' + req.params.key + ' doesn\'t exist');
+      }
+
+      for (let [i,drugUpdate] of patient.drugUpdates.entries()) {
+        if (drugUpdate.date == req.params.date && drugUpdate.name == req.body.drugUpdate.name) {
+          if (drugUpdate.lastUpdated > req.body.drugUpdate.lastUpdated) {
+            res.json({
+              status: false,
+              error: 'Medication sent is not up-to-date. Sync required.'
+            });
+            return;
+          }
+
+          patient.drugUpdates[i] = req.body.drugUpdate;
+          patient.lastUpdated = req.body.drugUpdate.lastUpdated;
+
+          patient.save(function(err) {
+            if(err) {
+              res.json({status: false, error: err.message});
+              return;
+            }
+            res.json({status: true});
+            return;
+          });
+          return;
+        }
+      }
+
+      patient.drugUpdates.push(req.body.drugUpdate);
+      patient.lastUpdated = req.body.drugUpdate.lastUpdated;
+
+      patient.save(function(err) {
+        if(err) {
+          res.json({status: false, error: err.message});
+          return;
+        }
+        res.json({status: true});
+        return;
+      });
+    });
   }
 };
 
