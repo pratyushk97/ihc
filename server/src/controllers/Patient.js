@@ -99,14 +99,15 @@ const PatientController = {
         res.json({status: false, error: err.message});
         return;
       }
-    });
 
-    PatientModel.create(req.body.patient, function (err) {
-      if(err) {
-        res.json({status: false, error: err.message});
+      PatientModel.create(req.body.patient, function (err) {
+        if(err) {
+          res.json({status: false, error: err.message});
+          return;
+        }
+        res.json({status: true});
         return;
-      }
-      res.json({status: true});
+      });
     });
   },
   UpdatePatient: function(req, res){
