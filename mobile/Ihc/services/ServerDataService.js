@@ -62,6 +62,10 @@ export function updateStatus(statusObj) {
 export function createDrugUpdate(update) {
 }
 
+// Server endpoint: get /patient/:key/drugUpdates
+export function getDrugUpdates(patientKey) {
+}
+
 // Server endpoint: put /patient/:key/soap/:date
 export function updateSoap(update) {
 }
@@ -84,13 +88,20 @@ export function getTriage(patientKey, strDate) {
 export function getPatient(patientKey) {
 }
 
-// Server endpoint: get /patient/:key/drugUpdates
-export function getMedicationUpdates(patientKey) {
-}
-
 // Server endpoint: get /patients/statuses/:date
 // Return the statuses of the patients that are for this date
 export function getStatuses(strDate) {
+  return fetch(fetchUrl + '/patients/statuses/' + strDate)
+    .then(response => response.json())
+    .then(json => {
+      if(json.error) {
+        throw new Error(json.error);
+      }
+      const statuses = json.patientStatuses;
+      return Promise.resolve(statuses);
+    }).catch(err => {
+      return Promise.reject(err);
+    });
 }
 
 // Server endpoint: post /patients
@@ -117,6 +128,9 @@ export function getUpdatedPatients(lastSynced) {
   return fetch(fetchUrl + '/patients/' + lastSynced)
     .then(response => response.json())
     .then(json => {
+      if(json.error) {
+        throw new Error(json.error);
+      }
       const patients = json.patients;
       return Promise.resolve(patients);
     }).catch(err => {
