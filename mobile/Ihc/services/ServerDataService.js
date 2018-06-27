@@ -89,8 +89,8 @@ export function getMedicationUpdates(patientKey) {
 }
 
 // Server endpoint: get /patients/statuses/:date
-// Return the statuses of the patients that are active and for this date
-export function getActiveStatuses() {
+// Return the statuses of the patients that are for this date
+export function getStatuses(strDate) {
 }
 
 // Server endpoint: post /patients
