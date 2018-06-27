@@ -99,14 +99,15 @@ const PatientController = {
         res.json({status: false, error: err.message});
         return;
       }
-    });
 
-    PatientModel.create(req.body.patient, function (err) {
-      if(err) {
-        res.json({status: false, error: err.message});
+      PatientModel.create(req.body.patient, function (err) {
+        if(err) {
+          res.json({status: false, error: err.message});
+          return;
+        }
+        res.json({status: true});
         return;
-      }
-      res.json({status: true});
+      });
     });
   },
   UpdatePatient: function(req, res){
@@ -143,16 +144,22 @@ const PatientController = {
     });
   },
   GetSoap: function(req, res){
-    SoapModel.findOne({patientKey: req.params.key, date: req.params.date}, function(err, soap) {
-      if(!soap) {
-        err = new Error('Patient with key ' + req.params.key + ' does not have a soap for the date ' + req.params.date);
+    PatientModel.findOne({key: req.params.key}, function(err, patient) {
+      if(!patient) {
+        err = new Error('Patient with key ' + req.params.key + ' doesn\'t exist');
       }
 
-      if (err) {
-        res.json({status: false, error: err.message});
-        return;
+      for(let [i,soap] of patient.soaps.entries()) {
+        // If an existing soap for that date exists, then update it
+        if(soap.date == req.params.date) {
+          res.json({status: true, soap: soap});
+          return;
+        }
       }
-      res.json({status: true, soap: soap});
+
+      err = new Error('Patient with key ' + req.params.key + ' does not have a soap for the date ' + req.params.date);
+      res.json({status: false, error: err.message});
+      return;
     });
   },
   GetStatus: function(req, res){
@@ -211,7 +218,7 @@ const PatientController = {
 
       for(let [i,soap] of patient.soaps.entries()) {
         // If an existing soap for that date exists, then update it
-        if(soap.date == req.body.soap.date) {
+        if(soap.date == req.params.date) {
           if(soap.lastUpdated > req.body.soap.lastUpdated) {
             res.json({
               status: false,
