@@ -75,7 +75,7 @@ export default class WelcomeScreen extends Component<{}> {
       <Container loading={this.state.loading} 
         successMsg={this.state.successMsg}
         errorMsg={this.state.errorMsg}
-        cancelLoading={this.cancelLoading}
+        setLoading={this.setLoading}
       >
         <Text style={styles.welcome}>
           Welcome to clinic!
