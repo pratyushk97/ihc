@@ -28,6 +28,7 @@ export default class Container extends Component<{}> {
    * setLoading: function that configures loading in parent, and passes in
    *   second param that is true if the loading was Canceled
    * showRetryButton: boolean
+   * cancellableLoading: optional boolean, true by default
    *
    * use Container like
    * <Container loading={this.state.loading}>
@@ -72,6 +73,7 @@ export default class Container extends Component<{}> {
             patientKey={this.props.patientKey}
             setMsg={this.props.setMsg}
             setLoading={this.props.setLoading}
+            cancellable={this.props.cancellableLoading}
           />
         </View>
       );
