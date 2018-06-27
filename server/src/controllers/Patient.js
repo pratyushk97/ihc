@@ -156,26 +156,58 @@ const PatientController = {
     });
   },
   GetStatus: function(req, res){
-    StatusModel.findOne({patientKey: req.params.key, date: req.params.date}, function(err, patientStatus) {
-      if (!patientStatus) {
-        err = new Error('Status of patient with key ' + req.params.key + ' for the date ' + req.params.date + ' does not exist');
+    PatientModel.findOne({key: req.params.key}, function(err, patient) {
+      if (!patient) {
+        err = new Error('Patient with key ' + req.params.key + ' does not exist');
       }
 
       if (err) {
         res.json({status: false, error: err.message});
         return;
       }
-      res.json({status: true, patientStatus: patientStatus});
+
+      for(const statusObj of patient.statuses) {
+        if(statusObj.date === req.params.date) {
+          // Return objects as patientStatuses because status is taken to refer to
+          // the success
+          res.json({status: true, patientStatus: statusObj});
+          return;
+        }
+      }
+
+      res.json({
+        status: false,
+        error: `Status for patientKey ${req.params.key} and date ${req.params.date} does not exist`
+      });
     });
   },
   GetStatuses: function(req, res){
-    StatusModel.find({date: req.params.date}, function(err, statuses) {
-      if (err) {
-        res.json({status: false, error: err.message});
-        return;
-      }
-      res.json({status: true, patientStatuses: statuses});
-    });
+    // Because Mongo doesn't seem to support querying on embedded documents,
+    // first find all the Patients with a Status from the passed in date.
+    // Then iterate through all those patients' status objects, saving the
+    // statuses that match the date.
+    // If there is a better way to do this, then please update this nastiness
+    // :'(
+    PatientModel.find({ 'statuses.date': req.params.date }, { statuses: 1, _id: 0 },
+      (err, patients) => {
+        if (err) {
+          res.json({status: false, error: err.message});
+          return;
+        }
+
+        const statuses = [];
+        for(const patient of patients) {
+          for(const statusObj of patient.statuses) {
+            if(statusObj.date === req.params.date) {
+              statuses.push(statusObj);
+            }
+          }
+        }
+
+        // Return objects as patientStatuses because status is taken to refer to
+        // the success
+        res.json({status: true, patientStatuses: statuses});
+      });
   },
   GetTriage: function(req, res){
     TriageModel.findOne({patientKey: req.params.key, date: req.params.date}, function(err, triage) {
