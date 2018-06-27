@@ -32,7 +32,7 @@ export function createPatient(patient) {
 }
 
 // Server endpoint: put /patient/:key/status/:date
-export function updateStatus(statusObj) { //TODO: ***NOT YET TESTED***
+export function updateStatus(statusObj) {
   const copy = convertStatusForServer(statusObj);
   return fetch(fetchUrl + `/patient/${statusObj.patientKey}/status/${statusObj.date}`, {
     method: 'PUT',
@@ -41,7 +41,7 @@ export function updateStatus(statusObj) { //TODO: ***NOT YET TESTED***
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      status: statusObj
+      status: copy
     })
   }).then(response => response.json())
     .then(json => {
@@ -97,7 +97,7 @@ export function getSoap(patientKey, strDate) {
         throw new Error(json.error);
       }
 
-      return Promise.resolve(true);
+      return Promise.resolve(json.soap);
     })
     .catch(err => {
       return Promise.reject(err);
