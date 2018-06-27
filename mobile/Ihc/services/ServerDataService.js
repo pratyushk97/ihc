@@ -32,7 +32,7 @@ export function createPatient(patient) {
 }
 
 // Server endpoint: put /patient/:key/status/:date
-export function updateStatus(statusObj) {
+export function updateStatus(statusObj) { //TODO: ***NOT YET TESTED***
   const copy = convertStatusForServer(statusObj);
   return fetch(fetchUrl + `/patient/${statusObj.patientKey}/status/${statusObj.date}`, {
     method: 'PUT',
@@ -41,7 +41,7 @@ export function updateStatus(statusObj) {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      status: copy
+      status: statusObj
     })
   }).then(response => response.json())
     .then(json => {
@@ -64,11 +64,44 @@ export function createDrugUpdate(update) {
 
 // Server endpoint: put /patient/:key/soap/:date
 export function updateSoap(update) {
+  //update is the new soap object
+  return fetch(fetchUrl + `/patient/${update.patientKey}/soap/${update.date}`, {
+    method: 'PUT',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      soap: update
+    })
+  }).then(response => response.json())
+    .then(json => {
+      if (!json.status) {
+        throw new Error(json.error);
+      }
+
+      return Promise.resolve(true);
+    })
+    .catch(err => {
+      return Promise.reject(err);
+    });
 }
 
 // Server endpoint: get /patient/:key/soap/:date
 // Returns SOAP object if it exists, or undefined if not
 export function getSoap(patientKey, strDate) {
+  return fetch(fetchUrl + '/patient/' + patientKey +'/soap/' + strDate)
+    .then(response => response.json())
+    .then(json => {
+      if (!json.status) {
+        throw new Error(json.error);
+      }
+
+      return Promise.resolve(true);
+    })
+    .catch(err => {
+      return Promise.reject(err);
+    });
 }
 
 // Server endpoint: put /patient/:key/triage/:date
