@@ -58,12 +58,42 @@ export function updateStatus(statusObj) {
     });
 }
 
-// Server endpoint: put /patient/:key/drugUpdate
-export function createDrugUpdate(update) {
+// Server endpoint: put /patient/:key/drugUpdate/:date
+export function updateDrugUpdate(update) {
+  return fetch(fetchUrl + `/patient/${update.patientKey}/drugUpdate/${update.date}`, {
+    method: 'PUT',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      drugUpdate: update
+    })
+  }).then(response => response.json())
+    .then(json => {
+      if (!json.status) {
+        throw new Error(json.error);
+      }
+
+      return Promise.resolve(true);
+    }).catch(err => {
+      return Promise.reject(err);
+    });
 }
 
 // Server endpoint: get /patient/:key/drugUpdates
 export function getDrugUpdates(patientKey) {
+  return fetch(fetchUrl + '/patient/' + patientKey + '/drugUpdates')
+    .then(response => response.json())
+    .then(json => {
+      if(json.error) {
+        throw new Error(json.error);
+      }
+      const drugUpdates = json.drugUpdates;
+      return Promise.resolve(drugUpdates);
+    }).catch(err => {
+      return Promise.reject(err);
+    });
 }
 
 // Server endpoint: put /patient/:key/soap/:date
@@ -86,6 +116,17 @@ export function getTriage(patientKey, strDate) {
 
 // Server endpoint: get /patient/:key
 export function getPatient(patientKey) {
+  return fetch(fetchUrl + '/patient/' + patientKey)
+    .then(response => response.json())
+    .then(json => {
+      if(json.error) {
+        throw new Error(json.error);
+      }
+      const patient = json.patient;
+      return Promise.resolve(patient);
+    }).catch(err => {
+      return Promise.reject(err);
+    });
 }
 
 // Server endpoint: get /patients/statuses/:date
