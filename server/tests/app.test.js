@@ -17,11 +17,12 @@ describe('Test GetSoap routes', () => {
   });
 
   test('should return soap if exists', () => {
-    const soap = { name: "Soap" };
+    const soap = { name: 'Soap', date: 'datethatexists' };
+    const patient = {key: 'keythatexists', soaps: [soap]};
 
-    mock = sinon.mock(SoapModel)
-      .expects('findOne').withArgs({patientKey: 'keythatexists', date: 'datethatexists'})
-      .yields(null, soap);
+    mock = sinon.mock(PatientModel)
+      .expects('findOne')
+      .yields(null, patient);
 
     return request(app).get('/patient/keythatexists/soap/datethatexists')
       .expect({status: true, soap: soap});

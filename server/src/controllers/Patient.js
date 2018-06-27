@@ -1,9 +1,8 @@
 //treat these imports as 'containers'
 //to access/modify these containers, look up mongodb functions
 import PatientModel from '../models/Patient';
-import SoapModel from '../models/Soap';
-import StatusModel from '../models/Status';
 import TriageModel from '../models/Triage';
+
 //function params for all calls are generally the same function(req,res)
 const PatientController = {
   //GET API CALL
@@ -149,7 +148,7 @@ const PatientController = {
         err = new Error('Patient with key ' + req.params.key + ' doesn\'t exist');
       }
 
-      for(let [i,soap] of patient.soaps.entries()) {
+      for(let soap of patient.soaps) {
         // If an existing soap for that date exists, then update it
         if(soap.date == req.params.date) {
           res.json({status: true, soap: soap});
