@@ -8,6 +8,7 @@ import {localData, serverData} from '../services/DataService';
 import {stringDate} from '../util/Date';
 import PatientTable from '../components/PatientTable';
 import Container from '../components/Container';
+import {downstreamSyncWithServer} from '../util/Sync';
 
 export default class PatientSelectScreen extends Component<{}> {
   constructor(props) {
@@ -17,28 +18,57 @@ export default class PatientSelectScreen extends Component<{}> {
       errorMsg: null,
       successMsg: null,
       loading: false,
+      syncing: false, // Syncing server and local data
       rows: [],
       showRetryButton: false,
     };
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
   }
 
-  loadPatients = () => {
-    this.setState({ loading: true });
-    const data = localData.getPatientSelectRows();
-    this.setState({ rows: data, loading: false });
+  convertStatusesToRows(statuses) {
+    const columnOrder = ['name', 'birthday', 'checkinTime', 'triageCompleted',
+      'doctorCompleted', 'pharmacyCompleted', 'notes', 'patientKey'];
+
+    // Sort statuses by checkin time for now
+    statuses.sort( (status1, status2) => status1.checkinTime - status2.checkinTime );
+
+    const toReturn = statuses.map((obj) => columnOrder.map( (key) => obj[key] ));
+    return toReturn;
+  }
+
+  // Sync up tablet first with server before grabbing statuses
+  syncAndLoadPatients = () => {
+    this.setState({ loading: true, syncing: true, errorMsg: null, successMsg: null });
+
+    // Load local data in beginning to display even if sync doesn't work
+    const today = stringDate(new Date());
+    const oldStatuses = localData.getStatuses(today);
+    const oldRowData = this.convertStatusesToRows(oldStatuses);
+    this.setState({rows: oldRowData});
+
+    downstreamSyncWithServer()
+      .then((failedPatientKeys) => {
+        if(failedPatientKeys.length > 0) {
+          throw new Error(`${failedPatientKeys.length} patients didn't properly sync. Try again.`);
+        }
+        const newStatuses = localData.getStatuses(today);
+        const newRowData = this.convertStatusesToRows(newStatuses);
+        this.setState({rows: newRowData, loading: false, syncing: false});
+      })
+      .catch(err => {
+        this.setState({loading: false, syncing: false, errorMsg: err.message});
+      });
   }
 
   // Reload table after moving back to table
+  // Replaces componentDidMount() because this will be called around the same
+  // time
   onNavigatorEvent(event) {
     if (event.id === 'willAppear') {
-      this.loadPatients();
+      this.syncAndLoadPatients();
     }
   }
 
-  componentDidMount() {
-    this.loadPatients();
-  }
 
   goToPatient = (patient) => {
     this.props.navigator.push({
@@ -64,7 +94,7 @@ export default class PatientSelectScreen extends Component<{}> {
       .then( () => {
         if(this.state.loading) {
           // if successful, then reload data and close modal
-          this.loadPatients();
+          this.syncAndLoadPatients();
           this.setState({
             loading: false,
             showRetryButton: false,
@@ -89,7 +119,12 @@ export default class PatientSelectScreen extends Component<{}> {
 
   // If Loading was canceled, we want to show a retry button
   setLoading = (val, canceled) => {
-    this.setState({loading: val, showRetryButton: canceled});
+    let errorMsg = null;
+    // If we were trying to sync data, but was cancelled
+    if(canceled && this.state.syncing) {
+      errorMsg = 'Canceling may cause data to be out of sync. Please reload the page';
+    }
+    this.setState({loading: val, showRetryButton: canceled, erroMsg: errorMsg});
   }
 
   setMsg = (type, msg) => {
