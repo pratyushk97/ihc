@@ -303,6 +303,7 @@ const PatientController = {
           }
 
           patient.statuses[i] = req.body.status;
+          patient.lastUpdated = req.body.status.lastUpdated;
           patient.save(function(err) {
             if(err) {
               res.json({status: false, error: err.message});
@@ -317,6 +318,7 @@ const PatientController = {
 
       //status does not exist yet
       patient.statuses.push(req.body.status);
+      patient.lastUpdated = req.body.status.lastUpdated;
       patient.save(function(err) {
         if (err) {
           res.json({status: false, error: err.message});
