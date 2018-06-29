@@ -6,6 +6,7 @@ import {
 import {localData, serverData} from '../services/DataService';
 import Container from '../components/Container';
 import Button from '../components/Button';
+import {downstreamSyncWithServer} from '../util/Sync';
 
 export default class WelcomeScreen extends Component<{}> {
   constructor(props) {
@@ -54,12 +55,13 @@ export default class WelcomeScreen extends Component<{}> {
 
   download = () => {
     this.setState({loading: true, errorMsg: null, successMsg: null});
-    const lastSynced = localData.lastSynced();
 
-    serverData.getUpdatedPatients(lastSynced)
-      .then((patients) => {
+    downstreamSyncWithServer()
+      .then((failedPatientKeys) => {
         if(this.state.loading) {
-          localData.handleDownloadedPatients(patients);
+          if(failedPatientKeys.length > 0) {
+            throw new Error(`${failedPatientKeys.length} patients failed to download. Try again`);
+          }
           this.setState({successMsg: 'Downloaded successfully', errorMsg: null, loading: false});
         }
       })
