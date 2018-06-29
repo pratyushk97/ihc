@@ -11,15 +11,16 @@ Shortcuts:
 
 * [Command line](#command-line)
 * [How to](#how-to)
-* [setup the environment](#0.-setup-the-environment)
-* [go through coding process](#1.-go-through-coding-process)
-* [make a new screen](#2.-make-a-new-screen)
-* [make a new Express API route](#3.-make-a-new-Express-API-route)
-* [How to](#how-to)
-* [How to](#how-to)
-* [How to](#how-to)
-* [How to](#how-to)
-* [How to](#how-to)
+##### 0. setup the environment
+##### 1. go through coding process
+##### 2. make a new screen
+##### 3. make a new Express API route
+##### 4. create automated tests for the server API
+##### 5. manually test the server API
+##### 6. start the router setup for tablets
+##### 7. test React Native code
+##### 8. install the app on an emulator/device
+##### 9. Handle syncing the tablets with the server
 * [Overview](#overview-use-cases)
 * [API](#local-server-api)
 * [Local storage plan](#local-storage)
