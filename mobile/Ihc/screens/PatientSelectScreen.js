@@ -89,7 +89,7 @@ export default class PatientSelectScreen extends Component<{}> {
       return;
     }
 
-    this.setState({loading: true, upstreamSyncing: false});
+    this.setState({loading: true, upstreamSyncing: true});
     serverData.updateStatus(statusObj)
       .then( () => {
         if(this.state.loading) {
