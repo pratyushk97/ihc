@@ -110,7 +110,7 @@ export function updateStatus(patientKey, strDate, field, value) {
   return statusObj;
 }
 
-export function createDrugUpdate(update) {
+export function updateDrugUpdate(update) {
   const patientObjs = realm.objects('Patient').filtered('key = "' + update.patientKey + '"');
   const patient = patientObjs['0'];
   if(!patient) {
