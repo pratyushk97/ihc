@@ -18,9 +18,9 @@ export default class PatientSelectScreen extends Component<{}> {
       errorMsg: null,
       successMsg: null,
       loading: false,
-      syncing: false, // Syncing server and local data
       rows: [],
       showRetryButton: false,
+      upstreamSyncing: false // Should be set before server calls to declare what kind of syncing
     };
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
   }
@@ -38,7 +38,7 @@ export default class PatientSelectScreen extends Component<{}> {
 
   // Sync up tablet first with server before grabbing statuses
   syncAndLoadPatients = () => {
-    this.setState({ loading: true, syncing: true, errorMsg: null, successMsg: null });
+    this.setState({ loading: true, upstreamSyncing: false, errorMsg: null, successMsg: null });
 
     // Load local data in beginning to display even if sync doesn't work
     const today = stringDate(new Date());
@@ -49,14 +49,14 @@ export default class PatientSelectScreen extends Component<{}> {
     downstreamSyncWithServer()
       .then((failedPatientKeys) => {
         if(failedPatientKeys.length > 0) {
-          throw new Error(`${failedPatientKeys.length} patients didn't properly sync. Try again.`);
+          throw new Error(`${failedPatientKeys.length} patients didn't properly sync.`);
         }
         const newStatuses = localData.getStatuses(today);
         const newRowData = this.convertStatusesToRows(newStatuses);
-        this.setState({rows: newRowData, loading: false, syncing: false});
+        this.setState({rows: newRowData, loading: false});
       })
       .catch(err => {
-        this.setState({loading: false, syncing: false, errorMsg: err.message});
+        this.setState({loading: false, errorMsg: err.message});
       });
   }
 
@@ -89,7 +89,7 @@ export default class PatientSelectScreen extends Component<{}> {
       return;
     }
 
-    this.setState({loading: true});
+    this.setState({loading: true, upstreamSyncing: false});
     serverData.updateStatus(statusObj)
       .then( () => {
         if(this.state.loading) {
@@ -120,11 +120,11 @@ export default class PatientSelectScreen extends Component<{}> {
   // If Loading was canceled, we want to show a retry button
   setLoading = (val, canceled) => {
     let errorMsg = null;
-    // If we were trying to sync data, but was cancelled
-    if(canceled && this.state.syncing) {
-      errorMsg = 'Canceling may cause data to be out of sync. Please reload the page';
+    // If we were trying to downstream sync data, but was cancelled
+    if(canceled && this.state.upstreamSyncing === false) {
+      errorMsg = 'Canceling may cause data to be out of sync. Please retry.';
     }
-    this.setState({loading: val, showRetryButton: canceled, erroMsg: errorMsg});
+    this.setState({loading: val, showRetryButton: canceled, errorMsg: errorMsg});
   }
 
   setMsg = (type, msg) => {
