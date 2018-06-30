@@ -150,7 +150,7 @@ const PatientController = {
 
       for(let soap of patient.soaps) {
         // If an existing soap for that date exists, then update it
-        if(soap.date == req.params.date) {
+        if(soap.date === req.params.date) {
           res.json({status: true, soap: soap});
           return;
         }
@@ -249,7 +249,7 @@ const PatientController = {
 
       for(let [i,soap] of patient.soaps.entries()) {
         // If an existing soap for that date exists, then update it
-        if(soap.date == req.params.date) {
+        if(soap.date === req.params.date) {
           if(soap.lastUpdated > req.body.soap.lastUpdated) {
             res.json({
               status: false,
@@ -338,7 +338,7 @@ const PatientController = {
 
       for(let [i,triage] of patient.triages.entries()) {
         // If an existing triage for that date exists, then update it
-        if(triage.date == req.body.triage.date) {
+        if(triage.date === req.body.triage.date) {
           if(triage.lastUpdated > req.body.triage.lastUpdated) {
             res.json({
               status: false,
@@ -381,7 +381,7 @@ const PatientController = {
       }
 
       for (let [i,drugUpdate] of patient.drugUpdates.entries()) {
-        if (drugUpdate.date == req.params.date && drugUpdate.name == req.body.drugUpdate.name) {
+        if (drugUpdate.date === req.params.date && drugUpdate.name === req.body.drugUpdate.name) {
           if (drugUpdate.lastUpdated > req.body.drugUpdate.lastUpdated) {
             res.json({
               status: false,
