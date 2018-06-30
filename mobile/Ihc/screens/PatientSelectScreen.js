@@ -89,7 +89,7 @@ export default class PatientSelectScreen extends Component<{}> {
       return;
     }
 
-    this.setState({loading: true, upstreamSyncing: true});
+    this.setState({loading: true, upstreamSyncing: true, patientKey: patientKey});
     serverData.updateStatus(statusObj)
       .then( () => {
         if(this.state.loading) {
@@ -122,7 +122,7 @@ export default class PatientSelectScreen extends Component<{}> {
     let errorMsg = null;
     // If we were trying to downstream sync data, but was cancelled
     if(canceled && this.state.upstreamSyncing === false) {
-      errorMsg = 'Canceling may cause data to be out of sync. Please retry.';
+      errorMsg = 'Canceling may cause data to be out of sync.';
     }
     this.setState({loading: val, showRetryButton: canceled, errorMsg: errorMsg});
   }
