@@ -191,7 +191,7 @@ export default class MedicationScreen extends Component<{}> {
     });
 
     let statusObj = {};
-    if(station != 'Doctor' && station != 'Pharmacy') {
+    if(station !== 'Doctor' && station !== 'Pharmacy') {
       throw new Error(`Received invalid station: ${station}`);
     }
 
