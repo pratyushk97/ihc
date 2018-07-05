@@ -286,6 +286,39 @@ Other options are available: https://wix.github.io/react-native-navigation/#/scr
         call
     iii. If the server upload fails, then display an error message and show a retry
          button so they can try again
+ 
+  3. To allow the user to "cancel" service calls:
+
+    i. There is a button within the Loading component that calls this.props.setLoading,
+       which is passed from the parent screen (into the Container component,
+       which passes it to the Loading component). View PatientSelectScreen for
+       an example.
+    ii. However, fetch calls can't actually be cancelled because the API doesn't
+        support it. Thus, by "cancel", we actually mean return control over to
+        the user, but let the network request happen in the background.
+        This is so that in cases where the network might be unresponsive, users can
+        still operate the tablet with the understanding that updates might not
+        be sent to the server.
+    iii. To support this, after the service call (i.e. serverData.createPatient()),
+         you can check if this.state.loading === true. If it is true, then user
+         did not "cancel" the service call. However, if this.state.loading ===
+         false, then the user DID "cancel" the service call (because
+         "cancelling" exits out of the loading screen). Thus we want to display
+         the proper response. Generally, we only want to display the server's
+         response if the service call was not cancelled, because otherwise the
+         user isn't expecting there to be a response.
+    iv. CAVEAT: For post/puts, the user might try sending a server call and
+        then cancelling, thus thinking that the call won't go to the network,
+        but in the background it still is. They also might think that the data
+        was not saved locally, but the data should have been saved locally,
+        regardless of if the server call was cancelled. 
+        TODO: Find some way of conveying this properly...
+    v. We also want to keep note that if the user cancels a GET server call,
+       then the tablet may be out of sync if the cancel means we did not
+       download new data from the server. Thus, you may need to keep track of if
+       the server call is a downstream/GET call or an upstream/POST/PUT call,
+       and then render a different message if the downstream call was cancelled.
+       View PatientSelectScreen for an example.
 
 ==========================================
 

@@ -41,6 +41,7 @@ export default class WelcomeScreen extends Component<{}> {
     const patients = localData.getPatientsToUpload();
     serverData.updatePatients(patients)
       .then(() => {
+        // View README: Handle syncing the tablet, point 3 for explanation
         if(this.state.loading) {
           localData.markPatientsUploaded();
           this.setState({successMsg: 'Uploaded successfully', errorMsg: null, loading: false});
@@ -58,6 +59,7 @@ export default class WelcomeScreen extends Component<{}> {
 
     downstreamSyncWithServer()
       .then((failedPatientKeys) => {
+        // View README: Handle syncing the tablet, point 3 for explanation
         if(this.state.loading) {
           if(failedPatientKeys.length > 0) {
             throw new Error(`${failedPatientKeys.length} patients failed to download. Try again`);

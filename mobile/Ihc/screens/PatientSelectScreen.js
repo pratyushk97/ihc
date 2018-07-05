@@ -92,8 +92,9 @@ export default class PatientSelectScreen extends Component<{}> {
     this.setState({loading: true, upstreamSyncing: true, patientKey: patientKey});
     serverData.updateStatus(statusObj)
       .then( () => {
+        // View README: Handle syncing the tablet, point 3 for explanation
         if(this.state.loading) {
-          // if successful, then reload data and close modal
+          // if successful, then reload screen (which closes modal too)
           this.syncAndLoadPatients();
           this.setState({
             loading: false,
@@ -101,7 +102,6 @@ export default class PatientSelectScreen extends Component<{}> {
             successMsg: 'Saved successfully',
             errorMsg: null
           });
-          this.closeModal();
         }
       })
       .catch( (e) => {
@@ -120,7 +120,7 @@ export default class PatientSelectScreen extends Component<{}> {
   // If Loading was canceled, we want to show a retry button
   setLoading = (val, canceled) => {
     let errorMsg = null;
-    // If we were trying to downstream sync data, but was cancelled
+    // View README: Handle syncing the tablet, point 5 for explanation
     if(canceled && this.state.upstreamSyncing === false) {
       errorMsg = 'Canceling may cause data to be out of sync.';
     }
