@@ -6,7 +6,6 @@ export default class Medication {
 
 }
 
-//Note: do we need a primaryKey? Idk if more than one drug with the same name exists
 Medication.schema = {
   name: 'Medication',
   properties: {
