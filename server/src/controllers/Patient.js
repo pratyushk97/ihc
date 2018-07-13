@@ -440,7 +440,7 @@ const PatientController = {
     })
   },
   /* body: NA, returns: array of medication objects */
-  GetMedication: function(req, res) {
+  GetMedications: function(req, res) {
     MedicationModel.find({drugName: req.params.name}, function(err, drugs) {
       if (drugs.length == 0) {
         err = new Error(`A medication with the name ${req.params.name} does not exist`)

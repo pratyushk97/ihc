@@ -233,7 +233,7 @@ export function createMedication(newMedication) {
     });
 }
 // Server endpoint: get /medication-inventory/:name
-export function getMedication(name) {
+export function getMedications(name) {
   return fetch(fetchUrl + '/medication-inventory/' + name)
     .then(response => response.json())
     .then(json => {

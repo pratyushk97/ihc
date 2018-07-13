@@ -59,7 +59,7 @@ router.get('/patients/statuses/:date', PatientController.GetStatuses);
 router.post('/medication-inventory', PatientController.CreateMedication);
 
 //return all the medications (varying expiration dates) for the given drug name
-router.get('/medication-inventory/:name', PatientController.GetMedication);
+router.get('/medication-inventory/:name', PatientController.GetMedications);
 
 //updates the information for an existing medication
 router.put('/medication-inventory/:name/:date', PatientController.UpdateMedication);
