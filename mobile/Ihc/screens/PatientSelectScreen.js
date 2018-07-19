@@ -37,6 +37,7 @@ class PatientSelectScreen extends Component<{}> {
 
   // Sync up tablet first with server before grabbing statuses
   syncAndLoadPatients = () => {
+    this.props.setCurrentPatientKey(null);
     this.props.setLoading(true);
     this.props.isUploading(false);
     this.props.clearMessages();
