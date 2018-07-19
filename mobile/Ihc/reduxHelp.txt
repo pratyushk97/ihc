@@ -1,8 +1,8 @@
 This file contains information about the design of our Redux usage.
 
-'In Redux, all the application state is stored as a single object. It's a good
+"In Redux, all the application state is stored as a single object. It's a good
 idea to think of its shape before writing any code. What's the minimal
-representation of your app's state as an object?'
+representation of your app's state as an object?"
 
 Info needed in our store object:
 loading: boolean,
@@ -28,3 +28,11 @@ An example of which might be:
     uploading: true,
     messages: {successMessage: "Success", errorMessage: null}
   }
+
+When choosing if a component should accept props from Redux or from the parent,
+we'd prefer not having to interact with Redux if not necessary. Because Redux is
+useful for propogating changes from child to parent component, then generally
+include Redux if we need to use callbacks to update a parent component. However
+if we are mostly just displaying information and not updating any information
+relevant to a parent component, then you can probably pass relevant information
+through the parent and NOT Redux.
