@@ -12,7 +12,7 @@ showRetryButton: boolean,
 currentPatientKey: string or null,
 
 The store object's shape is defined within the reduxReducers/reducers file.
-The line with
+i.e. The line with
   combineReducers({loading, uploading, messages...}) 
 causes the store object's shape to look like
   {

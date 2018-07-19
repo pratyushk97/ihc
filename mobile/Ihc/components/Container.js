@@ -27,8 +27,6 @@ class Container extends Component<{}> {
    *
    * Props from parent:
    * children: the JSX that will be displayed within the container
-   * patientKey: the patientKey to mark as upload in case loading is canceled,
-   *   or null if not needed
    *
    * use Container like
    * <Container>
@@ -92,9 +90,7 @@ class Container extends Component<{}> {
     if (this.props.loading) {
       return (
         <View style={styles.outside}>
-          <Loading
-            patientKey={this.props.patientKey}
-          />
+          <Loading />
         </View>
       );
     }

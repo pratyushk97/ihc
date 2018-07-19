@@ -18,9 +18,7 @@ class Loading extends Component<{}> {
    * setErrorMessage: function to set error msg if cancel button is clicked
    *   or null if not needed
    * setLoading: function to toggle loading, second param is true if user canceled
-   *
-   * Props from parent:
-   * patientKey: the patientKey to mark as upload in case loading is canceled,
+   * currentPatientKey: the patientKey to mark as upload in case loading is canceled,
    *   or null if not needed
    */
   constructor(props) {
@@ -28,11 +26,15 @@ class Loading extends Component<{}> {
   }
 
   cancel = () => {
-    if(this.props.patientKey) {
-      localData.markPatientNeedToUpload(this.props.patientKey);
+    if(this.props.currentPatientKey) {
+      localData.markPatientNeedToUpload(this.props.currentPatientKey);
     }
 
-    this.props.setErrorMessage('Cancelled. May need to retry.');
+    // If we cancelled a downstream sync, then display a different message
+    if(this.props.uploading)
+      this.props.setErrorMessage('Cancelled. May need to retry.');
+    else
+      this.props.setErrorMessage('Canceling may cause data to be out of sync.');
 
     // Show retry button when cancel button is pressed
     this.props.setLoading(false, true);
@@ -70,9 +72,14 @@ const styles = StyleSheet.create({
 import { setLoading, setErrorMessage } from '../reduxActions/containerActions';
 import { connect } from 'react-redux';
 
+const mapStateToProps = state => ({
+  currentPatientKey: state.currentPatientKey,
+  uploading: state.uploading
+});
+
 const mapDispatchToProps = dispatch => ({
   setLoading: (val,showRetryButton) => dispatch(setLoading(val, showRetryButton)),
   setErrorMessage: val => dispatch(setErrorMessage(val)),
 });
 
-export default connect(null, mapDispatchToProps)(Loading);
+export default connect(mapStateToProps, mapDispatchToProps)(Loading);

@@ -48,11 +48,21 @@ function messages(state = {successMessage: null, errorMessage: null}, action) {
   }
 }
 
+function currentPatientKey(state = null, action) {
+  switch (action.type) {
+    case containerActions.SET_CURRENT_PATIENT_KEY:
+      return action.currentPatientKey;
+    default:
+      return state;
+  }
+}
+
 const reducers = combineReducers({
   loading,
   uploading,
   showRetryButton,
-  messages
+  messages,
+  currentPatientKey
 });
 
 export default reducers;
