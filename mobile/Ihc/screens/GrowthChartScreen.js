@@ -176,6 +176,6 @@ import { connect } from 'react-redux';
 const mapDispatchToProps = dispatch => ({
   setLoading: val => dispatch(setLoading(val)),
   setErrorMessage: val => dispatch(setErrorMessage(val))
-})
+});
 
 export default connect(null, mapDispatchToProps)(GrowthChartScreen);
