@@ -1,3 +1,6 @@
+GO THROUGH THIS TUTORIAL
+https://redux.js.org/basics
+
 This file contains information about the design of our Redux usage.
 
 "In Redux, all the application state is stored as a single object. It's a good
