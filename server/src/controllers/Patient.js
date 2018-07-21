@@ -421,9 +421,9 @@ const PatientController = {
   },
   /* body: medication object */
   CreateMedication: function(req, res) {
-    MedicationModel.findOne({drugName: req.body.medication.drugName, expirationDate: req.body.medication.expirationDate}, function(err, drug) {
+    MedicationModel.findOne({drugName: req.body.medication.drugName}, function(err, drug) {
       if (drug) {
-        err = new Error(`A medication with the name ${req.body.medication.drugName} and expiration date ${req.body.medication.expirationDate} already exists`);
+        err = new Error(`A medication with the name ${req.body.medication.drugName} already exists`);
       }
       if (err) {
         res.json({status: false, error: err.message});
@@ -455,20 +455,23 @@ const PatientController = {
   },
   /* body: medication object */
   UpdateMedication: function(req, res) {
-    MedicationModel.findOne({drugName: req.params.name, expirationDate: req.params.date}, function(err, drug) {
+    MedicationModel.findOne({drugName: req.params.name}, function(err, drug) {
       if (!drug) {
-        err = new Error(`A medication with the name ${req.params.name} and expiration date ${req.params.date} does not exist`)
+        err = new Error(`A medication with the name ${req.params.name} does not exist`)
       }
       if (err) {
         res.json({status: false, error: err.message});
         return;
       }
 
-      // Only update the given properties (can't change expiration date for safety reasons)
-      const properties = ['drugName', 'dosage', 'quantity', 'units', 'comments'];
+      //NOTE: should also check quantity on mobile side and set outOfStock accordingly
+      const properties = ['drugName', 'quantity', 'dosage', 'units', 'comments', 'outOfStock'];
       properties.forEach( p => {
-        if(req.body.medication[p])
+        if (p == 'outOfStock' && req.body.medication['quantity'] == 0) {
+          drug[p] = true;
+        } else {
           drug[p] = req.body.medication[p];
+        }
       });
 
       //saves it, callback function to handle error
@@ -480,6 +483,19 @@ const PatientController = {
         res.json({status: true});
         return;
       });
+    });
+  },
+  DeleteMedication: function(req, res) {
+    MedicationModel.deleteMany({drugName: req.params.name}, function(err, drug) {
+      if(!drug) {
+        err = new Error(`A medication with the name ${req.params.name} does not exist`);
+      }
+      if (err) {
+        res.json({status: false, error: err.message});
+        return;
+      }
+      res.json({status: true})
+      return;
     });
   }
 };
