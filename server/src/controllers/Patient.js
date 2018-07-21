@@ -128,7 +128,7 @@ const PatientController = {
       // Only update the given properties
       const properties = ['birthday', 'gender', 'phone', 'motherHeight', 'fatherHeight', 'lastUpdated'];
       properties.forEach( p => {
-        if(req.body.patient[p])
+        if(req.body.patient[p] !== undefined)
           oldPatient[p] = req.body.patient[p];
       });
 
@@ -467,10 +467,12 @@ const PatientController = {
       //NOTE: should also check quantity on mobile side and set outOfStock accordingly
       const properties = ['drugName', 'quantity', 'dosage', 'units', 'comments', 'outOfStock'];
       properties.forEach( p => {
-        if (p == 'outOfStock' && req.body.medication['quantity'] == 0) {
-          drug[p] = true;
-        } else {
-          drug[p] = req.body.medication[p];
+        if (req.body.medication[p] !== undefined) {
+          if (p == 'outOfStock' && req.body.medication['quantity'] == 0) {
+            drug[p] = true;
+          } else {
+            drug[p] = req.body.medication[p];
+          }
         }
       });
 
