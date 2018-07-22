@@ -1,7 +1,7 @@
 export default class Medication {
   //for testing purposes
-  static getInstance(drugName = 'ibuprofen', quantity = 500, dosage = 200, units = 'mg', outOfStock = false) {
-    return {drugName, dosage, quantity, units, outOfStock};
+  static getInstance(drugName = 'ibuprofen', quantity = 500, dosage = 200, units = 'mg') {
+    return {drugName, dosage, quantity, units};
   }
 
 }
@@ -15,7 +15,6 @@ Medication.schema = {
     quantity: 'int',
     dosage: 'int',
     units: 'string',
-    comments: 'string?', //Consider keeping track of multiple comments (array of strings)
-    outOfStock: 'bool'
+    comments: 'string?' //Consider keeping track of multiple comments (array of strings)
   }
 };

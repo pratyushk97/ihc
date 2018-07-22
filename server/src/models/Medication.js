@@ -6,8 +6,7 @@ const MedicationSchema = Schema({
   quantity: Number,
   dosage: Number,
   units: String,
-  comments: String,
-  outOfStock: Boolean
+  comments: String
 });
 
 const MedicationModel = mongoose.model('Medication', MedicationSchema);

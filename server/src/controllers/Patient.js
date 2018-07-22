@@ -464,17 +464,9 @@ const PatientController = {
         return;
       }
 
-      //NOTE: should also check quantity on mobile side and set outOfStock accordingly
-      const properties = ['drugName', 'quantity', 'dosage', 'units', 'comments', 'outOfStock'];
-      properties.forEach( p => {
-        if (req.body.medication[p] !== undefined) {
-          if (p == 'outOfStock' && req.body.medication['quantity'] == 0) {
-            drug[p] = true;
-          } else {
-            drug[p] = req.body.medication[p];
-          }
-        }
-      });
+      for (let p in req.body.medication) {
+        drug[p] = req.body.medication[p];
+      }
 
       //saves it, callback function to handle error
       drug.save(function(e) {
