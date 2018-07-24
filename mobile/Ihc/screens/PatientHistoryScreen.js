@@ -16,30 +16,31 @@ import Button from '../components/Button';
  * but not a triage form and vice versa
 */
 
-export default class PatientHistoryScreen extends Component<{}> {
+class PatientHistoryScreen extends Component<{}> {
   /*
    * Expects:
    *  {
    *    name: string, patient's name (for convenience)
-   *    patientKey: string
    *  }
    */
   constructor(props) {
     super(props);
     this.state = {
       patient: null,
-      loading: false,
-      errorMsg: null
     };
   }
 
   loadPatient = () => {
-    this.setState({ loading: true });
+    this.props.setLoading(true);
+    this.props.clearMessages();
+
     try {
-      const patient = localData.getPatient(this.props.patientKey);
+      const patient = localData.getPatient(this.props.currentPatientKey);
+      this.props.setLoading(false);
       this.setState({ patient: patient, loading: false });
     } catch(err) {
-      this.setState({ errorMsg: err.message, loading: false });
+      this.props.setLoading(false);
+      this.props.setErrorMessage(err.message);
     }
   }
 
@@ -47,12 +48,12 @@ export default class PatientHistoryScreen extends Component<{}> {
     this.loadPatient();
   }
 
+  // TODO: make Soap and Triage screen read patient key from redux
   goToSoap(date) {
-  
     this.props.navigator.push({
       screen: 'Ihc.SoapScreen',
       title: 'Back to patient',
-      passProps: { name: this.props.name, patientKey: this.props.patientKey, todayDate: date }
+      passProps: { name: this.props.name, patientKey: this.props.currentPatientKey, todayDate: date }
     });
   }
 
@@ -60,16 +61,14 @@ export default class PatientHistoryScreen extends Component<{}> {
     this.props.navigator.push({
       screen: 'Ihc.TriageScreen',
       title: 'Back to patient',
-      passProps: { patientKey: this.props.patientKey, todayDate: date }
+      passProps: { patientKey: this.props.currentPatientKey, todayDate: date }
     });
   }
 
   render() {
     if (this.state.patient == null) {
       return (
-        <Container loading={this.state.loading}
-          errorMsg={this.state.errorMsg} >
-          
+        <Container>
           <Text style={styles.title}>
             Previous Visits
           </Text>
@@ -79,8 +78,7 @@ export default class PatientHistoryScreen extends Component<{}> {
     }
 
     return (
-      <Container loading={this.state.loading}
-        errorMsg={this.state.errorMsg} >
+      <Container>
 
         <Text style={styles.title}>
           Previous Visits
@@ -135,3 +133,20 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
 });
+
+// Redux
+import { setLoading, setErrorMessage, clearMessages } from '../reduxActions/containerActions';
+import { connect } from 'react-redux';
+
+const mapStateToProps = state => ({
+  loading: state.loading,
+  currentPatientKey: state.currentPatientKey
+});
+
+const mapDispatchToProps = dispatch => ({
+  setLoading: (val,showRetryButton) => dispatch(setLoading(val, showRetryButton)),
+  setErrorMessage: val => dispatch(setErrorMessage(val)),
+  clearMessages: () => dispatch(clearMessages()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(PatientHistoryScreen);
