@@ -128,7 +128,7 @@ const PatientController = {
       // Only update the given properties
       const properties = ['birthday', 'gender', 'phone', 'motherHeight', 'fatherHeight', 'lastUpdated'];
       properties.forEach( p => {
-        if(req.body.patient[p])
+        if(req.body.patient[p] !== undefined)
           oldPatient[p] = req.body.patient[p];
       });
 
@@ -421,9 +421,9 @@ const PatientController = {
   },
   /* body: medication object */
   CreateMedication: function(req, res) {
-    MedicationModel.findOne({drugName: req.body.medication.drugName, expirationDate: req.body.medication.expirationDate}, function(err, drug) {
+    MedicationModel.findOne({drugName: req.body.medication.drugName}, function(err, drug) {
       if (drug) {
-        err = new Error(`A medication with the name ${req.body.medication.drugName} and expiration date ${req.body.medication.expirationDate} already exists`);
+        err = new Error(`A medication with the name ${req.body.medication.drugName} already exists`);
       }
       if (err) {
         res.json({status: false, error: err.message});
@@ -455,21 +455,18 @@ const PatientController = {
   },
   /* body: medication object */
   UpdateMedication: function(req, res) {
-    MedicationModel.findOne({drugName: req.params.name, expirationDate: req.params.date}, function(err, drug) {
+    MedicationModel.findOne({drugName: req.params.name}, function(err, drug) {
       if (!drug) {
-        err = new Error(`A medication with the name ${req.params.name} and expiration date ${req.params.date} does not exist`)
+        err = new Error(`A medication with the name ${req.params.name} does not exist`)
       }
       if (err) {
         res.json({status: false, error: err.message});
         return;
       }
 
-      // Only update the given properties (can't change expiration date for safety reasons)
-      const properties = ['drugName', 'dosage', 'quantity', 'units', 'comments'];
-      properties.forEach( p => {
-        if(req.body.medication[p])
-          drug[p] = req.body.medication[p];
-      });
+      for (let p in req.body.medication) {
+        drug[p] = req.body.medication[p];
+      }
 
       //saves it, callback function to handle error
       drug.save(function(e) {
@@ -480,6 +477,19 @@ const PatientController = {
         res.json({status: true});
         return;
       });
+    });
+  },
+  DeleteMedication: function(req, res) {
+    MedicationModel.deleteMany({drugName: req.params.name}, function(err, drug) {
+      if(!drug) {
+        err = new Error(`A medication with the name ${req.params.name} does not exist`);
+      }
+      if (err) {
+        res.json({status: false, error: err.message});
+        return;
+      }
+      res.json({status: true})
+      return;
     });
   }
 };
