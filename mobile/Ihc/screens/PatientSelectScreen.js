@@ -50,18 +50,23 @@ class PatientSelectScreen extends Component<{}> {
 
     downstreamSyncWithServer()
       .then((failedPatientKeys) => {
-        if(failedPatientKeys.length > 0) {
-          throw new Error(`${failedPatientKeys.length} patients didn't properly sync.`);
-        }
-        const newStatuses = localData.getStatuses(today);
-        const newRowData = this.convertStatusesToRows(newStatuses);
+        // View README: Handle syncing the tablet, point 3 for explanation
+        if(this.props.loading) {
+          if(failedPatientKeys.length > 0) {
+            throw new Error(`${failedPatientKeys.length} patients didn't properly sync.`);
+          }
+          const newStatuses = localData.getStatuses(today);
+          const newRowData = this.convertStatusesToRows(newStatuses);
 
-        this.setState({rows: newRowData});
-        this.props.setLoading(false);
+          this.setState({rows: newRowData});
+          this.props.setLoading(false);
+        }
       })
       .catch(err => {
-        this.props.setLoading(false);
-        this.props.setErrorMessage(err.message);
+        if(this.props.loading) {
+          this.props.setLoading(false);
+          this.props.setErrorMessage(err.message);
+        }
       });
   }
 

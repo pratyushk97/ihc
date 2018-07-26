@@ -125,23 +125,28 @@ class MedicationScreen extends Component<{}> {
 
     downstreamSyncWithServer()
       .then((failedPatientKeys) => {
-        if(failedPatientKeys.length > 0) {
-          throw new Error(`${failedPatientKeys.length} patients didn't properly sync.`);
+        // View README: Handle syncing the tablet, point 3 for explanation
+        if(this.props.loading) {
+          if(failedPatientKeys.length > 0) {
+            throw new Error(`${failedPatientKeys.length} patients didn't properly sync.`);
+          }
+
+          let updates = localData.getMedicationUpdates(this.props.currentPatientKey);
+          let statusObj = localData.getStatus(this.props.currentPatientKey, this.state.todayDate);
+          const checkmarks = statusObj.medicationCheckmarks;
+
+          this.setState({
+            updates: updates,
+            medicationCheckmarks: checkmarks,
+          });
+          this.props.setLoading(false);
         }
-
-        let updates = localData.getMedicationUpdates(this.props.currentPatientKey);
-        let statusObj = localData.getStatus(this.props.currentPatientKey, this.state.todayDate);
-        const checkmarks = statusObj.medicationCheckmarks;
-
-        this.setState({
-          updates: updates,
-          medicationCheckmarks: checkmarks,
-        });
-        this.props.setLoading(false);
       })
       .catch(err => {
-        this.props.setLoading(false);
-        this.props.setErrorMessage(err.message);
+        if(this.props.loading) {
+          this.props.setLoading(false);
+          this.props.setErrorMessage(err.message);
+        }
       });
   }
 
