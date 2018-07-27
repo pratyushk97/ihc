@@ -149,6 +149,11 @@ const PatientController = {
         err = new Error('Patient with key ' + req.params.key + ' doesn\'t exist');
       }
 
+      if (err) {
+        res.json({status: false, error: err.message});
+        return;
+      }
+
       for(let soap of patient.soaps) {
         // If an existing soap for that date exists, then update it
         if(soap.date === req.params.date) {
@@ -248,6 +253,11 @@ const PatientController = {
         err = new Error('Patient with key ' + req.params.key + ' doesn\'t exist');
       }
 
+      if(err) {
+        res.json({status: false, error: err.message});
+        return;
+      }
+
       for(let [i,soap] of patient.soaps.entries()) {
         // If an existing soap for that date exists, then update it
         if(soap.date === req.params.date) {
@@ -290,6 +300,11 @@ const PatientController = {
     PatientModel.findOne({key: req.params.key}, function(err, patient) {
       if(!patient) {
         err = new Error('Patient with key ' + req.params.key + ' doesn\'t exist');
+      }
+
+      if(err) {
+        res.json({status: false, error: err.message});
+        return;
       }
 
       for (let [i,status] of patient.statuses.entries()) {
@@ -337,6 +352,11 @@ const PatientController = {
         err = new Error('Patient with key ' + req.params.key + ' doesn\'t exist');
       }
 
+      if(err) {
+        res.json({status: false, error: err.message});
+        return;
+      }
+
       for(let [i,triage] of patient.triages.entries()) {
         // If an existing triage for that date exists, then update it
         if(triage.date === req.body.triage.date) {
@@ -379,6 +399,11 @@ const PatientController = {
     PatientModel.findOne({key: req.params.key}, function(err, patient) {
       if(!patient) {
         err = new Error('Patient with key ' + req.params.key + ' doesn\'t exist');
+      }
+
+      if(err) {
+        res.json({status: false, error: err.message});
+        return;
       }
 
       for (let [i,drugUpdate] of patient.drugUpdates.entries()) {
