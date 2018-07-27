@@ -11,8 +11,8 @@ import {shortDate} from '../util/Date';
 import Container from '../components/Container';
 import Button from '../components/Button';
 
-/* TODO: 
- * Make changes in behavior for the cases that a soap form is submitted, 
+/* TODO:
+ * Make changes in behavior for the cases that a soap form is submitted,
  * but not a triage form and vice versa
 */
 
@@ -37,7 +37,7 @@ class PatientHistoryScreen extends Component<{}> {
     try {
       const patient = localData.getPatient(this.props.currentPatientKey);
       this.props.setLoading(false);
-      this.setState({ patient: patient, loading: false });
+      this.setState({ patient: patient });
     } catch(err) {
       this.props.setLoading(false);
       this.props.setErrorMessage(err.message);
@@ -53,15 +53,15 @@ class PatientHistoryScreen extends Component<{}> {
     this.props.navigator.push({
       screen: 'Ihc.SoapScreen',
       title: 'Back to patient',
-      passProps: { name: this.props.name, patientKey: this.props.currentPatientKey, todayDate: date }
+      passProps: { name: this.props.name, todayDate: date }
     });
   }
 
-  goToTriage(date) { 
+  goToTriage(date) {
     this.props.navigator.push({
       screen: 'Ihc.TriageScreen',
       title: 'Back to patient',
-      passProps: { patientKey: this.props.currentPatientKey, todayDate: date }
+      passProps: { todayDate: date }
     });
   }
 
@@ -87,12 +87,12 @@ class PatientHistoryScreen extends Component<{}> {
         <View style={styles.gridContainer}>
           <Grid>
             <Col style={styles.col}>
-              {this.state.patient.soaps.map( (soap, i) => 
+              {this.state.patient.soaps.map( (soap, i) =>
                 <Text key={i} style={styles.dateContainer}>{formatDate(new Date(shortDate(soap.date)))}</Text> )}
             </Col>
 
             <Col style={styles.col}>
-              {this.state.patient.soaps.map( (soap, i) => 
+              {this.state.patient.soaps.map( (soap, i) =>
                 <Button key={i}
                   onPress={() => this.goToSoap(soap.date)}
                   text='SOAP' />
@@ -100,7 +100,7 @@ class PatientHistoryScreen extends Component<{}> {
             </Col>
 
             <Col style={styles.col}>
-              {this.state.patient.soaps.map( (soap, i) => 
+              {this.state.patient.soaps.map( (soap, i) =>
                 <Button key={i}
                   onPress={() => this.goToTriage(soap.date)}
                   text='Triage' />
