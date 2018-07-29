@@ -33,8 +33,7 @@ class SoapScreen extends Component<{}> {
       formValues: {date: todayDate},
       errorMsg: null,
       todayDate: todayDate,
-      successMsg: null,
-      loading: false
+      successMsg: null
     };
   }
 
@@ -79,11 +78,9 @@ class SoapScreen extends Component<{}> {
 
     // Load existing SOAP info if it exists
     const soap = localData.getSoap(this.props.currentPatientKey, this.state.todayDate);
-    if (!soap) {
-      this.props.setLoading(false);
-      return;
+    if (soap) {
+      this.setState({ formValues: soap });
     }
-    this.setState({ formValues: soap });
 
     // Attempt server download and reload information if successful
     downstreamSyncWithServer()
@@ -94,12 +91,14 @@ class SoapScreen extends Component<{}> {
           }
 
           const soap = localData.getSoap(this.props.currentPatientKey, this.state.todayDate);
-          if (!soap) {
-            this.props.setLoading(false);
-            return;
+          if (soap) {
+            this.setState({ formValues: soap });
           }
-          this.setState({ formValues: soap });
 
+          this.props.setLoading(false);
+          this.props.setSuccessMessage('Loaded succesfully')
+        } else {
+          this.props.setErrorMessage('Cancel invoked');
           this.props.setLoading(false);
         }
       })
@@ -138,19 +137,21 @@ class SoapScreen extends Component<{}> {
     // Send updates to server
     serverData.updateSoap(soap)
       .then( () => {
-        if (this.props.loading) {
+        // TODO: figure out why this.props.loading is false (but still updates the server successfully)
+        if(this.props.loading) {
           this.props.setLoading(false);
           this.props.setSuccessMessage('Saved');
+        } else {
+          this.props.setLoading(false);
+          this.props.setErrorMessage('Cancel invoked');
         }
       })
       .catch( (err) => {
-        if (this.props.loading) {
-          this.props.setLoading(false, true);
-          this.props.setErrorMessage(err.message);
-        }
+        this.props.setLoading(false, true);
+        this.props.setErrorMessage(err.message);
+        return;
       })
 
-    this.props.setSuccessMessage('SOAP updated successfully');
     this.props.setLoading(false);
     this.props.isUploading(false);
   }
@@ -215,4 +216,4 @@ const mapDispatchToProps = dispatch => ({
   isUploading: val => dispatch(isUploading(val))
 });
 
-export default connect (mapStateToProps, mapDispatchToProps)(SoapScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(SoapScreen);

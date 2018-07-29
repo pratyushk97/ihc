@@ -7,7 +7,12 @@ export function downstreamSyncWithServer() {
 
   return serverData.getUpdatedPatients(lastSynced)
     .then((patients) => {
-      const failedPatientKeys = localData.handleDownloadedPatients(patients);
-      return {failedPatientKeys: failedPatientKeys};
+      try {
+        const failedPatientKeys = localData.handleDownloadedPatients(patients);
+        return {failedPatientKeys: failedPatientKeys};
+      } catch (err) {
+        console.log(err.message);
+      }
+
     });
 }
