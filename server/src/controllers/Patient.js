@@ -1,7 +1,6 @@
 //treat these imports as 'containers'
 //to access/modify these containers, look up mongodb functions
 import PatientModel from '../models/Patient';
-import TriageModel from '../models/Triage';
 import MedicationModel from '../models/Medication';
 
 //function params for all calls are generally the same function(req,res)
@@ -222,15 +221,27 @@ const PatientController = {
       });
   },
   GetTriage: function(req, res){
-    TriageModel.findOne({patientKey: req.params.key, date: req.params.date}, function(err, triage) {
-      if(!triage) {
-        err = new Error('Patient with key ' + req.params.key + ' doesn\'t exist or patient didn\'t come in on ' + req.params.date);
+    PatientModel.findOne({key: req.params.key}, function(err, patient) {
+      if(!patient) {
+        err = new Error('Patient with key ' + req.params.key + ' doesn\'t exist');
       }
-      if(err) {
+
+      if (err) {
         res.json({status: false, error: err.message});
         return;
       }
-      res.json({status: true, triage: triage});
+
+      for(let triage of patient.triages) {
+        // If an existing soap for that date exists, then update it
+        if(traige.date === req.params.date) {
+          res.json({status: true, triage: triage});
+          return;
+        }
+      }
+
+      err = new Error('Patient with key ' + req.params.key + ' does not have a triage for the date ' + req.params.date);
+      res.json({status: false, error: err.message});
+      return;
     });
   },
   GetDrugUpdates: function(req, res){
