@@ -23,8 +23,8 @@ const PLOT_WIDTH = 400;
 
 class GrowthChartScreen extends Component<{}> {
   /*
-   * Props:
-   * patientKey
+   * Redux Props:
+   * currentPatientKey
    */
   constructor(props) {
     super(props);
@@ -53,7 +53,7 @@ class GrowthChartScreen extends Component<{}> {
 
     let patient = {};
     try {
-      patient = localData.getPatient(this.props.patientKey);
+      patient = localData.getPatient(this.props.currentPatientKey);
     } catch(err) {
       this.props.setErrorMessage(err.message);
       this.props.setLoading(false);
@@ -173,9 +173,13 @@ const styles = StyleSheet.create({
 import { setLoading, setErrorMessage } from '../reduxActions/containerActions';
 import { connect } from 'react-redux';
 
+const mapStateToProps = state => ({
+  currentPatientKey: state.currentPatientKey
+});
+
 const mapDispatchToProps = dispatch => ({
   setLoading: val => dispatch(setLoading(val)),
   setErrorMessage: val => dispatch(setErrorMessage(val))
 });
 
-export default connect(null, mapDispatchToProps)(GrowthChartScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(GrowthChartScreen);
