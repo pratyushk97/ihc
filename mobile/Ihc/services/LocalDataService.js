@@ -22,6 +22,13 @@ const realm = new Realm({
   deleteRealmIfMigrationNeeded: true, // TODO: delete when done with dev
 });
 
+/* NOTE: Use for debugging. Delete once no longer needed */
+export function clearRealm() {
+  realm.write( () => {
+    realm.deleteAll();
+  });
+}
+
 export function createPatient(patient) {
   const timestamp = new Date().getTime();
   const patientObjs = realm.objects('Patient').filtered('key = "' + patient.key + '"');
@@ -151,8 +158,8 @@ export function updateSoap(update) {
   update.lastUpdated = timestamp;
 
   const soap = realm.objects('Soap').filtered('date = "' +
-      stringDate(new Date) + '" AND patientKey = "' + update.patientKey +
-      '"')['0'];
+    update.date + '" AND patientKey = "' + update.patientKey +
+    '"')['0'];
 
   realm.write(() => {
     patient.lastUpdated = timestamp;
@@ -188,7 +195,7 @@ export function updateTriage(update) {
   }
 
   const triage = realm.objects('Triage').filtered('date = "' +
-      stringDate(new Date) + '" AND patientKey = "' + update.patientKey +
+      update.date + '" AND patientKey = "' + update.patientKey +
       '"')['0'];
 
   const timestamp = new Date().getTime();
@@ -312,6 +319,7 @@ export function handleDownloadedPatients(patients) {
 
     // TODO update existing Patient object itself in case changes were made
     // there
+
     incomingPatient.soaps.forEach(incomingSoap => {
       if(!updateObject(existingPatient, 'soaps', incomingSoap))
         fails.add(existingPatient.key);
@@ -387,6 +395,7 @@ function updateObject(existingPatient, type, incomingObject) {
       return incomingObject.date === med.date && incomingObject.name === med.name;
     });
   } else {
+/*
     existingObjects = existingPatient[type].filter( obj => incomingObject.date === obj.date );
     if (existingObjects.length > 1) {
       existingObjects.sort(compareLastUpdated);
@@ -399,6 +408,13 @@ function updateObject(existingPatient, type, incomingObject) {
       });
     }
     existingObject = existingObjects['0']; //most recent lastUpdated timestamp
+    */
+    //console.log('existing patient: ');
+    //console.log(existingPatient);
+    existingObject = existingPatient[type].find( obj => {
+      //console.log('objDate: ' + obj.date + ', incomingObjectDate: ' + incomingObject.date);
+      return incomingObject.date === obj.date;
+    })
   }
 
   // If old object doesn't exist, then just add the new object to the patient

@@ -45,7 +45,6 @@ class PatientHistoryScreen extends Component<{}> {
       return;
     }
 
-
     downstreamSyncWithServer()
       .then( (failedPatientKeys) => {
         if (this.props.loading) {
@@ -64,7 +63,7 @@ class PatientHistoryScreen extends Component<{}> {
           }
 
           this.props.setLoading(false);
-          this.props.setSuccessMessage('loaded succesfully');
+          this.props.setSuccessMessage('Loaded succesfully');
         }
       })
       .catch( (err) => {
@@ -75,12 +74,6 @@ class PatientHistoryScreen extends Component<{}> {
       });
   }
 
-  //componentDidMount() {
-    //this.loadPatient();
-  //}
-  // Reload table after moving back to table
-  // Replaces componentDidMount() because this will be called around the same
-  // time
   onNavigatorEvent(event) {
     if (event.id === 'willAppear') {
       this.syncAndLoadPatient();
@@ -104,6 +97,7 @@ class PatientHistoryScreen extends Component<{}> {
     });
   }
 
+  //TODO: triage won't always align with correct dates and fix spacing issue for dates
   render() {
     if (this.state.patient == null) {
       return (

@@ -31,9 +31,7 @@ class SoapScreen extends Component<{}> {
     const todayDate = this.props.todayDate || stringDate(new Date());
     this.state = {
       formValues: {date: todayDate},
-      errorMsg: null,
-      todayDate: todayDate,
-      successMsg: null
+      todayDate: todayDate
     };
   }
 
@@ -97,9 +95,6 @@ class SoapScreen extends Component<{}> {
 
           this.props.setLoading(false);
           this.props.setSuccessMessage('Loaded succesfully')
-        } else {
-          this.props.setErrorMessage('Cancel invoked');
-          this.props.setLoading(false);
         }
       })
       .catch( (err) => {
@@ -137,23 +132,18 @@ class SoapScreen extends Component<{}> {
     // Send updates to server
     serverData.updateSoap(soap)
       .then( () => {
-        // TODO: figure out why this.props.loading is false (but still updates the server successfully)
         if(this.props.loading) {
           this.props.setLoading(false);
           this.props.setSuccessMessage('Saved');
-        } else {
-          this.props.setLoading(false);
-          this.props.setErrorMessage('Cancel invoked');
         }
       })
       .catch( (err) => {
-        this.props.setLoading(false, true);
-        this.props.setErrorMessage(err.message);
-        return;
+        if(this.props.loading) {
+          this.props.setLoading(false, true);
+          this.props.setErrorMessage(err.message);
+          return;
+        }
       })
-
-    this.props.setLoading(false);
-    this.props.isUploading(false);
   }
 
   onFormChange = (value) => {
@@ -164,9 +154,7 @@ class SoapScreen extends Component<{}> {
 
   render() {
     return (
-      <Container loading={this.state.loading} errorMsg={this.state.errorMsg}
-        successMsg={this.state.successMsg}>
-
+      <Container>
         <Text style={styles.title}>
           Soap
         </Text>
