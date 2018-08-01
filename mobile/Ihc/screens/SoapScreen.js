@@ -108,7 +108,7 @@ class SoapScreen extends Component<{}> {
           this.props.setErrorMessage(err.message);
           this.props.setLoading(false);
         }
-      })
+      });
   }
 
   componentDidMount() {
@@ -148,7 +148,7 @@ class SoapScreen extends Component<{}> {
           this.props.setLoading(false, true);
           this.props.setErrorMessage(err.message);
         }
-      })
+      });
 
     this.props.setSuccessMessage('SOAP updated successfully');
     this.props.setLoading(false);
