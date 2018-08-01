@@ -18,19 +18,43 @@ export default class GrowthChart extends Component<{}> {
    * isInfant: boolean
    * isMale: boolean
    * isWeight: boolean, false if height data
-   * data: array of [{color: '<color>', unit: '%', values: [Numbers]}]
+   * data: array of [{color: '<color>', unit: '%', values: [[MONTH,weight/height]]}]
    */
   constructor(props) {
     super(props);
 
-    // TODO: different lines for infants, axis labels
-    // Mark every 2 yrs
-    this.linesYears = Array.from({length: 10}, (v,i) => i * 24 ); 
-    // Mark every 25 cm
-    this.linesCm = Array.from({length: 10}, (v,i) => i * 25 ); 
-    // Mark every 25 kg
-    this.linesKg = Array.from({length: 5}, (v,i) => i * 25 ); 
+    this.minAgeMonths = this.props.isInfant ? 0 : 24;
+    this.maxAgeMonths = this.props.isInfant ? 26 : 245;
+    this.maxHeight = this.props.isInfant ? 105 : 200;
+    this.maxWeight = this.props.isInfant ? 20 : 125;
+    this.maxY = this.props.isWeight ? this.maxWeight : this.maxHeight;
+
+    // Mark every 2 yrs (24 months) for youth, every 4 months for infants, starting from the
+    // minAgeMonths
+    const monthMark = this.props.isInfant ? 4 : 24;
+    this.linesMonth = Array.from({length: Math.ceil((this.maxAgeMonths-this.minAgeMonths) / monthMark)}, (v,i) => i * monthMark + this.minAgeMonths);
+
+    // Mark every 25 cm for youth, and every 10 cm for infants
+    const cmMark = this.props.isInfant ? 10 : 25;
+    this.linesCm = Array.from({length: Math.ceil(this.maxHeight / cmMark)}, (v,i) => i * cmMark);
+
+    // Mark every 10 kg for youth, and every 5 kg for infants
+    const kgMark = this.props.isInfant ? 5 : 10;
+    this.linesKg = Array.from({length: Math.ceil(this.maxWeight / kgMark)}, (v,i) => i * kgMark);
+
+    this.horizontalLines = this.props.isWeight ? this.linesKg : this.linesCm;
+
+    // Can't make these constants because chartWidth depends on calculation
     this.chartHeight = 500;
+    this.chartWidth = Dimensions.get('window').width * .9;
+
+    this.title = this.props.isWeight ? 'Weight Growth Chart' : 'Height Growth Chart';
+    this.unitY = this.props.isWeight ? 'kg' : 'cm';
+
+    // Data behind the scenes is treated as months, but we want to render it
+    // more clearly so if the patient is not an infant, display it as years
+    this.unitX = this.props.isInfant ? 'months' : 'years';
+
 
     // Info to be used in the graph legend
     const labelPairs = [['black', 'Patient'], ['red', 'P3'], ['orange', 'P5'],
@@ -44,23 +68,14 @@ export default class GrowthChart extends Component<{}> {
           <Dot position="relative" bottom={-4} color={pair[0]} />
           <Text style={styles.dotLabel}>{pair[1]}</Text>
         </View>
-      )
+      );
     });
   }
 
   render() {
-    const horizontalLines = this.props.isWeight ? this.linesKg : this.linesCm;
-    const title = this.props.isWeight ? 'Weight Growth Chart' : 'Height Growth Chart';
-    const unitY = this.props.isWeight ? 'kg' : 'cm';
-    const minAgeMonths = this.props.isInfant ? 0 : 24;
-    const maxAgeMonths = this.props.isInfant ? 26 : 245;
-    const maxHeight = this.props.isInfant ? 105 : 200;
-    const maxWeight = this.props.isInfant ? 20 : 125;
-    const maxY = this.props.isWeight ? maxWeight : maxHeight;
-
     return (
       <View style={styles.container}>
-        <Text>{title}</Text>
+        <Text>{this.title}</Text>
 
         <View style={styles.legend}>
           {this.dotLabels}
@@ -68,16 +83,16 @@ export default class GrowthChart extends Component<{}> {
 
         <ScatterPlot
           height={this.chartHeight}
-          width={Dimensions.get('window').width * .90}
+          width={this.chartWidth}
           data={this.props.data}
-          minX={minAgeMonths}
-          maxX={maxAgeMonths}
+          minX={this.minAgeMonths}
+          maxX={this.maxAgeMonths}
           minY={0}
-          maxY={maxY}
-          horizontalLinesAt={horizontalLines}
-          verticalLinesAt={this.linesYears}
-          unitX='months'
-          unitY={unitY} />
+          maxY={this.maxY}
+          horizontalLinesAt={this.horizontalLines}
+          verticalLinesAt={this.linesMonth}
+          unitX={this.unitX}
+          unitY={this.unitY} />
       </View>
     );
   }
@@ -93,7 +108,7 @@ const styles = StyleSheet.create({
     marginLeft: 4,
   },
   dotLabelContainer: {
-    marginLeft: 4,
+    margin: 4,
     width: 50,
     flexDirection: 'row',
     alignContent: 'center',

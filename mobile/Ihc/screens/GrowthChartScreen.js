@@ -101,7 +101,6 @@ class GrowthChartScreen extends Component<{}> {
     }
 
     return (
-      // TODO: Label the grid lines
       <Container>
         <Text style={styles.title}>Growth Charts</Text>
 

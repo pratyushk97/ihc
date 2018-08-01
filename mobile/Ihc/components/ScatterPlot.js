@@ -1,3 +1,5 @@
+/* eslint-disable react-native/no-inline-styles */
+// Lot of dynamic styles so just leave them inline for now
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -34,6 +36,8 @@ const propTypes = {
   maxY: PropTypes.number.isRequired,
   minX: PropTypes.number.isRequired,
   maxX: PropTypes.number.isRequired,
+  unitX: PropTypes.string,
+  unitY: PropTypes.string,
   title: PropTypes.string,
   horizontalLinesAt: PropTypes.arrayOf(PropTypes.number),
   verticalLinesAt: PropTypes.arrayOf(PropTypes.number),
@@ -43,10 +47,12 @@ const defaultProps = {
   height: Dimensions.get('window').height,
   width: Dimensions.get('window').width,
   backgroundColor: 'white',
-  title: ''
+  title: '',
+  unitX: '',
+  unitY: ''
 };
 
-const AXIS_MARGIN = 16; // Space for the axis labeling
+const AXIS_MARGIN = 32; // Space for the axis labeling
 
 class ScatterPlot extends React.PureComponent {
   constructor(props) {
@@ -103,23 +109,31 @@ class ScatterPlot extends React.PureComponent {
       }) : undefined;
   }
 
-  getVerticalAxisLabels(verticalLinesAt) {
+  getXAxisLabels(verticalLinesAt) {
     // The vertical axis labels are the months, but display the years
     return verticalLinesAt.map( (xVal,idx) => {
+      // Calculate coordinate before transforming xVal
+      const leftCoord = this.getX(xVal);
+
+      // Render years instead of months
+      if (this.props.unitX === 'years') {
+        xVal = xVal / 12;
+      }
+
       return (
         <Text key={`${idx}label`}
           style={{
             fontSize: 8,
             position: 'absolute',
-            left: this.getX(xVal)}}
+            left: leftCoord}}
         >
-          {xVal/12}
+          {xVal}
         </Text>
       )
     });
   }
 
-  getHorizontalAxisLabels(horizontalLinesAt) {
+  getYAxisLabels(horizontalLinesAt) {
     return horizontalLinesAt.map( (yVal,idx) => {
       return (
         <Text key={`${idx}label`}
@@ -135,7 +149,7 @@ class ScatterPlot extends React.PureComponent {
   }
 
   render() {
-    const { data, height, width, backgroundColor, title } = this.props;
+    const { data, height, width, backgroundColor, title, unitY, unitX } = this.props;
     const { horizontalLinesAt, verticalLinesAt } = this.state;
     const { getX, getY } = this;
 
@@ -143,8 +157,10 @@ class ScatterPlot extends React.PureComponent {
     const horizontalLines = this.getHorizontalLines(horizontalLinesAt);
     const verticalLines = this.getVerticalLines(verticalLinesAt);
 
-    const verticalAxisLabels = this.getVerticalAxisLabels(verticalLinesAt);
-    const horizontalAxisLabels = this.getHorizontalAxisLabels(horizontalLinesAt);;
+    // y axis marks should be where horizontal lines intersect, and vice
+    // versa
+    const yAxisLabels = this.getYAxisLabels(horizontalLinesAt);
+    const xAxisLabels = this.getXAxisLabels(verticalLinesAt);;
 
     let points = [];
 
@@ -161,8 +177,17 @@ class ScatterPlot extends React.PureComponent {
     return (
       <View style={{ height: height, width: width, flexDirection: 'column' }}>
         <View style={{ flexDirection: 'row' }}>
-          <View style={{ height: this.chartHeight, width: AXIS_MARGIN, flexDirection: 'column'}}>
-            {horizontalAxisLabels}
+          <Text style={{
+            alignSelf: 'center',
+            height: AXIS_MARGIN/2,
+            fontSize: 10,
+            transform: [{ rotate: '270deg'}]
+          }}>
+            {unitY}
+          </Text>
+
+          <View style={{ height: this.chartHeight, width: AXIS_MARGIN/2, flexDirection: 'column'}}>
+            {yAxisLabels}
           </View>
 
           <View style={{ height: this.chartHeight, width: this.chartWidth, backgroundColor: backgroundColor }}>
@@ -173,9 +198,22 @@ class ScatterPlot extends React.PureComponent {
           </View>
         </View>
 
-        <View style={{ flexDirection: 'row', alignSelf: 'flex-end', height: AXIS_MARGIN, width: this.chartWidth }}>
-          {verticalAxisLabels}
+        <View style={{
+          flexDirection: 'row',
+          alignSelf: 'flex-end',
+          height: AXIS_MARGIN/2,
+          width: this.chartWidth,
+        }}>
+          {xAxisLabels}
         </View>
+
+        <Text style={{
+          alignSelf: 'center',
+          height: AXIS_MARGIN/2,
+          fontSize: 10,
+        }}>
+          {unitX}
+        </Text>
       </View>
     );
   }
@@ -249,7 +287,6 @@ class ScatterPlot extends React.PureComponent {
   }
 }
 
-// transform: [{ rotate: '90deg'}]
 const styles = StyleSheet.create({
   title: {
     margin: 4,
@@ -259,3 +296,4 @@ const styles = StyleSheet.create({
 ScatterPlot.propTypes = propTypes;
 ScatterPlot.defaultProps = defaultProps;
 export default ScatterPlot;
+/* eslint-enable react-native/no-inline-styles */
