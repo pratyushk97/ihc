@@ -8,7 +8,7 @@ import { Col, Grid } from 'react-native-easy-grid';
 import Container from '../components/Container';
 import Button from '../components/Button';
 
-export default class PatientHomeScreen extends Component<{}> {
+class PatientHomeScreen extends Component<{}> {
   /*
    * Expects:
    *  {
@@ -55,6 +55,8 @@ export default class PatientHomeScreen extends Component<{}> {
   }
 
   goToGrowthChart = () => {
+    // Growth chart takes time to load
+    this.props.setLoading(true);
     this.props.navigator.push({
       screen: 'Ihc.GrowthChartScreen',
       title: 'Back to patient',
@@ -126,3 +128,13 @@ const styles = StyleSheet.create({
     width: '80%'
   }
 });
+
+// Redux
+import { setLoading } from '../reduxActions/containerActions';
+import { connect } from 'react-redux';
+
+const mapDispatchToProps = dispatch => ({
+  setLoading: val => dispatch(setLoading(val)),
+});
+
+export default connect(null, mapDispatchToProps)(PatientHomeScreen);

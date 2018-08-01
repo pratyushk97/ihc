@@ -21,6 +21,8 @@ const infantGirlsWeightData = require('../growthchartdata/infant_girls_weights.j
 const infantBoysHeightData = require('../growthchartdata/infant_boys_heights.json');
 const infantGirlsHeightData = require('../growthchartdata/infant_girls_heights.json');
 
+// Before navigating to GrowthChartScreen, set loading to be true because it
+// takes a little time to load
 class GrowthChartScreen extends Component<{}> {
   /*
    * Redux Props:
@@ -49,8 +51,6 @@ class GrowthChartScreen extends Component<{}> {
   }
 
   loadPatient = () => {
-    this.props.setLoading(true);
-
     let patient = {};
     try {
       patient = localData.getPatient(this.props.currentPatientKey);
