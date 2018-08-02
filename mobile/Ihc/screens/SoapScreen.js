@@ -94,7 +94,6 @@ class SoapScreen extends Component<{}> {
           }
 
           this.props.setLoading(false);
-          this.props.setSuccessMessage('Loaded succesfully')
         }
       })
       .catch( (err) => {
@@ -102,7 +101,7 @@ class SoapScreen extends Component<{}> {
           this.props.setErrorMessage(err.message);
           this.props.setLoading(false);
         }
-      })
+      });
   }
 
   componentDidMount() {
@@ -143,7 +142,7 @@ class SoapScreen extends Component<{}> {
           this.props.setErrorMessage(err.message);
           return;
         }
-      })
+      });
   }
 
   onFormChange = (value) => {

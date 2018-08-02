@@ -63,7 +63,6 @@ class PatientHistoryScreen extends Component<{}> {
           }
 
           this.props.setLoading(false);
-          this.props.setSuccessMessage('Loaded succesfully');
         }
       })
       .catch( (err) => {
