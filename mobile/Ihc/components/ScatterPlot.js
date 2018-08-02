@@ -71,7 +71,7 @@ class ScatterPlot extends React.PureComponent {
     this.chartWidth = this.props.width - AXIS_MARGIN;
   }
 
-  getHorizontalLines = (horizontalLinesAt) => { 
+  getHorizontalLines = (horizontalLinesAt) => {
     return horizontalLinesAt ?
       horizontalLinesAt.map((line, idx) => {
         return (
@@ -129,7 +129,7 @@ class ScatterPlot extends React.PureComponent {
         >
           {xVal}
         </Text>
-      )
+      );
     });
   }
 
@@ -144,7 +144,7 @@ class ScatterPlot extends React.PureComponent {
         >
           {yVal}
         </Text>
-      )
+      );
     });
   }
 
@@ -160,7 +160,7 @@ class ScatterPlot extends React.PureComponent {
     // y axis marks should be where horizontal lines intersect, and vice
     // versa
     const yAxisLabels = this.getYAxisLabels(horizontalLinesAt);
-    const xAxisLabels = this.getXAxisLabels(verticalLinesAt);;
+    const xAxisLabels = this.getXAxisLabels(verticalLinesAt);
 
     let points = [];
 

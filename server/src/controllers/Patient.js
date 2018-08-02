@@ -233,7 +233,7 @@ const PatientController = {
 
       for(let triage of patient.triages) {
         // If an existing soap for that date exists, then update it
-        if(traige.date === req.params.date) {
+        if(triage.date === req.params.date) {
           res.json({status: true, triage: triage});
           return;
         }
