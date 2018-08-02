@@ -20,6 +20,7 @@ class PatientHomeScreen extends Component<{}> {
    */
   constructor(props) {
     super(props);
+    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
   }
 
   goToTriage = () => {
@@ -62,6 +63,12 @@ class PatientHomeScreen extends Component<{}> {
       title: 'Back to patient',
       passProps: { patientKey: this.props.patientKey}
     });
+  }
+
+  onNavigatorEvent(event) {
+    if (event.id === 'willAppear') {
+      this.props.clearMessages();
+    }
   }
 
   render() {
@@ -130,11 +137,11 @@ const styles = StyleSheet.create({
 });
 
 // Redux
-import { setLoading } from '../reduxActions/containerActions';
+import { clearMessages } from '../reduxActions/containerActions';
 import { connect } from 'react-redux';
 
 const mapDispatchToProps = dispatch => ({
-  setLoading: val => dispatch(setLoading(val)),
+  clearMessages: () => dispatch(clearMessages())
 });
 
 export default connect(null, mapDispatchToProps)(PatientHomeScreen);

@@ -226,13 +226,19 @@ const PatientController = {
         err = new Error('Patient with key ' + req.params.key + ' doesn\'t exist');
       }
 
-      // Go through each of patients triages and return the one with specified date
-      for(let triage in patient.triages) {
+      if (err) {
+        res.json({status: false, error: err.message});
+        return;
+      }
+
+      for(let triage of patient.triages) {
+        // If an existing soap for that date exists, then update it
         if(triage.date === req.params.date) {
           res.json({status: true, triage: triage});
           return;
         }
       }
+
       err = new Error('Patient with key ' + req.params.key + ' does not have a triage for the date ' + req.params.date);
       res.json({status: false, error: err.message});
       return;

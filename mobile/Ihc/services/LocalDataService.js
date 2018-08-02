@@ -151,8 +151,8 @@ export function updateSoap(update) {
   update.lastUpdated = timestamp;
 
   const soap = realm.objects('Soap').filtered('date = "' +
-      stringDate(new Date) + '" AND patientKey = "' + update.patientKey +
-      '"')['0'];
+    update.date + '" AND patientKey = "' + update.patientKey +
+    '"')['0'];
 
   realm.write(() => {
     patient.lastUpdated = timestamp;
@@ -188,7 +188,7 @@ export function updateTriage(update) {
   }
 
   const triage = realm.objects('Triage').filtered('date = "' +
-      stringDate(new Date) + '" AND patientKey = "' + update.patientKey +
+      update.date + '" AND patientKey = "' + update.patientKey +
       '"')['0'];
 
   const timestamp = new Date().getTime();
@@ -278,7 +278,7 @@ export function markPatientsUploaded() {
   });
 }
 
-// TODO UPDATE RETURN VAL maybe be object? 
+// TODO UPDATE RETURN VAL maybe be object?
 /* {
     ignoredPatientKeys: [],
     <something else to be returned for failed individual forms?>: []
@@ -368,6 +368,7 @@ export function write(fn) {
 function updateObject(existingPatient, type, incomingObject) {
   // Find existing form/object that corresponds to the incoming one
   let existingObject = {};
+
   if (type === 'drugUpdates') {
     existingObject = existingPatient.drugUpdates.find( med => {
       return incomingObject.date === med.date && incomingObject.name === med.name;
