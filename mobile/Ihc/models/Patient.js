@@ -26,6 +26,7 @@ export default class Patient {
     const triages = this.triages;
     const weights = [];
     const heights = [];
+    // TODO: use triage date to calculate their age in months
     triages.forEach( triage => {
       const ageInMonths = triage.age * 12; // Rounds off to whole year, should be fine
       weights.push([ageInMonths, triage.weight]);
