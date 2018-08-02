@@ -56,6 +56,8 @@ class PatientHomeScreen extends Component<{}> {
   }
 
   goToGrowthChart = () => {
+    // Growth chart takes time to load
+    this.props.setLoading(true);
     this.props.navigator.push({
       screen: 'Ihc.GrowthChartScreen',
       title: 'Back to patient',
@@ -135,11 +137,19 @@ const styles = StyleSheet.create({
 });
 
 // Redux
+<<<<<<< HEAD
 import { clearMessages } from '../reduxActions/containerActions';
 import { connect } from 'react-redux';
 
 const mapDispatchToProps = dispatch => ({
   clearMessages: () => dispatch(clearMessages())
+=======
+import { setLoading } from '../reduxActions/containerActions';
+import { connect } from 'react-redux';
+
+const mapDispatchToProps = dispatch => ({
+  setLoading: val => dispatch(setLoading(val)),
+>>>>>>> bc24de7e2921fca0ab61715d40e035a0f5b4bedb
 });
 
 export default connect(null, mapDispatchToProps)(PatientHomeScreen);

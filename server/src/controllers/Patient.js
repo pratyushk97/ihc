@@ -473,19 +473,19 @@ const PatientController = {
         res.json({status: true});
         return;
       });
-    })
+    });
   },
   /* body: NA, returns: array of medication objects */
   GetMedications: function(req, res) {
     MedicationModel.find({drugName: req.params.name}, function(err, drugs) {
-      if (drugs.length == 0) {
-        err = new Error(`A medication with the name ${req.params.name} does not exist`)
+      if (drugs.length === 0) {
+        err = new Error(`A medication with the name ${req.params.name} does not exist`);
       }
       if(err) {
         res.json({status: false, error: err.message});
         return;
       }
-      res.json({status: true, medications: drugs})
+      res.json({status: true, medications: drugs});
       return;
     });
   },
@@ -493,7 +493,7 @@ const PatientController = {
   UpdateMedication: function(req, res) {
     MedicationModel.findOne({drugName: req.params.name}, function(err, drug) {
       if (!drug) {
-        err = new Error(`A medication with the name ${req.params.name} does not exist`)
+        err = new Error(`A medication with the name ${req.params.name} does not exist`);
       }
       if (err) {
         res.json({status: false, error: err.message});
@@ -524,7 +524,7 @@ const PatientController = {
         res.json({status: false, error: err.message});
         return;
       }
-      res.json({status: true})
+      res.json({status: true});
       return;
     });
   }
