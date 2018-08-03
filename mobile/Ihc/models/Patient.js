@@ -1,6 +1,24 @@
-import {stringDate} from '../util/Date';
+import {stringDate, getYear, getMonth, getDay} from '../util/Date';
 export default class Patient {
   // Insert any class methods here
+
+  // Calculate age from the given date, ignoring the day of the month
+  // for simplicity
+  calculateAgeInMonths(now = stringDate(new Date())) {
+    const strBirthday = this.birthday;
+    const birthdayYear = getYear(strBirthday);
+    const birthdayMonth= getMonth(strBirthday);
+
+    const nowYear = getYear(now);
+    const nowMonth= getMonth(now);
+
+    let yearsDiff = nowYear - birthdayYear;
+    let monthsDiff = nowMonth - birthdayMonth;
+
+    let months = yearsDiff * 12 + monthsDiff;
+    return months;
+  }
+
   get age() {
     const strBirthday = this.birthday;
     const today = stringDate(new Date());
@@ -28,7 +46,7 @@ export default class Patient {
     const heights = [];
     // TODO: use triage date to calculate their age in months
     triages.forEach( triage => {
-      const ageInMonths = triage.age * 12; // Rounds off to whole year, should be fine
+      const ageInMonths = this.calculateAgeInMonths(triage.date);
       weights.push([ageInMonths, triage.weight]);
       heights.push([ageInMonths, triage.height]);
     });

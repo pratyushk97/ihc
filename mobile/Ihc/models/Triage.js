@@ -43,7 +43,6 @@ export default class Triage {
     return {
       patientKey: patientKey,
       date: date,
-      age: age,
       weight: weight,
       height: height,
       lastUpdated: lastUpdated,
@@ -96,7 +95,6 @@ Triage.schema = {
   properties: {
     patientKey: 'string',
     date: 'string',
-    age: 'int',
     hasInsurance: 'bool',
     location: 'string', // Girasoles or TJP or somewhere else
     arrivalTime: 'int?', // should match checkin time from Status
@@ -161,7 +159,6 @@ Locations = t.enums({
 // Insert any class methods here
 MaleTriage = t.struct({
   date: t.String,
-  age: t.Number,
   hasInsurance: t.Boolean,
   location: Locations,
   arrivalTime: t.maybe(t.Number), // should match checkin time from Status 
