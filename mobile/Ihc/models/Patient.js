@@ -1,4 +1,4 @@
-import {stringDate, getYear, getMonth, getDay} from '../util/Date';
+import {stringDate, getYear, getMonth} from '../util/Date';
 export default class Patient {
   // Insert any class methods here
 

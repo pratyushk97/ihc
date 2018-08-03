@@ -38,7 +38,7 @@ export default class Triage {
 
   // Can pass in parameters to override defaults, mostly useful for tests
   static getInstance(patientKey = 'firstname&father&mother&20000101',
-    date = '20180101', age = 18, weight = 75, height = 100,
+    date = '20180101', weight = 75, height = 100,
     lastUpdated = new Date().getTime()) {
     return {
       patientKey: patientKey,

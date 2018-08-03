@@ -5,7 +5,7 @@ import {
   View,
 } from 'react-native';
 import { Col, Grid } from 'react-native-easy-grid';
-import {localData, serverData} from '../services/DataService';
+import {localData} from '../services/DataService';
 import {formatDate} from '../util/Date';
 import {shortDate} from '../util/Date';
 import Container from '../components/Container';
