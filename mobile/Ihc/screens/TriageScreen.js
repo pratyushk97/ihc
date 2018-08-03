@@ -162,6 +162,7 @@ class TriageScreen extends Component<{}> {
 
   submit = () => {
     if(!this.refs.form.validate().isValid()) {
+      this.props.setErrorMessage('Form not correct. Review form.');
       return;
     }
 
