@@ -103,7 +103,7 @@ class MedicationScreen extends Component<{}> {
       title: 'Medication',
       passProps: {
         action: 'new',
-        patientKey: this.props.patientKey,
+        patientKey: this.props.currentPatientKey,
         name: this.props.name
       }
     });
@@ -294,7 +294,7 @@ const styles = StyleSheet.create({
   },
   button: {
     width: 120,
-    height: 60 
+    height: 60
   }
 });
 
