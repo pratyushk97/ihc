@@ -78,29 +78,6 @@ class TriageScreen extends Component<{}> {
       this.props.setErrorMessage(err.message);
       this.props.setLoading(false);
     }
-
-    downstreamSyncWithServer()
-      .then( (failedPatientKeys) => {
-        if (this.props.loading) {
-          if (failedPatientKeys.length > 0) {
-            throw new Error(`${failedPatientKeys.length} patients didn't properly sync.`);
-          }
-
-          const patient = localData.getPatient(this.props.currentPatientKey);
-          if (patient) {
-            this.setState({ gender: patient.gender });
-          }
-
-          this.props.setLoading(false);
-          this.loadFormValues(patient.gender);
-        }
-      })
-      .catch( (err) => {
-        if (this.props.loading) {
-          this.props.setErrorMessage(err.message);
-          this.props.setLoading(false);
-        }
-      });
   }
 
   // Load existing Triage info if it exists
