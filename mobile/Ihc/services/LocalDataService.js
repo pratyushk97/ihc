@@ -13,8 +13,6 @@ import DrugUpdate from '../models/DrugUpdate';
 import Settings from '../models/Settings';
 import MedicationCheckmarks from '../models/MedicationCheckmarks';
 
-import {stringDate} from '../util/Date';
-
 import Realm from 'realm';
 
 const realm = new Realm({
