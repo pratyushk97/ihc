@@ -138,6 +138,8 @@ class SoapScreen extends Component<{}> {
       })
       .catch( (err) => {
         if(this.props.loading) {
+          localData.markPatientNeedToUpload(this.props.patientKey);
+          
           this.props.setLoading(false, true);
           this.props.setErrorMessage(err.message);
           return;

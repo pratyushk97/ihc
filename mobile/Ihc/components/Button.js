@@ -5,7 +5,7 @@ import {
   Text,
 } from 'react-native';
 
-/* 
+/*
  * Our customizable Button component
  */
 export default class Button extends Component<{}> {
@@ -22,6 +22,16 @@ export default class Button extends Component<{}> {
   }
 
   render() {
+    if (this.props.disabled) {
+      return (
+        <TouchableOpacity
+          style={[styles.disabledButtonContainer, this.props.style]}
+          onPress={this.props.onPress}
+          disabled={this.props.disabled}>
+          <Text style={[styles.disabledText, this.props.textStyle]}>{this.props.text}</Text>
+        </TouchableOpacity>
+      );
+    }
     return (
       <TouchableOpacity
         style={[styles.buttonContainer, this.props.style]}
@@ -43,6 +53,22 @@ const styles = StyleSheet.create({
     backgroundColor: '#2196F3',
     alignItems: 'center',
     justifyContent: 'center'
+  },
+  disabledButtonContainer: {
+    width: '100%',
+    height: 40,
+    margin: 4,
+    padding: 8,
+    elevation: 4,
+    borderRadius: 2,
+    backgroundColor: '#d3d3d3',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  disabledText: {
+    fontWeight: '500',
+    color: '#808080',
+    textAlign: 'center',
   },
   text: {
     fontWeight: '500',
