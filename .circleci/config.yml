@@ -34,7 +34,6 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
         
       # run tests!
-      - run:
-        test: |
+      - run: |
           npm test --prefix mobile/Ihc
           npm test --prefix server
