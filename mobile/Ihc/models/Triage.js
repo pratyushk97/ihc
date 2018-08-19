@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-var t = require('tcomb-form-native');
+let t = require('tcomb-form-native');
 
 export default class Triage {
 
