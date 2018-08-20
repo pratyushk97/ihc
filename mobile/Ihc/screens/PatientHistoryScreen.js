@@ -32,8 +32,8 @@ class PatientHistoryScreen extends Component<{}> {
   /* Merges dates from both soaps and triages */
   compileDates = (soaps, triages) => {
     const dates = [];
-    var i = 0;
-    var j = 0;
+    let i = 0;
+    let j = 0;
 
     while (i < soaps.length && j < triages.length) {
       if (soaps[i].date < triages[j].date) {
@@ -61,10 +61,10 @@ class PatientHistoryScreen extends Component<{}> {
 
   convertDataToRows = (dates, patient) => {
     const rows = [];
-    var s = 0;
-    var t = 0;
+    let s = 0;
+    let t = 0;
 
-    for (var i = 0; i < dates.length; i++) {
+    for (let i = 0; i < dates.length; i++) {
       const row = {strDate: dates[i], soap: null, triages: null};
 
       if (s < patient.soaps.length) {

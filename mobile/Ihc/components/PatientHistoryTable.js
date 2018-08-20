@@ -33,7 +33,7 @@ export default class PatientHistoryTable extends Component<{}> {
       );
     }
     else if (index === 1) { // soap
-      if (data[key] !== null) {
+      if (data[key] !== null) { // NOTE: must define for both cases because of error when accessing date from a null object
         return (
           <Col style={styles.col} key={keyFn(index)}>
             <Button key={index}

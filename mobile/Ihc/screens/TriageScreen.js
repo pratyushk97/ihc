@@ -191,7 +191,6 @@ class TriageScreen extends Component<{}> {
   }
 
   submit = () => {
-    this.props.setLoading(true);
     if(!this.refs.form.validate().isValid()) {
       return;
     }

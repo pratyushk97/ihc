@@ -15,6 +15,7 @@ export default class Button extends Component<{}> {
    * onPress: function to be called when the button is clicked
    * style: optional style object for the button
    * textStyle: optional style object for the text
+   * disabled: boolean, display a greyed out button
    */
   constructor(props) {
     super(props);
@@ -25,10 +26,10 @@ export default class Button extends Component<{}> {
     if (this.props.disabled) {
       return (
         <TouchableOpacity
-          style={[styles.disabledButtonContainer, this.props.style]}
+          style={[styles.buttonContainer, styles.disabledButtonContainer, this.props.style]}
           onPress={this.props.onPress}
           disabled={this.props.disabled}>
-          <Text style={[styles.disabledText, this.props.textStyle]}>{this.props.text}</Text>
+          <Text style={[styles.text, styles.disabledText, this.props.textStyle]}>{this.props.text}</Text>
         </TouchableOpacity>
       );
     }
@@ -55,24 +56,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   disabledButtonContainer: {
-    width: '100%',
-    height: 40,
-    margin: 4,
-    padding: 8,
-    elevation: 4,
-    borderRadius: 2,
-    backgroundColor: '#d3d3d3',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  disabledText: {
-    fontWeight: '500',
-    color: '#808080',
-    textAlign: 'center',
+    backgroundColor: '#d3d3d3'
   },
   text: {
     fontWeight: '500',
     color: '#fefefe',
     textAlign: 'center',
+  },
+  disabledText: {
+    color: '#808080',
   },
 });
