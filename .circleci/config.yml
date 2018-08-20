@@ -39,3 +39,5 @@ jobs:
       - run: |
           npm test --prefix mobile/Ihc
           npm test --prefix server
+          npm run lint --prefix mobile/Ihc
+          npm run lint --prefix server
