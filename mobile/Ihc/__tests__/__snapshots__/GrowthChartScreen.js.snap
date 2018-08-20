@@ -21,9 +21,6 @@ exports[`renders correctly 1`] = `
   >
     <View>
       <Text
-        accessible={true}
-        allowFontScaling={true}
-        ellipsizeMode="tail"
         style={
           Object {
             "fontSize": 20,
@@ -49,14 +46,8 @@ exports[`renders correctly 1`] = `
             }
           }
         >
-          <View
-            style={undefined}
-          >
-            <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
-            >
+          <View>
+            <Text>
               Weight Growth Chart
             </Text>
             <View
@@ -95,9 +86,6 @@ exports[`renders correctly 1`] = `
                   }
                 />
                 <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
                   style={
                     Object {
                       "marginLeft": 4,
@@ -134,9 +122,6 @@ exports[`renders correctly 1`] = `
                   }
                 />
                 <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
                   style={
                     Object {
                       "marginLeft": 4,
@@ -173,9 +158,6 @@ exports[`renders correctly 1`] = `
                   }
                 />
                 <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
                   style={
                     Object {
                       "marginLeft": 4,
@@ -212,9 +194,6 @@ exports[`renders correctly 1`] = `
                   }
                 />
                 <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
                   style={
                     Object {
                       "marginLeft": 4,
@@ -251,9 +230,6 @@ exports[`renders correctly 1`] = `
                   }
                 />
                 <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
                   style={
                     Object {
                       "marginLeft": 4,
@@ -290,9 +266,6 @@ exports[`renders correctly 1`] = `
                   }
                 />
                 <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
                   style={
                     Object {
                       "marginLeft": 4,
@@ -329,9 +302,6 @@ exports[`renders correctly 1`] = `
                   }
                 />
                 <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
                   style={
                     Object {
                       "marginLeft": 4,
@@ -368,9 +338,6 @@ exports[`renders correctly 1`] = `
                   }
                 />
                 <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
                   style={
                     Object {
                       "marginLeft": 4,
@@ -407,9 +374,6 @@ exports[`renders correctly 1`] = `
                   }
                 />
                 <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
                   style={
                     Object {
                       "marginLeft": 4,
@@ -437,9 +401,6 @@ exports[`renders correctly 1`] = `
                 }
               >
                 <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
                   style={
                     Object {
                       "alignSelf": "center",
@@ -465,9 +426,6 @@ exports[`renders correctly 1`] = `
                   }
                 >
                   <Text
-                    accessible={true}
-                    allowFontScaling={true}
-                    ellipsizeMode="tail"
                     style={
                       Object {
                         "bottom": 0,
@@ -479,9 +437,6 @@ exports[`renders correctly 1`] = `
                     0
                   </Text>
                   <Text
-                    accessible={true}
-                    allowFontScaling={true}
-                    ellipsizeMode="tail"
                     style={
                       Object {
                         "bottom": 37.440000000000005,
@@ -493,9 +448,6 @@ exports[`renders correctly 1`] = `
                     10
                   </Text>
                   <Text
-                    accessible={true}
-                    allowFontScaling={true}
-                    ellipsizeMode="tail"
                     style={
                       Object {
                         "bottom": 74.88000000000001,
@@ -507,9 +459,6 @@ exports[`renders correctly 1`] = `
                     20
                   </Text>
                   <Text
-                    accessible={true}
-                    allowFontScaling={true}
-                    ellipsizeMode="tail"
                     style={
                       Object {
                         "bottom": 112.32000000000001,
@@ -521,9 +470,6 @@ exports[`renders correctly 1`] = `
                     30
                   </Text>
                   <Text
-                    accessible={true}
-                    allowFontScaling={true}
-                    ellipsizeMode="tail"
                     style={
                       Object {
                         "bottom": 149.76000000000002,
@@ -535,9 +481,6 @@ exports[`renders correctly 1`] = `
                     40
                   </Text>
                   <Text
-                    accessible={true}
-                    allowFontScaling={true}
-                    ellipsizeMode="tail"
                     style={
                       Object {
                         "bottom": 187.20000000000002,
@@ -549,9 +492,6 @@ exports[`renders correctly 1`] = `
                     50
                   </Text>
                   <Text
-                    accessible={true}
-                    allowFontScaling={true}
-                    ellipsizeMode="tail"
                     style={
                       Object {
                         "bottom": 224.64000000000001,
@@ -563,9 +503,6 @@ exports[`renders correctly 1`] = `
                     60
                   </Text>
                   <Text
-                    accessible={true}
-                    allowFontScaling={true}
-                    ellipsizeMode="tail"
                     style={
                       Object {
                         "bottom": 262.08000000000004,
@@ -577,9 +514,6 @@ exports[`renders correctly 1`] = `
                     70
                   </Text>
                   <Text
-                    accessible={true}
-                    allowFontScaling={true}
-                    ellipsizeMode="tail"
                     style={
                       Object {
                         "bottom": 299.52000000000004,
@@ -591,9 +525,6 @@ exports[`renders correctly 1`] = `
                     80
                   </Text>
                   <Text
-                    accessible={true}
-                    allowFontScaling={true}
-                    ellipsizeMode="tail"
                     style={
                       Object {
                         "bottom": 336.96000000000004,
@@ -605,9 +536,6 @@ exports[`renders correctly 1`] = `
                     90
                   </Text>
                   <Text
-                    accessible={true}
-                    allowFontScaling={true}
-                    ellipsizeMode="tail"
                     style={
                       Object {
                         "bottom": 374.40000000000003,
@@ -619,9 +547,6 @@ exports[`renders correctly 1`] = `
                     100
                   </Text>
                   <Text
-                    accessible={true}
-                    allowFontScaling={true}
-                    ellipsizeMode="tail"
                     style={
                       Object {
                         "bottom": 411.84000000000003,
@@ -633,9 +558,6 @@ exports[`renders correctly 1`] = `
                     110
                   </Text>
                   <Text
-                    accessible={true}
-                    allowFontScaling={true}
-                    ellipsizeMode="tail"
                     style={
                       Object {
                         "bottom": 449.28000000000003,
@@ -657,9 +579,6 @@ exports[`renders correctly 1`] = `
                   }
                 >
                   <Text
-                    accessible={true}
-                    allowFontScaling={true}
-                    ellipsizeMode="tail"
                     style={
                       Object {
                         "margin": 4,
@@ -4250,9 +4169,6 @@ exports[`renders correctly 1`] = `
                 }
               >
                 <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
                   style={
                     Object {
                       "fontSize": 8,
@@ -4264,9 +4180,6 @@ exports[`renders correctly 1`] = `
                   2
                 </Text>
                 <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
                   style={
                     Object {
                       "fontSize": 8,
@@ -4278,9 +4191,6 @@ exports[`renders correctly 1`] = `
                   4
                 </Text>
                 <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
                   style={
                     Object {
                       "fontSize": 8,
@@ -4292,9 +4202,6 @@ exports[`renders correctly 1`] = `
                   6
                 </Text>
                 <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
                   style={
                     Object {
                       "fontSize": 8,
@@ -4306,9 +4213,6 @@ exports[`renders correctly 1`] = `
                   8
                 </Text>
                 <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
                   style={
                     Object {
                       "fontSize": 8,
@@ -4320,9 +4224,6 @@ exports[`renders correctly 1`] = `
                   10
                 </Text>
                 <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
                   style={
                     Object {
                       "fontSize": 8,
@@ -4334,9 +4235,6 @@ exports[`renders correctly 1`] = `
                   12
                 </Text>
                 <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
                   style={
                     Object {
                       "fontSize": 8,
@@ -4348,9 +4246,6 @@ exports[`renders correctly 1`] = `
                   14
                 </Text>
                 <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
                   style={
                     Object {
                       "fontSize": 8,
@@ -4362,9 +4257,6 @@ exports[`renders correctly 1`] = `
                   16
                 </Text>
                 <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
                   style={
                     Object {
                       "fontSize": 8,
@@ -4376,9 +4268,6 @@ exports[`renders correctly 1`] = `
                   18
                 </Text>
                 <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
                   style={
                     Object {
                       "fontSize": 8,
@@ -4391,9 +4280,6 @@ exports[`renders correctly 1`] = `
                 </Text>
               </View>
               <Text
-                accessible={true}
-                allowFontScaling={true}
-                ellipsizeMode="tail"
                 style={
                   Object {
                     "alignSelf": "center",
@@ -4414,14 +4300,8 @@ exports[`renders correctly 1`] = `
             }
           }
         >
-          <View
-            style={undefined}
-          >
-            <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
-            >
+          <View>
+            <Text>
               Height Growth Chart
             </Text>
             <View
@@ -4460,9 +4340,6 @@ exports[`renders correctly 1`] = `
                   }
                 />
                 <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
                   style={
                     Object {
                       "marginLeft": 4,
@@ -4499,9 +4376,6 @@ exports[`renders correctly 1`] = `
                   }
                 />
                 <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
                   style={
                     Object {
                       "marginLeft": 4,
@@ -4538,9 +4412,6 @@ exports[`renders correctly 1`] = `
                   }
                 />
                 <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
                   style={
                     Object {
                       "marginLeft": 4,
@@ -4577,9 +4448,6 @@ exports[`renders correctly 1`] = `
                   }
                 />
                 <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
                   style={
                     Object {
                       "marginLeft": 4,
@@ -4616,9 +4484,6 @@ exports[`renders correctly 1`] = `
                   }
                 />
                 <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
                   style={
                     Object {
                       "marginLeft": 4,
@@ -4655,9 +4520,6 @@ exports[`renders correctly 1`] = `
                   }
                 />
                 <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
                   style={
                     Object {
                       "marginLeft": 4,
@@ -4694,9 +4556,6 @@ exports[`renders correctly 1`] = `
                   }
                 />
                 <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
                   style={
                     Object {
                       "marginLeft": 4,
@@ -4733,9 +4592,6 @@ exports[`renders correctly 1`] = `
                   }
                 />
                 <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
                   style={
                     Object {
                       "marginLeft": 4,
@@ -4772,9 +4628,6 @@ exports[`renders correctly 1`] = `
                   }
                 />
                 <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
                   style={
                     Object {
                       "marginLeft": 4,
@@ -4802,9 +4655,6 @@ exports[`renders correctly 1`] = `
                 }
               >
                 <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
                   style={
                     Object {
                       "alignSelf": "center",
@@ -4830,9 +4680,6 @@ exports[`renders correctly 1`] = `
                   }
                 >
                   <Text
-                    accessible={true}
-                    allowFontScaling={true}
-                    ellipsizeMode="tail"
                     style={
                       Object {
                         "bottom": 0,
@@ -4844,9 +4691,6 @@ exports[`renders correctly 1`] = `
                     0
                   </Text>
                   <Text
-                    accessible={true}
-                    allowFontScaling={true}
-                    ellipsizeMode="tail"
                     style={
                       Object {
                         "bottom": 58.5,
@@ -4858,9 +4702,6 @@ exports[`renders correctly 1`] = `
                     25
                   </Text>
                   <Text
-                    accessible={true}
-                    allowFontScaling={true}
-                    ellipsizeMode="tail"
                     style={
                       Object {
                         "bottom": 117,
@@ -4872,9 +4713,6 @@ exports[`renders correctly 1`] = `
                     50
                   </Text>
                   <Text
-                    accessible={true}
-                    allowFontScaling={true}
-                    ellipsizeMode="tail"
                     style={
                       Object {
                         "bottom": 175.5,
@@ -4886,9 +4724,6 @@ exports[`renders correctly 1`] = `
                     75
                   </Text>
                   <Text
-                    accessible={true}
-                    allowFontScaling={true}
-                    ellipsizeMode="tail"
                     style={
                       Object {
                         "bottom": 234,
@@ -4900,9 +4735,6 @@ exports[`renders correctly 1`] = `
                     100
                   </Text>
                   <Text
-                    accessible={true}
-                    allowFontScaling={true}
-                    ellipsizeMode="tail"
                     style={
                       Object {
                         "bottom": 292.5,
@@ -4914,9 +4746,6 @@ exports[`renders correctly 1`] = `
                     125
                   </Text>
                   <Text
-                    accessible={true}
-                    allowFontScaling={true}
-                    ellipsizeMode="tail"
                     style={
                       Object {
                         "bottom": 351,
@@ -4928,9 +4757,6 @@ exports[`renders correctly 1`] = `
                     150
                   </Text>
                   <Text
-                    accessible={true}
-                    allowFontScaling={true}
-                    ellipsizeMode="tail"
                     style={
                       Object {
                         "bottom": 409.5,
@@ -4952,9 +4778,6 @@ exports[`renders correctly 1`] = `
                   }
                 >
                   <Text
-                    accessible={true}
-                    allowFontScaling={true}
-                    ellipsizeMode="tail"
                     style={
                       Object {
                         "margin": 4,
@@ -8480,9 +8303,6 @@ exports[`renders correctly 1`] = `
                 }
               >
                 <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
                   style={
                     Object {
                       "fontSize": 8,
@@ -8494,9 +8314,6 @@ exports[`renders correctly 1`] = `
                   2
                 </Text>
                 <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
                   style={
                     Object {
                       "fontSize": 8,
@@ -8508,9 +8325,6 @@ exports[`renders correctly 1`] = `
                   4
                 </Text>
                 <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
                   style={
                     Object {
                       "fontSize": 8,
@@ -8522,9 +8336,6 @@ exports[`renders correctly 1`] = `
                   6
                 </Text>
                 <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
                   style={
                     Object {
                       "fontSize": 8,
@@ -8536,9 +8347,6 @@ exports[`renders correctly 1`] = `
                   8
                 </Text>
                 <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
                   style={
                     Object {
                       "fontSize": 8,
@@ -8550,9 +8358,6 @@ exports[`renders correctly 1`] = `
                   10
                 </Text>
                 <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
                   style={
                     Object {
                       "fontSize": 8,
@@ -8564,9 +8369,6 @@ exports[`renders correctly 1`] = `
                   12
                 </Text>
                 <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
                   style={
                     Object {
                       "fontSize": 8,
@@ -8578,9 +8380,6 @@ exports[`renders correctly 1`] = `
                   14
                 </Text>
                 <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
                   style={
                     Object {
                       "fontSize": 8,
@@ -8592,9 +8391,6 @@ exports[`renders correctly 1`] = `
                   16
                 </Text>
                 <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
                   style={
                     Object {
                       "fontSize": 8,
@@ -8606,9 +8402,6 @@ exports[`renders correctly 1`] = `
                   18
                 </Text>
                 <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
                   style={
                     Object {
                       "fontSize": 8,
@@ -8621,9 +8414,6 @@ exports[`renders correctly 1`] = `
                 </Text>
               </View>
               <Text
-                accessible={true}
-                allowFontScaling={true}
-                ellipsizeMode="tail"
                 style={
                   Object {
                     "alignSelf": "center",
@@ -8650,9 +8440,6 @@ exports[`renders correctly 1`] = `
     }
   >
     <Text
-      accessible={true}
-      allowFontScaling={true}
-      ellipsizeMode="tail"
       style={
         Object {
           "color": "red",
@@ -8661,9 +8448,6 @@ exports[`renders correctly 1`] = `
       }
     />
     <Text
-      accessible={true}
-      allowFontScaling={true}
-      ellipsizeMode="tail"
       style={
         Object {
           "color": "green",

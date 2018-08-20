@@ -21,9 +21,6 @@ exports[`renders correctly 1`] = `
   >
     <View>
       <Text
-        accessible={true}
-        allowFontScaling={true}
-        ellipsizeMode="tail"
         style={
           Object {
             "fontSize": 20,
@@ -34,11 +31,7 @@ exports[`renders correctly 1`] = `
       >
         Previous Visits
       </Text>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        ellipsizeMode="tail"
-      >
+      <Text>
         Patient doesnt exist...
       </Text>
     </View>
@@ -53,9 +46,6 @@ exports[`renders correctly 1`] = `
     }
   >
     <Text
-      accessible={true}
-      allowFontScaling={true}
-      ellipsizeMode="tail"
       style={
         Object {
           "color": "red",
@@ -64,9 +54,6 @@ exports[`renders correctly 1`] = `
       }
     />
     <Text
-      accessible={true}
-      allowFontScaling={true}
-      ellipsizeMode="tail"
       style={
         Object {
           "color": "green",

@@ -21,9 +21,6 @@ exports[`renders correctly 1`] = `
   >
     <View>
       <Text
-        accessible={true}
-        allowFontScaling={true}
-        ellipsizeMode="tail"
         style={
           Object {
             "fontSize": 20,
@@ -52,9 +49,6 @@ exports[`renders correctly 1`] = `
             }
           >
             <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
               style={
                 Object {
                   "color": "#000000",
@@ -72,36 +66,8 @@ exports[`renders correctly 1`] = `
               <TextInput
                 accessibilityLabel="Date"
                 allowFontScaling={true}
-                autoCapitalize={undefined}
-                autoCorrect={undefined}
-                autoFocus={undefined}
-                blurOnSubmit={undefined}
-                clearButtonMode={undefined}
-                clearTextOnFocus={undefined}
                 editable={false}
-                enablesReturnKeyAutomatically={undefined}
-                keyboardAppearance={undefined}
-                keyboardType={undefined}
-                maxLength={undefined}
-                multiline={undefined}
-                numberOfLines={undefined}
-                onBlur={undefined}
-                onChange={undefined}
                 onChangeText={[Function]}
-                onContentSizeChange={undefined}
-                onEndEditing={undefined}
-                onFocus={undefined}
-                onKeyPress={undefined}
-                onLayout={undefined}
-                onSelectionChange={undefined}
-                onSubmitEditing={undefined}
-                placeholder={undefined}
-                placeholderTextColor={undefined}
-                returnKeyType={undefined}
-                secureTextEntry={undefined}
-                selectTextOnFocus={undefined}
-                selectionColor={undefined}
-                selectionState={undefined}
                 style={
                   Object {
                     "backgroundColor": "#eeeeee",
@@ -129,9 +95,6 @@ exports[`renders correctly 1`] = `
             }
           >
             <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
               style={
                 Object {
                   "color": "#000000",
@@ -149,7 +112,6 @@ exports[`renders correctly 1`] = `
               onChange={[Function]}
               onResponderTerminationRequest={[Function]}
               onStartShouldSetResponder={[Function]}
-              onTintColor={undefined}
               onValueChange={[Function]}
               style={
                 Array [
@@ -162,8 +124,6 @@ exports[`renders correctly 1`] = `
                   },
                 ]
               }
-              thumbTintColor={undefined}
-              tintColor={undefined}
               value={false}
             />
           </View>
@@ -175,9 +135,6 @@ exports[`renders correctly 1`] = `
             }
           >
             <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
               style={
                 Object {
                   "color": "#000000",
@@ -203,16 +160,8 @@ exports[`renders correctly 1`] = `
               }
             >
               <View
-                accessibilityComponentType={undefined}
-                accessibilityLabel={undefined}
-                accessibilityTraits={undefined}
                 accessible={true}
-                collapsable={undefined}
-                hasTVPreferredFocus={undefined}
-                hitSlop={undefined}
                 isTVSelectable={true}
-                nativeID={undefined}
-                onLayout={undefined}
                 onResponderGrant={[Function]}
                 onResponderMove={[Function]}
                 onResponderRelease={[Function]}
@@ -227,13 +176,8 @@ exports[`renders correctly 1`] = `
                     "opacity": 1,
                   }
                 }
-                testID={undefined}
-                tvParallaxProperties={undefined}
               >
                 <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
                   style={
                     Object {
                       "fontSize": 17,
@@ -245,7 +189,6 @@ exports[`renders correctly 1`] = `
                 </Text>
               </View>
               <View
-                collapsable={undefined}
                 style={
                   Object {
                     "height": 0,
@@ -301,9 +244,6 @@ exports[`renders correctly 1`] = `
             }
           >
             <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
               style={
                 Object {
                   "color": "#000000",
@@ -321,36 +261,8 @@ exports[`renders correctly 1`] = `
               <TextInput
                 accessibilityLabel="Arrival time (optional)"
                 allowFontScaling={true}
-                autoCapitalize={undefined}
-                autoCorrect={undefined}
-                autoFocus={undefined}
-                blurOnSubmit={undefined}
-                clearButtonMode={undefined}
-                clearTextOnFocus={undefined}
-                editable={undefined}
-                enablesReturnKeyAutomatically={undefined}
-                keyboardAppearance={undefined}
                 keyboardType="numeric"
-                maxLength={undefined}
-                multiline={undefined}
-                numberOfLines={undefined}
-                onBlur={undefined}
-                onChange={undefined}
                 onChangeText={[Function]}
-                onContentSizeChange={undefined}
-                onEndEditing={undefined}
-                onFocus={undefined}
-                onKeyPress={undefined}
-                onLayout={undefined}
-                onSelectionChange={undefined}
-                onSubmitEditing={undefined}
-                placeholder={undefined}
-                placeholderTextColor={undefined}
-                returnKeyType={undefined}
-                secureTextEntry={undefined}
-                selectTextOnFocus={undefined}
-                selectionColor={undefined}
-                selectionState={undefined}
                 style={
                   Object {
                     "borderColor": "#cccccc",
@@ -377,9 +289,6 @@ exports[`renders correctly 1`] = `
             }
           >
             <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
               style={
                 Object {
                   "color": "#000000",
@@ -397,36 +306,7 @@ exports[`renders correctly 1`] = `
               <TextInput
                 accessibilityLabel="Time in"
                 allowFontScaling={true}
-                autoCapitalize={undefined}
-                autoCorrect={undefined}
-                autoFocus={undefined}
-                blurOnSubmit={undefined}
-                clearButtonMode={undefined}
-                clearTextOnFocus={undefined}
-                editable={undefined}
-                enablesReturnKeyAutomatically={undefined}
-                keyboardAppearance={undefined}
-                keyboardType={undefined}
-                maxLength={undefined}
-                multiline={undefined}
-                numberOfLines={undefined}
-                onBlur={undefined}
-                onChange={undefined}
                 onChangeText={[Function]}
-                onContentSizeChange={undefined}
-                onEndEditing={undefined}
-                onFocus={undefined}
-                onKeyPress={undefined}
-                onLayout={undefined}
-                onSelectionChange={undefined}
-                onSubmitEditing={undefined}
-                placeholder={undefined}
-                placeholderTextColor={undefined}
-                returnKeyType={undefined}
-                secureTextEntry={undefined}
-                selectTextOnFocus={undefined}
-                selectionColor={undefined}
-                selectionState={undefined}
                 style={
                   Object {
                     "borderColor": "#cccccc",
@@ -453,9 +333,6 @@ exports[`renders correctly 1`] = `
             }
           >
             <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
               style={
                 Object {
                   "color": "#000000",
@@ -473,36 +350,7 @@ exports[`renders correctly 1`] = `
               <TextInput
                 accessibilityLabel="Time out"
                 allowFontScaling={true}
-                autoCapitalize={undefined}
-                autoCorrect={undefined}
-                autoFocus={undefined}
-                blurOnSubmit={undefined}
-                clearButtonMode={undefined}
-                clearTextOnFocus={undefined}
-                editable={undefined}
-                enablesReturnKeyAutomatically={undefined}
-                keyboardAppearance={undefined}
-                keyboardType={undefined}
-                maxLength={undefined}
-                multiline={undefined}
-                numberOfLines={undefined}
-                onBlur={undefined}
-                onChange={undefined}
                 onChangeText={[Function]}
-                onContentSizeChange={undefined}
-                onEndEditing={undefined}
-                onFocus={undefined}
-                onKeyPress={undefined}
-                onLayout={undefined}
-                onSelectionChange={undefined}
-                onSubmitEditing={undefined}
-                placeholder={undefined}
-                placeholderTextColor={undefined}
-                returnKeyType={undefined}
-                secureTextEntry={undefined}
-                selectTextOnFocus={undefined}
-                selectionColor={undefined}
-                selectionState={undefined}
                 style={
                   Object {
                     "borderColor": "#cccccc",
@@ -529,9 +377,6 @@ exports[`renders correctly 1`] = `
             }
           >
             <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
               style={
                 Object {
                   "color": "#000000",
@@ -549,36 +394,7 @@ exports[`renders correctly 1`] = `
               <TextInput
                 accessibilityLabel="Triager"
                 allowFontScaling={true}
-                autoCapitalize={undefined}
-                autoCorrect={undefined}
-                autoFocus={undefined}
-                blurOnSubmit={undefined}
-                clearButtonMode={undefined}
-                clearTextOnFocus={undefined}
-                editable={undefined}
-                enablesReturnKeyAutomatically={undefined}
-                keyboardAppearance={undefined}
-                keyboardType={undefined}
-                maxLength={undefined}
-                multiline={undefined}
-                numberOfLines={undefined}
-                onBlur={undefined}
-                onChange={undefined}
                 onChangeText={[Function]}
-                onContentSizeChange={undefined}
-                onEndEditing={undefined}
-                onFocus={undefined}
-                onKeyPress={undefined}
-                onLayout={undefined}
-                onSelectionChange={undefined}
-                onSubmitEditing={undefined}
-                placeholder={undefined}
-                placeholderTextColor={undefined}
-                returnKeyType={undefined}
-                secureTextEntry={undefined}
-                selectTextOnFocus={undefined}
-                selectionColor={undefined}
-                selectionState={undefined}
                 style={
                   Object {
                     "borderColor": "#cccccc",
@@ -605,9 +421,6 @@ exports[`renders correctly 1`] = `
             }
           >
             <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
               style={
                 Object {
                   "color": "#000000",
@@ -633,16 +446,8 @@ exports[`renders correctly 1`] = `
               }
             >
               <View
-                accessibilityComponentType={undefined}
-                accessibilityLabel={undefined}
-                accessibilityTraits={undefined}
                 accessible={true}
-                collapsable={undefined}
-                hasTVPreferredFocus={undefined}
-                hitSlop={undefined}
                 isTVSelectable={true}
-                nativeID={undefined}
-                onLayout={undefined}
                 onResponderGrant={[Function]}
                 onResponderMove={[Function]}
                 onResponderRelease={[Function]}
@@ -657,13 +462,8 @@ exports[`renders correctly 1`] = `
                     "opacity": 1,
                   }
                 }
-                testID={undefined}
-                tvParallaxProperties={undefined}
               >
                 <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
                   style={
                     Object {
                       "fontSize": 17,
@@ -675,7 +475,6 @@ exports[`renders correctly 1`] = `
                 </Text>
               </View>
               <View
-                collapsable={undefined}
                 style={
                   Object {
                     "height": 0,
@@ -741,9 +540,6 @@ exports[`renders correctly 1`] = `
             }
           >
             <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
               style={
                 Object {
                   "color": "#000000",
@@ -761,36 +557,7 @@ exports[`renders correctly 1`] = `
               <TextInput
                 accessibilityLabel="Status clarification (if picked Other)"
                 allowFontScaling={true}
-                autoCapitalize={undefined}
-                autoCorrect={undefined}
-                autoFocus={undefined}
-                blurOnSubmit={undefined}
-                clearButtonMode={undefined}
-                clearTextOnFocus={undefined}
-                editable={undefined}
-                enablesReturnKeyAutomatically={undefined}
-                keyboardAppearance={undefined}
-                keyboardType={undefined}
-                maxLength={undefined}
-                multiline={undefined}
-                numberOfLines={undefined}
-                onBlur={undefined}
-                onChange={undefined}
                 onChangeText={[Function]}
-                onContentSizeChange={undefined}
-                onEndEditing={undefined}
-                onFocus={undefined}
-                onKeyPress={undefined}
-                onLayout={undefined}
-                onSelectionChange={undefined}
-                onSubmitEditing={undefined}
-                placeholder={undefined}
-                placeholderTextColor={undefined}
-                returnKeyType={undefined}
-                secureTextEntry={undefined}
-                selectTextOnFocus={undefined}
-                selectionColor={undefined}
-                selectionState={undefined}
                 style={
                   Object {
                     "borderColor": "#cccccc",
@@ -817,9 +584,6 @@ exports[`renders correctly 1`] = `
             }
           >
             <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
               style={
                 Object {
                   "color": "#000000",
@@ -837,36 +601,8 @@ exports[`renders correctly 1`] = `
               <TextInput
                 accessibilityLabel="Weight"
                 allowFontScaling={true}
-                autoCapitalize={undefined}
-                autoCorrect={undefined}
-                autoFocus={undefined}
-                blurOnSubmit={undefined}
-                clearButtonMode={undefined}
-                clearTextOnFocus={undefined}
-                editable={undefined}
-                enablesReturnKeyAutomatically={undefined}
-                keyboardAppearance={undefined}
                 keyboardType="numeric"
-                maxLength={undefined}
-                multiline={undefined}
-                numberOfLines={undefined}
-                onBlur={undefined}
-                onChange={undefined}
                 onChangeText={[Function]}
-                onContentSizeChange={undefined}
-                onEndEditing={undefined}
-                onFocus={undefined}
-                onKeyPress={undefined}
-                onLayout={undefined}
-                onSelectionChange={undefined}
-                onSubmitEditing={undefined}
-                placeholder={undefined}
-                placeholderTextColor={undefined}
-                returnKeyType={undefined}
-                secureTextEntry={undefined}
-                selectTextOnFocus={undefined}
-                selectionColor={undefined}
-                selectionState={undefined}
                 style={
                   Object {
                     "borderColor": "#cccccc",
@@ -893,9 +629,6 @@ exports[`renders correctly 1`] = `
             }
           >
             <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
               style={
                 Object {
                   "color": "#000000",
@@ -913,36 +646,8 @@ exports[`renders correctly 1`] = `
               <TextInput
                 accessibilityLabel="Height"
                 allowFontScaling={true}
-                autoCapitalize={undefined}
-                autoCorrect={undefined}
-                autoFocus={undefined}
-                blurOnSubmit={undefined}
-                clearButtonMode={undefined}
-                clearTextOnFocus={undefined}
-                editable={undefined}
-                enablesReturnKeyAutomatically={undefined}
-                keyboardAppearance={undefined}
                 keyboardType="numeric"
-                maxLength={undefined}
-                multiline={undefined}
-                numberOfLines={undefined}
-                onBlur={undefined}
-                onChange={undefined}
                 onChangeText={[Function]}
-                onContentSizeChange={undefined}
-                onEndEditing={undefined}
-                onFocus={undefined}
-                onKeyPress={undefined}
-                onLayout={undefined}
-                onSelectionChange={undefined}
-                onSubmitEditing={undefined}
-                placeholder={undefined}
-                placeholderTextColor={undefined}
-                returnKeyType={undefined}
-                secureTextEntry={undefined}
-                selectTextOnFocus={undefined}
-                selectionColor={undefined}
-                selectionState={undefined}
                 style={
                   Object {
                     "borderColor": "#cccccc",
@@ -969,9 +674,6 @@ exports[`renders correctly 1`] = `
             }
           >
             <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
               style={
                 Object {
                   "color": "#000000",
@@ -989,36 +691,8 @@ exports[`renders correctly 1`] = `
               <TextInput
                 accessibilityLabel="Temp"
                 allowFontScaling={true}
-                autoCapitalize={undefined}
-                autoCorrect={undefined}
-                autoFocus={undefined}
-                blurOnSubmit={undefined}
-                clearButtonMode={undefined}
-                clearTextOnFocus={undefined}
-                editable={undefined}
-                enablesReturnKeyAutomatically={undefined}
-                keyboardAppearance={undefined}
                 keyboardType="numeric"
-                maxLength={undefined}
-                multiline={undefined}
-                numberOfLines={undefined}
-                onBlur={undefined}
-                onChange={undefined}
                 onChangeText={[Function]}
-                onContentSizeChange={undefined}
-                onEndEditing={undefined}
-                onFocus={undefined}
-                onKeyPress={undefined}
-                onLayout={undefined}
-                onSelectionChange={undefined}
-                onSubmitEditing={undefined}
-                placeholder={undefined}
-                placeholderTextColor={undefined}
-                returnKeyType={undefined}
-                secureTextEntry={undefined}
-                selectTextOnFocus={undefined}
-                selectionColor={undefined}
-                selectionState={undefined}
                 style={
                   Object {
                     "borderColor": "#cccccc",
@@ -1045,9 +719,6 @@ exports[`renders correctly 1`] = `
             }
           >
             <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
               style={
                 Object {
                   "color": "#000000",
@@ -1065,36 +736,8 @@ exports[`renders correctly 1`] = `
               <TextInput
                 accessibilityLabel="Rr"
                 allowFontScaling={true}
-                autoCapitalize={undefined}
-                autoCorrect={undefined}
-                autoFocus={undefined}
-                blurOnSubmit={undefined}
-                clearButtonMode={undefined}
-                clearTextOnFocus={undefined}
-                editable={undefined}
-                enablesReturnKeyAutomatically={undefined}
-                keyboardAppearance={undefined}
                 keyboardType="numeric"
-                maxLength={undefined}
-                multiline={undefined}
-                numberOfLines={undefined}
-                onBlur={undefined}
-                onChange={undefined}
                 onChangeText={[Function]}
-                onContentSizeChange={undefined}
-                onEndEditing={undefined}
-                onFocus={undefined}
-                onKeyPress={undefined}
-                onLayout={undefined}
-                onSelectionChange={undefined}
-                onSubmitEditing={undefined}
-                placeholder={undefined}
-                placeholderTextColor={undefined}
-                returnKeyType={undefined}
-                secureTextEntry={undefined}
-                selectTextOnFocus={undefined}
-                selectionColor={undefined}
-                selectionState={undefined}
                 style={
                   Object {
                     "borderColor": "#cccccc",
@@ -1121,9 +764,6 @@ exports[`renders correctly 1`] = `
             }
           >
             <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
               style={
                 Object {
                   "color": "#000000",
@@ -1141,36 +781,8 @@ exports[`renders correctly 1`] = `
               <TextInput
                 accessibilityLabel="O2"
                 allowFontScaling={true}
-                autoCapitalize={undefined}
-                autoCorrect={undefined}
-                autoFocus={undefined}
-                blurOnSubmit={undefined}
-                clearButtonMode={undefined}
-                clearTextOnFocus={undefined}
-                editable={undefined}
-                enablesReturnKeyAutomatically={undefined}
-                keyboardAppearance={undefined}
                 keyboardType="numeric"
-                maxLength={undefined}
-                multiline={undefined}
-                numberOfLines={undefined}
-                onBlur={undefined}
-                onChange={undefined}
                 onChangeText={[Function]}
-                onContentSizeChange={undefined}
-                onEndEditing={undefined}
-                onFocus={undefined}
-                onKeyPress={undefined}
-                onLayout={undefined}
-                onSelectionChange={undefined}
-                onSubmitEditing={undefined}
-                placeholder={undefined}
-                placeholderTextColor={undefined}
-                returnKeyType={undefined}
-                secureTextEntry={undefined}
-                selectTextOnFocus={undefined}
-                selectionColor={undefined}
-                selectionState={undefined}
                 style={
                   Object {
                     "borderColor": "#cccccc",
@@ -1197,9 +809,6 @@ exports[`renders correctly 1`] = `
             }
           >
             <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
               style={
                 Object {
                   "color": "#000000",
@@ -1217,36 +826,7 @@ exports[`renders correctly 1`] = `
               <TextInput
                 accessibilityLabel="Bp"
                 allowFontScaling={true}
-                autoCapitalize={undefined}
-                autoCorrect={undefined}
-                autoFocus={undefined}
-                blurOnSubmit={undefined}
-                clearButtonMode={undefined}
-                clearTextOnFocus={undefined}
-                editable={undefined}
-                enablesReturnKeyAutomatically={undefined}
-                keyboardAppearance={undefined}
-                keyboardType={undefined}
-                maxLength={undefined}
-                multiline={undefined}
-                numberOfLines={undefined}
-                onBlur={undefined}
-                onChange={undefined}
                 onChangeText={[Function]}
-                onContentSizeChange={undefined}
-                onEndEditing={undefined}
-                onFocus={undefined}
-                onKeyPress={undefined}
-                onLayout={undefined}
-                onSelectionChange={undefined}
-                onSubmitEditing={undefined}
-                placeholder={undefined}
-                placeholderTextColor={undefined}
-                returnKeyType={undefined}
-                secureTextEntry={undefined}
-                selectTextOnFocus={undefined}
-                selectionColor={undefined}
-                selectionState={undefined}
                 style={
                   Object {
                     "borderColor": "#cccccc",
@@ -1273,9 +853,6 @@ exports[`renders correctly 1`] = `
             }
           >
             <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
               style={
                 Object {
                   "color": "#000000",
@@ -1293,36 +870,8 @@ exports[`renders correctly 1`] = `
               <TextInput
                 accessibilityLabel="Hr"
                 allowFontScaling={true}
-                autoCapitalize={undefined}
-                autoCorrect={undefined}
-                autoFocus={undefined}
-                blurOnSubmit={undefined}
-                clearButtonMode={undefined}
-                clearTextOnFocus={undefined}
-                editable={undefined}
-                enablesReturnKeyAutomatically={undefined}
-                keyboardAppearance={undefined}
                 keyboardType="numeric"
-                maxLength={undefined}
-                multiline={undefined}
-                numberOfLines={undefined}
-                onBlur={undefined}
-                onChange={undefined}
                 onChangeText={[Function]}
-                onContentSizeChange={undefined}
-                onEndEditing={undefined}
-                onFocus={undefined}
-                onKeyPress={undefined}
-                onLayout={undefined}
-                onSelectionChange={undefined}
-                onSubmitEditing={undefined}
-                placeholder={undefined}
-                placeholderTextColor={undefined}
-                returnKeyType={undefined}
-                secureTextEntry={undefined}
-                selectTextOnFocus={undefined}
-                selectionColor={undefined}
-                selectionState={undefined}
                 style={
                   Object {
                     "borderColor": "#cccccc",
@@ -1349,9 +898,6 @@ exports[`renders correctly 1`] = `
             }
           >
             <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
               style={
                 Object {
                   "color": "#000000",
@@ -1369,36 +915,7 @@ exports[`renders correctly 1`] = `
               <TextInput
                 accessibilityLabel="History"
                 allowFontScaling={true}
-                autoCapitalize={undefined}
-                autoCorrect={undefined}
-                autoFocus={undefined}
-                blurOnSubmit={undefined}
-                clearButtonMode={undefined}
-                clearTextOnFocus={undefined}
-                editable={undefined}
-                enablesReturnKeyAutomatically={undefined}
-                keyboardAppearance={undefined}
-                keyboardType={undefined}
-                maxLength={undefined}
-                multiline={undefined}
-                numberOfLines={undefined}
-                onBlur={undefined}
-                onChange={undefined}
                 onChangeText={[Function]}
-                onContentSizeChange={undefined}
-                onEndEditing={undefined}
-                onFocus={undefined}
-                onKeyPress={undefined}
-                onLayout={undefined}
-                onSelectionChange={undefined}
-                onSubmitEditing={undefined}
-                placeholder={undefined}
-                placeholderTextColor={undefined}
-                returnKeyType={undefined}
-                secureTextEntry={undefined}
-                selectTextOnFocus={undefined}
-                selectionColor={undefined}
-                selectionState={undefined}
                 style={
                   Object {
                     "borderColor": "#cccccc",
@@ -1425,9 +942,6 @@ exports[`renders correctly 1`] = `
             }
           >
             <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
               style={
                 Object {
                   "color": "#000000",
@@ -1445,36 +959,7 @@ exports[`renders correctly 1`] = `
               <TextInput
                 accessibilityLabel="Allergies"
                 allowFontScaling={true}
-                autoCapitalize={undefined}
-                autoCorrect={undefined}
-                autoFocus={undefined}
-                blurOnSubmit={undefined}
-                clearButtonMode={undefined}
-                clearTextOnFocus={undefined}
-                editable={undefined}
-                enablesReturnKeyAutomatically={undefined}
-                keyboardAppearance={undefined}
-                keyboardType={undefined}
-                maxLength={undefined}
-                multiline={undefined}
-                numberOfLines={undefined}
-                onBlur={undefined}
-                onChange={undefined}
                 onChangeText={[Function]}
-                onContentSizeChange={undefined}
-                onEndEditing={undefined}
-                onFocus={undefined}
-                onKeyPress={undefined}
-                onLayout={undefined}
-                onSelectionChange={undefined}
-                onSubmitEditing={undefined}
-                placeholder={undefined}
-                placeholderTextColor={undefined}
-                returnKeyType={undefined}
-                secureTextEntry={undefined}
-                selectTextOnFocus={undefined}
-                selectionColor={undefined}
-                selectionState={undefined}
                 style={
                   Object {
                     "borderColor": "#cccccc",
@@ -1501,9 +986,6 @@ exports[`renders correctly 1`] = `
             }
           >
             <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
               style={
                 Object {
                   "color": "#000000",
@@ -1521,36 +1003,7 @@ exports[`renders correctly 1`] = `
               <TextInput
                 accessibilityLabel="Medications"
                 allowFontScaling={true}
-                autoCapitalize={undefined}
-                autoCorrect={undefined}
-                autoFocus={undefined}
-                blurOnSubmit={undefined}
-                clearButtonMode={undefined}
-                clearTextOnFocus={undefined}
-                editable={undefined}
-                enablesReturnKeyAutomatically={undefined}
-                keyboardAppearance={undefined}
-                keyboardType={undefined}
-                maxLength={undefined}
-                multiline={undefined}
-                numberOfLines={undefined}
-                onBlur={undefined}
-                onChange={undefined}
                 onChangeText={[Function]}
-                onContentSizeChange={undefined}
-                onEndEditing={undefined}
-                onFocus={undefined}
-                onKeyPress={undefined}
-                onLayout={undefined}
-                onSelectionChange={undefined}
-                onSubmitEditing={undefined}
-                placeholder={undefined}
-                placeholderTextColor={undefined}
-                returnKeyType={undefined}
-                secureTextEntry={undefined}
-                selectTextOnFocus={undefined}
-                selectionColor={undefined}
-                selectionState={undefined}
                 style={
                   Object {
                     "borderColor": "#cccccc",
@@ -1577,9 +1030,6 @@ exports[`renders correctly 1`] = `
             }
           >
             <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
               style={
                 Object {
                   "color": "#000000",
@@ -1597,36 +1047,7 @@ exports[`renders correctly 1`] = `
               <TextInput
                 accessibilityLabel="Surgeries"
                 allowFontScaling={true}
-                autoCapitalize={undefined}
-                autoCorrect={undefined}
-                autoFocus={undefined}
-                blurOnSubmit={undefined}
-                clearButtonMode={undefined}
-                clearTextOnFocus={undefined}
-                editable={undefined}
-                enablesReturnKeyAutomatically={undefined}
-                keyboardAppearance={undefined}
-                keyboardType={undefined}
-                maxLength={undefined}
-                multiline={undefined}
-                numberOfLines={undefined}
-                onBlur={undefined}
-                onChange={undefined}
                 onChangeText={[Function]}
-                onContentSizeChange={undefined}
-                onEndEditing={undefined}
-                onFocus={undefined}
-                onKeyPress={undefined}
-                onLayout={undefined}
-                onSelectionChange={undefined}
-                onSubmitEditing={undefined}
-                placeholder={undefined}
-                placeholderTextColor={undefined}
-                returnKeyType={undefined}
-                secureTextEntry={undefined}
-                selectTextOnFocus={undefined}
-                selectionColor={undefined}
-                selectionState={undefined}
                 style={
                   Object {
                     "borderColor": "#cccccc",
@@ -1653,9 +1074,6 @@ exports[`renders correctly 1`] = `
             }
           >
             <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
               style={
                 Object {
                   "color": "#000000",
@@ -1673,36 +1091,7 @@ exports[`renders correctly 1`] = `
               <TextInput
                 accessibilityLabel="Immunizations"
                 allowFontScaling={true}
-                autoCapitalize={undefined}
-                autoCorrect={undefined}
-                autoFocus={undefined}
-                blurOnSubmit={undefined}
-                clearButtonMode={undefined}
-                clearTextOnFocus={undefined}
-                editable={undefined}
-                enablesReturnKeyAutomatically={undefined}
-                keyboardAppearance={undefined}
-                keyboardType={undefined}
-                maxLength={undefined}
-                multiline={undefined}
-                numberOfLines={undefined}
-                onBlur={undefined}
-                onChange={undefined}
                 onChangeText={[Function]}
-                onContentSizeChange={undefined}
-                onEndEditing={undefined}
-                onFocus={undefined}
-                onKeyPress={undefined}
-                onLayout={undefined}
-                onSelectionChange={undefined}
-                onSubmitEditing={undefined}
-                placeholder={undefined}
-                placeholderTextColor={undefined}
-                returnKeyType={undefined}
-                secureTextEntry={undefined}
-                selectTextOnFocus={undefined}
-                selectionColor={undefined}
-                selectionState={undefined}
                 style={
                   Object {
                     "borderColor": "#cccccc",
@@ -1729,9 +1118,6 @@ exports[`renders correctly 1`] = `
             }
           >
             <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
               style={
                 Object {
                   "color": "#000000",
@@ -1749,36 +1135,7 @@ exports[`renders correctly 1`] = `
               <TextInput
                 accessibilityLabel="Chief complaint"
                 allowFontScaling={true}
-                autoCapitalize={undefined}
-                autoCorrect={undefined}
-                autoFocus={undefined}
-                blurOnSubmit={undefined}
-                clearButtonMode={undefined}
-                clearTextOnFocus={undefined}
-                editable={undefined}
-                enablesReturnKeyAutomatically={undefined}
-                keyboardAppearance={undefined}
-                keyboardType={undefined}
-                maxLength={undefined}
-                multiline={undefined}
-                numberOfLines={undefined}
-                onBlur={undefined}
-                onChange={undefined}
                 onChangeText={[Function]}
-                onContentSizeChange={undefined}
-                onEndEditing={undefined}
-                onFocus={undefined}
-                onKeyPress={undefined}
-                onLayout={undefined}
-                onSelectionChange={undefined}
-                onSubmitEditing={undefined}
-                placeholder={undefined}
-                placeholderTextColor={undefined}
-                returnKeyType={undefined}
-                secureTextEntry={undefined}
-                selectTextOnFocus={undefined}
-                selectionColor={undefined}
-                selectionState={undefined}
                 style={
                   Object {
                     "borderColor": "#cccccc",
@@ -1805,9 +1162,6 @@ exports[`renders correctly 1`] = `
             }
           >
             <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
               style={
                 Object {
                   "color": "#000000",
@@ -1825,36 +1179,7 @@ exports[`renders correctly 1`] = `
               <TextInput
                 accessibilityLabel="Pharmacy section"
                 allowFontScaling={true}
-                autoCapitalize={undefined}
-                autoCorrect={undefined}
-                autoFocus={undefined}
-                blurOnSubmit={undefined}
-                clearButtonMode={undefined}
-                clearTextOnFocus={undefined}
-                editable={undefined}
-                enablesReturnKeyAutomatically={undefined}
-                keyboardAppearance={undefined}
-                keyboardType={undefined}
-                maxLength={undefined}
-                multiline={undefined}
-                numberOfLines={undefined}
-                onBlur={undefined}
-                onChange={undefined}
                 onChangeText={[Function]}
-                onContentSizeChange={undefined}
-                onEndEditing={undefined}
-                onFocus={undefined}
-                onKeyPress={undefined}
-                onLayout={undefined}
-                onSelectionChange={undefined}
-                onSubmitEditing={undefined}
-                placeholder={undefined}
-                placeholderTextColor={undefined}
-                returnKeyType={undefined}
-                secureTextEntry={undefined}
-                selectTextOnFocus={undefined}
-                selectionColor={undefined}
-                selectionState={undefined}
                 style={
                   Object {
                     "borderColor": "#cccccc",
@@ -1881,9 +1206,6 @@ exports[`renders correctly 1`] = `
             }
           >
             <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
               style={
                 Object {
                   "color": "#000000",
@@ -1901,36 +1223,7 @@ exports[`renders correctly 1`] = `
               <TextInput
                 accessibilityLabel="Lmp (optional)"
                 allowFontScaling={true}
-                autoCapitalize={undefined}
-                autoCorrect={undefined}
-                autoFocus={undefined}
-                blurOnSubmit={undefined}
-                clearButtonMode={undefined}
-                clearTextOnFocus={undefined}
-                editable={undefined}
-                enablesReturnKeyAutomatically={undefined}
-                keyboardAppearance={undefined}
-                keyboardType={undefined}
-                maxLength={undefined}
-                multiline={undefined}
-                numberOfLines={undefined}
-                onBlur={undefined}
-                onChange={undefined}
                 onChangeText={[Function]}
-                onContentSizeChange={undefined}
-                onEndEditing={undefined}
-                onFocus={undefined}
-                onKeyPress={undefined}
-                onLayout={undefined}
-                onSelectionChange={undefined}
-                onSubmitEditing={undefined}
-                placeholder={undefined}
-                placeholderTextColor={undefined}
-                returnKeyType={undefined}
-                secureTextEntry={undefined}
-                selectTextOnFocus={undefined}
-                selectionColor={undefined}
-                selectionState={undefined}
                 style={
                   Object {
                     "borderColor": "#cccccc",
@@ -1957,9 +1250,6 @@ exports[`renders correctly 1`] = `
             }
           >
             <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
               style={
                 Object {
                   "color": "#000000",
@@ -1977,7 +1267,6 @@ exports[`renders correctly 1`] = `
               onChange={[Function]}
               onResponderTerminationRequest={[Function]}
               onStartShouldSetResponder={[Function]}
-              onTintColor={undefined}
               onValueChange={[Function]}
               style={
                 Array [
@@ -1990,8 +1279,6 @@ exports[`renders correctly 1`] = `
                   },
                 ]
               }
-              thumbTintColor={undefined}
-              tintColor={undefined}
               value={false}
             />
           </View>
@@ -2003,9 +1290,6 @@ exports[`renders correctly 1`] = `
             }
           >
             <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
               style={
                 Object {
                   "color": "#000000",
@@ -2023,36 +1307,7 @@ exports[`renders correctly 1`] = `
               <TextInput
                 accessibilityLabel="Pregnancies (optional)"
                 allowFontScaling={true}
-                autoCapitalize={undefined}
-                autoCorrect={undefined}
-                autoFocus={undefined}
-                blurOnSubmit={undefined}
-                clearButtonMode={undefined}
-                clearTextOnFocus={undefined}
-                editable={undefined}
-                enablesReturnKeyAutomatically={undefined}
-                keyboardAppearance={undefined}
-                keyboardType={undefined}
-                maxLength={undefined}
-                multiline={undefined}
-                numberOfLines={undefined}
-                onBlur={undefined}
-                onChange={undefined}
                 onChangeText={[Function]}
-                onContentSizeChange={undefined}
-                onEndEditing={undefined}
-                onFocus={undefined}
-                onKeyPress={undefined}
-                onLayout={undefined}
-                onSelectionChange={undefined}
-                onSubmitEditing={undefined}
-                placeholder={undefined}
-                placeholderTextColor={undefined}
-                returnKeyType={undefined}
-                secureTextEntry={undefined}
-                selectTextOnFocus={undefined}
-                selectionColor={undefined}
-                selectionState={undefined}
                 style={
                   Object {
                     "borderColor": "#cccccc",
@@ -2079,9 +1334,6 @@ exports[`renders correctly 1`] = `
             }
           >
             <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
               style={
                 Object {
                   "color": "#000000",
@@ -2099,36 +1351,7 @@ exports[`renders correctly 1`] = `
               <TextInput
                 accessibilityLabel="Live births (optional)"
                 allowFontScaling={true}
-                autoCapitalize={undefined}
-                autoCorrect={undefined}
-                autoFocus={undefined}
-                blurOnSubmit={undefined}
-                clearButtonMode={undefined}
-                clearTextOnFocus={undefined}
-                editable={undefined}
-                enablesReturnKeyAutomatically={undefined}
-                keyboardAppearance={undefined}
-                keyboardType={undefined}
-                maxLength={undefined}
-                multiline={undefined}
-                numberOfLines={undefined}
-                onBlur={undefined}
-                onChange={undefined}
                 onChangeText={[Function]}
-                onContentSizeChange={undefined}
-                onEndEditing={undefined}
-                onFocus={undefined}
-                onKeyPress={undefined}
-                onLayout={undefined}
-                onSelectionChange={undefined}
-                onSubmitEditing={undefined}
-                placeholder={undefined}
-                placeholderTextColor={undefined}
-                returnKeyType={undefined}
-                secureTextEntry={undefined}
-                selectTextOnFocus={undefined}
-                selectionColor={undefined}
-                selectionState={undefined}
                 style={
                   Object {
                     "borderColor": "#cccccc",
@@ -2155,9 +1378,6 @@ exports[`renders correctly 1`] = `
             }
           >
             <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
               style={
                 Object {
                   "color": "#000000",
@@ -2175,36 +1395,7 @@ exports[`renders correctly 1`] = `
               <TextInput
                 accessibilityLabel="Abortions (optional)"
                 allowFontScaling={true}
-                autoCapitalize={undefined}
-                autoCorrect={undefined}
-                autoFocus={undefined}
-                blurOnSubmit={undefined}
-                clearButtonMode={undefined}
-                clearTextOnFocus={undefined}
-                editable={undefined}
-                enablesReturnKeyAutomatically={undefined}
-                keyboardAppearance={undefined}
-                keyboardType={undefined}
-                maxLength={undefined}
-                multiline={undefined}
-                numberOfLines={undefined}
-                onBlur={undefined}
-                onChange={undefined}
                 onChangeText={[Function]}
-                onContentSizeChange={undefined}
-                onEndEditing={undefined}
-                onFocus={undefined}
-                onKeyPress={undefined}
-                onLayout={undefined}
-                onSelectionChange={undefined}
-                onSubmitEditing={undefined}
-                placeholder={undefined}
-                placeholderTextColor={undefined}
-                returnKeyType={undefined}
-                secureTextEntry={undefined}
-                selectTextOnFocus={undefined}
-                selectionColor={undefined}
-                selectionState={undefined}
                 style={
                   Object {
                     "borderColor": "#cccccc",
@@ -2231,9 +1422,6 @@ exports[`renders correctly 1`] = `
             }
           >
             <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
               style={
                 Object {
                   "color": "#000000",
@@ -2251,36 +1439,7 @@ exports[`renders correctly 1`] = `
               <TextInput
                 accessibilityLabel="Miscarriages (optional)"
                 allowFontScaling={true}
-                autoCapitalize={undefined}
-                autoCorrect={undefined}
-                autoFocus={undefined}
-                blurOnSubmit={undefined}
-                clearButtonMode={undefined}
-                clearTextOnFocus={undefined}
-                editable={undefined}
-                enablesReturnKeyAutomatically={undefined}
-                keyboardAppearance={undefined}
-                keyboardType={undefined}
-                maxLength={undefined}
-                multiline={undefined}
-                numberOfLines={undefined}
-                onBlur={undefined}
-                onChange={undefined}
                 onChangeText={[Function]}
-                onContentSizeChange={undefined}
-                onEndEditing={undefined}
-                onFocus={undefined}
-                onKeyPress={undefined}
-                onLayout={undefined}
-                onSelectionChange={undefined}
-                onSubmitEditing={undefined}
-                placeholder={undefined}
-                placeholderTextColor={undefined}
-                returnKeyType={undefined}
-                secureTextEntry={undefined}
-                selectTextOnFocus={undefined}
-                selectionColor={undefined}
-                selectionState={undefined}
                 style={
                   Object {
                     "borderColor": "#cccccc",
@@ -2307,9 +1466,6 @@ exports[`renders correctly 1`] = `
             }
           >
             <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
               style={
                 Object {
                   "color": "#000000",
@@ -2327,7 +1483,6 @@ exports[`renders correctly 1`] = `
               onChange={[Function]}
               onResponderTerminationRequest={[Function]}
               onStartShouldSetResponder={[Function]}
-              onTintColor={undefined}
               onValueChange={[Function]}
               style={
                 Array [
@@ -2340,8 +1495,6 @@ exports[`renders correctly 1`] = `
                   },
                 ]
               }
-              thumbTintColor={undefined}
-              tintColor={undefined}
               value={false}
             />
           </View>
@@ -2353,9 +1506,6 @@ exports[`renders correctly 1`] = `
             }
           >
             <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
               style={
                 Object {
                   "color": "#000000",
@@ -2373,7 +1523,6 @@ exports[`renders correctly 1`] = `
               onChange={[Function]}
               onResponderTerminationRequest={[Function]}
               onStartShouldSetResponder={[Function]}
-              onTintColor={undefined}
               onValueChange={[Function]}
               style={
                 Array [
@@ -2386,23 +1535,13 @@ exports[`renders correctly 1`] = `
                   },
                 ]
               }
-              thumbTintColor={undefined}
-              tintColor={undefined}
               value={false}
             />
           </View>
         </View>
         <View
-          accessibilityComponentType={undefined}
-          accessibilityLabel={undefined}
-          accessibilityTraits={undefined}
           accessible={true}
-          collapsable={undefined}
-          hasTVPreferredFocus={undefined}
-          hitSlop={undefined}
           isTVSelectable={true}
-          nativeID={undefined}
-          onLayout={undefined}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
           onResponderRelease={[Function]}
@@ -2423,13 +1562,8 @@ exports[`renders correctly 1`] = `
               "width": "100%",
             }
           }
-          testID={undefined}
-          tvParallaxProperties={undefined}
         >
           <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
             style={
               Array [
                 Object {
@@ -2445,16 +1579,8 @@ exports[`renders correctly 1`] = `
           </Text>
         </View>
         <View
-          accessibilityComponentType={undefined}
-          accessibilityLabel={undefined}
-          accessibilityTraits={undefined}
           accessible={true}
-          collapsable={undefined}
-          hasTVPreferredFocus={undefined}
-          hitSlop={undefined}
           isTVSelectable={true}
-          nativeID={undefined}
-          onLayout={undefined}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
           onResponderRelease={[Function]}
@@ -2475,13 +1601,8 @@ exports[`renders correctly 1`] = `
               "width": "100%",
             }
           }
-          testID={undefined}
-          tvParallaxProperties={undefined}
         >
           <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
             style={
               Array [
                 Object {
@@ -2497,16 +1618,8 @@ exports[`renders correctly 1`] = `
           </Text>
         </View>
         <View
-          accessibilityComponentType={undefined}
-          accessibilityLabel={undefined}
-          accessibilityTraits={undefined}
           accessible={true}
-          collapsable={undefined}
-          hasTVPreferredFocus={undefined}
-          hitSlop={undefined}
           isTVSelectable={true}
-          nativeID={undefined}
-          onLayout={undefined}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
           onResponderRelease={[Function]}
@@ -2527,13 +1640,8 @@ exports[`renders correctly 1`] = `
               "width": "100%",
             }
           }
-          testID={undefined}
-          tvParallaxProperties={undefined}
         >
           <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
             style={
               Array [
                 Object {
@@ -2561,9 +1669,6 @@ exports[`renders correctly 1`] = `
     }
   >
     <Text
-      accessible={true}
-      allowFontScaling={true}
-      ellipsizeMode="tail"
       style={
         Object {
           "color": "red",
@@ -2574,9 +1679,6 @@ exports[`renders correctly 1`] = `
       [object Object] does not contain string option string?
     </Text>
     <Text
-      accessible={true}
-      allowFontScaling={true}
-      ellipsizeMode="tail"
       style={
         Object {
           "color": "green",
