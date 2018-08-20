@@ -36,7 +36,7 @@ jobs:
           paths:
             - mobile/Ihc/node_modules
             - server/node_modules
-          key: v1-dependencies-{{ checksum "/Ihc/package.json" }}
+          key: v1-dependencies-{{ checksum "mobile/Ihc/package.json" }}
         
       # run tests!
       - run: |
