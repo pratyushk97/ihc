@@ -34,7 +34,8 @@ jobs:
 
       - save_cache:
           paths:
-            - node_modules
+            - mobile/Ihc/node_modules
+            - server/node_modules
           key: v1-dependencies-{{ checksum "mobile/Ihc/package.json" }}
         
       # run tests!
