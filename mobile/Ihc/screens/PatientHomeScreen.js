@@ -136,10 +136,11 @@ const styles = StyleSheet.create({
 });
 
 // Redux
-import { clearMessages } from '../reduxActions/containerActions';
+import { setLoading, clearMessages } from '../reduxActions/containerActions';
 import { connect } from 'react-redux';
 
 const mapDispatchToProps = dispatch => ({
+  setLoading: (val) => dispatch(setLoading(val)),
   clearMessages: () => dispatch(clearMessages())
 });
 

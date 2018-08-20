@@ -160,6 +160,8 @@ class TriageScreen extends Component<{}> {
     });
   }
 
+  // Updates the timestamp that displays in the PatientSelectScreen
+  // Doesn't actually save the Triage form
   completed = () => {
     this.props.setLoading(true);
     let statusObj = {};
@@ -190,8 +192,10 @@ class TriageScreen extends Component<{}> {
       });
   }
 
+  // Saves the Triage, first locally, then over the server
   submit = () => {
     if(!this.refs.form.validate().isValid()) {
+      this.props.setErrorMessage('Form not correct. Review form.');
       return;
     }
 
