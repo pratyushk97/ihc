@@ -14,8 +14,7 @@
     "updateSnapshots": "jest -u",
     "lint": "eslint components/* models/* screens/* services/* util/* redux*/*",
     "lintFix": "eslint --fix components/* models/* screens/* services/* /util/*",
-    "check": "npm run test && npm run lint",
-    "updateCacheincircleci": "blah"
+    "check": "npm run test && npm run lint"
   },
   "dependencies": {
     "jest-cli": "^21.2.1",
