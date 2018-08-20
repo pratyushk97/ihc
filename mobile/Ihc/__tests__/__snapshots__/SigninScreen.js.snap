@@ -358,7 +358,7 @@ exports[`renders correctly for default (existing patient) 1`] = `
                   }
                 >
                   <RCTDatePicker
-                    date={100}
+                    date={30000}
                     locale={undefined}
                     maximumDate={undefined}
                     minimumDate={undefined}
