@@ -21,6 +21,9 @@ exports[`renders correctly 1`] = `
   >
     <View>
       <Text
+        accessible={true}
+        allowFontScaling={true}
+        ellipsizeMode="tail"
         style={
           Object {
             "fontSize": 20,
@@ -77,6 +80,9 @@ exports[`renders correctly 1`] = `
                   }
                 >
                   <Text
+                    accessible={true}
+                    allowFontScaling={true}
+                    ellipsizeMode="tail"
                     style={
                       Object {
                         "fontSize": 24,
@@ -84,7 +90,11 @@ exports[`renders correctly 1`] = `
                       }
                     }
                   />
-                  <Text>
+                  <Text
+                    accessible={true}
+                    allowFontScaling={true}
+                    ellipsizeMode="tail"
+                  >
                     Notes:
                   </Text>
                   <TextInput
@@ -101,7 +111,6 @@ exports[`renders correctly 1`] = `
                         "width": "90%",
                       }
                     }
-                    underlineColorAndroid="transparent"
                     value={null}
                   />
                   <View
@@ -117,8 +126,16 @@ exports[`renders correctly 1`] = `
                     }
                   >
                     <View
+                      accessibilityComponentType={undefined}
+                      accessibilityLabel={undefined}
+                      accessibilityTraits={undefined}
                       accessible={true}
+                      collapsable={undefined}
+                      hasTVPreferredFocus={undefined}
+                      hitSlop={undefined}
                       isTVSelectable={true}
+                      nativeID={undefined}
+                      onLayout={undefined}
                       onResponderGrant={[Function]}
                       onResponderMove={[Function]}
                       onResponderRelease={[Function]}
@@ -139,8 +156,13 @@ exports[`renders correctly 1`] = `
                           "width": 150,
                         }
                       }
+                      testID={undefined}
+                      tvParallaxProperties={undefined}
                     >
                       <Text
+                        accessible={true}
+                        allowFontScaling={true}
+                        ellipsizeMode="tail"
                         style={
                           Array [
                             Object {
@@ -156,8 +178,16 @@ exports[`renders correctly 1`] = `
                       </Text>
                     </View>
                     <View
+                      accessibilityComponentType={undefined}
+                      accessibilityLabel={undefined}
+                      accessibilityTraits={undefined}
                       accessible={true}
+                      collapsable={undefined}
+                      hasTVPreferredFocus={undefined}
+                      hitSlop={undefined}
                       isTVSelectable={true}
+                      nativeID={undefined}
+                      onLayout={undefined}
                       onResponderGrant={[Function]}
                       onResponderMove={[Function]}
                       onResponderRelease={[Function]}
@@ -178,8 +208,13 @@ exports[`renders correctly 1`] = `
                           "width": 150,
                         }
                       }
+                      testID={undefined}
+                      tvParallaxProperties={undefined}
                     >
                       <Text
+                        accessible={true}
+                        allowFontScaling={true}
+                        ellipsizeMode="tail"
                         style={
                           Array [
                             Object {
@@ -228,6 +263,9 @@ exports[`renders correctly 1`] = `
                   }
                 >
                   <Text
+                    accessible={true}
+                    allowFontScaling={true}
+                    ellipsizeMode="tail"
                     style={
                       Object {
                         "textAlign": "center",
@@ -248,6 +286,9 @@ exports[`renders correctly 1`] = `
                   }
                 >
                   <Text
+                    accessible={true}
+                    allowFontScaling={true}
+                    ellipsizeMode="tail"
                     style={
                       Object {
                         "textAlign": "center",
@@ -269,6 +310,9 @@ exports[`renders correctly 1`] = `
                   }
                 >
                   <Text
+                    accessible={true}
+                    allowFontScaling={true}
+                    ellipsizeMode="tail"
                     style={
                       Object {
                         "textAlign": "center",
@@ -290,6 +334,9 @@ exports[`renders correctly 1`] = `
                   }
                 >
                   <Text
+                    accessible={true}
+                    allowFontScaling={true}
+                    ellipsizeMode="tail"
                     style={
                       Object {
                         "textAlign": "center",
@@ -311,6 +358,9 @@ exports[`renders correctly 1`] = `
                   }
                 >
                   <Text
+                    accessible={true}
+                    allowFontScaling={true}
+                    ellipsizeMode="tail"
                     style={
                       Object {
                         "textAlign": "center",
@@ -332,6 +382,9 @@ exports[`renders correctly 1`] = `
                   }
                 >
                   <Text
+                    accessible={true}
+                    allowFontScaling={true}
+                    ellipsizeMode="tail"
                     style={
                       Object {
                         "textAlign": "center",
@@ -352,6 +405,9 @@ exports[`renders correctly 1`] = `
                   }
                 >
                   <Text
+                    accessible={true}
+                    allowFontScaling={true}
+                    ellipsizeMode="tail"
                     style={
                       Object {
                         "textAlign": "center",
@@ -378,6 +434,9 @@ exports[`renders correctly 1`] = `
     }
   >
     <Text
+      accessible={true}
+      allowFontScaling={true}
+      ellipsizeMode="tail"
       style={
         Object {
           "color": "red",
@@ -386,6 +445,9 @@ exports[`renders correctly 1`] = `
       }
     />
     <Text
+      accessible={true}
+      allowFontScaling={true}
+      ellipsizeMode="tail"
       style={
         Object {
           "color": "green",

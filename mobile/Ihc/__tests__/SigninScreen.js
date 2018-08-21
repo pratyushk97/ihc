@@ -16,9 +16,7 @@ import { Provider } from 'react-redux';
 const store = createStore(reducers);
 
 it('renders correctly for default (existing patient)', () => {
-  // use 30000 so that it renders the correct date on the CircleCI tests
-  // Necessary because of epoch time/time zone problems
-  sinon.useFakeTimers(30000);
+  sinon.useFakeTimers(100);
   const json = renderer.create(
     <Provider store={store}>
       <SigninScreen />
@@ -28,7 +26,7 @@ it('renders correctly for default (existing patient)', () => {
 });
 
 it('renders correctly for new patient', () => {
-  sinon.useFakeTimers(30000);
+  sinon.useFakeTimers(100);
   // TODO: Once the "cannot read property number of undefined" problem is gone,
   // this should work??
 //  sinon.stub(data, "createPatient");

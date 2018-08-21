@@ -21,6 +21,9 @@ exports[`renders correctly for default (existing patient) 1`] = `
   >
     <View>
       <Text
+        accessible={true}
+        allowFontScaling={true}
+        ellipsizeMode="tail"
         style={
           Object {
             "fontSize": 20,
@@ -49,6 +52,9 @@ exports[`renders correctly for default (existing patient) 1`] = `
             }
           >
             <Text
+              accessible={true}
+              allowFontScaling={true}
+              ellipsizeMode="tail"
               style={
                 Object {
                   "color": "#000000",
@@ -66,7 +72,36 @@ exports[`renders correctly for default (existing patient) 1`] = `
               <TextInput
                 accessibilityLabel="First name"
                 allowFontScaling={true}
+                autoCapitalize={undefined}
+                autoCorrect={undefined}
+                autoFocus={undefined}
+                blurOnSubmit={undefined}
+                clearButtonMode={undefined}
+                clearTextOnFocus={undefined}
+                editable={undefined}
+                enablesReturnKeyAutomatically={undefined}
+                keyboardAppearance={undefined}
+                keyboardType={undefined}
+                maxLength={undefined}
+                multiline={undefined}
+                numberOfLines={undefined}
+                onBlur={undefined}
+                onChange={undefined}
                 onChangeText={[Function]}
+                onContentSizeChange={undefined}
+                onEndEditing={undefined}
+                onFocus={undefined}
+                onKeyPress={undefined}
+                onLayout={undefined}
+                onSelectionChange={undefined}
+                onSubmitEditing={undefined}
+                placeholder={undefined}
+                placeholderTextColor={undefined}
+                returnKeyType={undefined}
+                secureTextEntry={undefined}
+                selectTextOnFocus={undefined}
+                selectionColor={undefined}
+                selectionState={undefined}
                 style={
                   Object {
                     "borderColor": "#cccccc",
@@ -93,6 +128,9 @@ exports[`renders correctly for default (existing patient) 1`] = `
             }
           >
             <Text
+              accessible={true}
+              allowFontScaling={true}
+              ellipsizeMode="tail"
               style={
                 Object {
                   "color": "#000000",
@@ -110,7 +148,36 @@ exports[`renders correctly for default (existing patient) 1`] = `
               <TextInput
                 accessibilityLabel="Father's last name"
                 allowFontScaling={true}
+                autoCapitalize={undefined}
+                autoCorrect={undefined}
+                autoFocus={undefined}
+                blurOnSubmit={undefined}
+                clearButtonMode={undefined}
+                clearTextOnFocus={undefined}
+                editable={undefined}
+                enablesReturnKeyAutomatically={undefined}
+                keyboardAppearance={undefined}
+                keyboardType={undefined}
+                maxLength={undefined}
+                multiline={undefined}
+                numberOfLines={undefined}
+                onBlur={undefined}
+                onChange={undefined}
                 onChangeText={[Function]}
+                onContentSizeChange={undefined}
+                onEndEditing={undefined}
+                onFocus={undefined}
+                onKeyPress={undefined}
+                onLayout={undefined}
+                onSelectionChange={undefined}
+                onSubmitEditing={undefined}
+                placeholder={undefined}
+                placeholderTextColor={undefined}
+                returnKeyType={undefined}
+                secureTextEntry={undefined}
+                selectTextOnFocus={undefined}
+                selectionColor={undefined}
+                selectionState={undefined}
                 style={
                   Object {
                     "borderColor": "#cccccc",
@@ -137,6 +204,9 @@ exports[`renders correctly for default (existing patient) 1`] = `
             }
           >
             <Text
+              accessible={true}
+              allowFontScaling={true}
+              ellipsizeMode="tail"
               style={
                 Object {
                   "color": "#000000",
@@ -154,7 +224,36 @@ exports[`renders correctly for default (existing patient) 1`] = `
               <TextInput
                 accessibilityLabel="Mother's last name"
                 allowFontScaling={true}
+                autoCapitalize={undefined}
+                autoCorrect={undefined}
+                autoFocus={undefined}
+                blurOnSubmit={undefined}
+                clearButtonMode={undefined}
+                clearTextOnFocus={undefined}
+                editable={undefined}
+                enablesReturnKeyAutomatically={undefined}
+                keyboardAppearance={undefined}
+                keyboardType={undefined}
+                maxLength={undefined}
+                multiline={undefined}
+                numberOfLines={undefined}
+                onBlur={undefined}
+                onChange={undefined}
                 onChangeText={[Function]}
+                onContentSizeChange={undefined}
+                onEndEditing={undefined}
+                onFocus={undefined}
+                onKeyPress={undefined}
+                onLayout={undefined}
+                onSelectionChange={undefined}
+                onSubmitEditing={undefined}
+                placeholder={undefined}
+                placeholderTextColor={undefined}
+                returnKeyType={undefined}
+                secureTextEntry={undefined}
+                selectTextOnFocus={undefined}
+                selectionColor={undefined}
+                selectionState={undefined}
                 style={
                   Object {
                     "borderColor": "#cccccc",
@@ -181,6 +280,9 @@ exports[`renders correctly for default (existing patient) 1`] = `
             }
           >
             <Text
+              accessible={true}
+              allowFontScaling={true}
+              ellipsizeMode="tail"
               style={
                 Object {
                   "color": "#000000",
@@ -194,8 +296,16 @@ exports[`renders correctly for default (existing patient) 1`] = `
             </Text>
             <View>
               <View
+                accessibilityComponentType={undefined}
+                accessibilityLabel={undefined}
+                accessibilityTraits={undefined}
                 accessible={true}
+                collapsable={undefined}
+                hasTVPreferredFocus={undefined}
+                hitSlop={undefined}
                 isTVSelectable={true}
+                nativeID={undefined}
+                onLayout={undefined}
                 onResponderGrant={[Function]}
                 onResponderMove={[Function]}
                 onResponderRelease={[Function]}
@@ -207,8 +317,13 @@ exports[`renders correctly for default (existing patient) 1`] = `
                     "opacity": 1,
                   }
                 }
+                testID={undefined}
+                tvParallaxProperties={undefined}
               >
                 <Text
+                  accessible={true}
+                  allowFontScaling={true}
+                  ellipsizeMode="tail"
                   style={
                     Object {
                       "color": "#000000",
@@ -218,10 +333,11 @@ exports[`renders correctly for default (existing patient) 1`] = `
                     }
                   }
                 >
-                  Tap here to select a date
+                  31 December 1969
                 </Text>
               </View>
               <View
+                collapsable={undefined}
                 style={
                   Object {
                     "height": 0,
@@ -242,7 +358,11 @@ exports[`renders correctly for default (existing patient) 1`] = `
                   }
                 >
                   <RCTDatePicker
-                    date={30000}
+                    date={100}
+                    locale={undefined}
+                    maximumDate={undefined}
+                    minimumDate={undefined}
+                    minuteInterval={undefined}
                     mode="date"
                     onChange={[Function]}
                     onResponderTerminationRequest={[Function]}
@@ -252,6 +372,7 @@ exports[`renders correctly for default (existing patient) 1`] = `
                         "height": 216,
                       }
                     }
+                    timeZoneOffsetInMinutes={undefined}
                   />
                 </View>
               </View>
@@ -265,6 +386,9 @@ exports[`renders correctly for default (existing patient) 1`] = `
             }
           >
             <Text
+              accessible={true}
+              allowFontScaling={true}
+              ellipsizeMode="tail"
               style={
                 Object {
                   "color": "#000000",
@@ -282,6 +406,7 @@ exports[`renders correctly for default (existing patient) 1`] = `
               onChange={[Function]}
               onResponderTerminationRequest={[Function]}
               onStartShouldSetResponder={[Function]}
+              onTintColor={undefined}
               onValueChange={[Function]}
               style={
                 Array [
@@ -294,13 +419,23 @@ exports[`renders correctly for default (existing patient) 1`] = `
                   },
                 ]
               }
+              thumbTintColor={undefined}
+              tintColor={undefined}
               value={false}
             />
           </View>
         </View>
         <View
+          accessibilityComponentType={undefined}
+          accessibilityLabel={undefined}
+          accessibilityTraits={undefined}
           accessible={true}
+          collapsable={undefined}
+          hasTVPreferredFocus={undefined}
+          hitSlop={undefined}
           isTVSelectable={true}
+          nativeID={undefined}
+          onLayout={undefined}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
           onResponderRelease={[Function]}
@@ -321,8 +456,13 @@ exports[`renders correctly for default (existing patient) 1`] = `
               "width": "100%",
             }
           }
+          testID={undefined}
+          tvParallaxProperties={undefined}
         >
           <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
             style={
               Array [
                 Object {
@@ -350,6 +490,9 @@ exports[`renders correctly for default (existing patient) 1`] = `
     }
   >
     <Text
+      accessible={true}
+      allowFontScaling={true}
+      ellipsizeMode="tail"
       style={
         Object {
           "color": "red",
@@ -358,6 +501,9 @@ exports[`renders correctly for default (existing patient) 1`] = `
       }
     />
     <Text
+      accessible={true}
+      allowFontScaling={true}
+      ellipsizeMode="tail"
       style={
         Object {
           "color": "green",
@@ -371,6 +517,7 @@ exports[`renders correctly for default (existing patient) 1`] = `
 
 exports[`renders correctly for new patient 1`] = `
 ShallowWrapper {
+  "length": 1,
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <Provider
     store={
@@ -416,22 +563,15 @@ ShallowWrapper {
     "adapter": ReactSixteenAdapter {
       "options": Object {
         "enableComponentDidUpdateOnSetState": true,
-        "lifecycles": Object {
-          "componentDidUpdate": Object {
-            "onSetState": true,
-          },
-          "getSnapshotBeforeUpdate": true,
-        },
       },
     },
-    "attachTo": undefined,
-    "hydrateIn": undefined,
   },
 }
 `;
 
 exports[`renders correctly for new patient 2`] = `
 ShallowWrapper {
+  "length": 1,
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <Provider
     store={
@@ -477,16 +617,8 @@ ShallowWrapper {
     "adapter": ReactSixteenAdapter {
       "options": Object {
         "enableComponentDidUpdateOnSetState": true,
-        "lifecycles": Object {
-          "componentDidUpdate": Object {
-            "onSetState": true,
-          },
-          "getSnapshotBeforeUpdate": true,
-        },
       },
     },
-    "attachTo": undefined,
-    "hydrateIn": undefined,
   },
 }
 `;
