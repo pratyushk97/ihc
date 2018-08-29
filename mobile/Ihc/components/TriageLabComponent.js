@@ -45,16 +45,17 @@ const styles = {
     fontSize: 12
   },
   pickerStyle: {
-    width: 100,
+    width: '100%',
     height: 100,
     marginBottom: 4,
     backgroundColor: '#CBECE5',
     borderRadius: 12
   },
   container: {
-    flex: 1,
+    width: 120,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    margin: 4
   },
   title: {
     fontSize: 12

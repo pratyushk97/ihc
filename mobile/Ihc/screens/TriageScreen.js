@@ -32,33 +32,24 @@ class TriageScreen extends Component<{}> {
       date: this.props.todayDate || stringDate(new Date())
     };
 
-    // Hold objects including a test's name, options, and result (int that
+    // Hold objects including a test's propertyName, displayName, options, and result (int that
     // indexes into the options array)
-
-    // Earliest lab tests resolve b/w 30-45 seconds
-    const earliestLabTestObjects = {
+    // The keys in this object should also match the propertyName
+    const labTestObjects = {
       glucose: TriageLabsWheel.createLabTestObject('glucose', 'glucose (mg/dL)',
         ['-', '100+/-', '250+', '500++', '1000+++', '>=2000++++']),
       bilirubin: TriageLabsWheel.createLabTestObject('bilirubin', 'bilirubin (mg/dL)',
         ['-', '1+', '2++', '4+++']),
       ketone: TriageLabsWheel.createLabTestObject('ketone', 'ketone (mg/dL)', ['-', '5+/-', '15+']),
       specificGravity: TriageLabsWheel.createLabTestObject('specificGravity', 'specific gravity',
-        ['1.000', '1.005', '1.010', '1.015', '1.020', '1.025', '1.030'])
-    };
-
-    // Middle lab tests resolve around 60 seconds
-    const middleLabTestObjects = {
+        ['1.000', '1.005', '1.010', '1.015', '1.020', '1.025', '1.030']),
       blood: TriageLabsWheel.createLabTestObject('blood', 'blood',
         ['-', '+/-', '+', '5-10', `50 Ery/${MU_UNICODE}L`]),
       ph: TriageLabsWheel.createLabTestObject('ph', 'pH', ['5.0', '6.0', '6.5', '7.0', '7.5', '8.0', '9.0']),
       protein: TriageLabsWheel.createLabTestObject('protein', 'protein (mg/dL)', ['-', '5+/-', '15+']),
       uroglobin: TriageLabsWheel.createLabTestObject('uroglobin', 'uroglobin (mg/dL)',
         ['0.2', '1', '2', '4', '8', '12']),
-      nitrites: TriageLabsWheel.createLabTestObject('nitrites', 'nitrites', ['-', '+'])
-    };
-
-    // Late lab tests resolve around 120 seconds
-    const latestLabTestObjects = {
+      nitrites: TriageLabsWheel.createLabTestObject('nitrites', 'nitrites', ['-', '+']),
       leukocytes: TriageLabsWheel.createLabTestObject('leukocytes', `leukocytes (Leu/${MU_UNICODE}L)`,
         ['-', '15 +/-', '70+', '125++', '500+++'])
     };
@@ -68,9 +59,7 @@ class TriageScreen extends Component<{}> {
       formType: Triage.getFormType(this.startingFormValues, 2),
       gender: 2, // 1: male, 2: female
       todayDate: this.startingFormValues.date,
-      earliestLabTestObjects: earliestLabTestObjects,
-      middleLabTestObjects: middleLabTestObjects,
-      latestLabTestObjects: latestLabTestObjects
+      labTestObjects: labTestObjects
     };
 
     this.props.clearMessages();
@@ -121,9 +110,7 @@ class TriageScreen extends Component<{}> {
     this.setState({
       formType: Triage.getFormType(triage, gender),
       formValues: triage,
-      earliestLabTestObjects: this.getExistingLabTestObjects(triage, this.state.earliestLabTestObjects),
-      middleLabTestObjects: this.getExistingLabTestObjects(triage, this.state.middleLabTestObjects),
-      latestLabTestObjects: this.getExistingLabTestObjects(triage, this.state.latestLabTestObjects)
+      labTestObjects: this.getExistingLabTestObjects(triage, this.state.labTestObjects),
     });
 
     downstreamSyncWithServer()
@@ -146,9 +133,7 @@ class TriageScreen extends Component<{}> {
           this.setState({
             formType: Triage.getFormType(triage, gender),
             formValues: triage,
-            earliestLabTestObjects: this.getExistingLabTestObjects(triage, this.state.earliestLabTestObjects),
-            middleLabTestObjects: this.getExistingLabTestObjects(triage, this.state.middleLabTestObjects),
-            latestLabTestObjects: this.getExistingLabTestObjects(triage, this.state.latestLabTestObjects)
+            labTestObjects: this.getExistingLabTestObjects(triage, this.state.labTestObjects),
           });
         }
       })
@@ -234,8 +219,7 @@ class TriageScreen extends Component<{}> {
     this.props.setLoading(true);
 
     const form = this.refs.form.getValue();
-    const triage = Triage.extractFromForm(form, this.props.currentPatientKey,
-      this.state.earliestLabTestObjects, this.state.middleLabTestObjects, this.state.latestLabTestObjects);
+    const triage = Triage.extractFromForm(form, this.props.currentPatientKey, this.state.labTestObjects);
 
     try {
       localData.updateTriage(triage);
@@ -294,23 +278,13 @@ class TriageScreen extends Component<{}> {
           />
 
           {
-            this.state.formValues.labsDone ?
+            this.state.formValues.urineTestDone ?
               (
-                <View>
+                <View style={styles.labsContainer}>
                   <TriageLabsWheel
                     updateLabResult={(name, result) =>
-                      this.updateLabTests(name, result, this.state.earliestLabTestObjects)}
-                    tests = {Object.values(this.state.earliestLabTestObjects)}
-                  />
-                  <TriageLabsWheel
-                    updateLabResult={(name, result) =>
-                      this.updateLabTests(name, result, this.state.middleLabTestObjects)}
-                    tests = {Object.values(this.state.middleLabTestObjects)}
-                  />
-                  <TriageLabsWheel
-                    updateLabResult={(name, result) =>
-                      this.updateLabTests(name, result, this.state.latestLabTestObjects)}
-                    tests = {Object.values(this.state.latestLabTestObjects)}
+                      this.updateLabTests(name, result, this.state.labTestObjects)}
+                    tests = {Object.values(this.state.labTestObjects)}
                   />
                 </View>
               ) : null
@@ -340,6 +314,11 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     margin: 10,
   },
+  labsContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignItems: 'flex-start'
+  }
 });
 
 // Redux

@@ -40,7 +40,7 @@ const TriageSchema = Schema({
   bgl: String,
   a1c: String,
   fasting: Boolean,
-  pregnancyTest: Boolean,
+  pregnancyTest: String,
   //--END IF---
   //---IF URINE TEST---
   urineTestDone: Boolean,

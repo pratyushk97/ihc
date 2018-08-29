@@ -48,10 +48,10 @@ export default class TriageLabsWheel extends Component<{}> {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    width: '100%',
     flexDirection: 'row',
-    margin: 0,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'flex-start',
+    flexWrap: 'wrap'
   }
 });
