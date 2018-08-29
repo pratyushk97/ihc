@@ -24,14 +24,16 @@ export default class Triage {
     throw new Error('No form type for these settings...');
   }
 
-  static extractFromForm(form, patientKey, labTestObjects) {
+  static extractFromForm(form, patientKey, ...allLabTestObjects) {
     const triage = Object.assign({}, form);
     triage.patientKey = patientKey;
     triage.lastUpdated = new Date().getTime();
 
     // Go through test objects, and add the result to the triage object
-    for(let obj of Object.values(labTestObjects)) {
-      triage[obj.name] = obj.options[obj.result];
+    for(let labTestObjects of allLabTestObjects) {
+      for(let obj of Object.values(labTestObjects)) {
+        triage[obj.name] = obj.options[obj.result];
+      }
     }
     return triage;
   }
@@ -80,7 +82,7 @@ export default class Triage {
       blood: 'string?',
       nitrites: 'string?',
       specificGravity: 'string?',
-      urobilirubin: 'string?',
+      uroglobin: 'string?',
       ketone: 'string?',
       protein: 'string?',
       bilirubin: 'string?',

@@ -25,7 +25,7 @@ export default class TriageLabComponent extends Component<{}> {
   render() {
     return (
       <View style={styles.container}>
-        <Text>{this.props.name}</Text>
+        <Text style={styles.title}> {this.props.name}</Text>
         <Picker style={styles.pickerStyle}
           selectedValue={this.props.selectedIndex}
           itemStyle={styles.itemStyle}
@@ -42,13 +42,21 @@ export default class TriageLabComponent extends Component<{}> {
 const styles = {
   itemStyle: {
     color: '#505050',
+    fontSize: 12
   },
   pickerStyle: {
     width: 100,
     height: 100,
-    marginBottom: 4
+    marginBottom: 4,
+    backgroundColor: '#CBECE5',
+    borderRadius: 12
   },
   container: {
-    flex: 1
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  title: {
+    fontSize: 12
   }
 };

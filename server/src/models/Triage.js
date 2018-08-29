@@ -48,7 +48,7 @@ const TriageSchema = Schema({
   blood: String,
   nitrites: String,
   specificGravity: String,
-  urobilirubin: String,
+  uroglobin: String,
   ketone: String,
   protein: String,
   bilirubin: String,
