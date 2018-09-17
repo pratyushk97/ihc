@@ -9,6 +9,8 @@ import Patient from '../models/Patient';
 import Status from '../models/Status';
 import Soap from '../models/Soap';
 import Triage from '../models/Triage';
+import MedicationInventory from '../models/MedicationInventory';
+import Medication from '../models/Medication';
 import DrugUpdate from '../models/DrugUpdate';
 import Settings from '../models/Settings';
 import MedicationCheckmarks from '../models/MedicationCheckmarks';
@@ -16,7 +18,7 @@ import MedicationCheckmarks from '../models/MedicationCheckmarks';
 import Realm from 'realm';
 
 const realm = new Realm({
-  schema: [Patient, Status, Soap, Triage, DrugUpdate, Settings, MedicationCheckmarks],
+  schema: [Patient, Status, Soap, Triage, MedicationInventory, Medication, DrugUpdate, Settings, MedicationCheckmarks],
   deleteRealmIfMigrationNeeded: true, // TODO: delete when done with dev
 });
 
@@ -215,6 +217,40 @@ export function getTriage(patientKey, strDate) {
   const triage = realm.objects('Triage').filtered('date = "' +
       strDate + '" AND patientKey = "' + patientKey + '"')['0'];
   return triage;
+}
+
+// Update/Create a medication
+export function updateMedication(update) {
+  //There should only be one inventory
+  const medicationInventory = realm.objects('MedicationInventory')['0'];
+
+  if(!medicationInventory) {
+    realm.create('MedicationInventory', medicationInventory);
+  }
+
+  const medication = realm.objects('Medication').filtered('name = "' + update.name + '"')['0'];
+  realm.write( () => {
+    //Medication already exists (update)
+    if (medication) {
+      const properties = Object.keys(Medication.schema.properties);
+      properties.forEach( p => {
+        medication[p] = update[p];
+      });
+      return;
+    }
+    //Medication does not exist (create)
+    if (update.quantity === 0) {
+      medicationInventory.outOfStock.push(update);
+    } else {
+      medicationInventory.inStock.push(update);
+    }
+  });
+}
+
+// Returns an array of all medications with the given name; undefined if none found
+export function getMedications(drugName) {
+  const medications = realm.objects('Medication').filtered('name = "' + drugName + '"');
+  return medications;
 }
 
 export function getPatient(patientKey) {
