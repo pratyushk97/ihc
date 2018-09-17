@@ -221,13 +221,15 @@ export function getTriage(patientKey, strDate) {
 
 // Update/Create a medication
 export function updateMedication(update) {
-  //There should only be one inventory
+  //Note: There should only be one inventory
   const medicationInventory = realm.objects('MedicationInventory')['0'];
 
   if(!medicationInventory) {
     realm.create('MedicationInventory', medicationInventory);
   }
 
+  //TODO: if we are assuming that there can be multiple medications with the same name,
+  //      we an ID/key to identify each medication
   const medication = realm.objects('Medication').filtered('name = "' + update.name + '"')['0'];
   realm.write( () => {
     //Medication already exists (update)
