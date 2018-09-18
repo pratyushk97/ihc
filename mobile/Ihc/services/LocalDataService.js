@@ -9,7 +9,6 @@ import Patient from '../models/Patient';
 import Status from '../models/Status';
 import Soap from '../models/Soap';
 import Triage from '../models/Triage';
-import MedicationInventory from '../models/MedicationInventory';
 import Medication from '../models/Medication';
 import DrugUpdate from '../models/DrugUpdate';
 import Settings from '../models/Settings';
@@ -18,7 +17,7 @@ import MedicationCheckmarks from '../models/MedicationCheckmarks';
 import Realm from 'realm';
 
 const realm = new Realm({
-  schema: [Patient, Status, Soap, Triage, MedicationInventory, Medication, DrugUpdate, Settings, MedicationCheckmarks],
+  schema: [Patient, Status, Soap, Triage, Medication, DrugUpdate, Settings, MedicationCheckmarks],
   deleteRealmIfMigrationNeeded: true, // TODO: delete when done with dev
 });
 
@@ -221,16 +220,9 @@ export function getTriage(patientKey, strDate) {
 
 // Update/Create a medication
 export function updateMedication(update) {
-  //Note: There should only be one inventory
-  const medicationInventory = realm.objects('MedicationInventory')['0'];
+  const medication = realm.objects('Medication')
+    .filtered('name = "' + update.name + '" AND dosage = "' + update.dosage + '"')['0'];
 
-  if(!medicationInventory) {
-    realm.create('MedicationInventory', medicationInventory);
-  }
-
-  //TODO: if we are assuming that there can be multiple medications with the same name,
-  //      we an ID/key to identify each medication
-  const medication = realm.objects('Medication').filtered('name = "' + update.name + '"')['0'];
   realm.write( () => {
     //Medication already exists (update)
     if (medication) {
@@ -241,11 +233,7 @@ export function updateMedication(update) {
       return;
     }
     //Medication does not exist (create)
-    if (update.quantity === 0) {
-      medicationInventory.outOfStock.push(update);
-    } else {
-      medicationInventory.inStock.push(update);
-    }
+    realm.create('Medication', update);
   });
 }
 
