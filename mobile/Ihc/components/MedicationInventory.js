@@ -14,6 +14,7 @@ export default class MedicationInventory extends Component<{}> {
    * Expects in props:
    *  {
    *    rows: [Medication],
+
    *    saveModal: function
    *  }
    */
@@ -21,6 +22,7 @@ export default class MedicationInventory extends Component<{}> {
     super(props);
     this.tableHeaders = ['Drug Name', 'Quantity', 'Dosage', 'Units', 'Notes'];
     this.rowNum = 0;
+
     // showModal is the modal to update medication
     // medicationToEdit is the medication that will be edited
     this.state = {showModal: false, 
@@ -138,12 +140,11 @@ export default class MedicationInventory extends Component<{}> {
           {this.renderHeader(this.tableHeaders, (i) => `header${i}`)}
           {this.props.rows.map( row => this.renderRow(row, (i) => `row${i}`) )}
         </Grid>
-
       </View>
     );
   }
 }
-  
+
 export const styles = StyleSheet.create({
   container: {
     flex: 1,

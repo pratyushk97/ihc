@@ -59,6 +59,7 @@ class MedicationInventoryScreen extends Component<{}> {
 
   render() {
 
+
     //TODO update rows
     return (
       <Container>
